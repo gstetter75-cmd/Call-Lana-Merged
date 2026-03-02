@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Registrierung – Call Lana</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#06060f;--bg2:#0d0d1a;--bg3:#13132a;--card:#0f0f22;--border:rgba(124,58,237,.18);--border2:rgba(124,58,237,.35);--pu:#7c3aed;--pu2:#9d5cf6;--pu3:#c084fc;--tx:#f0eeff;--tx2:#a89dc0;--tx3:#6b5f8a;--red:#f87171;--green:#4ade80;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;line-height:1.6;-webkit-font-smoothing:antialiased;}
+.page{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;}
+.brand-side{background:linear-gradient(160deg,#0d0820 0%,#120f2e 50%,#06060f 100%);display:flex;flex-direction:column;justify-content:space-between;padding:48px;position:relative;overflow:hidden;}
+.brand-side::before{content:'';position:absolute;top:-100px;left:-100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.2),transparent 65%);}
+.brand-side::after{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(124,58,237,.08) 1px,transparent 1px);background-size:28px 28px;opacity:.6;}
+.brand-content{position:relative;z-index:2;}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:56px;}
+.logo-mark{width:38px;height:38px;background:linear-gradient(135deg,var(--pu),var(--pu3));border-radius:11px;display:flex;align-items:center;justify-content:center;color:white;font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;box-shadow:0 0 20px rgba(124,58,237,.5);}
+.logo-name{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;color:var(--tx);}.logo-name span{color:var(--pu3);}
+.brand-content h2{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,3vw,2.4rem);font-weight:800;line-height:1.15;margin-bottom:18px;background:linear-gradient(135deg,var(--tx),var(--pu3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.brand-content p{color:var(--tx2);font-size:.97rem;line-height:1.78;max-width:400px;margin-bottom:40px;}
+.bf{display:flex;align-items:center;gap:12px;font-size:.9rem;color:var(--tx2);margin-bottom:14px;}
+.bf-dot{width:8px;height:8px;background:var(--pu3);border-radius:50%;flex-shrink:0;box-shadow:0 0 8px rgba(192,132,252,.6);}
+.brand-footer{position:relative;z-index:2;color:var(--tx3);font-size:12.5px;}
+.form-side{background:var(--bg2);display:flex;flex-direction:column;justify-content:center;padding:48px 56px;overflow-y:auto;}
+h1{font-family:'Syne',sans-serif;font-size:1.9rem;font-weight:800;margin-bottom:6px;}
+.form-side>p{font-size:.93rem;color:var(--tx2);margin-bottom:32px;}
+.form-side>p a{color:var(--pu3);text-decoration:none;font-weight:600;}.form-side>p a:hover{text-decoration:underline;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.fgrp{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
+label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.06em;text-transform:uppercase;}
+.finp{background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:13px 15px;color:var(--tx);font-size:14.5px;font-family:'Manrope',sans-serif;outline:none;transition:all .2s;width:100%;}
+.finp::placeholder{color:var(--tx3);}.finp:focus{border-color:var(--pu);background:rgba(124,58,237,.05);box-shadow:0 0 0 3px rgba(124,58,237,.15);}
+.finp.err{border-color:var(--red);}
+.err-msg{font-size:11.5px;color:var(--red);min-height:16px;display:block;}
+select.finp{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%236b5f8a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;}
+.pw-wrap{position:relative;}.pw-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--tx3);font-size:13px;}.pw-toggle:hover{color:var(--pu3);}
+.pw-strength{display:flex;gap:4px;margin-top:8px;}.pw-bar{flex:1;height:3px;background:var(--border);border-radius:2px;transition:background .3s;}.pw-bar.w{background:var(--red);}.pw-bar.m{background:#fb923c;}.pw-bar.s{background:var(--green);}
+.pw-label{font-size:11px;color:var(--tx3);margin-top:5px;}
+.check-row{display:flex;align-items:flex-start;gap:10px;margin:18px 0;}
+.check-row input{width:17px;height:17px;accent-color:var(--pu);flex-shrink:0;margin-top:2px;cursor:pointer;}
+.check-row label{font-size:12.5px;color:var(--tx2);cursor:pointer;font-weight:400;text-transform:none;letter-spacing:0;}
+.check-row a{color:var(--pu3);text-decoration:none;}.check-row a:hover{text-decoration:underline;}
+.submit-btn{width:100%;background:linear-gradient(135deg,var(--pu),var(--pu2));border:none;border-radius:12px;padding:15px;color:white;font-weight:700;font-size:15px;cursor:pointer;transition:all .25s;box-shadow:0 0 20px rgba(124,58,237,.4);}
+.submit-btn:hover{transform:translateY(-1px);box-shadow:0 0 32px rgba(124,58,237,.6);}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;}
+.alert-box{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--red);margin-bottom:16px;display:none;}
+.success-box{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.25);border-radius:10px;padding:16px 18px;font-size:14px;color:var(--green);margin:20px 0;display:none;}
+.loader{display:none;text-align:center;padding:20px;}.loader-spinner{border:3px solid var(--border);border-top:3px solid var(--pu);border-radius:50%;width:32px;height:32px;animation:spin 1s linear infinite;margin:0 auto;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@media(max-width:900px){.page{grid-template-columns:1fr;}.brand-side{min-height:auto;padding:32px;}.form-side{padding:32px;}}
+@media(max-width:600px){.frow{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="brand-side">
+    <div class="brand-content">
+      <a href="index.html" class="logo"><div class="logo-mark">CL</div><span class="logo-name">Call <span>Lana</span></span></a>
+      <h2>Dein KI-Assistent wartet schon auf dich</h2>
+      <p>In 30 Minuten ist cLana live und übernimmt deine Anrufe. Kein technisches Vorwissen nötig.</p>
+      <div><div class="bf"><span class="bf-dot"></span>30 Minuten bis zur ersten KI-Antwort</div>
+      <div class="bf"><span class="bf-dot"></span>Server in Deutschland — 100% DSGVO-konform</div>
+      <div class="bf"><span class="bf-dot"></span>5.000+ Unternehmen vertrauen cLana täglich</div>
+      <div class="bf"><span class="bf-dot"></span>Jederzeit kündbar — kein Risiko</div></div>
+    </div>
+    <div class="brand-footer"><p>© 2026 cLana · <a href="datenschutz.html">Datenschutz</a> · <a href="agb.html">AGB</a></p></div>
+  </div>
+
+  <div class="form-side">
+    <h1>Account erstellen</h1>
+    <p>Bereits registriert? <a href="login-supabase.html">Jetzt einloggen →</a></p>
+    
+    <div class="alert-box" id="alertBox"></div>
+    <div class="success-box" id="successBox">✅ Account erstellt! Weiterleitung zum Dashboard...</div>
+    <div class="loader" id="loader"><div class="loader-spinner"></div><p style="margin-top:12px;font-size:13px;color:var(--tx3);">Account wird erstellt...</p></div>
+
+    <form id="regForm" novalidate>
+      <div class="frow">
+        <div class="fgrp"><label for="fn">Vorname *</label><input type="text" id="fn" class="finp" placeholder="Max" autocomplete="given-name" required><span class="err-msg" id="fn-err"></span></div>
+        <div class="fgrp"><label for="ln">Nachname *</label><input type="text" id="ln" class="finp" placeholder="Mustermann" autocomplete="family-name" required><span class="err-msg" id="ln-err"></span></div>
+      </div>
+      <div class="fgrp"><label for="em">E-Mail *</label><input type="email" id="em" class="finp" placeholder="max@unternehmen.de" autocomplete="email" required><span class="err-msg" id="em-err"></span></div>
+      <div class="fgrp"><label for="co">Unternehmen</label><input type="text" id="co" class="finp" placeholder="Musterfirma GmbH" autocomplete="organization"></div>
+      <div class="fgrp"><label for="ind">Branche</label><select id="ind" class="finp"><option value="">Branche wählen …</option><option>Arztpraxis / Klinik</option><option>Hotel / Gastronomie</option><option>Immobilien / Makler</option><option>Handwerk / Service</option><option>Handel / E-Commerce</option><option>Kanzlei / Beratung</option><option>Sonstiges</option></select></div>
+      <div class="fgrp"><label for="pw">Passwort *</label><div class="pw-wrap"><input type="password" id="pw" class="finp" placeholder="Mindestens 8 Zeichen" autocomplete="new-password" required><button type="button" class="pw-toggle" id="pwToggle">👁</button></div><div class="pw-strength"><div class="pw-bar" id="pb1"></div><div class="pw-bar" id="pb2"></div><div class="pw-bar" id="pb3"></div><div class="pw-bar" id="pb4"></div></div><span class="pw-label" id="pwLabel">Passwortstärke</span><span class="err-msg" id="pw-err"></span></div>
+      <div class="fgrp"><label for="pw2">Passwort bestätigen *</label><input type="password" id="pw2" class="finp" placeholder="Passwort wiederholen" autocomplete="new-password" required><span class="err-msg" id="pw2-err"></span></div>
+      <div class="check-row"><input type="checkbox" id="priv" required><label for="priv">Ich habe die <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a> gelesen und akzeptiere die <a href="agb.html" target="_blank">AGB</a>.</label></div>
+      <span class="err-msg" id="priv-err"></span>
+      <button type="submit" class="submit-btn" id="subBtn">Account erstellen →</button>
+    </form>
+  </div>
+</div>
+
+<script src="supabase-config.js"></script>
+<script>
+// Password strength
+const pw=document.getElementById('pw'),bars=['pb1','pb2','pb3','pb4'].map(id=>document.getElementById(id)),labels=['Zu kurz','Schwach','Mittel','Stark'];
+pw.addEventListener('input',()=>{const v=pw.value;let s=0;if(v.length>=8)s++;if(/[A-Z]/.test(v))s++;if(/[0-9]/.test(v))s++;if(/[^A-Za-z0-9]/.test(v))s++;bars.forEach((b,i)=>{b.className='pw-bar';if(i<s)b.classList.add(s<=1?'w':s<=2?'m':'s');});document.getElementById('pwLabel').textContent='Passwortstärke: '+(labels[s]||'Zu kurz');});
+
+// Toggle password
+document.getElementById('pwToggle').addEventListener('click',()=>{pw.type=pw.type==='password'?'text':'password';document.getElementById('pwToggle').textContent=pw.type==='password'?'👁':'🙈';});
+
+// Form submit
+document.getElementById('regForm').addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  document.querySelectorAll('.err-msg').forEach(el=>el.textContent='');
+  document.querySelectorAll('.finp').forEach(el=>el.classList.remove('err'));
+  document.getElementById('alertBox').style.display='none';
+
+  const fn=document.getElementById('fn').value.trim();
+  const ln=document.getElementById('ln').value.trim();
+  const em=document.getElementById('em').value.trim();
+  const co=document.getElementById('co').value.trim();
+  const ind=document.getElementById('ind').value;
+  const pwd=document.getElementById('pw').value;
+  const pw2=document.getElementById('pw2').value;
+  const priv=document.getElementById('priv').checked;
+
+  // Validation
+  let valid=true;
+  if(!fn){showError('fn','Vorname ist erforderlich.');valid=false;}
+  if(!ln){showError('ln','Nachname ist erforderlich.');valid=false;}
+  if(!em){showError('em','E-Mail ist erforderlich.');valid=false;}
+  else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){showError('em','Ungültige E-Mail-Adresse.');valid=false;}
+  if(!pwd){showError('pw','Passwort ist erforderlich.');valid=false;}
+  else if(pwd.length<8){showError('pw','Passwort muss mindestens 8 Zeichen haben.');valid=false;}
+  if(pwd!==pw2){showError('pw2','Passwörter stimmen nicht überein.');valid=false;}
+  if(!priv){document.getElementById('priv-err').textContent='Bitte akzeptiere die Datenschutzerklärung und AGB.';valid=false;}
+  if(!valid)return;
+
+  // Show loader
+  document.getElementById('regForm').style.display='none';
+  document.getElementById('loader').style.display='block';
+
+  // Register with Supabase
+  const result=await clanaAuth.signUp(em,pwd,{firstName:fn,lastName:ln,company:co,industry:ind,fullName:fn+' '+ln});
+
+  if(result.success){
+    document.getElementById('loader').style.display='none';
+    document.getElementById('successBox').style.display='block';
+    setTimeout(()=>window.location.href='dashboard-supabase.html',2000);
+  }else{
+    document.getElementById('regForm').style.display='block';
+    document.getElementById('loader').style.display='none';
+    showAlert('Registrierung fehlgeschlagen: '+result.error);
+  }
+});
+
+function showError(id,msg){document.getElementById(id).classList.add('err');document.getElementById(id+'-err').textContent=msg;}
+function showAlert(msg){const box=document.getElementById('alertBox');box.textContent=msg;box.style.display='block';}
+</script>
+</body>
+</html>

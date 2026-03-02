@@ -1,0 +1,23 @@
+CALL LANA - Vollständige Dateiliste
+====================================
+
+✅ Bereits erstellt:
+- index.html (Homepage mit neuer Kundenliste, mehrsprachig)
+- login.html (Bestandskunden-Login)
+- dashboard.html (Dashboard mit Logout zur Startseite)
+- impressum.html (Wetzellplatz 2, Hildesheim)
+- i18n.js (Mehrsprachigkeitssystem)
+- UPDATES.md (Changelog)
+
+📝 Werden jetzt erstellt:
+- registrierung.html
+- funktionen.html
+- branchen.html
+- preise.html
+- kontakt.html
+- datenschutz.html
+- agb.html
+- settings.html
+- supabase-config.js
+- README.md
+- fix-branding.sh
