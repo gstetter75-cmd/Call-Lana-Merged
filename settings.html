@@ -8,16 +8,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--bg:#06060f;--bg2:#0a0a18;--bg3:#0f0f20;--card:#111126;--card2:#14142e;--sidebar:#0c0c1e;--sidebar-w:240px;--border:rgba(124,58,237,.15);--border2:rgba(124,58,237,.3);--pu:#7c3aed;--pu2:#9d5cf6;--pu3:#c084fc;--pu4:#ede9fe;--cyan:#22d3ee;--green:#4ade80;--orange:#fb923c;--red:#f87171;--tx:#f0eeff;--tx2:#a89dc0;--tx3:#6b5f8a;}
 *{margin:0;padding:0;box-sizing:border-box;}html{height:100%;}
 body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--tx);height:100%;display:flex;-webkit-font-smoothing:antialiased;overflow:hidden;}
-#authGuard{display:none;position:fixed;inset:0;background:var(--bg);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:16px;}#authGuard.show{display:flex;}#authGuard p{color:var(--tx2);font-size:.95rem;}#authGuard a{color:var(--pu3);text-decoration:none;font-weight:600;padding:12px 28px;background:rgba(124,58,237,.1);border:1px solid var(--border2);border-radius:10px;transition:all .2s;}#authGuard a:hover{background:rgba(124,58,237,.2);}
-.sidebar{width:var(--sidebar-w);background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;flex-shrink:0;position:relative;z-index:10;}
-.sb-top{padding:20px 16px;border-bottom:1px solid var(--border);}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;flex-shrink:0;position:relative;z-index:10;transition:transform .3s;}
+.sb-top{padding:20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .sb-logo{display:flex;align-items:center;gap:9px;text-decoration:none;}
 .sb-logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--pu),var(--pu3));border-radius:9px;display:flex;align-items:center;justify-content:center;color:white;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;box-shadow:0 0 14px rgba(124,58,237,.4);}
 .sb-logo-name{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--tx);}
+.sb-close{display:none;background:none;border:none;color:var(--tx3);font-size:1.2rem;cursor:pointer;padding:4px;}
 .sb-nav{flex:1;padding:16px 8px;overflow-y:auto;}
 .sb-section{margin-bottom:20px;}
 .sb-section-label{font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;padding:0 8px;margin-bottom:8px;}
@@ -25,21 +28,23 @@ body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--tx);heigh
 .sb-item:hover{background:rgba(124,58,237,.08);color:var(--tx2);}
 .sb-item.active{background:rgba(124,58,237,.15);color:var(--pu3);font-weight:600;}
 .sb-bottom{padding:12px 8px;border-top:1px solid var(--border);}
-.sb-user{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;cursor:pointer;transition:background .2s;}
-.sb-user:hover{background:rgba(124,58,237,.08);}
+.sb-user{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;}
 .sb-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--pu),var(--pu3));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:white;flex-shrink:0;}
 .sb-user-info{flex:1;overflow:hidden;}
 .sb-user-name{font-size:13px;font-weight:600;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .sb-logout{width:28px;height:28px;background:rgba(248,113,113,.1);border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--red);cursor:pointer;border:none;transition:background .2s;}
 .sb-logout:hover{background:rgba(248,113,113,.2);}
+
+/* MAIN */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-.topbar{height:56px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0;}
+.topbar{height:56px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;flex-shrink:0;gap:12px;}
+.topbar-hamburger{display:none;background:none;border:none;cursor:pointer;color:var(--tx2);padding:4px;}
 .topbar-breadcrumb{font-size:13px;color:var(--tx3);}.topbar-breadcrumb span{color:var(--tx2);}
 .content{flex:1;overflow-y:auto;padding:32px;}
 h1{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;margin-bottom:6px;}
 .page-desc{color:var(--tx3);font-size:.93rem;margin-bottom:40px;}
 
-/* SETTINGS SECTIONS */
+/* SETTINGS GRID */
 .settings-grid{display:grid;grid-template-columns:240px 1fr;gap:24px;max-width:1100px;}
 .settings-nav{display:flex;flex-direction:column;gap:2px;}
 .sn-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--tx3);font-size:14px;font-weight:500;border:1px solid transparent;}
@@ -57,7 +62,8 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
 .finp::placeholder{color:var(--tx3);}.finp:focus{border-color:var(--pu);background:rgba(124,58,237,.05);box-shadow:0 0 0 3px rgba(124,58,237,.15);}
 .finp:disabled{opacity:.5;cursor:not-allowed;}
 .btn-save{background:linear-gradient(135deg,var(--pu),var(--pu2));border:none;border-radius:10px;padding:12px 24px;color:white;font-weight:700;font-size:14px;font-family:'Manrope',sans-serif;cursor:pointer;transition:all .2s;box-shadow:0 0 16px rgba(124,58,237,.3);}
-.btn-save:hover{transform:translateY(-1px);box-shadow:0 0 24px rgba(124,58,237,.5);}
+.btn-save:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 0 24px rgba(124,58,237,.5);}
+.btn-save:disabled{opacity:.5;cursor:not-allowed;}
 .btn-secondary{background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:12px 24px;color:var(--tx2);font-weight:600;font-size:14px;font-family:'Manrope',sans-serif;cursor:pointer;transition:all .2s;}
 .btn-secondary:hover{border-color:var(--border2);color:var(--tx);}
 .btn-danger{background:rgba(248,113,113,.1);border:1.5px solid rgba(248,113,113,.3);border-radius:10px;padding:12px 24px;color:var(--red);font-weight:700;font-size:14px;font-family:'Manrope',sans-serif;cursor:pointer;transition:all .2s;}
@@ -68,39 +74,99 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
 .toggle-left{flex:1;}
 .toggle-left strong{display:block;font-size:14px;color:var(--tx);margin-bottom:3px;}
 .toggle-left span{font-size:12px;color:var(--tx3);}
-.toggle-switch{width:48px;height:26px;background:var(--border);border-radius:50px;position:relative;cursor:pointer;transition:background .2s;}
+.toggle-switch{width:48px;height:26px;background:var(--border);border-radius:50px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
 .toggle-switch.on{background:var(--pu);}
 .toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;background:white;border-radius:50%;transition:left .2s;box-shadow:0 1px 4px rgba(0,0,0,.3);}
 .toggle-switch.on::after{left:25px;}
 
-/* INFO BOX */
+/* INFO/WARN/DANGER BOX */
 .info-box{background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.25);border-radius:12px;padding:16px 18px;font-size:13px;color:var(--cyan);margin:16px 0;}
 .warn-box{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.25);border-radius:12px;padding:16px 18px;font-size:13px;color:var(--orange);margin:16px 0;}
 .danger-box{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-radius:12px;padding:16px 18px;font-size:13px;color:var(--red);margin:16px 0;}
+.err-msg{font-size:12px;color:var(--red);min-height:16px;display:block;}
 
-/* SUCCESS TOAST */
-.toast{position:fixed;top:20px;right:20px;background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:14px 18px;font-size:13px;color:var(--green);box-shadow:0 0 24px rgba(0,0,0,.4);z-index:999;opacity:0;transform:translateY(-20px);transition:all .3s;}
+/* TOAST */
+.toast{position:fixed;top:20px;right:20px;background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:14px 18px;font-size:13px;color:var(--green);box-shadow:0 0 24px rgba(0,0,0,.4);z-index:999;opacity:0;transform:translateY(-20px);transition:all .3s;pointer-events:none;}
 .toast.show{opacity:1;transform:translateY(0);}
+.toast.error{color:var(--red);border-color:rgba(248,113,113,.3);}
 
-@media(max-width:900px){.settings-grid{grid-template-columns:1fr;}.settings-nav{flex-direction:row;overflow-x:auto;}}
-@media(max-width:768px){.form-row{grid-template-columns:1fr;}.content{padding:20px;}}
+/* OVERLAY */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9;}
+
+/* RESPONSIVE */
+@media(max-width:900px){.settings-grid{grid-template-columns:1fr;}.settings-nav{flex-direction:row;overflow-x:auto;gap:4px;}}
+@media(max-width:768px){
+  .sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);z-index:20;}
+  .sidebar.open{transform:translateX(0);}
+  .sidebar-overlay.open{display:block;}
+  .sb-close{display:block;}
+  .topbar-hamburger{display:block;}
+  .topbar{padding:0 16px;}
+  .content{padding:20px 16px;}
+  .form-row{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
 
-<div id="authGuard"><div style="font-size:2rem;margin-bottom:8px;">🔐</div><p>Du musst eingeloggt sein.</p><a href="login.html">Jetzt einloggen →</a></div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<aside class="sidebar">
-  <div class="sb-top"><a href="dashboard.html" class="sb-logo"><div class="sb-logo-mark">c</div><span class="sb-logo-name">Call Lana</span></a></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sb-top">
+    <a href="dashboard.html" class="sb-logo">
+      <div class="sb-logo-mark">CL</div>
+      <span class="sb-logo-name">Call Lana</span>
+    </a>
+    <button class="sb-close" id="sidebarClose" aria-label="Menü schließen">✕</button>
+  </div>
   <nav class="sb-nav">
-    <div class="sb-section"><a href="dashboard.html" class="sb-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Home</a></div>
-    <div class="sb-section"><div class="sb-section-label">Konto</div><a href="settings.html" class="sb-item active"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m7.5-10.4l-5.2 3m-4.6 2.6l-5.2 3m10.4-10.8l-3 5.2m-2.6 4.6l-3 5.2"/></svg>Einstellungen</a></div>
+    <div class="sb-section">
+      <div class="sb-section-label">Übersicht</div>
+      <a href="dashboard.html" class="sb-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="dashboard.html#transactions" class="sb-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        Anrufe
+      </a>
+    </div>
+    <div class="sb-section">
+      <div class="sb-section-label">Konto</div>
+      <a href="dashboard.html#billing" class="sb-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Guthaben
+      </a>
+      <a href="dashboard.html#plans" class="sb-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Paket
+      </a>
+      <a href="settings.html" class="sb-item active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Einstellungen
+      </a>
+    </div>
   </nav>
-  <div class="sb-bottom"><div class="sb-user"><div class="sb-avatar" id="userAvatar">?</div><div class="sb-user-info"><div class="sb-user-name" id="userName">Lädt…</div></div><button class="sb-logout" id="logoutBtn" title="Abmelden"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button></div></div>
+  <div class="sb-bottom">
+    <div class="sb-user">
+      <div class="sb-avatar" id="userAvatar">?</div>
+      <div class="sb-user-info">
+        <div class="sb-user-name" id="userName">Lädt…</div>
+      </div>
+      <button class="sb-logout" id="logoutBtn" title="Abmelden">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </div>
 </aside>
 
 <div class="main">
-  <div class="topbar"><div class="topbar-breadcrumb">Call Lana / <span>Einstellungen</span></div></div>
+  <div class="topbar">
+    <button class="topbar-hamburger" id="hamburgerBtn" aria-label="Menü">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="topbar-breadcrumb">Call Lana / <span>Einstellungen</span></div>
+  </div>
   <div class="content">
     <h1>Einstellungen</h1>
     <p class="page-desc">Verwalte dein Konto, deine Sicherheit und Benachrichtigungen.</p>
@@ -111,7 +177,6 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
         <a href="#profile" class="sn-item active" data-tab="profile"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profil</a>
         <a href="#security" class="sn-item" data-tab="security"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Sicherheit</a>
         <a href="#notifications" class="sn-item" data-tab="notifications"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Benachrichtigungen</a>
-        <a href="#billing" class="sn-item" data-tab="billing"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Abrechnung</a>
         <a href="#danger" class="sn-item" data-tab="danger"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Gefahrenzone</a>
       </div>
 
@@ -121,14 +186,16 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
         <div class="tab-content" id="tab-profile">
           <div class="sc-section">
             <h2>Profil-Informationen</h2>
-            <p>Aktualisiere deine persönlichen Informationen und E-Mail-Adresse.</p>
+            <p>Aktualisiere deine persönlichen Informationen.</p>
             <div class="form-row">
-              <div class="fgrp"><label>Vorname</label><input type="text" class="finp" id="firstName" placeholder="Max"></div>
-              <div class="fgrp"><label>Nachname</label><input type="text" class="finp" id="lastName" placeholder="Mustermann"></div>
+              <div class="fgrp"><label for="firstName">Vorname</label><input type="text" class="finp" id="firstName" placeholder="Max"></div>
+              <div class="fgrp"><label for="lastName">Nachname</label><input type="text" class="finp" id="lastName" placeholder="Mustermann"></div>
             </div>
-            <div class="fgrp"><label>E-Mail-Adresse</label><input type="email" class="finp" id="email" placeholder="max@unternehmen.de"></div>
-            <div class="fgrp"><label>Unternehmen</label><input type="text" class="finp" id="company" placeholder="Musterfirma GmbH"></div>
-            <button class="btn-save" onclick="saveProfile()">Änderungen speichern</button>
+            <div class="fgrp"><label for="email">E-Mail-Adresse</label><input type="email" class="finp" id="email" disabled></div>
+            <div class="fgrp"><label for="company">Unternehmen</label><input type="text" class="finp" id="company" placeholder="Musterfirma GmbH"></div>
+            <div class="fgrp"><label for="industry">Branche</label><input type="text" class="finp" id="industry" placeholder="z.B. Arztpraxis"></div>
+            <button class="btn-save" id="saveProfileBtn" onclick="saveProfile()">Änderungen speichern</button>
+            <span class="err-msg" id="profile-err"></span>
           </div>
         </div>
 
@@ -137,16 +204,15 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
           <div class="sc-section">
             <h2>Passwort ändern</h2>
             <p>Wähle ein starkes Passwort mit mindestens 8 Zeichen.</p>
-            <div class="fgrp"><label>Aktuelles Passwort</label><input type="password" class="finp" placeholder="••••••••"></div>
-            <div class="fgrp"><label>Neues Passwort</label><input type="password" class="finp" placeholder="••••••••"></div>
-            <div class="fgrp"><label>Passwort bestätigen</label><input type="password" class="finp" placeholder="••••••••"></div>
-            <button class="btn-save" onclick="alert('Passwort geändert! (Demo)')">Passwort aktualisieren</button>
+            <div class="fgrp"><label for="newPw">Neues Passwort</label><input type="password" class="finp" id="newPw" placeholder="Mindestens 8 Zeichen"></div>
+            <div class="fgrp"><label for="newPw2">Passwort bestätigen</label><input type="password" class="finp" id="newPw2" placeholder="Passwort wiederholen"></div>
+            <span class="err-msg" id="pw-err"></span>
+            <button class="btn-save" id="savePwBtn" onclick="changePassword()">Passwort aktualisieren</button>
           </div>
           <div class="sc-section">
-            <h2>Zwei-Faktor-Authentifizierung</h2>
-            <p>Erhöhe die Sicherheit deines Kontos durch 2FA.</p>
-            <div class="toggle-row"><div class="toggle-left"><strong>2FA aktivieren</strong><span>Zusätzlicher Schutz durch Authenticator-App</span></div><div class="toggle-switch" onclick="this.classList.toggle('on')"></div></div>
-            <div class="info-box">💡 Wir empfehlen die Nutzung von Google Authenticator oder Authy.</div>
+            <h2>Sitzungen</h2>
+            <p>Du bist aktuell auf diesem Gerät angemeldet.</p>
+            <div class="info-box">🔐 Letzte Anmeldung: <span id="lastLogin">–</span></div>
           </div>
         </div>
 
@@ -155,30 +221,11 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
           <div class="sc-section">
             <h2>E-Mail-Benachrichtigungen</h2>
             <p>Wähle, wann du E-Mails von uns erhalten möchtest.</p>
-            <div class="toggle-row"><div class="toggle-left"><strong>Anrufzusammenfassungen</strong><span>Täglich um 18:00 Uhr — Zusammenfassung aller Anrufe</span></div><div class="toggle-switch on" onclick="this.classList.toggle('on')"></div></div>
-            <div class="toggle-row"><div class="toggle-left"><strong>Wichtige Weiterleitung</strong><span>Sofort — Wenn ein Anruf an dich weitergeleitet wurde</span></div><div class="toggle-switch on" onclick="this.classList.toggle('on')"></div></div>
-            <div class="toggle-row"><div class="toggle-left"><strong>Produktupdates</strong><span>Monatlich — Neue Features und Verbesserungen</span></div><div class="toggle-switch" onclick="this.classList.toggle('on')"></div></div>
-            <div class="toggle-row"><div class="toggle-left"><strong>Marketing</strong><span>Gelegentlich — Tipps und Best Practices</span></div><div class="toggle-switch" onclick="this.classList.toggle('on')"></div></div>
-          </div>
-        </div>
-
-        <!-- BILLING TAB -->
-        <div class="tab-content" id="tab-billing" style="display:none;">
-          <div class="sc-section">
-            <h2>Aktuelles Paket</h2>
-            <p>Du nutzt derzeit den <strong id="currentPlan">Professional</strong>-Plan.</p>
-            <div class="info-box">📊 Dein aktueller Verbrauch: 8 Anrufe im Februar 2026 • Kosten: 1,45 €</div>
-            <button class="btn-secondary" onclick="window.location.href='preise.html'">Paket upgraden</button>
-          </div>
-          <div class="sc-section">
-            <h2>Zahlungsmethode</h2>
-            <p>Verwalte deine Zahlungsmethoden.</p>
-            <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(124,58,237,.05);border:1px solid var(--border);border-radius:10px;margin-bottom:16px;">
-              <svg width="32" height="24" viewBox="0 0 32 24" fill="none"><rect width="32" height="24" rx="4" fill="var(--pu)"/><rect x="2" y="8" width="28" height="4" fill="white" opacity=".3"/><rect x="2" y="16" width="12" height="2" rx="1" fill="white" opacity=".6"/></svg>
-              <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--tx);">•••• •••• •••• 4242</div><div style="font-size:11px;color:var(--tx3);">Visa • Gültig bis 12/2028</div></div>
-              <button class="btn-secondary" style="padding:8px 16px;font-size:12px;" onclick="alert('Zahlungsmethode ändern (Demo)')">Bearbeiten</button>
-            </div>
-            <button class="btn-secondary" onclick="alert('Neue Zahlungsmethode hinzufügen (Demo)')">+ Zahlungsmethode hinzufügen</button>
+            <div class="toggle-row"><div class="toggle-left"><strong>Anrufzusammenfassungen</strong><span>Täglich um 18:00 Uhr — Zusammenfassung aller Anrufe</span></div><div class="toggle-switch on" data-key="notify_summary" onclick="toggleNotif(this)"></div></div>
+            <div class="toggle-row"><div class="toggle-left"><strong>Wichtige Weiterleitung</strong><span>Sofort — Wenn ein Anruf an dich weitergeleitet wurde</span></div><div class="toggle-switch on" data-key="notify_forward" onclick="toggleNotif(this)"></div></div>
+            <div class="toggle-row"><div class="toggle-left"><strong>Produktupdates</strong><span>Monatlich — Neue Features und Verbesserungen</span></div><div class="toggle-switch" data-key="notify_updates" onclick="toggleNotif(this)"></div></div>
+            <div class="toggle-row"><div class="toggle-left"><strong>Marketing</strong><span>Gelegentlich — Tipps und Best Practices</span></div><div class="toggle-switch" data-key="notify_marketing" onclick="toggleNotif(this)"></div></div>
+            <button class="btn-save" style="margin-top:16px;" onclick="saveNotifications()">Einstellungen speichern</button>
           </div>
         </div>
 
@@ -188,7 +235,7 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
             <h2>Konto löschen</h2>
             <p>Lösche dein Konto und alle damit verbundenen Daten permanent.</p>
             <div class="danger-box">⚠️ <strong>Achtung:</strong> Diese Aktion kann nicht rückgängig gemacht werden. Alle deine Gesprächsdaten, Einstellungen und Transkripte werden unwiderruflich gelöscht.</div>
-            <button class="btn-danger" onclick="if(confirm('Bist du sicher? Diese Aktion kann nicht rückgängig gemacht werden.'))alert('Konto gelöscht (Demo)')">Konto permanent löschen</button>
+            <button class="btn-danger" onclick="deleteAccount()">Konto permanent löschen</button>
           </div>
         </div>
       </div>
@@ -196,39 +243,229 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
   </div>
 </div>
 
-<div class="toast" id="toast">✅ Änderungen gespeichert!</div>
+<div class="toast" id="toast"></div>
 
+<script src="supabase-config.js"></script>
 <script>
-// AUTH CHECK
-(function(){const a=localStorage.getItem('clana_auth');if(!a){document.getElementById('authGuard').classList.add('show');return;}
-const u=JSON.parse(localStorage.getItem('clana_user')||'{}');const n=u.name||'Nutzer';const fn=n.split(' ')[0];
-document.getElementById('userName').textContent=n;document.getElementById('userAvatar').textContent=fn.charAt(0).toUpperCase();
-document.getElementById('firstName').value=fn;document.getElementById('lastName').value=n.split(' ')[1]||'';
-document.getElementById('email').value=u.email||'';document.getElementById('company').value=u.company||'';
-const pk=u.paket||'professional';const pm={'starter':'Starter','professional':'Professional','enterprise':'Enterprise'};
-document.getElementById('currentPlan').textContent=pm[pk]||'Professional';})();
+// ==========================================
+// GLOBALS
+// ==========================================
+let currentUser = null;
+let userSettings = {};
 
-// LOGOUT
-document.getElementById('logoutBtn').addEventListener('click',()=>{if(confirm('Wirklich abmelden?')){localStorage.removeItem('clana_auth');localStorage.removeItem('clana_user');window.location.href='login.html';}});
+// ==========================================
+// AUTH CHECK (Supabase)
+// ==========================================
+(async () => {
+  const session = await clanaAuth.getSession();
+  if (!session) {
+    window.location.href = 'login.html';
+    return;
+  }
 
+  currentUser = session.user;
+  const meta = currentUser.user_metadata || {};
+  const name = meta.fullName || ((meta.firstName || '') + ' ' + (meta.lastName || '')).trim() || currentUser.email.split('@')[0];
+
+  // Sidebar user info
+  document.getElementById('userName').textContent = name;
+  document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
+
+  // Profile form
+  document.getElementById('firstName').value = meta.firstName || '';
+  document.getElementById('lastName').value = meta.lastName || '';
+  document.getElementById('email').value = currentUser.email;
+  document.getElementById('company').value = meta.company || '';
+  document.getElementById('industry').value = meta.industry || '';
+
+  // Last login
+  const lastSign = currentUser.last_sign_in_at;
+  if (lastSign) {
+    document.getElementById('lastLogin').textContent = new Intl.DateTimeFormat('de-DE', {
+      day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    }).format(new Date(lastSign));
+  }
+
+  // Load notification settings from Supabase
+  const settingsResult = await clanaDB.getSettings();
+  if (settingsResult.success) {
+    userSettings = settingsResult.data;
+    applyNotificationToggles(userSettings);
+  }
+})();
+
+// ==========================================
+// SAVE PROFILE (Supabase)
+// ==========================================
+async function saveProfile() {
+  const btn = document.getElementById('saveProfileBtn');
+  const errEl = document.getElementById('profile-err');
+  errEl.textContent = '';
+
+  const fn = document.getElementById('firstName').value.trim();
+  const ln = document.getElementById('lastName').value.trim();
+  const co = document.getElementById('company').value.trim();
+  const ind = document.getElementById('industry').value.trim();
+
+  if (!fn || !ln) {
+    errEl.textContent = 'Vor- und Nachname sind erforderlich.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Speichert…';
+
+  const result = await clanaAuth.updateProfile({
+    firstName: fn,
+    lastName: ln,
+    fullName: fn + ' ' + ln,
+    company: co,
+    industry: ind
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'Änderungen speichern';
+
+  if (result.success) {
+    document.getElementById('userName').textContent = fn + ' ' + ln;
+    document.getElementById('userAvatar').textContent = fn.charAt(0).toUpperCase();
+    showToast('Profil erfolgreich aktualisiert!');
+  } else {
+    errEl.textContent = 'Fehler: ' + result.error;
+  }
+}
+
+// ==========================================
+// CHANGE PASSWORD (Supabase)
+// ==========================================
+async function changePassword() {
+  const btn = document.getElementById('savePwBtn');
+  const errEl = document.getElementById('pw-err');
+  errEl.textContent = '';
+
+  const pw1 = document.getElementById('newPw').value;
+  const pw2 = document.getElementById('newPw2').value;
+
+  if (!pw1 || pw1.length < 8) {
+    errEl.textContent = 'Passwort muss mindestens 8 Zeichen haben.';
+    return;
+  }
+  if (pw1 !== pw2) {
+    errEl.textContent = 'Passwörter stimmen nicht überein.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Speichert…';
+
+  try {
+    const { data, error } = await supabaseClient.auth.updateUser({ password: pw1 });
+    if (error) throw error;
+    document.getElementById('newPw').value = '';
+    document.getElementById('newPw2').value = '';
+    showToast('Passwort erfolgreich geändert!');
+  } catch (e) {
+    errEl.textContent = 'Fehler: ' + e.message;
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Passwort aktualisieren';
+}
+
+// ==========================================
+// NOTIFICATIONS (Supabase)
+// ==========================================
+function toggleNotif(el) {
+  el.classList.toggle('on');
+}
+
+function applyNotificationToggles(settings) {
+  document.querySelectorAll('.toggle-switch[data-key]').forEach(toggle => {
+    const key = toggle.dataset.key;
+    if (settings[key] !== undefined) {
+      toggle.classList.toggle('on', !!settings[key]);
+    }
+  });
+}
+
+async function saveNotifications() {
+  const notifications = {};
+  document.querySelectorAll('.toggle-switch[data-key]').forEach(toggle => {
+    notifications[toggle.dataset.key] = toggle.classList.contains('on');
+  });
+
+  userSettings = { ...userSettings, ...notifications };
+  const result = await clanaDB.saveSettings(userSettings);
+
+  if (result.success) {
+    showToast('Benachrichtigungen gespeichert!');
+  } else {
+    showToast('Fehler beim Speichern: ' + result.error, true);
+  }
+}
+
+// ==========================================
+// DELETE ACCOUNT
+// ==========================================
+async function deleteAccount() {
+  const confirmed = prompt('Gib "LÖSCHEN" ein, um dein Konto unwiderruflich zu löschen:');
+  if (confirmed !== 'LÖSCHEN') return;
+
+  showToast('Kontolöschung wird bald verfügbar sein. Kontaktiere den Support.', true);
+}
+
+// ==========================================
+// TOAST
+// ==========================================
+function showToast(msg, isError) {
+  const t = document.getElementById('toast');
+  t.textContent = (isError ? '⚠️ ' : '✅ ') + msg;
+  t.className = 'toast show' + (isError ? ' error' : '');
+  setTimeout(() => t.className = 'toast', 3000);
+}
+
+// ==========================================
 // TAB NAVIGATION
-document.querySelectorAll('.sn-item').forEach(item=>{item.addEventListener('click',e=>{e.preventDefault();
-document.querySelectorAll('.sn-item').forEach(i=>i.classList.remove('active'));item.classList.add('active');
-const tab=item.dataset.tab;document.querySelectorAll('.tab-content').forEach(t=>t.style.display='none');
-document.getElementById('tab-'+tab).style.display='block';});});
+// ==========================================
+document.querySelectorAll('.sn-item').forEach(item => {
+  item.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.sn-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    const tab = item.dataset.tab;
+    document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+    document.getElementById('tab-' + tab).style.display = 'block';
+  });
+});
 
-// SAVE PROFILE
-function saveProfile(){
-const fn=document.getElementById('firstName').value.trim();
-const ln=document.getElementById('lastName').value.trim();
-const em=document.getElementById('email').value.trim();
-const co=document.getElementById('company').value.trim();
-if(!fn||!ln||!em){alert('Bitte fülle alle Pflichtfelder aus.');return;}
-const u=JSON.parse(localStorage.getItem('clana_user')||'{}');
-u.name=fn+' '+ln;u.email=em;u.company=co;
-localStorage.setItem('clana_user',JSON.stringify(u));
-const t=document.getElementById('toast');t.classList.add('show');
-setTimeout(()=>t.classList.remove('show'),3000);}
+// ==========================================
+// LOGOUT (Supabase)
+// ==========================================
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  if (!confirm('Möchtest du dich wirklich abmelden?')) return;
+  const result = await clanaAuth.signOut();
+  if (result.success) {
+    window.location.href = 'index.html';
+  } else {
+    showToast('Logout fehlgeschlagen: ' + result.error, true);
+  }
+});
+
+// ==========================================
+// MOBILE SIDEBAR
+// ==========================================
+document.getElementById('hamburgerBtn').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('open');
+});
+document.getElementById('sidebarClose').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+});
+document.getElementById('sidebarOverlay').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+});
 </script>
 <script src="cookie-consent.js"></script>
 </body>
