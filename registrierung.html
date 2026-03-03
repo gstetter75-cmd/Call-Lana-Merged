@@ -60,18 +60,18 @@ select.finp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
     <div class="brand-content">
       <a href="index.html" class="logo"><div class="logo-mark">CL</div><span class="logo-name">Call <span>Lana</span></span></a>
       <h2>Dein KI-Assistent wartet schon auf dich</h2>
-      <p>In 30 Minuten ist cLana live und übernimmt deine Anrufe. Kein technisches Vorwissen nötig.</p>
+      <p>In 30 Minuten ist Call Lana live und übernimmt deine Anrufe. Kein technisches Vorwissen nötig.</p>
       <div><div class="bf"><span class="bf-dot"></span>30 Minuten bis zur ersten KI-Antwort</div>
       <div class="bf"><span class="bf-dot"></span>Server in Deutschland — 100% DSGVO-konform</div>
-      <div class="bf"><span class="bf-dot"></span>5.000+ Unternehmen vertrauen cLana täglich</div>
+      <div class="bf"><span class="bf-dot"></span>5.000+ Unternehmen vertrauen Call Lana täglich</div>
       <div class="bf"><span class="bf-dot"></span>Jederzeit kündbar — kein Risiko</div></div>
     </div>
-    <div class="brand-footer"><p>© 2026 cLana · <a href="datenschutz.html">Datenschutz</a> · <a href="agb.html">AGB</a></p></div>
+    <div class="brand-footer"><p>© 2026 Call Lana · <a href="datenschutz.html">Datenschutz</a> · <a href="agb.html">AGB</a></p></div>
   </div>
 
   <div class="form-side">
     <h1>Account erstellen</h1>
-    <p>Bereits registriert? <a href="login-supabase.html">Jetzt einloggen →</a></p>
+    <p>Bereits registriert? <a href="login.html">Jetzt einloggen →</a></p>
     
     <div class="alert-box" id="alertBox"></div>
     <div class="success-box" id="successBox">✅ Account erstellt! Weiterleitung zum Dashboard...</div>
@@ -85,7 +85,7 @@ select.finp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
       <div class="fgrp"><label for="em">E-Mail *</label><input type="email" id="em" class="finp" placeholder="max@unternehmen.de" autocomplete="email" required><span class="err-msg" id="em-err"></span></div>
       <div class="fgrp"><label for="co">Unternehmen</label><input type="text" id="co" class="finp" placeholder="Musterfirma GmbH" autocomplete="organization"></div>
       <div class="fgrp"><label for="ind">Branche</label><select id="ind" class="finp"><option value="">Branche wählen …</option><option>Arztpraxis / Klinik</option><option>Hotel / Gastronomie</option><option>Immobilien / Makler</option><option>Handwerk / Service</option><option>Handel / E-Commerce</option><option>Kanzlei / Beratung</option><option>Sonstiges</option></select></div>
-      <div class="fgrp"><label for="pw">Passwort *</label><div class="pw-wrap"><input type="password" id="pw" class="finp" placeholder="Mindestens 8 Zeichen" autocomplete="new-password" required><button type="button" class="pw-toggle" id="pwToggle">👁</button></div><div class="pw-strength"><div class="pw-bar" id="pb1"></div><div class="pw-bar" id="pb2"></div><div class="pw-bar" id="pb3"></div><div class="pw-bar" id="pb4"></div></div><span class="pw-label" id="pwLabel">Passwortstärke</span><span class="err-msg" id="pw-err"></span></div>
+      <div class="fgrp"><label for="pw">Passwort *</label><div class="pw-wrap"><input type="password" id="pw" class="finp" placeholder="Mindestens 8 Zeichen" autocomplete="new-password" required><button type="button" class="pw-toggle" id="pwToggle" aria-label="Passwort anzeigen">👁</button></div><div class="pw-strength"><div class="pw-bar" id="pb1"></div><div class="pw-bar" id="pb2"></div><div class="pw-bar" id="pb3"></div><div class="pw-bar" id="pb4"></div></div><span class="pw-label" id="pwLabel">Passwortstärke</span><span class="err-msg" id="pw-err"></span></div>
       <div class="fgrp"><label for="pw2">Passwort bestätigen *</label><input type="password" id="pw2" class="finp" placeholder="Passwort wiederholen" autocomplete="new-password" required><span class="err-msg" id="pw2-err"></span></div>
       <div class="check-row"><input type="checkbox" id="priv" required><label for="priv">Ich habe die <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a> gelesen und akzeptiere die <a href="agb.html" target="_blank">AGB</a>.</label></div>
       <span class="err-msg" id="priv-err"></span>
@@ -141,7 +141,7 @@ document.getElementById('regForm').addEventListener('submit',async(e)=>{
   if(result.success){
     document.getElementById('loader').style.display='none';
     document.getElementById('successBox').style.display='block';
-    setTimeout(()=>window.location.href='dashboard-supabase.html',2000);
+    setTimeout(()=>window.location.href='dashboard.html',2000);
   }else{
     document.getElementById('regForm').style.display='block';
     document.getElementById('loader').style.display='none';
@@ -152,5 +152,6 @@ document.getElementById('regForm').addEventListener('submit',async(e)=>{
 function showError(id,msg){document.getElementById(id).classList.add('err');document.getElementById(id+'-err').textContent=msg;}
 function showAlert(msg){const box=document.getElementById('alertBox');box.textContent=msg;box.style.display='block';}
 </script>
+<script src="cookie-consent.js"></script>
 </body>
 </html>
