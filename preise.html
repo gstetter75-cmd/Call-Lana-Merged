@@ -2,14 +2,16 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Preise – cLana KI-Telefonassistent</title>
+<title>Preise – Call Lana KI-Telefonassistent</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#06060f;--bg-card:#0e0e1c;--pu:#7b2fff;--pu-d:#3d0070;--pu-l:#c084fc;--cyan:#22d3ee;--green:#a3e635;--tw:#f0f0f8;--tm:#8888aa;--bdr:rgba(123,47,255,.18);--r:20px;}
 *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
 body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--tw);overflow-x:hidden;line-height:1.6;}
 nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 6%;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,6,15,.82);backdrop-filter:blur(22px);border-bottom:1px solid rgba(123,47,255,.13);}
-.logo{display:flex;align-items:center;gap:6px;text-decoration:none;}.logo-text{font-family:'Syne',sans-serif;font-size:1.65rem;font-weight:800;letter-spacing:-.02em;}.lc{color:var(--pu)}.ll{background:linear-gradient(135deg,var(--pu-l),var(--pu));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}.logo-dot{width:8px;height:8px;background:var(--pu);border-radius:50%;box-shadow:0 0 10px var(--pu);animation:ldot 2.5s infinite;flex-shrink:0;}@keyframes ldot{0%,100%{opacity:1;}50%{opacity:.4;}}
+.logo{display:flex;align-items:center;gap:6px;text-decoration:none;}
+.logo-mark{width:38px;height:38px;background:linear-gradient(135deg,var(--pu),var(--pu-l));border-radius:11px;display:flex;align-items:center;justify-content:center;color:white;font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;box-shadow:0 0 20px rgba(123,47,255,.5);}
+.logo-name{font-family:'Syne',sans-serif;font-size:1.65rem;font-weight:800;letter-spacing:-.02em;color:var(--tw);}.logo-name span{color:var(--pu-l);}
 .nav-links{display:flex;gap:32px;list-style:none;}.nav-links a{color:var(--tm);text-decoration:none;font-size:14.5px;font-weight:500;transition:color .25s;}.nav-links a:hover{color:var(--tw);}.nav-links a.active{color:var(--tw);font-weight:700;}
 .nav-cta{background:linear-gradient(135deg,var(--pu),var(--pu-d));color:#fff !important;padding:10px 24px;border-radius:50px;font-weight:700;font-size:14px;text-decoration:none;box-shadow:0 0 18px rgba(123,47,255,.3);transition:all .25s;}.nav-cta:hover{box-shadow:0 0 32px rgba(123,47,255,.55);transform:translateY(-1px);}
 .mob-btn{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px;}.mob-btn span{display:block;width:24px;height:2px;background:var(--tw);border-radius:2px;}
@@ -96,8 +98,7 @@ h2.sec-t{font-family:'Syne',sans-serif;font-size:clamp(1.9rem,3.8vw,2.9rem);font
 /* FOOTER */
 footer{background:var(--bg-card);border-top:1px solid rgba(255,255,255,.06);padding:66px 6% 36px;}
 .fg{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:38px;margin-bottom:52px;}
-.fb-logo{font-family:'Syne',sans-serif;font-size:1.42rem;font-weight:800;text-decoration:none;display:inline-block;margin-bottom:14px;}
-.fb p{color:var(--tm);font-size:.88rem;line-height:1.75;margin-bottom:20px;}
+.fb p{color:var(--tm);font-size:.88rem;line-height:1.75;margin-top:14px;margin-bottom:20px;}
 .socials{display:flex;gap:10px;}.sb{width:40px;height:40px;background:rgba(255,255,255,.07);border-radius:10px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--tm);transition:all .25s;border:1px solid rgba(255,255,255,.08);}.sb:hover{background:var(--pu);color:#fff;border-color:var(--pu);transform:translateY(-2px);}
 .foot-col h4{font-size:12px;font-weight:700;color:var(--tw);margin-bottom:16px;letter-spacing:.07em;text-transform:uppercase;}.foot-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}.foot-col a{color:var(--tm);text-decoration:none;font-size:13.5px;transition:color .25s;}.foot-col a:hover{color:var(--tw);}
 .fbot{border-top:1px solid rgba(255,255,255,.06);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}.fbot p{color:var(--tm);font-size:12.5px;}
@@ -107,7 +108,10 @@ footer{background:var(--bg-card);border-top:1px solid rgba(255,255,255,.06);padd
 </head>
 <body>
 <nav id="nav">
-  <a href="index.html" class="logo"><span class="logo-text"><span class="lc">c</span><span class="ll">Lana</span></span><span class="logo-dot"></span></a>
+  <a href="index.html" class="logo">
+    <div class="logo-mark">CL</div>
+    <span class="logo-name">Call <span>Lana</span></span>
+  </a>
   <ul class="nav-links">
     <li><a href="index.html">Start</a></li><li><a href="funktionen.html">Funktionen</a></li>
     <li><a href="branchen.html">Branchen</a></li><li><a href="preise.html" class="active">Preise</a></li><li><a href="kontakt.html">Kontakt</a></li>
@@ -120,7 +124,7 @@ footer{background:var(--bg-card);border-top:1px solid rgba(255,255,255,.06);padd
   <div class="page-hero-content">
     <div class="sec-lbl">Preise</div>
     <h1>Transparent. Fair. <span class="g1">Skalierbar.</span></h1>
-    <p>Starte kostenlos und wachse mit cLana. Kein Kleingedrucktes, keine versteckten Gebühren.</p>
+    <p>Starte ab 99&#8202;€/Monat und wachse mit Call Lana. Kein Kleingedrucktes, keine versteckten Gebühren.</p>
   </div>
 </div>
 
@@ -134,54 +138,53 @@ footer{background:var(--bg-card);border-top:1px solid rgba(255,255,255,.06);padd
   </div>
   <div class="pricing-grid">
     <div class="pc fi">
-      <div class="pc-tier">Starter</div>
-      <div class="pc-price" id="p0">0 <span>€</span></div>
-      <div class="pc-per">Kostenlos – für immer</div>
+      <div class="pc-tier">Solo</div>
+      <div class="pc-price" id="p0"><sup>€</sup>99 <span id="p0-per">/ Monat</span></div>
+      <div class="pc-per" id="p0-note">monatlich kündbar</div>
       <div class="pc-sep"></div>
       <ul class="pc-list">
-        <li>Bis zu 50 Anrufe / Monat</li>
+        <li>1.000 Inklusivminuten</li>
+        <li>1 Benutzer</li>
         <li>1 KI-Stimme wählbar</li>
         <li>Eigene Telefonnummer</li>
         <li>Basis-Reporting</li>
         <li>E-Mail-Support</li>
         <li class="dim">CRM-Integration</li>
         <li class="dim">Kalenderanbindung</li>
-        <li class="dim">API-Zugang</li>
       </ul>
-      <a href="registrierung.html" class="pb pb-out">Zum Dashboard</a>
+      <a href="registrierung.html" class="pb pb-out">Jetzt starten</a>
     </div>
     <div class="pc featured fi">
       <div class="pc-badge">Beliebteste Wahl</div>
-      <div class="pc-tier">Professional</div>
-      <div class="pc-price" id="p1"><sup>€</sup>149 <span id="p1-per">/ Monat</span></div>
+      <div class="pc-tier">Team</div>
+      <div class="pc-price" id="p1"><sup>€</sup>299 <span id="p1-per">/ Monat</span></div>
       <div class="pc-per" id="p1-note">monatlich kündbar</div>
       <div class="pc-sep"></div>
       <ul class="pc-list">
-        <li>Unbegrenzte Anrufe</li>
+        <li>3.000 Inklusivminuten</li>
+        <li>Unbegrenzte Benutzer</li>
+        <li>5 gleichzeitige Gespräche</li>
         <li>Alle Stimmen verfügbar</li>
-        <li>Eigene Telefonnummer</li>
+        <li>Outbound-Anrufe</li>
         <li>Echtzeit-Reporting & Analytics</li>
         <li>CRM & Kalender-Integration</li>
-        <li>Transkription per E-Mail</li>
         <li>Priorisierter Support</li>
-        <li class="dim">API-Zugang (Add-on)</li>
       </ul>
       <a href="registrierung.html" class="pb pb-prim">Jetzt starten</a>
     </div>
     <div class="pc fi">
-      <div class="pc-tier">Enterprise</div>
+      <div class="pc-tier">Business</div>
       <div class="pc-price" style="font-size:1.9rem;padding-top:.6rem;letter-spacing:-.02em;">Individuell</div>
       <div class="pc-per">Preis auf Anfrage</div>
       <div class="pc-sep"></div>
       <ul class="pc-list">
-        <li>Alles aus Professional</li>
-        <li>API-Vollzugang</li>
+        <li>Alles aus Team</li>
+        <li>Eigene KI-Stimme (Custom Voice)</li>
+        <li>SLA-Garantie (99,9 %)</li>
+        <li>Vollständiger API-Zugang</li>
         <li>Dedizierter Account Manager</li>
         <li>White-Label Option</li>
-        <li>SLA-Garantie (99,9 %)</li>
         <li>Custom Integrationen</li>
-        <li>On-Premise möglich</li>
-        <li>Multi-Assistent Management</li>
       </ul>
       <a href="kontakt.html" class="pb pb-out">Demo buchen</a>
     </div>
@@ -194,15 +197,18 @@ footer{background:var(--bg-card);border-top:1px solid rgba(255,255,255,.06);padd
   <h2 class="sec-t fi">Alle Features <span class="g1">auf einen Blick</span></h2>
   <p class="sec-sub fi"></p>
   <div class="comp-table fi">
-    <div class="ct-head"><span>Feature</span><span>Starter</span><span>Professional</span><span>Enterprise</span></div>
-    <div class="ct-row"><span>Anrufe / Monat</span><span>50</span><span>Unbegrenzt</span><span>Unbegrenzt</span></div>
+    <div class="ct-head"><span>Feature</span><span>Solo</span><span>Team</span><span>Business</span></div>
+    <div class="ct-row"><span>Inklusivminuten</span><span>1.000</span><span>3.000</span><span>Unbegrenzt</span></div>
+    <div class="ct-row"><span>Benutzer</span><span>1</span><span>Unbegrenzt</span><span>Unbegrenzt</span></div>
+    <div class="ct-row"><span>Gleichzeitige Gespräche</span><span>1</span><span>5</span><span>Unbegrenzt</span></div>
     <div class="ct-row"><span>KI-Stimmen</span><span>1</span><span>Alle</span><span>Alle + Custom</span></div>
+    <div class="ct-row"><span>Outbound-Anrufe</span><span class="ct-no">–</span><span class="ct-yes">✓</span><span class="ct-yes">✓</span></div>
     <div class="ct-row"><span>Eigene Rufnummer</span><span class="ct-yes">✓</span><span class="ct-yes">✓</span><span class="ct-yes">✓</span></div>
     <div class="ct-row"><span>Basis-Reporting</span><span class="ct-yes">✓</span><span class="ct-yes">✓</span><span class="ct-yes">✓</span></div>
     <div class="ct-row"><span>Echtzeit-Dashboard</span><span class="ct-no">–</span><span class="ct-yes">✓</span><span class="ct-yes">✓</span></div>
     <div class="ct-row"><span>CRM-Integration</span><span class="ct-no">–</span><span class="ct-yes">✓</span><span class="ct-yes">✓</span></div>
     <div class="ct-row"><span>Kalenderanbindung</span><span class="ct-no">–</span><span class="ct-yes">✓</span><span class="ct-yes">✓</span></div>
-    <div class="ct-row"><span>API-Zugang</span><span class="ct-no">–</span><span>Add-on</span><span class="ct-yes">✓</span></div>
+    <div class="ct-row"><span>API-Zugang</span><span class="ct-no">–</span><span class="ct-no">–</span><span class="ct-yes">✓</span></div>
     <div class="ct-row"><span>White-Label</span><span class="ct-no">–</span><span class="ct-no">–</span><span class="ct-yes">✓</span></div>
     <div class="ct-row"><span>SLA-Garantie</span><span class="ct-no">–</span><span class="ct-no">–</span><span class="ct-yes">99,9 %</span></div>
     <div class="ct-row"><span>Support</span><span>E-Mail</span><span>Priorisiert</span><span>Dediziert</span></div>
@@ -217,23 +223,30 @@ footer{background:var(--bg-card);border-top:1px solid rgba(255,255,255,.06);padd
   <div class="faq-wrap">
     <div class="faq-item fi"><div class="faq-q"><span>Wie schnell kann ich loslegen?</span><span class="faq-arrow">▼</span></div><div class="faq-a"><div class="faq-a-inner">Die KI kann innerhalb weniger Minuten eingestellt werden und ist danach sofort einsatzbereit. Abhängig vom Integrationsaufwand in bestehende Systeme kann es etwas länger dauern – aber in der Regel bist du in unter 30 Minuten live.</div></div></div>
     <div class="faq-item fi"><div class="faq-q"><span>Werden meine Daten in der EU gespeichert?</span><span class="faq-arrow">▼</span></div><div class="faq-a"><div class="faq-a-inner">Ja, unsere Server stehen bei Hetzner in Nürnberg, Deutschland. Wir nutzen OpenAI ausschließlich über Microsoft Azure-Server in Europa – vollständig DSGVO- und EU AI Act-konform.</div></div></div>
-    <div class="faq-item fi"><div class="faq-q"><span>Kann die KI auch ausgehende Anrufe machen?</span><span class="faq-arrow">▼</span></div><div class="faq-a"><div class="faq-a-inner">Ja. Über die API kann ein Anruf initiiert werden, sobald eine Telefonnummer übermittelt wird. Zusätzlich können Variablen wie Name oder Kontext übergeben werden, um das Gespräch persönlicher zu gestalten.</div></div></div>
-    <div class="faq-item fi"><div class="faq-q"><span>Was passiert, wenn die KI mal einen Fehler macht?</span><span class="faq-arrow">▼</span></div><div class="faq-a"><div class="faq-a-inner">Die KI trifft Entscheidungen auf Basis der von dir hinterlegten Daten. Du kannst jederzeit Regeln und Skripte anpassen. Bei unklaren Fällen kann die KI so konfiguriert werden, dass sie den Anruf an einen echten Mitarbeiter weiterleitet.</div></div></div>
-    <div class="faq-item fi"><div class="faq-q"><span>Kann ich meine bestehende Telefonnummer behalten?</span><span class="faq-arrow">▼</span></div><div class="faq-a"><div class="faq-a-inner">Ja. Du kannst entweder eine neue Rufnummer für die KI anlegen oder deine bestehende Nummer über eine Rufumleitung mit cLana verbinden – das ist in wenigen Minuten erledigt.</div></div></div>
-    <div class="faq-item fi"><div class="faq-q"><span>Seid ihr wirklich der beste KI-Telefonassistent auf Deutsch?</span><span class="faq-arrow">▼</span></div><div class="faq-a"><div class="faq-a-inner">Das sagen zumindest unsere Kunden 😉 Schau dir die Bewertungen an: <a href="https://omr.com/de/reviews/product/fonio-ai">OMR</a>, <a href="https://at.trustpilot.com/review/fonio.ai">Trustpilot</a> und <a href="#">Google Reviews</a>.</div></div></div>
+    <div class="faq-item fi"><div class="faq-q"><span>Kann Lana auch ausgehende Anrufe machen?</span><span class="faq-arrow">▼</span></div><div class="faq-a"><div class="faq-a-inner">Ja. Outbound-Anrufe sind im Team- und Business-Tarif enthalten. Über die API oder das Dashboard kann ein Anruf initiiert werden, sobald eine Telefonnummer übermittelt wird. Zusätzlich können Variablen wie Name oder Kontext übergeben werden, um das Gespräch persönlicher zu gestalten.</div></div></div>
+    <div class="faq-item fi"><div class="faq-q"><span>Was passiert nach den Inklusivminuten?</span><span class="faq-arrow">▼</span></div><div class="faq-a"><div class="faq-a-inner">Zusätzliche Minuten werden zu einem fairen Minutenpreis abgerechnet. Du wirst rechtzeitig benachrichtigt, bevor dein Kontingent aufgebraucht ist – so behältst du immer die volle Kostenkontrolle.</div></div></div>
+    <div class="faq-item fi"><div class="faq-q"><span>Kann ich meine bestehende Telefonnummer behalten?</span><span class="faq-arrow">▼</span></div><div class="faq-a"><div class="faq-a-inner">Ja. Du kannst entweder eine neue Rufnummer für die KI anlegen oder deine bestehende Nummer über eine Rufumleitung mit Call Lana verbinden – das ist in wenigen Minuten erledigt.</div></div></div>
+    <div class="faq-item fi"><div class="faq-q"><span>Gibt es eine Testphase?</span><span class="faq-arrow">▼</span></div><div class="faq-a"><div class="faq-a-inner">Ja! Du kannst Call Lana 14 Tage lang kostenlos testen – mit vollem Zugang zu allen Team-Features. Keine Kreditkarte erforderlich. Nach der Testphase wählst du einfach den Tarif, der zu dir passt.</div></div></div>
   </div>
 </section>
 
 <!-- CTA -->
 <section class="cta-sec">
-  <h2>Starte heute – <span class="g1">kostenlos</span></h2>
+  <h2>Starte jetzt – <span class="g1">ab 99&#8202;€/Monat</span></h2>
   <p>Keine Kreditkarte. Keine Vertragsbindung. Deine KI ist in 30 Minuten live.</p>
-  <div class="cta-btns"><a href="registrierung.html" class="btn-p">✦ Kostenlos starten</a><a href="kontakt.html" class="btn-s">📅 Demo buchen</a></div>
+  <div class="cta-btns"><a href="registrierung.html" class="btn-p">Jetzt starten</a><a href="kontakt.html" class="btn-s">Demo buchen</a></div>
 </section>
 
 <footer>
   <div class="fg">
-    <div class="fb"><a href="index.html" class="fb-logo"><span class="lc">c</span><span class="ll">Lana</span></a><p>Der KI-Telefonassistent auf Deutsch. DSGVO-konform, zuverlässig, 24/7.</p><div class="socials"><a href="#" class="sb"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a><a href="#" class="sb"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a></div></div>
+    <div class="fb">
+      <a href="index.html" class="logo">
+        <div class="logo-mark">CL</div>
+        <span class="logo-name">Call <span>Lana</span></span>
+      </a>
+      <p>Der KI-Telefonassistent auf Deutsch. DSGVO-konform, zuverlässig, 24/7.</p>
+      <div class="socials"><a href="#" class="sb"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a><a href="#" class="sb"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a></div>
+    </div>
     <div class="foot-col"><h4>Produkt</h4><ul><li><a href="funktionen.html">Funktionen</a></li><li><a href="branchen.html">Branchen</a></li><li><a href="preise.html">Preise</a></li></ul></div>
     <div class="foot-col"><h4>Rechtliches</h4><ul><li><a href="impressum.html">Impressum</a></li><li><a href="datenschutz.html">Datenschutz</a></li><li><a href="agb.html">AGB</a></li></ul></div>
     <div class="foot-col"><h4>Unternehmen</h4><ul><li><a href="kontakt.html">Kontakt</a></li><li><a href="#">Bewertungen</a></li></ul></div>
@@ -244,13 +257,19 @@ footer{background:var(--bg-card);border-top:1px solid rgba(255,255,255,.06);padd
 // Billing toggle
 let yearly=false;
 const tog=document.getElementById('toggle');
-const p1=document.getElementById('p1'),p1p=document.getElementById('p1-per'),p1n=document.getElementById('p1-note');
+const p0=document.getElementById('p0'),p0n=document.getElementById('p0-note');
+const p1=document.getElementById('p1'),p1n=document.getElementById('p1-note');
 const tlM=document.getElementById('tl-mo'),tlY=document.getElementById('tl-yr');
 tog.addEventListener('click',()=>{
   yearly=!yearly;tog.classList.toggle('on');
   tlM.classList.toggle('active',!yearly);tlY.classList.toggle('active',yearly);
-  if(yearly){p1.innerHTML='<sup>€</sup>124 <span id="p1-per">/ Monat</span>';p1n.textContent='jährlich abgerechnet, 2 Monate gratis';}
-  else{p1.innerHTML='<sup>€</sup>149 <span id="p1-per">/ Monat</span>';p1n.textContent='monatlich kündbar';}
+  if(yearly){
+    p0.innerHTML='<sup>€</sup>83 <span id="p0-per">/ Monat</span>';p0n.textContent='jährlich abgerechnet, 2 Monate gratis';
+    p1.innerHTML='<sup>€</sup>249 <span id="p1-per">/ Monat</span>';p1n.textContent='jährlich abgerechnet, 2 Monate gratis';
+  } else {
+    p0.innerHTML='<sup>€</sup>99 <span id="p0-per">/ Monat</span>';p0n.textContent='monatlich kündbar';
+    p1.innerHTML='<sup>€</sup>299 <span id="p1-per">/ Monat</span>';p1n.textContent='monatlich kündbar';
+  }
 });
 // FAQ
 document.querySelectorAll('.faq-q').forEach(q=>{q.addEventListener('click',()=>{const item=q.parentElement;item.classList.toggle('open');});});

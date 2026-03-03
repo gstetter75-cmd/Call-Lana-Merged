@@ -75,6 +75,44 @@ h1{font-family:'Syne',sans-serif;font-size:clamp(3rem,7vw,5.8rem);font-weight:80
 .sn{font-family:'Syne',sans-serif;font-size:3.2rem;font-weight:800;background:linear-gradient(135deg,var(--pu3),var(--pu));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:10px;}
 .sl{font-size:13.5px;color:var(--tx2);font-weight:500;}
 
+/* SECTION SHARED */
+.sec-lbl{display:inline-block;font-size:11.5px;font-weight:700;color:var(--pu3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;}
+.sec-title{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.12;margin-bottom:20px;color:var(--tx);}
+.sec-sub{font-size:1.05rem;color:var(--tx2);max-width:560px;margin:0 auto 48px;line-height:1.7;}
+
+/* TRUST & DSGVO */
+.trust-sec{padding:96px 6% 80px;text-align:center;position:relative;overflow:hidden;}
+.trust-sec::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(123,47,255,.07),transparent 70%);pointer-events:none;}
+.trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto;position:relative;z-index:1;}
+.trust-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:40px 28px;text-align:center;transition:all .35s;}
+.trust-card:hover{border-color:var(--pu);transform:translateY(-4px);box-shadow:0 12px 40px rgba(123,47,255,.2);}
+.trust-icon{font-size:2.8rem;margin-bottom:20px;display:block;}
+.trust-t{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;margin-bottom:10px;color:var(--tx);}
+.trust-d{font-size:.9rem;color:var(--tx2);line-height:1.7;}
+
+/* USE-CASES */
+.uc-sec{padding:96px 6%;text-align:center;position:relative;background:linear-gradient(180deg,transparent,rgba(14,14,28,.5),transparent);}
+.uc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto;}
+.uc-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:44px 30px 38px;text-align:left;transition:all .35s;text-decoration:none;color:inherit;display:block;}
+.uc-card:hover{border-color:var(--pu);transform:translateY(-5px);box-shadow:0 16px 48px rgba(123,47,255,.22);}
+.uc-icon{font-size:2.6rem;margin-bottom:22px;display:block;}
+.uc-t{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:12px;color:var(--tx);}
+.uc-d{font-size:.92rem;color:var(--tx2);line-height:1.7;}
+
+/* INTEGRATIONS */
+.int-sec{padding:96px 6%;text-align:center;position:relative;}
+.int-sec::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:900px;height:500px;background:radial-gradient(ellipse,rgba(34,211,238,.04),transparent 70%);pointer-events:none;}
+.int-row{display:flex;justify-content:center;flex-wrap:wrap;gap:16px;max-width:800px;margin:0 auto 32px;position:relative;z-index:1;}
+.int-badge{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 32px;font-size:1rem;font-weight:700;color:var(--tx);transition:all .3s;display:inline-flex;align-items:center;gap:10px;letter-spacing:.01em;}
+.int-badge:hover{border-color:var(--pu);transform:translateY(-3px);box-shadow:0 8px 30px rgba(123,47,255,.2);background:rgba(124,58,237,.08);}
+.int-badge .int-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.int-dot-hub{background:#ff7a59;}
+.int-dot-pipe{background:#21b979;}
+.int-dot-cal{background:var(--tx);}
+.int-dot-zap{background:#ff4a00;}
+.int-dot-make{background:#6d3aef;}
+.int-more{font-size:.92rem;color:var(--tx3);margin-top:8px;position:relative;z-index:1;}
+
 .demo-sec{padding:80px 6%;display:flex;justify-content:center;}
 .demo-card{background:rgba(14,14,28,.95);border:1px solid rgba(123,47,255,.25);border-radius:24px;padding:44px 48px;max-width:580px;width:100%;box-shadow:0 0 60px rgba(123,47,255,.1);}
 .demo-card h2{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:8px;}
@@ -94,6 +132,10 @@ h1{font-family:'Syne',sans-serif;font-size:clamp(3rem,7vw,5.8rem);font-weight:80
 .ti-t{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;margin-bottom:10px;color:var(--tx);}
 .ti-d{font-size:.9rem;color:var(--tx2);line-height:1.65;}
 
+/* SCROLL REVEAL */
+.fi{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
+.fi.vis{opacity:1;transform:translateY(0);}
+
 footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);padding:60px 6% 32px;}
 .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;}
 .footer-brand p{font-size:.88rem;color:var(--tx2);line-height:1.75;margin:14px 0 20px;}
@@ -106,14 +148,15 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
 
 @media(max-width:900px){
   .nav-links{display:none;}
-  .teaser-grid{grid-template-columns:1fr;}
+  .teaser-grid,.trust-grid,.uc-grid{grid-template-columns:1fr;}
+  .int-row{flex-direction:column;align-items:center;}
   .footer-grid{grid-template-columns:1fr 1fr;gap:32px;}
   .stats{flex-direction:column;}.stat{border-right:none;border-bottom:1px solid rgba(255,255,255,.07);}.stat:last-child{border-bottom:none;}
   .lang-switcher{top:72px;right:10px;}
 }
 @media(max-width:600px){
   nav{padding:0 4%;}
-  .hero,.demo-sec,.teaser-sec{padding-left:4%;padding-right:4%;}
+  .hero,.demo-sec,.teaser-sec,.trust-sec,.uc-sec,.int-sec{padding-left:4%;padding-right:4%;}
   .hero-btns{flex-direction:column;}
   .demo-row{flex-direction:column;}
   .footer-grid{grid-template-columns:1fr;}
@@ -144,16 +187,18 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
 </nav>
 
 <main>
+
+  <!-- 1. HERO -->
   <section class="hero">
     <div class="orb o1"></div>
     <div class="orb o2"></div>
     <div class="orb o3"></div>
     <div class="hero-content">
-      <div class="badge"><span data-i18n="hero.badge">KI-Power aus Deutschland</span></div>
-      <h1 data-i18n="hero.title">Nie wieder verpasste Anrufe</h1>
-      <p class="h1-sub" data-i18n="hero.subtitle">Dein KI-Assistent auf Deutsch</p>
-      <p class="hero-lead" data-i18n="hero.lead">Call Lana übernimmt deine Anrufe rund um die Uhr – auf Deutsch, DSGVO-konform und sofort einsatzbereit. In 30 Minuten live.</p>
-      
+      <div class="badge"><span data-i18n="hero.badge">Deine KI-Telefonagentin</span></div>
+      <h1 data-i18n="hero.title">Schluss mit nervigen Bandansagen</h1>
+      <p class="h1-sub" data-i18n="hero.subtitle">Entdecke Lana, deine intelligente KI-Telefonagentin.</p>
+      <p class="hero-lead" data-i18n="hero.lead">Lana versteht deine Anrufer wirklich – dank NLP und natürlichem Dialog. Kein „Drücken Sie die 1" mehr. Einfach natürlich sprechen, rund um die Uhr, DSGVO-konform.</p>
+
       <div class="wave">
         <span class="wb" style="--h:14px;animation-delay:0s"></span>
         <span class="wb" style="--h:30px;animation-delay:.1s"></span>
@@ -166,12 +211,13 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
       </div>
 
       <div class="hero-btns">
-        <a href="login.html" class="btn-p" data-i18n="hero.cta.primary">Zum Dashboard →</a>
-        <a href="funktionen.html" class="btn-s" data-i18n="hero.cta.secondary">Alle Funktionen</a>
+        <a href="registrierung.html" class="btn-p" data-i18n="hero.cta.primary">Jetzt kostenlos testen →</a>
+        <a href="#demo" class="btn-s" data-i18n="hero.cta.secondary">Demo anhören</a>
       </div>
     </div>
   </section>
 
+  <!-- 2. TRUSTED TICKER (kept as-is) -->
   <section class="trusted">
     <p class="trusted-lbl" data-i18n="trusted.title">Vertraut von führenden Unternehmen</p>
     <div class="ticker-wrap">
@@ -190,6 +236,7 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
     </div>
   </section>
 
+  <!-- 3. STATS (kept as-is) -->
   <section class="stats">
     <div class="stat">
       <div class="sn">2M+</div>
@@ -205,8 +252,70 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
     </div>
   </section>
 
-  <section class="demo-sec">
-    <div class="demo-card">
+  <!-- 4. TRUST & DSGVO (NEW) -->
+  <section class="trust-sec">
+    <span class="sec-lbl fi" data-i18n="trust.label">SICHERHEIT &amp; DATENSCHUTZ</span>
+    <h2 class="sec-title fi" data-i18n="trust.title">Deine Daten sind bei uns sicher</h2>
+    <div class="trust-grid">
+      <div class="trust-card fi">
+        <span class="trust-icon">&#x1f6e1;&#xfe0f;</span>
+        <h3 class="trust-t" data-i18n="trust.gdpr.title">DSGVO-konform</h3>
+        <p class="trust-d" data-i18n="trust.gdpr.desc">Server bei Hetzner in Nürnberg, Deutschland. Volle Datenkontrolle.</p>
+      </div>
+      <div class="trust-card fi">
+        <span class="trust-icon">&#x1f512;</span>
+        <h3 class="trust-t" data-i18n="trust.encrypt.title">Ende-zu-Ende verschlüsselt</h3>
+        <p class="trust-d" data-i18n="trust.encrypt.desc">256-Bit SSL. Alle Gespräche und Daten sind vollständig verschlüsselt.</p>
+      </div>
+      <div class="trust-card fi">
+        <span class="trust-icon">&#x1f1ea;&#x1f1fa;</span>
+        <h3 class="trust-t" data-i18n="trust.euai.title">EU AI Act konform</h3>
+        <p class="trust-d" data-i18n="trust.euai.desc">OpenAI nur über Microsoft Azure EU-Server. Keine Daten verlassen Europa.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. USE-CASES (NEW) -->
+  <section class="uc-sec">
+    <span class="sec-lbl fi" data-i18n="uc.label">EINSATZBEREICHE</span>
+    <h2 class="sec-title fi" data-i18n="uc.title">Lana passt sich deinem Business an</h2>
+    <div class="uc-grid">
+      <div class="uc-card fi">
+        <span class="uc-icon">&#x1f4c5;</span>
+        <h3 class="uc-t" data-i18n="uc.service.title">Dienstleister &amp; Praxen</h3>
+        <p class="uc-d" data-i18n="uc.service.desc">Terminbuchung per Telefon, automatische Kalenderintegration via Cal.com. Kein Anruf geht verloren.</p>
+      </div>
+      <div class="uc-card fi">
+        <span class="uc-icon">&#x1f6d2;</span>
+        <h3 class="uc-t" data-i18n="uc.ecommerce.title">E-Commerce &amp; Support</h3>
+        <p class="uc-d" data-i18n="uc.ecommerce.desc">24/7 Kundenservice, FAQ-Beantwortung, Bestellstatus – alles automatisiert.</p>
+      </div>
+      <div class="uc-card fi">
+        <span class="uc-icon">&#x1f3af;</span>
+        <h3 class="uc-t" data-i18n="uc.sales.title">Agenturen &amp; Vertrieb</h3>
+        <p class="uc-d" data-i18n="uc.sales.desc">Lead-Qualifizierung am Telefon, automatischer CRM-Push. Mehr Abschlüsse, weniger Aufwand.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. INTEGRATIONS (NEW) -->
+  <section class="int-sec">
+    <span class="sec-lbl fi" data-i18n="int.label">INTEGRATIONEN</span>
+    <h2 class="sec-title fi" data-i18n="int.title">Verbindet sich nahtlos mit deinen Tools</h2>
+    <p class="sec-sub fi" data-i18n="int.subtitle">Lana arbeitet mit den Tools, die du bereits nutzt.</p>
+    <div class="int-row fi">
+      <span class="int-badge"><span class="int-dot int-dot-hub"></span>HubSpot</span>
+      <span class="int-badge"><span class="int-dot int-dot-pipe"></span>Pipedrive</span>
+      <span class="int-badge"><span class="int-dot int-dot-cal"></span>Cal.com</span>
+      <span class="int-badge"><span class="int-dot int-dot-zap"></span>Zapier</span>
+      <span class="int-badge"><span class="int-dot int-dot-make"></span>Make.com</span>
+    </div>
+    <p class="int-more fi" data-i18n="int.more">Und viele weitere über Zapier und Make.com</p>
+  </section>
+
+  <!-- 7. DEMO (kept as-is) -->
+  <section class="demo-sec" id="demo">
+    <div class="demo-card fi">
       <h2 data-i18n="demo.title">Demo sofort testen</h2>
       <p data-i18n="demo.subtitle">Ruf unsere Demo-Nummer an und erlebe Call Lana live:</p>
       <div class="demo-row">
@@ -218,25 +327,27 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
     </div>
   </section>
 
+  <!-- 8. TEASER CARDS (updated content) -->
   <section class="teaser-sec">
     <div class="teaser-grid">
-      <a href="funktionen.html" class="tc">
-        <span class="ti-icon">⚡</span>
+      <a href="funktionen.html" class="tc fi">
+        <span class="ti-icon">&#x26a1;</span>
         <h3 class="ti-t" data-i18n="feature.quick.title">In 30 Minuten live</h3>
-        <p class="ti-d" data-i18n="feature.quick.desc">Keine Programmierung, kein IT-Wissen. Einfach Nummer einrichten und starten.</p>
+        <p class="ti-d" data-i18n="feature.quick.desc">Keine Programmierung. Rufnummer einrichten, Lana konfigurieren, starten.</p>
       </a>
-      <a href="funktionen.html" class="tc">
-        <span class="ti-icon">🇩🇪</span>
+      <a href="funktionen.html" class="tc fi">
+        <span class="ti-icon">&#x1f1e9;&#x1f1ea;</span>
         <h3 class="ti-t" data-i18n="feature.gdpr.title">100% DSGVO-konform</h3>
-        <p class="ti-d" data-i18n="feature.gdpr.desc">Server in Deutschland. Volle Datenkontrolle. Zertifiziert nach höchsten Standards.</p>
+        <p class="ti-d" data-i18n="feature.gdpr.desc">Server in Deutschland. Volle Datenkontrolle. EU AI Act konform.</p>
       </a>
-      <a href="preise.html" class="tc">
-        <span class="ti-icon">💰</span>
-        <h3 class="ti-t" data-i18n="feature.pricing.title">Ab 0€ starten</h3>
-        <p class="ti-d" data-i18n="feature.pricing.desc">Keine Setup-Gebühr. Transparent. Fair. Jederzeit kündbar.</p>
+      <a href="preise.html" class="tc fi">
+        <span class="ti-icon">&#x1f4b0;</span>
+        <h3 class="ti-t" data-i18n="feature.pricing.title">Ab 99€/Monat</h3>
+        <p class="ti-d" data-i18n="feature.pricing.desc">1.000 Inklusivminuten. Transparent. Fair. Jederzeit kündbar.</p>
       </a>
     </div>
   </section>
+
 </main>
 
 <footer>
@@ -292,19 +403,35 @@ function updateLangButtons(lang) {
 document.addEventListener('DOMContentLoaded', () => {
   const currentLang = localStorage.getItem('calllana_language') || 'de';
   updateLangButtons(currentLang);
+
+  /* Scroll-reveal IntersectionObserver */
+  const faders = document.querySelectorAll('.fi');
+  if ('IntersectionObserver' in window) {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('vis');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    faders.forEach(el => obs.observe(el));
+  } else {
+    faders.forEach(el => el.classList.add('vis'));
+  }
 });
 
 function copyPhone() {
   const phone = document.getElementById('demoPhone');
   const btn = event.target;
   const feedback = document.getElementById('copyFeedback');
-  
+
   navigator.clipboard.writeText(phone.value).then(() => {
     const msg = i18n.t('demo.copied');
-    btn.textContent = '✓';
+    btn.textContent = '\u2713';
     feedback.textContent = msg;
     feedback.style.color = 'var(--green)';
-    
+
     setTimeout(() => {
       btn.textContent = i18n.t('demo.button');
       feedback.textContent = '';
