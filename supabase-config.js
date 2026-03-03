@@ -213,6 +213,106 @@ const db = {
       console.error('Get settings error:', error);
       return { success: false, error: error.message };
     }
+  },
+
+  // ====== Assistants CRUD ======
+
+  async getAssistants() {
+    try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { data, error } = await supabaseClient
+        .from('assistants')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return { success: true, data: data || [] };
+    } catch (error) {
+      console.error('Get assistants error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async getAssistant(id) {
+    try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { data, error } = await supabaseClient
+        .from('assistants')
+        .select('*')
+        .eq('id', id)
+        .eq('user_id', user.id)
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      console.error('Get assistant error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async createAssistant(assistantData) {
+    try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { data, error } = await supabaseClient
+        .from('assistants')
+        .insert([{ user_id: user.id, ...assistantData }])
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      console.error('Create assistant error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async updateAssistant(id, updates) {
+    try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { data, error } = await supabaseClient
+        .from('assistants')
+        .update(updates)
+        .eq('id', id)
+        .eq('user_id', user.id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      console.error('Update assistant error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async deleteAssistant(id) {
+    try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { error } = await supabaseClient
+        .from('assistants')
+        .delete()
+        .eq('id', id)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      return { success: true };
+    } catch (error) {
+      console.error('Delete assistant error:', error);
+      return { success: false, error: error.message };
+    }
   }
 };
 
