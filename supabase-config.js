@@ -338,6 +338,12 @@ const db = {
 
   async updateProfile(userId, updates) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+      if (user.id !== userId && user.user_metadata?.role !== 'superadmin') {
+        throw new Error('Unauthorized: can only update own profile');
+      }
+
       const { data, error } = await supabaseClient
         .from('profiles')
         .update(updates)
@@ -620,6 +626,9 @@ const db = {
 
   async deleteTask(id) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const { error } = await supabaseClient
         .from('tasks')
         .delete()
@@ -656,6 +665,9 @@ const db = {
 
   async deleteNote(id) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const { error } = await supabaseClient
         .from('notes')
         .delete()
@@ -712,6 +724,9 @@ const db = {
 
   async deleteAvailability(id) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const { error } = await supabaseClient
         .from('availability')
         .delete()
