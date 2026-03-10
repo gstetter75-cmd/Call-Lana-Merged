@@ -201,8 +201,8 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
     <li><a href="kontakt.html" data-i18n="nav.contact">Kontakt</a></li>
   </ul>
   <div class="nav-right">
-    <a href="login.html" class="nav-login">Login</a>
-    <a href="registrierung.html" class="nav-cta">Kostenlos starten</a>
+    <a href="login.html" class="nav-login" data-i18n="nav.login">Login</a>
+    <a href="registrierung.html" class="nav-cta" data-i18n="nav.cta">Kostenlos starten</a>
   </div>
   <button class="mob-btn" id="mb" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
@@ -216,16 +216,16 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
         <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm3.22 5.97l-3.5 3.5a.75.75 0 01-1.06 0l-1.5-1.5a.75.75 0 111.06-1.06l.97.97 2.97-2.97a.75.75 0 011.06 1.06z"/></svg>
         <span data-i18n="hero.badge">Der KI-Telefonassistent auf Deutsch</span>
       </div>
-      <h1>Kein Anruf bleibt<br><span class="gradient">unbeantwortet.</span></h1>
+      <h1 data-i18n-html="hero.title">Kein Anruf bleibt<br><span class="gradient">unbeantwortet.</span></h1>
       <p class="hero-lead" data-i18n="hero.lead">Lana nimmt deine Anrufe entgegen, versteht Anliegen per NLP und handelt sofort — Termine buchen, Fragen beantworten, Leads qualifizieren. 24/7, DSGVO-konform.</p>
       <div class="hero-btns">
         <a href="registrierung.html" class="btn-primary" data-i18n="hero.cta.primary">Jetzt kostenlos testen</a>
         <a href="#demo" class="btn-secondary" data-i18n="hero.cta.secondary">Demo anhören</a>
       </div>
       <div class="hero-social">
-        <div class="rating"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>&nbsp;4,8/5</div>
+        <div class="rating"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>&nbsp;<span data-i18n="hero.rating">4,8/5</span></div>
         <div class="divider"></div>
-        <div class="users-count">5.000+ Unternehmen vertrauen Call Lana</div>
+        <div class="users-count" data-i18n="hero.users">5.000+ Unternehmen vertrauen Call Lana</div>
       </div>
     </div>
   </section>
@@ -273,7 +273,7 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
       </div>
       <div class="stat-item">
         <div class="stat-num">30 Min</div>
-        <div class="stat-label">Setup-Zeit</div>
+        <div class="stat-label" data-i18n="stats.setup">Setup-Zeit</div>
       </div>
     </div>
   </section>
@@ -281,25 +281,25 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
   <!-- 4. HOW IT WORKS -->
   <section class="section alt">
     <div class="sec-header fi">
-      <span class="sec-badge">So funktioniert's</span>
-      <h2 class="sec-title">In 3 Schritten live</h2>
-      <p class="sec-sub">Keine Programmierung, kein IT-Team. Call Lana ist in wenigen Minuten einsatzbereit.</p>
+      <span class="sec-badge" data-i18n="steps.label">So funktioniert's</span>
+      <h2 class="sec-title" data-i18n="steps.title">In 3 Schritten live</h2>
+      <p class="sec-sub" data-i18n="steps.subtitle">Keine Programmierung, kein IT-Team. Call Lana ist in wenigen Minuten einsatzbereit.</p>
     </div>
     <div class="steps-grid">
       <div class="step-card fi">
         <div class="step-num">1</div>
-        <h3>Rufnummer einrichten</h3>
-        <p>Eigene Nummer erhalten oder bestehende weiterleiten. Funktioniert mit jedem Anbieter.</p>
+        <h3 data-i18n="steps.step1.title">Rufnummer einrichten</h3>
+        <p data-i18n="steps.step1.desc">Eigene Nummer erhalten oder bestehende weiterleiten. Funktioniert mit jedem Anbieter.</p>
       </div>
       <div class="step-card fi">
         <div class="step-num">2</div>
-        <h3>Lana konfigurieren</h3>
-        <p>Branche, Tonfall und Anweisungen festlegen. Lana passt sich deinem Unternehmen an.</p>
+        <h3 data-i18n="steps.step2.title">Lana konfigurieren</h3>
+        <p data-i18n="steps.step2.desc">Branche, Tonfall und Anweisungen festlegen. Lana passt sich deinem Unternehmen an.</p>
       </div>
       <div class="step-card fi">
         <div class="step-num">3</div>
-        <h3>Anrufe entgegennehmen</h3>
-        <p>Lana ist live. Alle Anrufe, Transkripte und Aktionen siehst du im Dashboard.</p>
+        <h3 data-i18n="steps.step3.title">Anrufe entgegennehmen</h3>
+        <p data-i18n="steps.step3.desc">Lana ist live. Alle Anrufe, Transkripte und Aktionen siehst du im Dashboard.</p>
       </div>
     </div>
   </section>
@@ -307,40 +307,40 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
   <!-- 5. FEATURES -->
   <section class="section">
     <div class="sec-header fi">
-      <span class="sec-badge">Funktionen</span>
-      <h2 class="sec-title">Alles, was dein Telefon braucht</h2>
-      <p class="sec-sub">Von natürlichem Dialog bis zum CRM-Push — Lana übernimmt den gesamten Anrufprozess.</p>
+      <span class="sec-badge" data-i18n="features.label">Funktionen</span>
+      <h2 class="sec-title" data-i18n="features.title">Alles, was dein Telefon braucht</h2>
+      <p class="sec-sub" data-i18n="features.subtitle">Von natürlichem Dialog bis zum CRM-Push -- Lana übernimmt den gesamten Anrufprozess.</p>
     </div>
     <div class="features-grid">
       <div class="feature-card fi">
         <div class="feature-icon">&#x1f5e3;&#xfe0f;</div>
-        <h3>Natürlicher Dialog</h3>
-        <p>Kein "Drucken Sie die 1". Anrufer sprechen natürlich, Lana versteht dank NLP sofort.</p>
+        <h3 data-i18n="features.dialog.title">Natürlicher Dialog</h3>
+        <p data-i18n="features.dialog.desc">Kein "Drucken Sie die 1". Anrufer sprechen natürlich, Lana versteht dank NLP sofort.</p>
       </div>
       <div class="feature-card fi">
         <div class="feature-icon">&#x1f4c5;</div>
-        <h3>Terminbuchung</h3>
-        <p>Automatische Kalenderintegration über Cal.com. Termine werden direkt gebucht.</p>
+        <h3 data-i18n="features.booking.title">Terminbuchung</h3>
+        <p data-i18n="features.booking.desc">Automatische Kalenderintegration über Cal.com. Termine werden direkt gebucht.</p>
       </div>
       <div class="feature-card fi">
         <div class="feature-icon">&#x1f4ca;</div>
-        <h3>Echtzeit-Dashboard</h3>
-        <p>Alle Anrufe, Transkripte und KPIs auf einen Blick. Volle Transparenz.</p>
+        <h3 data-i18n="features.dashboard.title">Echtzeit-Dashboard</h3>
+        <p data-i18n="features.dashboard.desc">Alle Anrufe, Transkripte und KPIs auf einen Blick. Volle Transparenz.</p>
       </div>
       <div class="feature-card fi">
         <div class="feature-icon">&#x1f3af;</div>
-        <h3>Lead-Qualifizierung</h3>
-        <p>Lana erkennt Kaufinteresse und pusht qualifizierte Leads direkt in dein CRM.</p>
+        <h3 data-i18n="features.leads.title">Lead-Qualifizierung</h3>
+        <p data-i18n="features.leads.desc">Lana erkennt Kaufinteresse und pusht qualifizierte Leads direkt in dein CRM.</p>
       </div>
       <div class="feature-card fi">
         <div class="feature-icon">&#x1f4dd;</div>
-        <h3>Transkription</h3>
-        <p>Jedes Gespräch wird in Echtzeit transkribiert und ist sofort durchsuchbar.</p>
+        <h3 data-i18n="features.transcription.title">Transkription</h3>
+        <p data-i18n="features.transcription.desc">Jedes Gespräch wird in Echtzeit transkribiert und ist sofort durchsuchbar.</p>
       </div>
       <div class="feature-card fi">
         <div class="feature-icon">&#x1f504;</div>
-        <h3>Weiterleitung</h3>
-        <p>Bei komplexen Anfragen leitet Lana nahtlos an den richtigen Mitarbeiter weiter.</p>
+        <h3 data-i18n="features.transfer.title">Weiterleitung</h3>
+        <p data-i18n="features.transfer.desc">Bei komplexen Anfragen leitet Lana nahtlos an den richtigen Mitarbeiter weiter.</p>
       </div>
     </div>
   </section>
@@ -348,40 +348,40 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
   <!-- USE CASES -->
   <section class="section">
     <div class="sec-header fi">
-      <span class="sec-badge">Einsatzbereiche</span>
-      <h2 class="sec-title">Lana passt sich deinem Business an</h2>
-      <p class="sec-sub">Egal ob Arztpraxis, E-Commerce oder Agentur — Call Lana versteht deinen Alltag.</p>
+      <span class="sec-badge" data-i18n="usecases.label">Einsatzbereiche</span>
+      <h2 class="sec-title" data-i18n="usecases.title">Lana passt sich deinem Business an</h2>
+      <p class="sec-sub" data-i18n="usecases.subtitle">Egal ob Arztpraxis, E-Commerce oder Agentur -- Call Lana versteht deinen Alltag.</p>
     </div>
     <div class="uc-grid">
       <a href="branchen.html" class="uc-card fi">
         <span class="uc-icon">&#x1f3e5;</span>
-        <h3>Praxen & Kliniken</h3>
-        <p>Terminbuchung, Rezeptanfragen und Patienteninformation — rund um die Uhr.</p>
+        <h3 data-i18n="usecases.medical.title">Praxen & Kliniken</h3>
+        <p data-i18n="usecases.medical.desc">Terminbuchung, Rezeptanfragen und Patienteninformation -- rund um die Uhr.</p>
       </a>
       <a href="branchen.html" class="uc-card fi">
         <span class="uc-icon">&#x1f3e8;</span>
-        <h3>Hotels & Gastronomie</h3>
-        <p>Reservierungen, Zimmerverfügbarkeit und Gästeanfragen automatisiert.</p>
+        <h3 data-i18n="usecases.hospitality.title">Hotels & Gastronomie</h3>
+        <p data-i18n="usecases.hospitality.desc">Reservierungen, Zimmerverfügbarkeit und Gästeanfragen automatisiert.</p>
       </a>
       <a href="branchen.html" class="uc-card fi">
         <span class="uc-icon">&#x1f527;</span>
-        <h3>Handwerk & Service</h3>
-        <p>Auftragsannahme und Terminkoordination — auch wenn du auf der Baustelle bist.</p>
+        <h3 data-i18n="usecases.trades.title">Handwerk & Service</h3>
+        <p data-i18n="usecases.trades.desc">Auftragsannahme und Terminkoordination -- auch wenn du auf der Baustelle bist.</p>
       </a>
       <a href="branchen.html" class="uc-card fi">
         <span class="uc-icon">&#x2696;&#xfe0f;</span>
-        <h3>Kanzleien & Beratung</h3>
-        <p>Mandantenanfragen erfassen, Rückrufwünsche notieren und priorisieren.</p>
+        <h3 data-i18n="usecases.legal.title">Kanzleien & Beratung</h3>
+        <p data-i18n="usecases.legal.desc">Mandantenanfragen erfassen, Rückrufwünsche notieren und priorisieren.</p>
       </a>
       <a href="branchen.html" class="uc-card fi">
         <span class="uc-icon">&#x1f6d2;</span>
-        <h3>E-Commerce & Support</h3>
-        <p>24/7 Kundenservice, Bestellstatus und FAQ-Beantwortung ohne Wartezeit.</p>
+        <h3 data-i18n="usecases.ecommerce.title">E-Commerce & Support</h3>
+        <p data-i18n="usecases.ecommerce.desc">24/7 Kundenservice, Bestellstatus und FAQ-Beantwortung ohne Wartezeit.</p>
       </a>
       <a href="branchen.html" class="uc-card fi">
         <span class="uc-icon">&#x1f4c8;</span>
-        <h3>Agenturen & Vertrieb</h3>
-        <p>Lead-Qualifizierung am Telefon und automatischer Push in dein CRM.</p>
+        <h3 data-i18n="usecases.sales.title">Agenturen & Vertrieb</h3>
+        <p data-i18n="usecases.sales.desc">Lead-Qualifizierung am Telefon und automatischer Push in dein CRM.</p>
       </a>
     </div>
   </section>
@@ -389,9 +389,9 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
   <!-- 8. INTEGRATIONS -->
   <section class="section alt">
     <div class="sec-header fi">
-      <span class="sec-badge" data-i18n="int.label">Integrationen</span>
-      <h2 class="sec-title" data-i18n="int.title">Verbindet sich nahtlos mit deinen Tools</h2>
-      <p class="sec-sub" data-i18n="int.subtitle">Lana arbeitet mit den Tools, die du bereits nutzt.</p>
+      <span class="sec-badge" data-i18n="integrations.label">Integrationen</span>
+      <h2 class="sec-title" data-i18n="integrations.title">Verbindet sich nahtlos mit deinen Tools</h2>
+      <p class="sec-sub" data-i18n="integrations.subtitle">Lana arbeitet mit den Tools, die du bereits nutzt.</p>
     </div>
     <div class="int-row fi">
       <span class="int-badge"><span class="int-dot dot-hub"></span>HubSpot</span>
@@ -400,38 +400,38 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
       <span class="int-badge"><span class="int-dot dot-zap"></span>Zapier</span>
       <span class="int-badge"><span class="int-dot dot-make"></span>Make.com</span>
     </div>
-    <p class="int-more fi" data-i18n="int.more">Und viele weitere über Zapier und Make.com</p>
+    <p class="int-more fi" data-i18n="integrations.more">Und viele weitere über Zapier und Make.com</p>
   </section>
 
   <!-- 9. TESTIMONIALS -->
   <section class="section">
     <div class="sec-header fi">
-      <span class="sec-badge">Kundenstimmen</span>
-      <h2 class="sec-title">Was unsere Kunden sagen</h2>
+      <span class="sec-badge" data-i18n="testimonials.label">Kundenstimmen</span>
+      <h2 class="sec-title" data-i18n="testimonials.title">Was unsere Kunden sagen</h2>
     </div>
     <div class="testimonials-grid">
       <div class="testimonial-card fi">
         <div class="testimonial-avatar">SM</div>
         <div class="t-body">
           <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p class="testimonial-text">"Seit Call Lana verpassen wir keinen einzigen Anruf mehr. Die Terminbuchung läuft vollautomatisch — unsere Patienten sind begeistert."</p>
-          <div class="testimonial-name">Dr. Sarah Müller</div><div class="testimonial-role">Zahnärztin, München</div>
+          <p class="testimonial-text" data-i18n="testimonials.t1.text">"Seit Call Lana verpassen wir keinen einzigen Anruf mehr. Die Terminbuchung läuft vollautomatisch -- unsere Patienten sind begeistert."</p>
+          <div class="testimonial-name" data-i18n="testimonials.t1.name">Dr. Sarah Müller</div><div class="testimonial-role" data-i18n="testimonials.t1.role">Zahnärztin, München</div>
         </div>
       </div>
       <div class="testimonial-card fi">
         <div class="testimonial-avatar">TW</div>
         <div class="t-body">
           <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p class="testimonial-text">"Die Lead-Qualifizierung per Telefon hat unsere Conversion um 34% gesteigert. Absolute Game-Changer für unser Sales-Team."</p>
-          <div class="testimonial-name">Thomas Weber</div><div class="testimonial-role">CEO, DCR-Agentur</div>
+          <p class="testimonial-text" data-i18n="testimonials.t2.text">"Die Lead-Qualifizierung per Telefon hat unsere Conversion um 34% gesteigert. Absolute Game-Changer für unser Sales-Team."</p>
+          <div class="testimonial-name" data-i18n="testimonials.t2.name">Thomas Weber</div><div class="testimonial-role" data-i18n="testimonials.t2.role">CEO, DCR-Agentur</div>
         </div>
       </div>
       <div class="testimonial-card fi">
         <div class="testimonial-avatar">MK</div>
         <div class="t-body">
           <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p class="testimonial-text">"Setup in 20 Minuten, läuft seitdem fehlerfrei. Endlich kann ich mich auf mein Handwerk konzentrieren statt ans Telefon."</p>
-          <div class="testimonial-name">Michael Klein</div><div class="testimonial-role">Elektroinstallateur</div>
+          <p class="testimonial-text" data-i18n="testimonials.t3.text">"Setup in 20 Minuten, läuft seitdem fehlerfrei. Endlich kann ich mich auf mein Handwerk konzentrieren statt ans Telefon."</p>
+          <div class="testimonial-name" data-i18n="testimonials.t3.name">Michael Klein</div><div class="testimonial-role" data-i18n="testimonials.t3.role">Elektroinstallateur</div>
         </div>
       </div>
     </div>
@@ -440,33 +440,33 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
   <!-- 10. FAQ -->
   <section class="section alt">
     <div class="sec-header fi">
-      <span class="sec-badge">Häufige Fragen</span>
-      <h2 class="sec-title">Alles, was du wissen musst</h2>
+      <span class="sec-badge" data-i18n="faq.label">Häufige Fragen</span>
+      <h2 class="sec-title" data-i18n="faq.title">Alles, was du wissen musst</h2>
     </div>
     <div class="faq-list fi">
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Wie schnell ist Call Lana einsatzbereit?<span class="faq-arrow">&#x25BE;</span></button>
-        <div class="faq-a">In der Regel dauert das Setup weniger als 30 Minuten. Du erhältst eine eigene Rufnummer, konfigurierst Lana im Dashboard und bist live. Kein IT-Team nötig.</div>
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span data-i18n="faq.q1">Wie schnell ist Call Lana einsatzbereit?</span><span class="faq-arrow">&#x25BE;</span></button>
+        <div class="faq-a" data-i18n="faq.a1">In der Regel dauert das Setup weniger als 30 Minuten. Du erhältst eine eigene Rufnummer, konfigurierst Lana im Dashboard und bist live. Kein IT-Team nötig.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Ist Call Lana DSGVO-konform?<span class="faq-arrow">&#x25BE;</span></button>
-        <div class="faq-a">Ja, vollständig. Unsere Server stehen bei Hetzner in Nürnberg. Alle Daten bleiben in der EU. Wir nutzen OpenAI ausschließlich über Microsoft Azure EU-Server.</div>
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span data-i18n="faq.q2">Ist Call Lana DSGVO-konform?</span><span class="faq-arrow">&#x25BE;</span></button>
+        <div class="faq-a" data-i18n="faq.a2">Ja, vollständig. Unsere Server stehen bei Hetzner in Nürnberg. Alle Daten bleiben in der EU. Wir nutzen OpenAI ausschließlich über Microsoft Azure EU-Server.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Welche Sprachen unterstützt Lana?<span class="faq-arrow">&#x25BE;</span></button>
-        <div class="faq-a">Aktuell Deutsch und Englisch. Weitere Sprachen sind in Planung. Lana erkennt automatisch die Sprache des Anrufers.</div>
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span data-i18n="faq.q3">Welche Sprachen unterstützt Lana?</span><span class="faq-arrow">&#x25BE;</span></button>
+        <div class="faq-a" data-i18n="faq.a3">Aktuell Deutsch und Englisch. Weitere Sprachen sind in Planung. Lana erkennt automatisch die Sprache des Anrufers.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Was passiert bei komplexen Anfragen?<span class="faq-arrow">&#x25BE;</span></button>
-        <div class="faq-a">Lana erkennt, wenn ein Gespräch menschliche Betreuung braucht und leitet nahtlos an den zuständigen Mitarbeiter weiter — inklusive Kontext und Zusammenfassung.</div>
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span data-i18n="faq.q4">Was passiert bei komplexen Anfragen?</span><span class="faq-arrow">&#x25BE;</span></button>
+        <div class="faq-a" data-i18n="faq.a4">Lana erkennt, wenn ein Gespräch menschliche Betreuung braucht und leitet nahtlos an den zuständigen Mitarbeiter weiter -- inklusive Kontext und Zusammenfassung.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Kann ich Lana jederzeit kündigen?<span class="faq-arrow">&#x25BE;</span></button>
-        <div class="faq-a">Ja, alle Pläne sind monatlich kündbar. Keine Mindestlaufzeit, keine versteckten Gebühren.</div>
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span data-i18n="faq.q5">Kann ich Lana jederzeit kündigen?</span><span class="faq-arrow">&#x25BE;</span></button>
+        <div class="faq-a" data-i18n="faq.a5">Ja, alle Pläne sind monatlich kündbar. Keine Mindestlaufzeit, keine versteckten Gebühren.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Welche Integrationen gibt es?<span class="faq-arrow">&#x25BE;</span></button>
-        <div class="faq-a">Direkte Integrationen mit HubSpot, Pipedrive und Cal.com. Über Zapier und Make.com verbindest du Call Lana mit über 5.000 weiteren Tools.</div>
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span data-i18n="faq.q6">Welche Integrationen gibt es?</span><span class="faq-arrow">&#x25BE;</span></button>
+        <div class="faq-a" data-i18n="faq.a6">Direkte Integrationen mit HubSpot, Pipedrive und Cal.com. Über Zapier und Make.com verbindest du Call Lana mit über 5.000 weiteren Tools.</div>
       </div>
     </div>
   </section>
@@ -498,11 +498,11 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
 
   <!-- FINAL CTA -->
   <section class="final-cta">
-    <h2>Bereit, keinen Anruf mehr zu verpassen?</h2>
-    <p>Starte jetzt kostenlos — keine Kreditkarte, keine Vertragsbindung. 14 Tage testen.</p>
+    <h2 data-i18n="finalcta.title">Bereit, keinen Anruf mehr zu verpassen?</h2>
+    <p data-i18n="finalcta.subtitle">Starte jetzt kostenlos -- keine Kreditkarte, keine Vertragsbindung. 14 Tage testen.</p>
     <div class="hero-btns">
-      <a href="registrierung.html" class="btn-primary">Kostenlos starten</a>
-      <a href="kontakt.html" class="btn-secondary">Demo buchen</a>
+      <a href="registrierung.html" class="btn-primary" data-i18n="finalcta.primary">Kostenlos starten</a>
+      <a href="kontakt.html" class="btn-secondary" data-i18n="finalcta.secondary">Demo buchen</a>
     </div>
   </section>
 
@@ -526,17 +526,17 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
     <div class="footer-col">
       <h4 data-i18n="footer.legal">Rechtliches</h4>
       <ul>
-        <li><a href="impressum.html">Impressum</a></li>
-        <li><a href="datenschutz.html">Datenschutz</a></li>
-        <li><a href="agb.html">AGB</a></li>
+        <li><a href="impressum.html" data-i18n="footer.imprint">Impressum</a></li>
+        <li><a href="datenschutz.html" data-i18n="footer.privacy">Datenschutz</a></li>
+        <li><a href="agb.html" data-i18n="footer.terms">AGB</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4 data-i18n="footer.account">Konto</h4>
       <ul>
-        <li><a href="registrierung.html">Registrieren</a></li>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="registrierung.html" data-i18n="footer.register">Registrieren</a></li>
+        <li><a href="login.html" data-i18n="footer.login">Login</a></li>
+        <li><a href="dashboard.html" data-i18n="footer.dashboard">Dashboard</a></li>
       </ul>
     </div>
   </div>
