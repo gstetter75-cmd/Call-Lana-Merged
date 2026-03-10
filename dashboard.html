@@ -2023,7 +2023,8 @@ async function confirmTopup() {
     closeTopupModal();
     await loadBillingData();
   } catch (err) {
-    showToast('Fehler: ' + err.message, true);
+    console.error(err);
+    showToast('Aufladung fehlgeschlagen. Bitte versuchen Sie es erneut.', true);
   } finally {
     btn.disabled = false;
     updateTopupButton();
@@ -2046,7 +2047,8 @@ async function saveAutoReloadSettings() {
     }).eq('user_id', user.id);
     showToast(enabled ? 'Auto-Aufladung aktiviert' : 'Auto-Aufladung deaktiviert');
   } catch (err) {
-    showToast('Fehler: ' + err.message, true);
+    console.error(err);
+    showToast('Einstellung konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.', true);
   }
 }
 
@@ -2065,7 +2067,8 @@ async function saveHardCapSettings() {
     showToast(enabled ? 'Ausgabenlimit auf ' + formatCents(amount) + ' gesetzt' : 'Ausgabenlimit deaktiviert');
     await loadBillingData();
   } catch (err) {
-    showToast('Fehler: ' + err.message, true);
+    console.error(err);
+    showToast('Einstellung konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.', true);
   }
 }
 
@@ -2314,7 +2317,8 @@ async function disconnectIntegration(integrationId) {
     showToast('Integration getrennt.');
     await loadIntegrations();
   } catch (err) {
-    showToast('Fehler: ' + err.message, true);
+    console.error(err);
+    showToast('Integration konnte nicht getrennt werden. Bitte versuchen Sie es erneut.', true);
   }
 }
 
@@ -2415,7 +2419,8 @@ async function importCsvContacts() {
     closeCsvImportModal();
     await loadContacts();
   } catch (err) {
-    showToast('Fehler: ' + err.message, true);
+    console.error(err);
+    showToast('Import fehlgeschlagen. Bitte versuchen Sie es erneut.', true);
   } finally {
     btn.disabled = false;
     btn.textContent = 'Importieren';
@@ -2580,7 +2585,8 @@ async function savePaymentMethod() {
     closePaymentModal();
     await loadPaymentMethods();
   } catch (err) {
-    showToast('Fehler: ' + err.message, true);
+    console.error(err);
+    showToast('Zahlungsmethode konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.', true);
   } finally {
     btn.disabled = false;
     btn.textContent = 'Zahlungsmethode speichern';
@@ -2598,7 +2604,8 @@ async function removePaymentMethod(priority) {
     showToast('Zahlungsmethode entfernt.');
     await loadPaymentMethods();
   } catch (err) {
-    showToast('Fehler: ' + err.message, true);
+    console.error(err);
+    showToast('Zahlungsmethode konnte nicht entfernt werden. Bitte versuchen Sie es erneut.', true);
   }
 }
 

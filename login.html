@@ -165,10 +165,12 @@ h1{font-size:1.7rem;font-weight:900;text-align:center;margin-bottom:6px;color:va
 <script src="js/auth-guard.js"></script>
 <script>
 // ==========================================
-// GLOBAL STATE
+// GLOBAL STATE & RATE LIMITING (SEC-019)
 // ==========================================
-let loginAttempts = 0;
-const MAX_ATTEMPTS = 5;
+let failedAttempts = 0;
+const THROTTLE_AFTER = 3;
+const LOCKOUT_SECONDS = 30;
+let lockoutTimer = null;
 
 // ==========================================
 // ROLE-BASED REDIRECT
@@ -262,10 +264,10 @@ document.getElementById('forgotBtn').addEventListener('click', async (e) => {
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  if (loginAttempts >= MAX_ATTEMPTS) {
-    showAlert('Zu viele Login-Versuche. Bitte warte 5 Minuten.', 'error');
-    return;
-  }
+  const subBtn = document.getElementById('subBtn');
+
+  // Block submission while locked out
+  if (lockoutTimer) return;
 
   document.querySelectorAll('.err-msg').forEach(el => el.textContent = '');
   document.querySelectorAll('.finp').forEach(el => el.classList.remove('err'));
@@ -307,15 +309,15 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
       localStorage.removeItem('calllana_remember_email');
     }
 
-    loginAttempts = 0;
-    showAlert('✓ Login erfolgreich! Weiterleitung...', 'success');
+    failedAttempts = 0;
+    showAlert('Login erfolgreich! Weiterleitung...', 'success');
 
     setTimeout(async () => {
       await redirectByRole();
     }, 1000);
 
   } else {
-    loginAttempts++;
+    failedAttempts++;
 
     document.getElementById('loginForm').style.display = 'block';
     document.getElementById('loader').style.display = 'none';
@@ -330,13 +332,42 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
       errorMsg += result.error;
     }
 
-    if (loginAttempts >= MAX_ATTEMPTS - 1) {
-      errorMsg += ` (Noch ${MAX_ATTEMPTS - loginAttempts} Versuch übrig)`;
+    // Activate lockout after THROTTLE_AFTER failed attempts
+    if (failedAttempts >= THROTTLE_AFTER) {
+      startLockout(subBtn);
+    } else {
+      const remaining = THROTTLE_AFTER - failedAttempts;
+      errorMsg += ' (Noch ' + remaining + ' Versuch' + (remaining > 1 ? 'e' : '') + ' vor Sperre)';
     }
 
     showAlert(errorMsg, 'error');
   }
 });
+
+// ==========================================
+// LOCKOUT COUNTDOWN (SEC-019)
+// ==========================================
+function startLockout(btn) {
+  let remaining = LOCKOUT_SECONDS;
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Gesperrt (' + remaining + 's)';
+  showAlert('Zu viele Fehlversuche. Login ist fuer ' + remaining + ' Sekunden gesperrt.', 'error');
+
+  lockoutTimer = setInterval(() => {
+    remaining--;
+    if (remaining <= 0) {
+      clearInterval(lockoutTimer);
+      lockoutTimer = null;
+      failedAttempts = 0;
+      btn.disabled = false;
+      btn.textContent = originalText;
+      hideAlert();
+    } else {
+      btn.textContent = 'Gesperrt (' + remaining + 's)';
+    }
+  }, 1000);
+}
 
 function showError(fieldId, message) {
   const field = document.getElementById(fieldId);
@@ -367,11 +398,7 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-if (loginAttempts > 0) {
-  setTimeout(() => {
-    loginAttempts = 0;
-  }, 5 * 60 * 1000);
-}
+// Rate limit reset is handled by startLockout() countdown (SEC-019)
 </script>
 <script src="cookie-consent.js"></script>
 </body>

@@ -19,7 +19,7 @@ const auth = {
       return { success: true, data };
     } catch (error) {
       console.error('Signup error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -33,7 +33,7 @@ const auth = {
       return { success: true, data };
     } catch (error) {
       console.error('Login error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Anmeldung fehlgeschlagen. Bitte pruefen Sie Ihre Zugangsdaten.' };
     }
   },
 
@@ -44,7 +44,7 @@ const auth = {
       return { success: true };
     } catch (error) {
       console.error('Logout error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Abmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -79,7 +79,7 @@ const auth = {
       return { success: true, data };
     } catch (error) {
       console.error('Update profile error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Profil konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -92,7 +92,7 @@ const auth = {
       return { success: true };
     } catch (error) {
       console.error('Reset password error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Passwort-Zuruecksetzung fehlgeschlagen. Bitte versuchen Sie es erneut.' };
     }
   }
 };
@@ -119,7 +119,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Save call error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -139,7 +139,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Get calls error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -171,7 +171,7 @@ const db = {
       };
     } catch (error) {
       console.error('Get stats error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -192,7 +192,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Save settings error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -211,7 +211,7 @@ const db = {
       return { success: true, data: data?.settings || {} };
     } catch (error) {
       console.error('Get settings error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -232,7 +232,7 @@ const db = {
       return { success: true, data: data || [] };
     } catch (error) {
       console.error('Get assistants error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -252,7 +252,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Get assistant error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -271,7 +271,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Create assistant error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -292,7 +292,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Update assistant error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -311,7 +311,7 @@ const db = {
       return { success: true };
     } catch (error) {
       console.error('Delete assistant error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -332,7 +332,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Get profile error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -355,7 +355,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Update profile error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -375,7 +375,7 @@ const db = {
       return { success: true, data: data || [] };
     } catch (error) {
       console.error('Get all profiles error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -392,7 +392,7 @@ const db = {
       return { success: true, data: data || [] };
     } catch (error) {
       console.error('Get organizations error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -408,7 +408,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Get organization error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -424,7 +424,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Create organization error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -441,7 +441,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Update organization error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -459,7 +459,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Add org member error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -475,7 +475,7 @@ const db = {
       return { success: true };
     } catch (error) {
       console.error('Remove org member error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -497,7 +497,7 @@ const db = {
       return { success: true, data: data || [] };
     } catch (error) {
       console.error('Get leads error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -513,7 +513,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Get lead error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -529,7 +529,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Create lead error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -546,7 +546,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Update lead error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -561,7 +561,7 @@ const db = {
       return { success: true };
     } catch (error) {
       console.error('Delete lead error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -584,7 +584,7 @@ const db = {
       return { success: true, data: data || [] };
     } catch (error) {
       console.error('Get tasks error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -603,7 +603,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Create task error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -620,7 +620,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Update task error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -638,7 +638,7 @@ const db = {
       return { success: true };
     } catch (error) {
       console.error('Delete task error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -659,7 +659,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Create note error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -677,7 +677,7 @@ const db = {
       return { success: true };
     } catch (error) {
       console.error('Delete note error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -699,7 +699,7 @@ const db = {
       return { success: true, data: data || [] };
     } catch (error) {
       console.error('Get availability error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -718,7 +718,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Set availability error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -736,7 +736,7 @@ const db = {
       return { success: true };
     } catch (error) {
       console.error('Delete availability error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -756,7 +756,7 @@ const db = {
       return { success: true, data: data || [] };
     } catch (error) {
       console.error('Get conversations error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -773,7 +773,7 @@ const db = {
       return { success: true, data: data || [] };
     } catch (error) {
       console.error('Get messages error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -802,7 +802,7 @@ const db = {
       return { success: true, data: conv };
     } catch (error) {
       console.error('Create conversation error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -828,7 +828,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Send message error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -847,7 +847,7 @@ const db = {
       return { success: true };
     } catch (error) {
       console.error('Mark read error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -883,7 +883,7 @@ const db = {
       return { success: true, data };
     } catch (error) {
       console.error('Contact form error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   }
 };

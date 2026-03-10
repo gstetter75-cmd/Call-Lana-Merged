@@ -481,7 +481,8 @@ async function changePassword() {
     document.getElementById('newPw2').value = '';
     showToast('Passwort erfolgreich geändert!');
   } catch (e) {
-    errEl.textContent = 'Fehler: ' + e.message;
+    console.error(e);
+    errEl.textContent = 'Passwort konnte nicht geaendert werden. Bitte versuchen Sie es erneut.';
   }
 
   btn.disabled = false;
@@ -814,7 +815,8 @@ async function connSaveRecord(provider, label, category, config) {
     showToast(label + ' erfolgreich verbunden!');
     await loadConnectors();
   } catch (err) {
-    showToast('Fehler: ' + err.message, true);
+    console.error(err);
+    showToast('Verbindung fehlgeschlagen. Bitte versuchen Sie es erneut.', true);
   }
 }
 
@@ -894,7 +896,8 @@ async function connDisconnect() {
     closeConnModal();
     await loadConnectors();
   } catch (err) {
-    showToast('Fehler: ' + err.message, true);
+    console.error(err);
+    showToast('Trennung fehlgeschlagen. Bitte versuchen Sie es erneut.', true);
   }
 }
 
