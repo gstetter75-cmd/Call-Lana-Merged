@@ -3,3 +3,15 @@
 
 # Cloudflare Wrangler
 .wrangler
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+.DS_Store
