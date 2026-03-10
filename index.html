@@ -444,27 +444,27 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
     </div>
     <div class="faq-list fi">
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Wie schnell ist Call Lana einsatzbereit?<span class="faq-arrow">&#x25BE;</span></div>
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Wie schnell ist Call Lana einsatzbereit?<span class="faq-arrow">&#x25BE;</span></button>
         <div class="faq-a">In der Regel dauert das Setup weniger als 30 Minuten. Du erhältst eine eigene Rufnummer, konfigurierst Lana im Dashboard und bist live. Kein IT-Team nötig.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Ist Call Lana DSGVO-konform?<span class="faq-arrow">&#x25BE;</span></div>
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Ist Call Lana DSGVO-konform?<span class="faq-arrow">&#x25BE;</span></button>
         <div class="faq-a">Ja, vollständig. Unsere Server stehen bei Hetzner in Nürnberg. Alle Daten bleiben in der EU. Wir nutzen OpenAI ausschließlich über Microsoft Azure EU-Server.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Welche Sprachen unterstützt Lana?<span class="faq-arrow">&#x25BE;</span></div>
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Welche Sprachen unterstützt Lana?<span class="faq-arrow">&#x25BE;</span></button>
         <div class="faq-a">Aktuell Deutsch und Englisch. Weitere Sprachen sind in Planung. Lana erkennt automatisch die Sprache des Anrufers.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Was passiert bei komplexen Anfragen?<span class="faq-arrow">&#x25BE;</span></div>
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Was passiert bei komplexen Anfragen?<span class="faq-arrow">&#x25BE;</span></button>
         <div class="faq-a">Lana erkennt, wenn ein Gespräch menschliche Betreuung braucht und leitet nahtlos an den zuständigen Mitarbeiter weiter — inklusive Kontext und Zusammenfassung.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Kann ich Lana jederzeit kündigen?<span class="faq-arrow">&#x25BE;</span></div>
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Kann ich Lana jederzeit kündigen?<span class="faq-arrow">&#x25BE;</span></button>
         <div class="faq-a">Ja, alle Pläne sind monatlich kündbar. Keine Mindestlaufzeit, keine versteckten Gebühren.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Welche Integrationen gibt es?<span class="faq-arrow">&#x25BE;</span></div>
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Welche Integrationen gibt es?<span class="faq-arrow">&#x25BE;</span></button>
         <div class="faq-a">Direkte Integrationen mit HubSpot, Pipedrive und Cal.com. Über Zapier und Make.com verbindest du Call Lana mit über 5.000 weiteren Tools.</div>
       </div>
     </div>
@@ -564,7 +564,9 @@ window.addEventListener('scroll', () => {
 
 // FAQ toggle
 function toggleFaq(el) {
-  el.parentElement.classList.toggle('open');
+  const item = el.parentElement;
+  item.classList.toggle('open');
+  el.setAttribute('aria-expanded', item.classList.contains('open'));
 }
 
 // Copy phone

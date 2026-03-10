@@ -74,7 +74,7 @@ nav.scrolled{box-shadow:var(--shadow);}
 /* ===== FAQ ===== */
 .faq-list{max-width:720px;margin:0 auto;}
 .faq-item{border-bottom:1px solid var(--border);padding:20px 0;}
-.faq-q{display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:700;font-size:1rem;color:var(--tx);gap:16px;user-select:none;}
+.faq-q{display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:700;font-size:1rem;color:var(--tx);gap:16px;user-select:none;background:none;border:none;width:100%;text-align:left;padding:0;font-family:inherit;line-height:inherit;}
 .faq-q:hover{color:var(--pu);}
 .faq-arrow{font-size:1.2rem;color:var(--tx3);transition:transform .3s;flex-shrink:0;}
 .faq-item.open .faq-arrow{transform:rotate(180deg);}
