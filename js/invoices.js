@@ -50,10 +50,14 @@ function renderInvoiceTable(invoices) {
       <td>${period}</td>
       <td style="font-weight:600;">${formatCents(inv.total_gross_cents || 0)}</td>
       <td>${getStatusBadge(inv.status)}</td>
-      <td>
+      <td style="display:flex;gap:6px;align-items:center;">
         <button class="btn-icon" onclick="downloadInvoicePdf('${inv.id}')" title="PDF herunterladen"
           style="background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-radius:8px;padding:6px 12px;cursor:pointer;color:var(--pu3);font-size:12px;font-weight:600;transition:all .2s;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PDF
+        </button>
+        <button class="btn-icon" onclick="resendInvoiceEmail('${inv.id}')" title="${inv.email_sent ? 'Erneut senden' : 'Per E-Mail senden'}"
+          style="background:${inv.email_sent ? 'rgba(74,222,128,.1)' : 'rgba(96,165,250,.1)'};border:1px solid ${inv.email_sent ? 'rgba(74,222,128,.25)' : 'rgba(96,165,250,.25)'};border-radius:8px;padding:6px 12px;cursor:pointer;color:${inv.email_sent ? 'var(--green)' : '#60a5fa'};font-size:12px;font-weight:600;transition:all .2s;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>${inv.email_sent ? 'Erneut' : 'Senden'}
         </button>
       </td>
     </tr>`;
@@ -154,6 +158,62 @@ async function downloadInvoicePdf(invoiceId) {
     Logger.error('downloadInvoicePdf', err);
     if (typeof showToast === 'function') {
       showToast('PDF konnte nicht erstellt werden: ' + (err.message || err), true);
+    }
+  }
+}
+
+/**
+ * Send (or resend) an invoice email by calling the Edge Function.
+ * Triggers server-side PDF generation and email delivery via Resend.
+ * @param {string} invoiceId - UUID of the invoice
+ */
+async function resendInvoiceEmail(invoiceId) {
+  try {
+    // Confirm before sending
+    const confirmed = confirm('Rechnung per E-Mail senden?');
+    if (!confirmed) return;
+
+    // Show loading state
+    if (typeof showToast === 'function') {
+      showToast('Rechnung wird gesendet...');
+    }
+
+    const { data: sessionData } = await supabaseClient.auth.getSession();
+    const accessToken = sessionData?.session?.access_token;
+
+    if (!accessToken) {
+      throw new Error('Nicht angemeldet. Bitte erneut einloggen.');
+    }
+
+    // Resolve Edge Function URL from Supabase project URL
+    const supabaseUrl = supabaseClient.supabaseUrl || SUPABASE_URL;
+    const edgeFunctionUrl = supabaseUrl + '/functions/v1/send-invoice-email';
+
+    const response = await fetch(edgeFunctionUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken,
+      },
+      body: JSON.stringify({ invoice_id: invoiceId }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || 'Fehler beim Senden der Rechnung');
+    }
+
+    if (typeof showToast === 'function') {
+      showToast('Rechnung erfolgreich gesendet!');
+    }
+
+    // Reload invoice table to reflect updated status
+    await loadInvoices();
+  } catch (err) {
+    Logger.error('resendInvoiceEmail', err);
+    if (typeof showToast === 'function') {
+      showToast('E-Mail konnte nicht gesendet werden: ' + (err.message || err), true);
     }
   }
 }
