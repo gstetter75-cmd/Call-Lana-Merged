@@ -146,6 +146,7 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
         <a href="#profile" class="sn-item active" data-tab="profile"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profil</a>
         <a href="#security" class="sn-item" data-tab="security"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Sicherheit</a>
         <a href="#notifications" class="sn-item" data-tab="notifications"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Benachrichtigungen</a>
+        <a href="#connectors" class="sn-item" data-tab="connectors"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Connectoren</a>
         <a href="#danger" class="sn-item" data-tab="danger"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Gefahrenzone</a>
       </div>
 
@@ -195,6 +196,134 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
             <div class="toggle-row"><div class="toggle-left"><strong>Produktupdates</strong><span>Monatlich — Neue Features und Verbesserungen</span></div><div class="toggle-switch" data-key="notify_updates" onclick="toggleNotif(this)"></div></div>
             <div class="toggle-row"><div class="toggle-left"><strong>Marketing</strong><span>Gelegentlich — Tipps und Best Practices</span></div><div class="toggle-switch" data-key="notify_marketing" onclick="toggleNotif(this)"></div></div>
             <button class="btn-save" style="margin-top:16px;" onclick="saveNotifications()">Einstellungen speichern</button>
+          </div>
+        </div>
+
+        <!-- CONNECTORS TAB -->
+        <div class="tab-content" id="tab-connectors" style="display:none;">
+          <div class="sc-section">
+            <h2>Connectoren</h2>
+            <p>Verbinde externe Tools und Dienste mit Call Lana. Aehnlich wie Plugins werden Connectoren hier eingerichtet und stehen dann im Dashboard zur Verfuegung.</p>
+
+            <!-- Search & Filter -->
+            <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+              <input type="text" class="finp" id="connSearchInput" placeholder="Connector suchen..." style="max-width:260px;" oninput="filterConnectors()">
+              <select class="finp" id="connCategoryFilter" style="max-width:200px;" onchange="filterConnectors()">
+                <option value="Alle">Alle Kategorien</option>
+              </select>
+            </div>
+
+            <!-- Connected connectors -->
+            <div id="connConnectedSection" style="margin-bottom:28px;display:none;">
+              <h3 style="font-size:14px;font-weight:700;color:var(--green);margin-bottom:12px;">Verbunden (<span id="connConnectedCount">0</span>)</h3>
+              <div id="connConnectedGrid" style="display:grid;grid-template-columns:1fr;gap:10px;"></div>
+            </div>
+
+            <!-- Available connectors grid -->
+            <h3 style="font-size:14px;font-weight:700;color:var(--tx2);margin-bottom:12px;" id="connAvailableLabel">Verfuegbar</h3>
+            <div id="connAvailableGrid" style="display:grid;grid-template-columns:1fr;gap:8px;"></div>
+          </div>
+        </div>
+
+        <!-- Connector Connect Modal -->
+        <div class="modal-overlay" id="connModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;display:none;align-items:center;justify-content:center;">
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <span id="connModalIcon" style="font-size:1.8rem;"></span>
+                <div>
+                  <h2 id="connModalTitle" style="margin:0;font-size:1.1rem;"></h2>
+                  <span id="connModalCategory" style="font-size:11px;color:var(--tx3);"></span>
+                </div>
+              </div>
+              <button onclick="closeConnModal()" style="background:none;border:none;color:var(--tx3);font-size:22px;cursor:pointer;padding:4px 8px;">&times;</button>
+            </div>
+            <p id="connModalDesc" style="font-size:13px;color:var(--tx2);margin-bottom:20px;line-height:1.6;"></p>
+
+            <!-- OAuth -->
+            <div id="connFormOAuth" style="display:none;">
+              <p style="font-size:12px;color:var(--tx3);margin-bottom:16px;">Du wirst zu <strong id="connOAuthName"></strong> weitergeleitet, um den Zugriff zu autorisieren. Call Lana erhaelt nur Lesezugriff auf die benoetigten Daten.</p>
+              <button class="btn-save" style="width:100%;" onclick="connStartOAuth()">Mit <span id="connOAuthBtn"></span> verbinden</button>
+            </div>
+
+            <!-- API Key -->
+            <div id="connFormApiKey" style="display:none;">
+              <div class="fgrp">
+                <label for="connApiKeyInput">API-Key</label>
+                <input type="password" class="finp" id="connApiKeyInput" placeholder="API-Key eingeben" style="font-family:monospace;">
+              </div>
+              <div id="connApiKeyExtra" class="fgrp" style="display:none;">
+                <label id="connApiKeyExtraLabel">Subdomain / URL</label>
+                <input type="text" class="finp" id="connApiKeyExtraInput">
+              </div>
+              <p style="font-size:11px;color:var(--tx3);margin-bottom:16px;" id="connApiKeyHelp"></p>
+              <button class="btn-save" style="width:100%;" onclick="connSaveApiKey()">Verbindung speichern</button>
+            </div>
+
+            <!-- Webhook -->
+            <div id="connFormWebhook" style="display:none;">
+              <div class="fgrp">
+                <label>Webhook-URL</label>
+                <div style="display:flex;gap:8px;">
+                  <input type="text" class="finp" id="connWebhookUrl" readonly style="font-family:monospace;font-size:12px;">
+                  <button class="btn-secondary" style="white-space:nowrap;" onclick="connCopyWebhook()">Kopieren</button>
+                </div>
+              </div>
+              <div class="fgrp">
+                <label>Webhook-Secret</label>
+                <div style="display:flex;gap:8px;">
+                  <input type="password" class="finp" id="connWebhookSecret" readonly style="font-family:monospace;font-size:12px;">
+                  <button class="btn-secondary" style="white-space:nowrap;" onclick="connToggleSecret()">Anzeigen</button>
+                </div>
+              </div>
+              <p style="font-size:11px;color:var(--tx3);margin-bottom:16px;" id="connWebhookHelp"></p>
+              <button class="btn-save" style="width:100%;" onclick="connActivateWebhook()">Webhook aktivieren</button>
+            </div>
+
+            <!-- SIP -->
+            <div id="connFormSip" style="display:none;">
+              <div class="fgrp"><label>SIP-Server / Registrar</label><input type="text" class="finp" id="connSipServer" placeholder="z.B. sip.sipgate.de"></div>
+              <div class="fgrp"><label>SIP-Benutzername</label><input type="text" class="finp" id="connSipUser" placeholder="Benutzername oder Rufnummer"></div>
+              <div class="fgrp"><label>SIP-Passwort</label><input type="password" class="finp" id="connSipPass" placeholder="Passwort"></div>
+              <div class="fgrp"><label>Port (optional)</label><input type="text" class="finp" id="connSipPort" placeholder="5060"></div>
+              <p style="font-size:11px;color:var(--tx3);margin-bottom:16px;">Trage die SIP-Zugangsdaten deines Providers oder deiner Fritzbox ein. Die Verbindung wird verschluesselt uebertragen.</p>
+              <button class="btn-save" style="width:100%;" onclick="connSaveSip()">SIP-Verbindung speichern</button>
+            </div>
+
+            <!-- Forwarding -->
+            <div id="connFormForward" style="display:none;">
+              <div class="fgrp">
+                <label>Call Lana Rufnummer</label>
+                <div style="display:flex;gap:8px;">
+                  <input type="text" class="finp" id="connForwardNumber" readonly style="font-family:monospace;font-weight:700;font-size:15px;">
+                  <button class="btn-secondary" style="white-space:nowrap;" onclick="connCopyForward()">Kopieren</button>
+                </div>
+              </div>
+              <p style="font-size:12px;color:var(--tx2);margin-bottom:16px;" id="connForwardHelp"></p>
+              <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;">
+                <h4 style="font-size:12px;font-weight:700;margin-bottom:10px;color:var(--tx);">Einrichtung in 3 Schritten:</h4>
+                <ol style="font-size:12px;color:var(--tx2);padding-left:20px;display:flex;flex-direction:column;gap:6px;">
+                  <li>Kopiere die Call Lana Rufnummer oben</li>
+                  <li>Richte eine Rufumleitung bei deinem Telefonanbieter oder in der Fritzbox ein</li>
+                  <li>Waehle, wann umgeleitet werden soll (immer, bei Besetzt, nach X Sekunden)</li>
+                </ol>
+              </div>
+              <button class="btn-save" style="width:100%;" onclick="connActivateForward()">Rufumleitung aktiviert - Testen</button>
+            </div>
+
+            <!-- Coming Soon -->
+            <div id="connFormInfo" style="display:none;">
+              <div style="background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.25);border-radius:10px;padding:16px;text-align:center;">
+                <p style="font-size:13px;color:var(--orange);font-weight:600;margin-bottom:6px;">Bald verfuegbar</p>
+                <p style="font-size:12px;color:var(--tx3);">Diese Integration wird in Kuerze freigeschaltet.</p>
+              </div>
+              <button class="btn-secondary" style="width:100%;margin-top:16px;" onclick="connNotifyReady()">Benachrichtigen, wenn verfuegbar</button>
+            </div>
+
+            <!-- Disconnect button (only for connected) -->
+            <div id="connDisconnectSection" style="display:none;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+              <button class="btn-danger" style="width:100%;" onclick="connDisconnect()">Connector trennen</button>
+            </div>
           </div>
         </div>
 
@@ -403,6 +532,369 @@ function showToast(msg, isError) {
 }
 
 // ==========================================
+// CONNECTORS
+// ==========================================
+const CONNECTORS = [
+  // Telefonie
+  { provider: 'sip_trunk', label: 'SIP / SIP-Trunking', icon: '📞', category: 'Telefonie', type: 'sip',  status: 'available', desc: 'Verbinde deinen SIP-Trunk-Anbieter (Sipgate, Placetel, easybell u.a.) direkt mit Call Lana.' },
+  { provider: 'fritzbox', label: 'Fritzbox', icon: '📠', category: 'Telefonie', type: 'sip', status: 'available', desc: 'Verbinde deine Fritzbox per SIP. So leitet deine Fritzbox Anrufe direkt an Call Lana weiter.' },
+  { provider: 'rufumleitung', label: 'Rufumleitung', icon: '↪️', category: 'Telefonie', type: 'forward', status: 'available', desc: 'Leite Anrufe per Rufumleitung an Call Lana weiter – funktioniert mit jedem Telefonanbieter.' },
+  { provider: 'eigene_rufnummer', label: 'Eigene Rufnummer', icon: '🔢', category: 'Telefonie', type: 'forward', status: 'available', desc: 'Nutze eine eigene Call Lana Rufnummer als Geschaeftsnummer.' },
+  // Webhooks & API
+  { provider: 'rest_api', label: 'REST API', icon: '🔌', category: 'Webhooks & API', type: 'webhook', status: 'available', desc: 'Nutze die Call Lana REST API fuer Anrufe, Kontakte und Daten.' },
+  { provider: 'pre_call_webhook', label: 'Pre-Call Webhook', icon: '⚡', category: 'Webhooks & API', type: 'webhook', status: 'available', desc: 'Wird vor jedem Anruf ausgeloest. Lade Kundendaten oder entscheide ob angenommen wird.' },
+  { provider: 'mid_call_api', label: 'Mid-Call / Live-API', icon: '🔄', category: 'Webhooks & API', type: 'webhook', status: 'available', desc: 'Greife waehrend des Gespraechs in Echtzeit auf externe Daten zu.' },
+  { provider: 'post_call_webhook', label: 'Post-Call Webhook', icon: '📤', category: 'Webhooks & API', type: 'webhook', status: 'available', desc: 'Wird nach jedem Anruf ausgeloest. Sende Zusammenfassungen oder erstelle Tickets.' },
+  { provider: 'outbound_api', label: 'Outbound Call API', icon: '📲', category: 'Webhooks & API', type: 'webhook', status: 'available', desc: 'Starte ausgehende Anrufe per API – z.B. fuer Terminbestaetigung.' },
+  // CRM & Vertrieb
+  { provider: 'hubspot', label: 'HubSpot CRM', icon: '💼', category: 'CRM & Vertrieb', type: 'oauth', status: 'available', desc: 'Synchronisiere Kontakte, Deals und Aktivitaeten mit HubSpot.' },
+  { provider: 'salesforce', label: 'Salesforce', icon: '☁️', category: 'CRM & Vertrieb', type: 'oauth', status: 'available', desc: 'Verbinde Salesforce fuer Leads, Kontakte und Cases.' },
+  { provider: 'pipedrive', label: 'Pipedrive', icon: '🔄', category: 'CRM & Vertrieb', type: 'apikey', status: 'available', desc: 'Importiere Kontakte und erstelle Aktivitaeten in Pipedrive.', apiHelp: 'API-Token unter Einstellungen > Persoenlich > API.' },
+  { provider: 'zoho_crm', label: 'Zoho CRM', icon: '📊', category: 'CRM & Vertrieb', type: 'oauth', status: 'available', desc: 'Synchronisiere Zoho CRM Kontakte und erstelle Anrufprotokolle.' },
+  { provider: 'gohighlevel', label: 'GoHighLevel', icon: '🚀', category: 'CRM & Vertrieb', type: 'apikey', status: 'available', desc: 'Lead-Management und automatische Follow-ups.', apiHelp: 'API-Key unter Settings > Business Profile > API Key.' },
+  // Kalender
+  { provider: 'google_calendar', label: 'Google Calendar', icon: '📆', category: 'Kalender & Termine', type: 'oauth', status: 'available', desc: 'Termine pruefen und neue Termine eintragen.' },
+  { provider: 'outlook', label: 'Outlook / 365', icon: '📧', category: 'Kalender & Termine', type: 'oauth', status: 'available', desc: 'Outlook-Kalender fuer Terminvergabe und Verfuegbarkeitspruefung.' },
+  { provider: 'cal_com', label: 'cal.com', icon: '🗓️', category: 'Kalender & Termine', type: 'apikey', status: 'available', desc: 'Freie Slots pruefen und Termine buchen.', apiHelp: 'API-Key unter Settings > Developer > API Keys.' },
+  { provider: 'calendly', label: 'Calendly', icon: '📅', category: 'Kalender & Termine', type: 'oauth', status: 'available', desc: 'Verfuegbarkeit pruefen und Buchungslinks erstellen.' },
+  { provider: 'etermin', label: 'eTermin', icon: '🕐', category: 'Kalender & Termine', type: 'apikey', status: 'available', desc: 'Online-Terminvergabe direkt waehrend des Telefonats.', apiHelp: 'API-Zugangsdaten unter Einstellungen > API.' },
+  { provider: 'treatwell', label: 'Treatwell', icon: '💇', category: 'Kalender & Termine', type: 'apikey', status: 'coming_soon', desc: 'Fuer Salons und Beauty-Studios – Terminbuchung per Telefon.' },
+  { provider: 'shore', label: 'Shore', icon: '🏪', category: 'Kalender & Termine', type: 'apikey', status: 'coming_soon', desc: 'Fuer lokale Dienstleister – Terminkalender und Kundenverwaltung.' },
+  // Arztpraxen
+  { provider: 'doctolib', label: 'Doctolib', icon: '🏥', category: 'Arztpraxen', type: 'apikey', status: 'coming_soon', desc: 'Terminvergabe und Patientenverwaltung.' },
+  { provider: 'cgm_turbomed', label: 'CGM / Turbomed', icon: '💊', category: 'Arztpraxen', type: 'apikey', status: 'coming_soon', desc: 'Praxissoftware fuer Patientendaten und Termine.' },
+  { provider: 'samedi', label: 'Samedi', icon: '🩺', category: 'Arztpraxen', type: 'apikey', status: 'coming_soon', desc: 'Terminmanagement fuer Arztpraxen und Kliniken.' },
+  // Hotels & Gastro
+  { provider: 'apaleo', label: 'Apaleo PMS', icon: '🏨', category: 'Hotels & Gastro', type: 'oauth', status: 'available', desc: 'Reservierungspruefung und Gaesteinformationen.' },
+  { provider: 'aleno', label: 'aleno', icon: '🍽️', category: 'Hotels & Gastro', type: 'apikey', status: 'available', desc: 'Tischreservierungen per Telefon.', apiHelp: 'API-Key im Dashboard unter Einstellungen > API.' },
+  { provider: 'opentable', label: 'OpenTable', icon: '🛎️', category: 'Hotels & Gastro', type: 'oauth', status: 'available', desc: 'Restaurantreservierungen waehrend des Anrufs.' },
+  // E-Commerce & ERP
+  { provider: 'shopify', label: 'Shopify', icon: '🛒', category: 'E-Commerce & ERP', type: 'apikey', status: 'available', desc: 'Bestellungen und Kundendaten abfragen.', apiHelp: 'API-Key unter Apps > App entwickeln.', extraField: 'Shop-URL', extraPlaceholder: 'dein-shop.myshopify.com' },
+  { provider: 'jtl', label: 'JTL Wawi', icon: '📦', category: 'E-Commerce & ERP', type: 'apikey', status: 'available', desc: 'Bestellstatus, Lagerbestaende und Kundendaten.', apiHelp: 'API unter Globale Einstellungen > API.' },
+  { provider: 'woocommerce', label: 'WooCommerce', icon: '🛍️', category: 'E-Commerce & ERP', type: 'apikey', status: 'available', desc: 'Bestellungen, Produkte und Kundendaten.', apiHelp: 'API-Key unter Einstellungen > Erweitert > REST-API.', extraField: 'Shop-URL', extraPlaceholder: 'https://dein-shop.de' },
+  { provider: 'sap', label: 'SAP', icon: '🏢', category: 'E-Commerce & ERP', type: 'apikey', status: 'available', desc: 'Kundenstammdaten, Auftraege und Materialbestaende.', apiHelp: 'API-Key aus dem SAP BTP Cockpit.', extraField: 'SAP API Endpunkt', extraPlaceholder: 'https://api.sap.com/...' },
+  { provider: 'xentral', label: 'Xentral', icon: '⚙️', category: 'E-Commerce & ERP', type: 'apikey', status: 'available', desc: 'Auftraege, Artikel und Kundendaten.', apiHelp: 'API unter Administration > API.', extraField: 'Xentral-URL', extraPlaceholder: 'https://instanz.xentral.biz' },
+  { provider: 'plentymarkets', label: 'Plentymarkets', icon: '📋', category: 'E-Commerce & ERP', type: 'apikey', status: 'available', desc: 'Multi-Channel E-Commerce Daten.', apiHelp: 'API unter Einrichtung > Einstellungen > API.', extraField: 'Plenty-URL', extraPlaceholder: 'https://instanz.plentymarkets-cloud01.com' },
+  { provider: 'shopware', label: 'Shopware', icon: '🛒', category: 'E-Commerce & ERP', type: 'apikey', status: 'available', desc: 'Shopware 6 API fuer Bestellungen und Kunden.', apiHelp: 'Unter Einstellungen > System > Integrationen.', extraField: 'Shop-URL', extraPlaceholder: 'https://dein-shop.de' },
+  // Buchhaltung
+  { provider: 'lexoffice', label: 'Lexoffice', icon: '📒', category: 'Buchhaltung', type: 'apikey', status: 'available', desc: 'Rechnungsdaten und Kundenstammdaten.', apiHelp: 'API-Key unter Einstellungen > Oeffentliche API.' },
+  { provider: 'sevdesk', label: 'sevDesk', icon: '🧾', category: 'Buchhaltung', type: 'apikey', status: 'available', desc: 'Rechnungen, Kontakte und Buchungsdaten.', apiHelp: 'API-Token unter Einstellungen > Benutzer > API-Token.' },
+  // Marketing
+  { provider: 'mailchimp', label: 'Mailchimp', icon: '📧', category: 'Marketing & Lead-Gen', type: 'apikey', status: 'available', desc: 'Anrufer als Kontakte in Mailchimp-Listen.', apiHelp: 'API-Key unter Account > Extras > API Keys.' },
+  { provider: 'activecampaign', label: 'ActiveCampaign', icon: '🎯', category: 'Marketing & Lead-Gen', type: 'apikey', status: 'available', desc: 'Kontakte erstellen und Automations starten.', apiHelp: 'API-Key unter Settings > Developer.', extraField: 'Account-URL', extraPlaceholder: 'https://account.activehosted.com' },
+  { provider: 'klaviyo', label: 'Klaviyo', icon: '🎹', category: 'Marketing & Lead-Gen', type: 'apikey', status: 'available', desc: 'Anrufdaten fuer personalisierte Kampagnen.', apiHelp: 'API-Key unter Account > Settings > API Keys.' },
+  { provider: 'klicktipp', label: 'Klick-Tipp', icon: '✉️', category: 'Marketing & Lead-Gen', type: 'apikey', status: 'available', desc: 'Kontakte taggen basierend auf Anrufinhalten.', apiHelp: 'API unter Mein Account > API.' },
+  { provider: 'typeform', label: 'Typeform', icon: '📝', category: 'Marketing & Lead-Gen', type: 'oauth', status: 'available', desc: 'Typeform-Antworten als Kontext fuer Anrufe.' },
+  { provider: 'meta_lead_ads', label: 'Meta Lead Ads', icon: '📱', category: 'Marketing & Lead-Gen', type: 'oauth', status: 'available', desc: 'Leads importieren und automatische Rueckrufe.' },
+  // Support
+  { provider: 'zendesk', label: 'Zendesk', icon: '🎫', category: 'Support & Tickets', type: 'apikey', status: 'available', desc: 'Tickets erstellen und bestehende pruefen.', apiHelp: 'API-Token unter Admin > Channels > API.', extraField: 'Subdomain', extraPlaceholder: 'firma.zendesk.com' },
+  { provider: 'freshdesk', label: 'Freshdesk', icon: '💬', category: 'Support & Tickets', type: 'apikey', status: 'available', desc: 'Ticket-Erstellung und Kundenlookup.', apiHelp: 'API-Key unter Profil > API-Key.', extraField: 'Domain', extraPlaceholder: 'firma.freshdesk.com' },
+  { provider: 'jira', label: 'Jira', icon: '🐛', category: 'Support & Tickets', type: 'apikey', status: 'available', desc: 'Jira-Issues erstellen oder Status pruefen.', apiHelp: 'API-Token unter id.atlassian.com > Sicherheit.', extraField: 'Jira-URL', extraPlaceholder: 'https://firma.atlassian.net' },
+  { provider: 'autotask', label: 'Autotask', icon: '🔧', category: 'Support & Tickets', type: 'apikey', status: 'available', desc: 'PSA-Integration fuer IT-Dienstleister.', apiHelp: 'API unter Admin > Extensions > Other APIs.' },
+  // Kommunikation
+  { provider: 'slack', label: 'Slack', icon: '💬', category: 'Kommunikation', type: 'oauth', status: 'available', desc: 'Anrufzusammenfassungen in Slack-Channels.' },
+  { provider: 'teams', label: 'Microsoft Teams', icon: '👥', category: 'Kommunikation', type: 'oauth', status: 'available', desc: 'Benachrichtigungen in Microsoft Teams.' },
+  { provider: 'discord', label: 'Discord', icon: '🎮', category: 'Kommunikation', type: 'webhook', status: 'available', desc: 'Anruf-Benachrichtigungen per Discord Webhook.' },
+  { provider: 'email_gateway', label: 'E-Mail-Gateway', icon: '✉️', category: 'Kommunikation', type: 'apikey', status: 'available', desc: 'E-Mails senden – Terminbestaetigungen, Zusammenfassungen.', apiHelp: 'SMTP-Zugangsdaten oder SendGrid/Mailgun API-Key.', extraField: 'SMTP-Server / API-URL', extraPlaceholder: 'smtp.provider.de' },
+  { provider: 'sms_gateway', label: 'SMS-Gateway', icon: '📱', category: 'Kommunikation', type: 'apikey', status: 'available', desc: 'SMS senden – Terminbestaetigung, Infos per SMS.', apiHelp: 'API-Key deines SMS-Providers (Twilio, sipgate, seven.io).', extraField: 'Absender-Nummer', extraPlaceholder: '+49...' },
+  // Datenbanken
+  { provider: 'airtable', label: 'Airtable', icon: '🗃️', category: 'Datenbanken', type: 'apikey', status: 'available', desc: 'Daten in Airtable-Bases lesen und schreiben.', apiHelp: 'Personal Access Token unter airtable.com/account.', extraField: 'Base-ID', extraPlaceholder: 'appXXXXXXXXXX' },
+  { provider: 'google_sheets', label: 'Google Sheets', icon: '📊', category: 'Datenbanken', type: 'oauth', status: 'available', desc: 'Google Sheets als Datenquelle fuer Preise, FAQ, Kontakte.' },
+  { provider: 'sql_db', label: 'SQL-Datenbanken', icon: '🗄️', category: 'Datenbanken', type: 'apikey', status: 'available', desc: 'MySQL, PostgreSQL oder MSSQL verbinden.', apiHelp: 'Verbindungsstring (Host, Port, Benutzername, DB-Name).', extraField: 'Host:Port', extraPlaceholder: 'db.example.com:5432' },
+  { provider: 'google_maps', label: 'Google Maps API', icon: '📍', category: 'Datenbanken', type: 'apikey', status: 'available', desc: 'Standortsuche und Entfernungsberechnung.', apiHelp: 'Google Maps API-Key aus der Cloud Console.' },
+  // Projektmanagement
+  { provider: 'notion', label: 'Notion', icon: '📓', category: 'Projektmanagement', type: 'oauth', status: 'available', desc: 'Notion-Datenbanken nutzen und Eintraege erstellen.' },
+  { provider: 'monday', label: 'monday.com', icon: '📋', category: 'Projektmanagement', type: 'apikey', status: 'available', desc: 'Items in monday.com Boards erstellen.', apiHelp: 'API-Key unter Profilbild > Admin > API.' },
+  // Automatisierung
+  { provider: 'zapier', label: 'Zapier', icon: '⚡', category: 'Automatisierung', type: 'webhook', status: 'available', desc: '5000+ Apps ueber Zapier Webhooks verbinden.' },
+  { provider: 'make', label: 'Make', icon: '🔧', category: 'Automatisierung', type: 'webhook', status: 'available', desc: 'Komplexe Automatisierungen mit Make erstellen.' },
+  { provider: 'n8n', label: 'n8n', icon: '🔗', category: 'Automatisierung', type: 'webhook', status: 'available', desc: 'Self-hosted Automatisierung mit voller Datenkontrolle.' },
+  // Sonderfunktionen
+  { provider: 'live_web', label: 'Live-Websuche', icon: '🌐', category: 'Sonderfunktionen', type: 'apikey', status: 'available', desc: 'Waehrend des Telefonats live im Web suchen.', apiHelp: 'Such-API-Key (Google Custom Search oder SerpAPI).' },
+  { provider: 'woasi', label: 'woasi', icon: '🏔️', category: 'Sonderfunktionen', type: 'apikey', status: 'coming_soon', desc: 'Regionale Auskunftsdienste und lokale Informationen.' },
+];
+
+let connActiveCategory = 'Alle';
+let connSearchQuery = '';
+let connConnected = [];
+let connCurrentProvider = null;
+
+function escHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function getConnCategories() {
+  const cats = [...new Set(CONNECTORS.map(c => c.category))];
+  return cats;
+}
+
+function initConnectorTab() {
+  const select = document.getElementById('connCategoryFilter');
+  const cats = getConnCategories();
+  select.innerHTML = '<option value="Alle">Alle Kategorien</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
+  loadConnectors();
+}
+
+function filterConnectors() {
+  connSearchQuery = (document.getElementById('connSearchInput').value || '').toLowerCase().trim();
+  connActiveCategory = document.getElementById('connCategoryFilter').value;
+  renderConnectors();
+}
+
+function getFilteredConnectors() {
+  return CONNECTORS.filter(c => {
+    const matchCat = connActiveCategory === 'Alle' || c.category === connActiveCategory;
+    const matchSearch = !connSearchQuery ||
+      c.label.toLowerCase().includes(connSearchQuery) ||
+      c.category.toLowerCase().includes(connSearchQuery) ||
+      c.provider.toLowerCase().includes(connSearchQuery) ||
+      (c.desc || '').toLowerCase().includes(connSearchQuery);
+    return matchCat && matchSearch;
+  });
+}
+
+function renderConnectors() {
+  const connProviders = connConnected.map(c => c.provider);
+
+  // Connected section
+  const connSection = document.getElementById('connConnectedSection');
+  if (connConnected.length > 0) {
+    connSection.style.display = 'block';
+    document.getElementById('connConnectedCount').textContent = connConnected.length;
+    document.getElementById('connConnectedGrid').innerHTML = connConnected.map(c => {
+      const def = CONNECTORS.find(d => d.provider === c.provider) || {};
+      const cfg = c.config || {};
+      const typeLabel = cfg.type === 'sip' ? 'SIP' : cfg.type === 'webhook' ? 'Webhook' : cfg.type === 'apikey' ? 'API-Key' : cfg.type === 'oauth' ? 'OAuth' : cfg.type === 'forward' ? 'Rufumleitung' : '';
+      return `<div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--bg3);border:1px solid rgba(74,222,128,.25);border-radius:12px;cursor:pointer;transition:all .2s;"
+        onclick="openConnModal('${c.provider}')"
+        onmouseover="this.style.borderColor='rgba(74,222,128,.5)'" onmouseout="this.style.borderColor='rgba(74,222,128,.25)'">
+        <span style="font-size:1.3rem;">${def.icon || '🔗'}</span>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:700;color:var(--tx);">${escHtml(c.provider_label || c.provider)}</div>
+          <div style="font-size:11px;color:var(--tx3);">${escHtml(c.category || '')} · ${typeLabel} · Verbunden seit ${c.connected_at ? new Date(c.connected_at).toLocaleDateString('de-DE') : '–'}</div>
+        </div>
+        <span style="font-size:10px;background:rgba(74,222,128,.15);color:var(--green);padding:4px 10px;border-radius:12px;font-weight:600;">Aktiv</span>
+      </div>`;
+    }).join('');
+  } else {
+    connSection.style.display = 'none';
+  }
+
+  // Available section
+  const filtered = getFilteredConnectors();
+  const available = filtered.filter(c => !connProviders.includes(c.provider));
+  document.getElementById('connAvailableLabel').textContent = 'Verfuegbar (' + available.length + ')';
+
+  if (available.length === 0) {
+    document.getElementById('connAvailableGrid').innerHTML = '<div style="text-align:center;padding:20px;color:var(--tx3);font-size:13px;">Keine weiteren Connectoren gefunden.</div>';
+    return;
+  }
+
+  document.getElementById('connAvailableGrid').innerHTML = available.map(c => {
+    const badge = c.status === 'coming_soon'
+      ? '<span style="font-size:10px;background:rgba(251,146,60,.15);color:var(--orange);padding:4px 10px;border-radius:12px;font-weight:600;">Bald</span>'
+      : '<span style="font-size:10px;background:rgba(124,58,237,.15);color:var(--pu3);padding:4px 10px;border-radius:12px;font-weight:600;">Verbinden</span>';
+    return `<div style="display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .2s;"
+      onclick="openConnModal('${c.provider}')"
+      onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='var(--border)'">
+      <span style="font-size:1.3rem;">${c.icon}</span>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:700;color:var(--tx);">${c.label}</div>
+        <div style="font-size:11px;color:var(--tx3);">${c.category}</div>
+      </div>
+      ${badge}
+    </div>`;
+  }).join('');
+}
+
+async function loadConnectors() {
+  if (!currentUser) return;
+  try {
+    const { data } = await supabaseClient.from('integrations').select('*').eq('user_id', currentUser.id);
+    connConnected = data || [];
+  } catch (e) {
+    connConnected = [];
+  }
+  renderConnectors();
+}
+
+function openConnModal(provider) {
+  const def = CONNECTORS.find(c => c.provider === provider);
+  if (!def) return;
+  connCurrentProvider = def;
+
+  document.getElementById('connModalIcon').textContent = def.icon;
+  document.getElementById('connModalTitle').textContent = def.label;
+  document.getElementById('connModalCategory').textContent = def.category;
+  document.getElementById('connModalDesc').textContent = def.desc || '';
+
+  const isConnected = connConnected.some(c => c.provider === provider);
+  document.getElementById('connDisconnectSection').style.display = isConnected ? 'block' : 'none';
+
+  ['connFormOAuth','connFormApiKey','connFormWebhook','connFormSip','connFormForward','connFormInfo'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+
+  if (def.status === 'coming_soon') {
+    document.getElementById('connFormInfo').style.display = 'block';
+  } else if (def.type === 'oauth') {
+    document.getElementById('connFormOAuth').style.display = 'block';
+    document.getElementById('connOAuthName').textContent = def.label;
+    document.getElementById('connOAuthBtn').textContent = def.label;
+  } else if (def.type === 'apikey') {
+    document.getElementById('connFormApiKey').style.display = 'block';
+    document.getElementById('connApiKeyInput').value = '';
+    document.getElementById('connApiKeyHelp').textContent = def.apiHelp || 'Gib den API-Key des Anbieters ein.';
+    if (def.extraField) {
+      document.getElementById('connApiKeyExtra').style.display = 'flex';
+      document.getElementById('connApiKeyExtraLabel').textContent = def.extraField;
+      document.getElementById('connApiKeyExtraInput').placeholder = def.extraPlaceholder || '';
+      document.getElementById('connApiKeyExtraInput').value = '';
+    } else {
+      document.getElementById('connApiKeyExtra').style.display = 'none';
+    }
+  } else if (def.type === 'webhook') {
+    document.getElementById('connFormWebhook').style.display = 'block';
+    const wid = crypto.randomUUID ? crypto.randomUUID().slice(0, 12) : Math.random().toString(36).slice(2, 14);
+    document.getElementById('connWebhookUrl').value = 'https://api.call-lana.de/webhooks/' + def.provider + '/' + wid;
+    document.getElementById('connWebhookSecret').value = 'whsec_' + Array.from(crypto.getRandomValues(new Uint8Array(24)), b => b.toString(16).padStart(2, '0')).join('');
+    document.getElementById('connWebhookHelp').textContent =
+      def.provider === 'zapier' ? 'Trage die Webhook-URL als "Catch Hook" in deinem Zap ein.' :
+      def.provider === 'make' ? 'Nutze die Webhook-URL als Custom Webhook Trigger in Make.' :
+      def.provider === 'n8n' ? 'Verwende die Webhook-URL als Webhook-Node Trigger in n8n.' :
+      def.provider === 'discord' ? 'Trage die URL als Webhook-URL in deinem Discord-Server ein.' :
+      'Trage die Webhook-URL und das Secret in deinem System ein.';
+  } else if (def.type === 'sip') {
+    document.getElementById('connFormSip').style.display = 'block';
+    document.getElementById('connSipServer').value = '';
+    document.getElementById('connSipUser').value = '';
+    document.getElementById('connSipPass').value = '';
+    document.getElementById('connSipPort').value = '';
+    document.getElementById('connSipServer').placeholder = def.provider === 'fritzbox' ? 'fritz.box oder 192.168.178.1' : 'z.B. sip.sipgate.de';
+  } else if (def.type === 'forward') {
+    document.getElementById('connFormForward').style.display = 'block';
+    document.getElementById('connForwardNumber').value = '+49 30 XXXX XXXX';
+    document.getElementById('connForwardHelp').textContent = def.provider === 'eigene_rufnummer'
+      ? 'Du erhaeltst eine eigene Rufnummer, die direkt an Call Lana weiterleitet.'
+      : 'Richte bei deinem Telefonanbieter eine Rufumleitung auf diese Nummer ein.';
+  }
+
+  document.getElementById('connModal').style.display = 'flex';
+}
+
+function closeConnModal() {
+  document.getElementById('connModal').style.display = 'none';
+  connCurrentProvider = null;
+}
+
+async function connSaveRecord(provider, label, category, config) {
+  if (!currentUser) { showToast('Nicht eingeloggt.', true); return; }
+  try {
+    const { error } = await supabaseClient.from('integrations').upsert({
+      user_id: currentUser.id,
+      provider: provider,
+      provider_label: label,
+      category: category,
+      status: 'connected',
+      config: config,
+      connected_at: new Date().toISOString()
+    }, { onConflict: 'user_id,provider' });
+    if (error) throw error;
+    showToast(label + ' erfolgreich verbunden!');
+    await loadConnectors();
+  } catch (err) {
+    showToast('Fehler: ' + err.message, true);
+  }
+}
+
+async function connStartOAuth() {
+  if (!connCurrentProvider) return;
+  showToast(connCurrentProvider.label + ': OAuth-Weiterleitung wird vorbereitet...');
+  await connSaveRecord(connCurrentProvider.provider, connCurrentProvider.label, connCurrentProvider.category, { type: 'oauth' });
+  closeConnModal();
+}
+
+async function connSaveApiKey() {
+  if (!connCurrentProvider) return;
+  const key = document.getElementById('connApiKeyInput').value.trim();
+  if (!key || key.length < 8) { showToast('Bitte einen gueltigen API-Key eingeben.', true); return; }
+  const extra = document.getElementById('connApiKeyExtraInput')?.value.trim() || '';
+  await connSaveRecord(connCurrentProvider.provider, connCurrentProvider.label, connCurrentProvider.category, {
+    type: 'apikey', api_key_last4: '...' + key.slice(-4), extra_field: extra || null
+  });
+  closeConnModal();
+}
+
+async function connActivateWebhook() {
+  if (!connCurrentProvider) return;
+  await connSaveRecord(connCurrentProvider.provider, connCurrentProvider.label, connCurrentProvider.category, {
+    type: 'webhook', webhook_url: document.getElementById('connWebhookUrl').value
+  });
+  closeConnModal();
+}
+
+function connCopyWebhook() {
+  navigator.clipboard.writeText(document.getElementById('connWebhookUrl').value)
+    .then(() => showToast('Webhook-URL kopiert!')).catch(() => showToast('Kopieren fehlgeschlagen', true));
+}
+
+function connToggleSecret() {
+  const f = document.getElementById('connWebhookSecret');
+  f.type = f.type === 'password' ? 'text' : 'password';
+}
+
+async function connSaveSip() {
+  if (!connCurrentProvider) return;
+  const server = document.getElementById('connSipServer').value.trim();
+  const user = document.getElementById('connSipUser').value.trim();
+  if (!server || !user) { showToast('SIP-Server und Benutzername erforderlich.', true); return; }
+  await connSaveRecord(connCurrentProvider.provider, connCurrentProvider.label, connCurrentProvider.category, {
+    type: 'sip', sip_server: server, sip_user: user, sip_port: document.getElementById('connSipPort').value.trim() || '5060'
+  });
+  closeConnModal();
+}
+
+async function connActivateForward() {
+  if (!connCurrentProvider) return;
+  await connSaveRecord(connCurrentProvider.provider, connCurrentProvider.label, connCurrentProvider.category, {
+    type: 'forward', forward_number: document.getElementById('connForwardNumber').value
+  });
+  closeConnModal();
+}
+
+function connCopyForward() {
+  navigator.clipboard.writeText(document.getElementById('connForwardNumber').value)
+    .then(() => showToast('Rufnummer kopiert!')).catch(() => showToast('Kopieren fehlgeschlagen', true));
+}
+
+function connNotifyReady() {
+  if (!connCurrentProvider) return;
+  showToast('Du wirst benachrichtigt, sobald ' + connCurrentProvider.label + ' verfuegbar ist.');
+  closeConnModal();
+}
+
+async function connDisconnect() {
+  if (!connCurrentProvider || !currentUser) return;
+  if (!confirm('Connector "' + connCurrentProvider.label + '" wirklich trennen?')) return;
+  try {
+    await supabaseClient.from('integrations').delete()
+      .eq('user_id', currentUser.id).eq('provider', connCurrentProvider.provider);
+    showToast(connCurrentProvider.label + ' getrennt.');
+    closeConnModal();
+    await loadConnectors();
+  } catch (err) {
+    showToast('Fehler: ' + err.message, true);
+  }
+}
+
+// Close modal on overlay click
+document.getElementById('connModal')?.addEventListener('click', function(e) {
+  if (e.target === this) closeConnModal();
+});
+
+// ==========================================
 // TAB NAVIGATION
 // ==========================================
 document.querySelectorAll('.sn-item').forEach(item => {
@@ -413,8 +905,26 @@ document.querySelectorAll('.sn-item').forEach(item => {
     const tab = item.dataset.tab;
     document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
     document.getElementById('tab-' + tab).style.display = 'block';
+    if (tab === 'connectors') initConnectorTab();
+    window.location.hash = tab;
   });
 });
+
+// Open tab from URL hash
+(function() {
+  const hash = window.location.hash.replace('#', '');
+  if (hash) {
+    const tabEl = document.getElementById('tab-' + hash);
+    if (tabEl) {
+      document.querySelectorAll('.sn-item').forEach(i => i.classList.remove('active'));
+      const navItem = document.querySelector('.sn-item[data-tab="' + hash + '"]');
+      if (navItem) navItem.classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+      tabEl.style.display = 'block';
+      if (hash === 'connectors') initConnectorTab();
+    }
+  }
+})();
 
 // ==========================================
 // LOGOUT (Supabase)

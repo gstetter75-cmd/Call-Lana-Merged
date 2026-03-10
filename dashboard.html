@@ -1040,9 +1040,12 @@ tr:hover td{background:rgba(124,58,237,.03);}
     <div id="page-integrations" class="page-section">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
         <h1>Integrationen</h1>
-        <button class="btn-primary" style="font-size:13px;padding:10px 20px;" onclick="openContactImport()">CSV-Import</button>
+        <div style="display:flex;gap:8px;">
+          <a href="settings.html#connectors" class="btn-primary" style="font-size:13px;padding:10px 20px;text-decoration:none;">Connectoren verwalten</a>
+          <button class="btn-secondary" style="font-size:13px;padding:10px 20px;" onclick="openContactImport()">CSV-Import</button>
+        </div>
       </div>
-      <p class="page-desc">Verbinde deine Tools, damit der KI-Assistent auf Kundendaten, Termine und Tickets zugreifen kann.</p>
+      <p class="page-desc">Hier siehst du deine verbundenen Tools und synchronisierten Kontakte. Connectoren verwaltest du unter <a href="settings.html#connectors" style="color:var(--pu3);">Einstellungen &rarr; Connectoren</a>.</p>
 
       <!-- Connected integrations -->
       <div class="data-section" style="margin-bottom:20px;">
@@ -1054,20 +1057,9 @@ tr:hover td{background:rgba(124,58,237,.03);}
           <div id="intEmptyState" class="empty-state" style="padding:30px 20px;">
             <div class="icon">🔗</div>
             <h3>Noch keine Tools verbunden</h3>
-            <p>Verbinde dein CRM, deinen Kalender oder andere Tools, um den KI-Assistenten mit Kundendaten zu versorgen.</p>
+            <p>Verbinde dein CRM, Kalender oder andere Tools unter <a href="settings.html#connectors" style="color:var(--pu3);">Einstellungen &rarr; Connectoren</a>, um den KI-Assistenten mit Kundendaten zu versorgen.</p>
           </div>
           <div id="intConnectedList" style="display:none;"></div>
-        </div>
-      </div>
-
-      <!-- Available integrations -->
-      <div class="data-section" style="margin-bottom:20px;">
-        <div class="data-header">
-          <h2>Verfügbare Integrationen</h2>
-        </div>
-        <div style="padding:20px;">
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;" id="intAvailableGrid">
-          </div>
         </div>
       </div>
 
@@ -2157,72 +2149,30 @@ async function loadTransactions() {
 }
 
 // ==========================================
-// INTEGRATIONS
+// INTEGRATIONS (dashboard view — connectors managed in settings.html#connectors)
 // ==========================================
-const AVAILABLE_INTEGRATIONS = [
-  { provider: 'hubspot', label: 'HubSpot CRM', icon: '💼', category: 'CRM', status: 'available' },
-  { provider: 'salesforce', label: 'Salesforce', icon: '☁️', category: 'CRM', status: 'available' },
-  { provider: 'pipedrive', label: 'Pipedrive', icon: '🔄', category: 'CRM', status: 'available' },
-  { provider: 'google_calendar', label: 'Google Calendar', icon: '📆', category: 'Kalender', status: 'available' },
-  { provider: 'outlook', label: 'Outlook / 365', icon: '📧', category: 'Kalender', status: 'available' },
-  { provider: 'cal_com', label: 'cal.com', icon: '🗓️', category: 'Kalender', status: 'available' },
-  { provider: 'calendly', label: 'Calendly', icon: '📅', category: 'Kalender', status: 'available' },
-  { provider: 'doctolib', label: 'Doctolib', icon: '🏥', category: 'Praxis', status: 'coming_soon' },
-  { provider: 'zendesk', label: 'Zendesk', icon: '🎫', category: 'Support', status: 'available' },
-  { provider: 'freshdesk', label: 'Freshdesk', icon: '💬', category: 'Support', status: 'available' },
-  { provider: 'shopify', label: 'Shopify', icon: '🛒', category: 'E-Commerce', status: 'available' },
-  { provider: 'slack', label: 'Slack', icon: '💬', category: 'Kommunikation', status: 'available' },
-  { provider: 'teams', label: 'Microsoft Teams', icon: '👥', category: 'Kommunikation', status: 'available' },
-  { provider: 'zapier', label: 'Zapier', icon: '⚡', category: 'Automatisierung', status: 'available' },
-  { provider: 'make', label: 'Make', icon: '🔧', category: 'Automatisierung', status: 'available' },
-  { provider: 'n8n', label: 'n8n', icon: '🔗', category: 'Automatisierung', status: 'available' },
-  { provider: 'rest_api', label: 'REST API', icon: '🔌', category: 'Automatisierung', status: 'available' },
-];
-
-function renderAvailableIntegrations() {
-  const grid = document.getElementById('intAvailableGrid');
-  grid.innerHTML = AVAILABLE_INTEGRATIONS.map(int => `
-    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s;"
-         onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='var(--border)'"
-         onclick="connectIntegration('${int.provider}')">
-      <span style="font-size:1.4rem;">${int.icon}</span>
-      <div style="flex:1;">
-        <div style="font-size:13px;font-weight:700;">${int.label}</div>
-        <div style="font-size:11px;color:var(--tx3);">${int.category}</div>
-      </div>
-      ${int.status === 'coming_soon'
-        ? '<span style="font-size:10px;background:rgba(251,146,60,.15);color:var(--orange);padding:3px 8px;border-radius:12px;font-weight:600;">Bald</span>'
-        : '<span style="font-size:10px;background:rgba(124,58,237,.15);color:var(--pu3);padding:3px 8px;border-radius:12px;font-weight:600;">Verbinden</span>'
-      }
-    </div>
-  `).join('');
-}
-
-async function connectIntegration(provider) {
-  const int = AVAILABLE_INTEGRATIONS.find(i => i.provider === provider);
-  if (!int) return;
-  if (int.status === 'coming_soon') {
-    showToast(int.label + ' wird bald verfügbar sein.');
-    return;
-  }
-
-  if (provider === 'rest_api') {
-    showToast('API-Dokumentation: Nutze deinen API-Key unter Einstellungen.');
-    return;
-  }
-
-  // For now show a placeholder - OAuth flow would go here
-  showToast(int.label + ' Verbindung wird vorbereitet... (OAuth-Flow kommt in Phase 2)');
-}
+const INTEGRATION_ICONS = {
+  sip_trunk: '📞', fritzbox: '📠', rufumleitung: '↪️', eigene_rufnummer: '🔢',
+  rest_api: '🔌', pre_call_webhook: '⚡', mid_call_api: '🔄', post_call_webhook: '📤', outbound_api: '📲',
+  hubspot: '💼', salesforce: '☁️', pipedrive: '🔄', zoho_crm: '📊', gohighlevel: '🚀',
+  google_calendar: '📆', outlook: '📧', cal_com: '🗓️', calendly: '📅', etermin: '🕐',
+  doctolib: '🏥', apaleo: '🏨', aleno: '🍽️', opentable: '🛎️',
+  shopify: '🛒', jtl: '📦', woocommerce: '🛍️', sap: '🏢', xentral: '⚙️', plentymarkets: '📋', shopware: '🛒',
+  lexoffice: '📒', sevdesk: '🧾',
+  mailchimp: '📧', activecampaign: '🎯', klaviyo: '🎹', klicktipp: '✉️', typeform: '📝', meta_lead_ads: '📱',
+  zendesk: '🎫', freshdesk: '💬', jira: '🐛', autotask: '🔧',
+  slack: '💬', teams: '👥', discord: '🎮', email_gateway: '✉️', sms_gateway: '📱',
+  airtable: '🗃️', google_sheets: '📊', sql_db: '🗄️', google_maps: '📍',
+  notion: '📓', monday: '📋',
+  zapier: '⚡', make: '🔧', n8n: '🔗',
+  live_web: '🌐', woasi: '🏔️'
+};
 
 async function loadIntegrations() {
-  renderAvailableIntegrations();
-
   const user = await clanaAuth.getUser();
   if (!user) return;
 
   try {
-    // Load connected integrations
     const { data: connections } = await supabaseClient
       .from('integrations').select('*').eq('user_id', user.id);
 
@@ -2236,22 +2186,26 @@ async function loadIntegrations() {
       list.style.gridTemplateColumns = 'repeat(auto-fill, minmax(280px, 1fr))';
       list.style.gap = '12px';
       list.innerHTML = connected.map(c => {
-        const int = AVAILABLE_INTEGRATIONS.find(i => i.provider === c.provider) || {};
-        return `<div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:16px;">
+        const icon = INTEGRATION_ICONS[c.provider] || '🔗';
+        const cfg = c.config || {};
+        const typeLabel = cfg.type === 'sip' ? 'SIP' : cfg.type === 'webhook' ? 'Webhook' : cfg.type === 'apikey' ? 'API-Key' : cfg.type === 'oauth' ? 'OAuth' : cfg.type === 'forward' ? 'Rufumleitung' : '';
+        return `<div style="background:var(--bg3);border:1px solid rgba(74,222,128,.2);border-radius:12px;padding:16px;">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-            <span style="font-size:1.2rem;">${int.icon || '🔗'}</span>
+            <span style="font-size:1.2rem;">${icon}</span>
             <div style="flex:1;">
-              <div style="font-size:13px;font-weight:700;">${escHtml(c.provider_label)}</div>
-              <div style="font-size:11px;color:var(--tx3);">${escHtml(c.category)}</div>
+              <div style="font-size:13px;font-weight:700;">${escHtml(c.provider_label || c.provider)}</div>
+              <div style="font-size:11px;color:var(--tx3);">${escHtml(c.category || '')} · ${typeLabel}</div>
             </div>
-            <span class="status-badge ${c.status === 'connected' ? 'completed' : 'missed'}">${c.status === 'connected' ? 'Verbunden' : c.status}</span>
+            <span class="status-badge completed">Aktiv</span>
           </div>
           <div style="font-size:11px;color:var(--tx3);">
-            Letzter Sync: ${c.last_sync_at ? new Date(c.last_sync_at).toLocaleString('de-DE') : 'Noch nie'} · ${c.records_synced || 0} Datensätze
+            Verbunden seit: ${c.connected_at ? new Date(c.connected_at).toLocaleDateString('de-DE') : '–'}
+            ${c.last_sync_at ? ' · Sync: ' + new Date(c.last_sync_at).toLocaleString('de-DE') : ''}
+            ${c.records_synced ? ' · ' + c.records_synced + ' Datensaetze' : ''}
           </div>
           <div style="display:flex;gap:8px;margin-top:10px;">
-            <button class="btn-sm" onclick="syncIntegration('${c.id}')">Jetzt syncen</button>
-            <button class="btn-secondary" style="font-size:11px;padding:6px 12px;" onclick="disconnectIntegration('${c.id}')">Trennen</button>
+            <button class="btn-sm" onclick="syncIntegration('${c.id}')">Syncen</button>
+            <a href="settings.html#connectors" class="btn-secondary" style="font-size:11px;padding:6px 12px;text-decoration:none;">Konfigurieren</a>
           </div>
         </div>`;
       }).join('');
@@ -2260,11 +2214,9 @@ async function loadIntegrations() {
       document.getElementById('intConnectedList').style.display = 'none';
     }
 
-    // Load contacts
     await loadContacts();
   } catch (err) {
     // Tables might not exist yet
-    renderAvailableIntegrations();
   }
 }
 
@@ -2300,11 +2252,11 @@ async function loadContacts() {
 }
 
 async function syncIntegration(integrationId) {
-  showToast('Sync gestartet...');
+  showToast('Sync gestartet... Daten werden synchronisiert.');
 }
 
 async function disconnectIntegration(integrationId) {
-  if (!confirm('Integration wirklich trennen?')) return;
+  if (!confirm('Integration wirklich trennen? Alle synchronisierten Daten bleiben erhalten.')) return;
   const user = await clanaAuth.getUser();
   if (!user) return;
 

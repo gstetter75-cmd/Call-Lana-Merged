@@ -30,7 +30,13 @@
 .step-body h3{font-size:1.08rem;font-weight:800;margin-bottom:8px;padding-top:12px;color:var(--tx);}
 .step-body p{color:var(--tx2);font-size:.93rem;line-height:1.72;}
 
-/* Integration grid */
+/* Integration section */
+.int-tabs{display:flex;flex-wrap:wrap;gap:8px;max-width:1000px;margin:0 auto 28px;justify-content:center;}
+.int-tab{padding:8px 18px;border-radius:50px;font-size:.8rem;font-weight:600;border:1.5px solid var(--border);background:var(--card);color:var(--tx2);cursor:pointer;transition:all .25s;white-space:nowrap;}
+.int-tab:hover{border-color:var(--pu);color:var(--pu);}
+.int-tab.active{background:var(--pu);border-color:var(--pu);color:#fff;box-shadow:0 4px 14px rgba(124,58,237,.3);}
+.int-tab .tab-count{font-weight:400;opacity:.7;margin-left:4px;}
+
 .int-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;max-width:1000px;margin:0 auto;}
 .int-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:22px 18px;text-align:center;transition:all .3s;}
 .int-card:hover{border-color:var(--pu);transform:translateY(-3px);box-shadow:var(--shadow-lg);}
@@ -38,6 +44,10 @@
 .int-card span{font-size:.88rem;font-weight:600;color:var(--tx2);}
 .int-cat{grid-column:1/-1;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--pu);margin-top:18px;padding-bottom:0;}
 .int-cat:first-child{margin-top:0;}
+
+.int-show-more{display:none;max-width:1000px;margin:20px auto 0;text-align:center;}
+.int-show-more button{background:var(--card);border:1.5px solid var(--border);border-radius:50px;padding:12px 32px;color:var(--pu);font-weight:700;font-size:.9rem;cursor:pointer;transition:all .25s;font-family:'Inter',sans-serif;}
+.int-show-more button:hover{border-color:var(--pu);background:var(--pu);color:#fff;box-shadow:0 4px 14px rgba(124,58,237,.3);}
 
 /* DSGVO strip */
 .dsgvo-strip{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:48px;max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
@@ -59,11 +69,26 @@
 
 @media(max-width:900px){
   .tech-split{grid-template-columns:1fr;}
-  .dsgvo-strip{grid-template-columns:1fr;gap:24px;}
+  .dsgvo-strip{grid-template-columns:1fr;gap:24px;padding:32px 24px;}
   .steps-wrap::before{display:none;}
+  .int-tabs{gap:6px;}
+  .int-tab{padding:7px 14px;font-size:.75rem;}
 }
 @media(max-width:600px){
   .feat-grid{grid-template-columns:1fr;}
+  .int-grid{grid-template-columns:repeat(3,1fr);gap:10px;}
+  .int-card{padding:14px 10px;}
+  .int-card .ic-ico{font-size:1.4rem;margin-bottom:6px;}
+  .int-card span{font-size:.72rem;}
+  .int-cat{font-size:.68rem;margin-top:12px;}
+  .int-tabs{gap:5px;margin-bottom:20px;}
+  .int-tab{padding:6px 12px;font-size:.7rem;}
+  .int-show-more{display:block;}
+  .tech-visual{padding:28px 20px;min-height:auto;}
+  .tech-visual-item{padding:12px 16px;}
+  .dsgvo-strip{padding:24px 18px;}
+  .step{gap:16px;padding:18px 0;}
+  .step-num{width:42px;height:42px;font-size:.9rem;}
 }
 </style>
 <script type="application/ld+json">
@@ -162,57 +187,126 @@
   </section>
 
   <!-- INTEGRATIONS -->
-  <section class="section alt">
+  <section class="section alt" id="integrationen">
     <div class="sec-header fi">
       <span class="sec-badge">Integrationen</span>
       <h2 class="sec-title">Verbindet sich mit <span class="gradient">deinen Tools</span></h2>
-      <p class="sec-sub">Über 200 Integrationen verfügbar – von CRM bis Kalender, von Ticketsystem bis E-Mail.</p>
+      <p class="sec-sub">65+ direkte Integrationen, 200+ ueber Zapier & Make. Klicke auf eine Kategorie.</p>
     </div>
-    <div class="int-grid">
+
+    <!-- Category Tabs -->
+    <div class="int-tabs" id="intTabs">
+      <button class="int-tab active" data-cat="all">Alle<span class="tab-count">65+</span></button>
+      <button class="int-tab" data-cat="telefonie">Telefonie</button>
+      <button class="int-tab" data-cat="api">Webhooks & API</button>
+      <button class="int-tab" data-cat="crm">CRM</button>
+      <button class="int-tab" data-cat="kalender">Kalender</button>
+      <button class="int-tab" data-cat="branche">Branchen</button>
+      <button class="int-tab" data-cat="ecommerce">E-Commerce</button>
+      <button class="int-tab" data-cat="marketing">Marketing</button>
+      <button class="int-tab" data-cat="support">Support</button>
+      <button class="int-tab" data-cat="komm">Kommunikation</button>
+      <button class="int-tab" data-cat="daten">Datenbanken</button>
+      <button class="int-tab" data-cat="auto">Automatisierung</button>
+    </div>
+
+    <div class="int-grid" id="intGrid" data-collapsed="true">
+      <!-- Telefonie -->
+      <div class="int-cat" data-group="telefonie">Telefonie</div>
+      <div class="int-card fi" data-group="telefonie"><span class="ic-ico">📞</span><span>SIP / SIP-Trunking</span></div>
+      <div class="int-card fi" data-group="telefonie"><span class="ic-ico">📠</span><span>Fritzbox</span></div>
+      <div class="int-card fi" data-group="telefonie"><span class="ic-ico">↪️</span><span>Rufumleitung</span></div>
+      <div class="int-card fi" data-group="telefonie"><span class="ic-ico">🔢</span><span>Eigene Rufnummer</span></div>
+      <!-- Webhooks & API -->
+      <div class="int-cat" data-group="api">Webhooks &amp; API</div>
+      <div class="int-card fi" data-group="api"><span class="ic-ico">🔌</span><span>REST API</span></div>
+      <div class="int-card fi" data-group="api"><span class="ic-ico">⚡</span><span>Pre-Call Webhook</span></div>
+      <div class="int-card fi" data-group="api"><span class="ic-ico">🔄</span><span>Mid-Call / Live-API</span></div>
+      <div class="int-card fi" data-group="api"><span class="ic-ico">📤</span><span>Post-Call Webhook</span></div>
+      <div class="int-card fi" data-group="api"><span class="ic-ico">📲</span><span>Outbound Call API</span></div>
       <!-- CRM & Vertrieb -->
-      <div class="int-cat">CRM &amp; Vertrieb</div>
-      <div class="int-card fi"><span class="ic-ico">💼</span><span>HubSpot CRM</span></div>
-      <div class="int-card fi"><span class="ic-ico">☁️</span><span>Salesforce</span></div>
-      <div class="int-card fi"><span class="ic-ico">🔄</span><span>Pipedrive</span></div>
-      <div class="int-card fi"><span class="ic-ico">📊</span><span>Zoho CRM</span></div>
-      <div class="int-card fi"><span class="ic-ico">🚀</span><span>GoHighLevel</span></div>
+      <div class="int-cat" data-group="crm">CRM &amp; Vertrieb</div>
+      <div class="int-card fi" data-group="crm"><span class="ic-ico">💼</span><span>HubSpot CRM</span></div>
+      <div class="int-card fi" data-group="crm"><span class="ic-ico">☁️</span><span>Salesforce</span></div>
+      <div class="int-card fi" data-group="crm"><span class="ic-ico">🔄</span><span>Pipedrive</span></div>
+      <div class="int-card fi" data-group="crm"><span class="ic-ico">📊</span><span>Zoho CRM</span></div>
+      <div class="int-card fi" data-group="crm"><span class="ic-ico">🚀</span><span>GoHighLevel</span></div>
       <!-- Kalender & Termine -->
-      <div class="int-cat">Kalender &amp; Termine</div>
-      <div class="int-card fi"><span class="ic-ico">📆</span><span>Google Calendar</span></div>
-      <div class="int-card fi"><span class="ic-ico">🗓️</span><span>cal.com</span></div>
-      <div class="int-card fi"><span class="ic-ico">📅</span><span>Calendly</span></div>
-      <div class="int-card fi"><span class="ic-ico">📧</span><span>Outlook / 365</span></div>
-      <!-- Arztpraxen -->
-      <div class="int-cat">Arztpraxen</div>
-      <div class="int-card fi"><span class="ic-ico">🏥</span><span>Doctolib</span></div>
-      <div class="int-card fi"><span class="ic-ico">💊</span><span>CGM / Turbomed</span></div>
-      <div class="int-card fi"><span class="ic-ico">🩺</span><span>Samedi</span></div>
-      <!-- Hotels & Gastro -->
-      <div class="int-cat">Hotels &amp; Gastro</div>
-      <div class="int-card fi"><span class="ic-ico">🏨</span><span>Apaleo PMS</span></div>
-      <div class="int-card fi"><span class="ic-ico">🍽️</span><span>aleno</span></div>
-      <div class="int-card fi"><span class="ic-ico">🛎️</span><span>OpenTable</span></div>
-      <!-- E-Commerce -->
-      <div class="int-cat">E-Commerce</div>
-      <div class="int-card fi"><span class="ic-ico">🛒</span><span>Shopify</span></div>
-      <div class="int-card fi"><span class="ic-ico">📦</span><span>JTL Wawi</span></div>
-      <div class="int-card fi"><span class="ic-ico">🛍️</span><span>WooCommerce</span></div>
+      <div class="int-cat" data-group="kalender">Kalender &amp; Termine</div>
+      <div class="int-card fi" data-group="kalender"><span class="ic-ico">📆</span><span>Google Calendar</span></div>
+      <div class="int-card fi" data-group="kalender"><span class="ic-ico">🗓️</span><span>cal.com</span></div>
+      <div class="int-card fi" data-group="kalender"><span class="ic-ico">📅</span><span>Calendly</span></div>
+      <div class="int-card fi" data-group="kalender"><span class="ic-ico">📧</span><span>Outlook / 365</span></div>
+      <div class="int-card fi" data-group="kalender"><span class="ic-ico">🕐</span><span>eTermin</span></div>
+      <div class="int-card fi" data-group="kalender"><span class="ic-ico">💇</span><span>Treatwell</span></div>
+      <div class="int-card fi" data-group="kalender"><span class="ic-ico">🏪</span><span>Shore</span></div>
+      <!-- Branchen (Arztpraxen + Hotels) -->
+      <div class="int-cat" data-group="branche">Arztpraxen</div>
+      <div class="int-card fi" data-group="branche"><span class="ic-ico">🏥</span><span>Doctolib</span></div>
+      <div class="int-card fi" data-group="branche"><span class="ic-ico">💊</span><span>CGM / Turbomed</span></div>
+      <div class="int-card fi" data-group="branche"><span class="ic-ico">🩺</span><span>Samedi</span></div>
+      <div class="int-cat" data-group="branche">Hotels &amp; Gastro</div>
+      <div class="int-card fi" data-group="branche"><span class="ic-ico">🏨</span><span>Apaleo PMS</span></div>
+      <div class="int-card fi" data-group="branche"><span class="ic-ico">🍽️</span><span>aleno</span></div>
+      <div class="int-card fi" data-group="branche"><span class="ic-ico">🛎️</span><span>OpenTable</span></div>
+      <!-- E-Commerce & ERP -->
+      <div class="int-cat" data-group="ecommerce">E-Commerce &amp; ERP</div>
+      <div class="int-card fi" data-group="ecommerce"><span class="ic-ico">🛒</span><span>Shopify</span></div>
+      <div class="int-card fi" data-group="ecommerce"><span class="ic-ico">📦</span><span>JTL Wawi</span></div>
+      <div class="int-card fi" data-group="ecommerce"><span class="ic-ico">🛍️</span><span>WooCommerce</span></div>
+      <div class="int-card fi" data-group="ecommerce"><span class="ic-ico">🏢</span><span>SAP</span></div>
+      <div class="int-card fi" data-group="ecommerce"><span class="ic-ico">⚙️</span><span>Xentral</span></div>
+      <div class="int-card fi" data-group="ecommerce"><span class="ic-ico">📋</span><span>Plentymarkets</span></div>
+      <div class="int-card fi" data-group="ecommerce"><span class="ic-ico">🛒</span><span>Shopware</span></div>
+      <div class="int-cat" data-group="ecommerce">Buchhaltung</div>
+      <div class="int-card fi" data-group="ecommerce"><span class="ic-ico">📒</span><span>Lexoffice</span></div>
+      <div class="int-card fi" data-group="ecommerce"><span class="ic-ico">🧾</span><span>sevDesk</span></div>
+      <!-- Marketing & Lead-Gen -->
+      <div class="int-cat" data-group="marketing">Marketing &amp; Lead-Gen</div>
+      <div class="int-card fi" data-group="marketing"><span class="ic-ico">📧</span><span>Mailchimp</span></div>
+      <div class="int-card fi" data-group="marketing"><span class="ic-ico">🎯</span><span>ActiveCampaign</span></div>
+      <div class="int-card fi" data-group="marketing"><span class="ic-ico">🎹</span><span>Klaviyo</span></div>
+      <div class="int-card fi" data-group="marketing"><span class="ic-ico">✉️</span><span>Klick-Tipp</span></div>
+      <div class="int-card fi" data-group="marketing"><span class="ic-ico">📝</span><span>Typeform</span></div>
+      <div class="int-card fi" data-group="marketing"><span class="ic-ico">📱</span><span>Meta Lead Ads</span></div>
       <!-- Support & Tickets -->
-      <div class="int-cat">Support &amp; Tickets</div>
-      <div class="int-card fi"><span class="ic-ico">🎫</span><span>Zendesk</span></div>
-      <div class="int-card fi"><span class="ic-ico">💬</span><span>Freshdesk</span></div>
+      <div class="int-cat" data-group="support">Support &amp; Tickets</div>
+      <div class="int-card fi" data-group="support"><span class="ic-ico">🎫</span><span>Zendesk</span></div>
+      <div class="int-card fi" data-group="support"><span class="ic-ico">💬</span><span>Freshdesk</span></div>
+      <div class="int-card fi" data-group="support"><span class="ic-ico">🐛</span><span>Jira</span></div>
+      <div class="int-card fi" data-group="support"><span class="ic-ico">🔧</span><span>Autotask</span></div>
       <!-- Kommunikation -->
-      <div class="int-cat">Kommunikation</div>
-      <div class="int-card fi"><span class="ic-ico">💬</span><span>Slack</span></div>
-      <div class="int-card fi"><span class="ic-ico">👥</span><span>Microsoft Teams</span></div>
+      <div class="int-cat" data-group="komm">Kommunikation</div>
+      <div class="int-card fi" data-group="komm"><span class="ic-ico">💬</span><span>Slack</span></div>
+      <div class="int-card fi" data-group="komm"><span class="ic-ico">👥</span><span>Microsoft Teams</span></div>
+      <div class="int-card fi" data-group="komm"><span class="ic-ico">🎮</span><span>Discord</span></div>
+      <div class="int-card fi" data-group="komm"><span class="ic-ico">✉️</span><span>E-Mail-Gateway</span></div>
+      <div class="int-card fi" data-group="komm"><span class="ic-ico">📱</span><span>SMS-Gateway</span></div>
+      <!-- Datenbanken & Tabellen -->
+      <div class="int-cat" data-group="daten">Datenbanken &amp; Tabellen</div>
+      <div class="int-card fi" data-group="daten"><span class="ic-ico">🗃️</span><span>Airtable</span></div>
+      <div class="int-card fi" data-group="daten"><span class="ic-ico">📊</span><span>Google Sheets</span></div>
+      <div class="int-card fi" data-group="daten"><span class="ic-ico">🗄️</span><span>SQL-Datenbanken</span></div>
+      <div class="int-card fi" data-group="daten"><span class="ic-ico">📍</span><span>Google Maps API</span></div>
+      <!-- Projektmanagement -->
+      <div class="int-cat" data-group="auto">Projektmanagement</div>
+      <div class="int-card fi" data-group="auto"><span class="ic-ico">📓</span><span>Notion</span></div>
+      <div class="int-card fi" data-group="auto"><span class="ic-ico">📋</span><span>monday.com</span></div>
       <!-- Automatisierung -->
-      <div class="int-cat">Automatisierung</div>
-      <div class="int-card fi"><span class="ic-ico">⚡</span><span>Zapier</span></div>
-      <div class="int-card fi"><span class="ic-ico">🔧</span><span>Make</span></div>
-      <div class="int-card fi"><span class="ic-ico">🔗</span><span>n8n</span></div>
-      <div class="int-card fi"><span class="ic-ico">🔌</span><span>REST API</span></div>
+      <div class="int-cat" data-group="auto">Automatisierung</div>
+      <div class="int-card fi" data-group="auto"><span class="ic-ico">⚡</span><span>Zapier</span></div>
+      <div class="int-card fi" data-group="auto"><span class="ic-ico">🔧</span><span>Make</span></div>
+      <div class="int-card fi" data-group="auto"><span class="ic-ico">🔗</span><span>n8n</span></div>
+      <!-- Sonderfunktionen -->
+      <div class="int-cat" data-group="auto">Sonderfunktionen</div>
+      <div class="int-card fi" data-group="auto"><span class="ic-ico">🌐</span><span>Live-Websuche</span></div>
+      <div class="int-card fi" data-group="auto"><span class="ic-ico">🏔️</span><span>woasi</span></div>
       <!-- Mehr -->
-      <div class="int-card fi"><span class="ic-ico">➕</span><span>200+ weitere</span></div>
+      <div class="int-card fi" data-group="all"><span class="ic-ico">➕</span><span>200+ weitere</span></div>
+    </div>
+
+    <div class="int-show-more" id="intShowMore">
+      <button onclick="toggleIntGrid()">Alle 65+ Integrationen anzeigen</button>
     </div>
   </section>
 
@@ -272,6 +366,68 @@ document.getElementById('mb').addEventListener('click', () => document.getElemen
 window.addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 10);
 }, { passive: true });
+
+// Integration tabs filter
+document.querySelectorAll('.int-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.int-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const cat = tab.dataset.cat;
+    const grid = document.getElementById('intGrid');
+    grid.removeAttribute('data-collapsed');
+
+    grid.querySelectorAll('.int-card, .int-cat').forEach(el => {
+      if (cat === 'all' || el.dataset.group === cat || el.dataset.group === 'all') {
+        el.style.display = '';
+      } else {
+        el.style.display = 'none';
+      }
+    });
+
+    // On mobile with "all" tab, re-apply collapse
+    if (cat === 'all' && window.innerWidth <= 600) {
+      grid.dataset.collapsed = 'true';
+      applyMobileCollapse();
+    } else {
+      document.getElementById('intShowMore').style.display = 'none';
+    }
+  });
+});
+
+function applyMobileCollapse() {
+  if (window.innerWidth > 600) return;
+  const grid = document.getElementById('intGrid');
+  if (grid.dataset.collapsed !== 'true') return;
+  const items = grid.querySelectorAll('.int-card, .int-cat');
+  let count = 0;
+  items.forEach(el => {
+    count++;
+    if (count > 15) {
+      el.style.display = 'none';
+    } else {
+      el.style.display = '';
+    }
+  });
+  document.getElementById('intShowMore').style.display = 'block';
+}
+
+function toggleIntGrid() {
+  const grid = document.getElementById('intGrid');
+  const btn = document.getElementById('intShowMore');
+  if (grid.dataset.collapsed === 'true') {
+    grid.removeAttribute('data-collapsed');
+    grid.querySelectorAll('.int-card, .int-cat').forEach(el => el.style.display = '');
+    btn.querySelector('button').textContent = 'Weniger anzeigen';
+  } else {
+    grid.dataset.collapsed = 'true';
+    applyMobileCollapse();
+    btn.querySelector('button').textContent = 'Alle 65+ Integrationen anzeigen';
+    document.getElementById('integrationen').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// Apply collapse on load for mobile
+window.addEventListener('DOMContentLoaded', applyMobileCollapse);
 
 // Scroll reveal
 document.addEventListener('DOMContentLoaded', () => {
