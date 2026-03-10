@@ -176,6 +176,30 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
             <button class="btn-save" id="saveProfileBtn" onclick="saveProfile()">Änderungen speichern</button>
             <span class="err-msg" id="profile-err"></span>
           </div>
+
+          <div class="sc-section">
+            <h2>Rechnungsadresse</h2>
+            <p>Diese Adresse wird auf deinen Rechnungen als Empfänger verwendet.</p>
+            <div class="fgrp"><label for="billingCompany">Firma / Name</label><input type="text" class="finp" id="billingCompany" placeholder="Musterfirma GmbH"></div>
+            <div class="fgrp"><label for="billingStreet">Straße</label><input type="text" class="finp" id="billingStreet" placeholder="Musterstraße 1"></div>
+            <div class="form-row">
+              <div class="fgrp"><label for="billingZip">PLZ</label><input type="text" class="finp" id="billingZip" placeholder="12345"></div>
+              <div class="fgrp"><label for="billingCity">Ort</label><input type="text" class="finp" id="billingCity" placeholder="Musterstadt"></div>
+            </div>
+            <div class="form-row">
+              <div class="fgrp"><label for="billingCountry">Land</label><input type="text" class="finp" id="billingCountry" placeholder="Deutschland" value="Deutschland"></div>
+              <div class="fgrp"><label for="billingVatId">USt-IdNr. (optional)</label><input type="text" class="finp" id="billingVatId" placeholder="DE123456789"></div>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-left">
+                <strong>Rechnungen automatisch per E-Mail senden</strong>
+                <span>Rechnungen werden nach Erstellung automatisch an deine E-Mail gesendet</span>
+              </div>
+              <div class="toggle-switch" id="autoInvoiceEmail" data-key="auto_invoice_email" onclick="toggleNotif(this)"></div>
+            </div>
+            <button class="btn-save" style="margin-top:16px;" onclick="saveBillingAddress()">Rechnungsadresse speichern</button>
+            <span class="err-msg" id="billing-addr-err"></span>
+          </div>
         </div>
 
         <!-- SECURITY TAB -->

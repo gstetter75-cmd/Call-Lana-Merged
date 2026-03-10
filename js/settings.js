@@ -40,6 +40,9 @@ let userSettings = {};
     userSettings = settingsResult.data;
     applyNotificationToggles(userSettings);
   }
+
+  // Load billing address fields from profiles table
+  loadBillingAddress(currentProfile);
 })();
 
 // ==========================================
@@ -161,6 +164,79 @@ async function saveNotifications() {
     showToast('Benachrichtigungen gespeichert!');
   } else {
     showToast('Fehler beim Speichern: ' + result.error, true);
+  }
+}
+
+// ==========================================
+// BILLING ADDRESS
+// ==========================================
+
+/**
+ * Populate billing address fields from the profile record.
+ * @param {Object} profile - Profile record from Supabase
+ */
+function loadBillingAddress(profile) {
+  if (!profile) return;
+  const setVal = (id, val) => {
+    const el = document.getElementById(id);
+    if (el && val) el.value = val;
+  };
+  setVal('billingCompany', profile.billing_company);
+  setVal('billingStreet', profile.billing_street);
+  setVal('billingZip', profile.billing_zip);
+  setVal('billingCity', profile.billing_city);
+  setVal('billingCountry', profile.billing_country);
+  setVal('billingVatId', profile.billing_vat_id);
+
+  // Auto-invoice email toggle
+  const toggle = document.getElementById('autoInvoiceEmail');
+  if (toggle && userSettings.auto_invoice_email) {
+    toggle.classList.add('on');
+  }
+}
+
+/**
+ * Save billing address fields to the profiles table and auto_invoice_email to settings.
+ */
+async function saveBillingAddress() {
+  const errEl = document.getElementById('billing-addr-err');
+  if (errEl) errEl.textContent = '';
+
+  const billingCompany = (document.getElementById('billingCompany')?.value || '').trim();
+  const billingStreet = (document.getElementById('billingStreet')?.value || '').trim();
+  const billingZip = (document.getElementById('billingZip')?.value || '').trim();
+  const billingCity = (document.getElementById('billingCity')?.value || '').trim();
+  const billingCountry = (document.getElementById('billingCountry')?.value || '').trim();
+  const billingVatId = (document.getElementById('billingVatId')?.value || '').trim();
+
+  if (!billingCompany || !billingStreet || !billingZip || !billingCity) {
+    if (errEl) errEl.textContent = 'Bitte Firma, Stra\u00DFe, PLZ und Ort ausfuellen.';
+    return;
+  }
+
+  try {
+    // Save billing address to profiles table
+    if (currentProfile?.id) {
+      await clanaDB.updateProfile(currentProfile.id, {
+        billing_company: billingCompany,
+        billing_street: billingStreet,
+        billing_zip: billingZip,
+        billing_city: billingCity,
+        billing_country: billingCountry || 'Deutschland',
+        billing_vat_id: billingVatId || null
+      });
+    }
+
+    // Save auto-invoice email preference to settings
+    const autoEmailToggle = document.getElementById('autoInvoiceEmail');
+    const autoInvoiceEmail = autoEmailToggle ? autoEmailToggle.classList.contains('on') : false;
+    userSettings = { ...userSettings, auto_invoice_email: autoInvoiceEmail };
+    await clanaDB.saveSettings(userSettings);
+
+    showToast('Rechnungsadresse gespeichert!');
+  } catch (err) {
+    Logger.error('saveBillingAddress', err);
+    if (errEl) errEl.textContent = 'Fehler beim Speichern. Bitte erneut versuchen.';
   }
 }
 

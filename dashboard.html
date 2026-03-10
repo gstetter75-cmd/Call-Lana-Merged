@@ -810,6 +810,31 @@ tr:hover td{background:rgba(124,58,237,.03);}
           </div>
         </div>
       </div>
+
+      <!-- Invoices / Rechnungen -->
+      <div class="data-section" style="margin-top:24px;">
+        <div class="data-header">
+          <h2>Rechnungen</h2>
+          <span class="badge" id="invoiceCount">0</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Rechnungsnr.</th>
+                <th>Datum</th>
+                <th>Zeitraum</th>
+                <th>Betrag</th>
+                <th>Status</th>
+                <th>Aktionen</th>
+              </tr>
+            </thead>
+            <tbody id="invoiceTableBody">
+              <tr><td colspan="6" style="text-align:center;color:var(--tx3);padding:30px;">Keine Rechnungen vorhanden</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
     <!-- Top-up Modal -->
@@ -1215,6 +1240,10 @@ tr:hover td{background:rgba(124,58,237,.03);}
 <script src="js/db.js"></script>
 <script src="js/auth-guard.js"></script>
 <script src="js/dashboard.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
+<script src="js/invoice-pdf.js"></script>
+<script src="js/invoices.js"></script>
 <script src="cookie-consent.js"></script>
 </body>
 </html>

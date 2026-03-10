@@ -31,7 +31,8 @@ let currentConversationId = null;
     loadPlan(),
     loadAssistants(),
     loadTeam(),
-    loadConversations()
+    loadConversations(),
+    loadInvoices()
   ]);
 
   // Team management
