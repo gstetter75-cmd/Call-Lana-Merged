@@ -313,6 +313,554 @@ const db = {
       console.error('Delete assistant error:', error);
       return { success: false, error: error.message };
     }
+  },
+
+  // ====== Profiles CRUD ======
+
+  async getProfile(userId) {
+    try {
+      const user = userId || (await auth.getUser())?.id;
+      if (!user) throw new Error('Not authenticated');
+
+      const { data, error } = await supabaseClient
+        .from('profiles')
+        .select('*, organizations(name, plan)')
+        .eq('id', user)
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      console.error('Get profile error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async updateProfile(userId, updates) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('profiles')
+        .update(updates)
+        .eq('id', userId)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      console.error('Update profile error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async getAllProfiles(filters = {}) {
+    try {
+      let query = supabaseClient
+        .from('profiles')
+        .select('*, organizations(name, plan)')
+        .order('created_at', { ascending: false });
+
+      if (filters.role) query = query.eq('role', filters.role);
+      if (filters.organization_id) query = query.eq('organization_id', filters.organization_id);
+      if (filters.limit) query = query.limit(filters.limit);
+
+      const { data, error } = await query;
+      if (error) throw error;
+      return { success: true, data: data || [] };
+    } catch (error) {
+      console.error('Get all profiles error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  // ====== Organizations CRUD ======
+
+  async getOrganizations() {
+    try {
+      const { data, error } = await supabaseClient
+        .from('organizations')
+        .select('*, profiles!organizations_owner_id_fkey(first_name, last_name, email)')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return { success: true, data: data || [] };
+    } catch (error) {
+      console.error('Get organizations error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async getOrganization(id) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('organizations')
+        .select('*, organization_members(*, profiles(first_name, last_name, email, role))')
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      console.error('Get organization error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async createOrganization(orgData) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('organizations')
+        .insert([orgData])
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      console.error('Create organization error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async updateOrganization(id, updates) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('organizations')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      console.error('Update organization error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  // ====== Organization Members ======
+
+  async addOrgMember(orgId, userId, roleInOrg = 'member') {
+    try {
+      const { data, error } = await supabaseClient
+        .from('organization_members')
+        .insert([{ organization_id: orgId, user_id: userId, role_in_org: roleInOrg }])
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      console.error('Add org member error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async removeOrgMember(orgId, userId) {
+    try {
+      const { error } = await supabaseClient
+        .from('organization_members')
+        .delete()
+        .eq('organization_id', orgId)
+        .eq('user_id', userId);
+
+      if (error) throw error;
+      return { success: true };
+    } catch (error) {
+      console.error('Remove org member error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  // ====== CRM: Leads ======
+
+  async getLeads(filters = {}) {
+    try {
+      let query = supabaseClient
+        .from('leads')
+        .select('*, profiles!leads_assigned_to_fkey(first_name, last_name)')
+        .order('created_at', { ascending: false });
+
+      if (filters.status) query = query.eq('status', filters.status);
+      if (filters.assigned_to) query = query.eq('assigned_to', filters.assigned_to);
+      if (filters.limit) query = query.limit(filters.limit);
+
+      const { data, error } = await query;
+      if (error) throw error;
+      return { success: true, data: data || [] };
+    } catch (error) {
+      console.error('Get leads error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async getLead(id) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('leads')
+        .select('*, profiles!leads_assigned_to_fkey(first_name, last_name, email), notes(*, profiles!notes_author_id_fkey(first_name, last_name))')
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      console.error('Get lead error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async createLead(leadData) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('leads')
+        .insert([leadData])
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      console.error('Create lead error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async updateLead(id, updates) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('leads')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      console.error('Update lead error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async deleteLead(id) {
+    try {
+      const { error } = await supabaseClient
+        .from('leads')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      return { success: true };
+    } catch (error) {
+      console.error('Delete lead error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  // ====== CRM: Tasks ======
+
+  async getTasks(filters = {}) {
+    try {
+      let query = supabaseClient
+        .from('tasks')
+        .select('*, profiles!tasks_assigned_to_fkey(first_name, last_name), leads(company_name)')
+        .order('due_date', { ascending: true });
+
+      if (filters.status) query = query.eq('status', filters.status);
+      if (filters.assigned_to) query = query.eq('assigned_to', filters.assigned_to);
+      if (filters.lead_id) query = query.eq('lead_id', filters.lead_id);
+      if (filters.limit) query = query.limit(filters.limit);
+
+      const { data, error } = await query;
+      if (error) throw error;
+      return { success: true, data: data || [] };
+    } catch (error) {
+      console.error('Get tasks error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async createTask(taskData) {
+    try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { data, error } = await supabaseClient
+        .from('tasks')
+        .insert([{ created_by: user.id, ...taskData }])
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      console.error('Create task error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async updateTask(id, updates) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('tasks')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      console.error('Update task error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async deleteTask(id) {
+    try {
+      const { error } = await supabaseClient
+        .from('tasks')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      return { success: true };
+    } catch (error) {
+      console.error('Delete task error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  // ====== CRM: Notes ======
+
+  async createNote(noteData) {
+    try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { data, error } = await supabaseClient
+        .from('notes')
+        .insert([{ author_id: user.id, ...noteData }])
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      console.error('Create note error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async deleteNote(id) {
+    try {
+      const { error } = await supabaseClient
+        .from('notes')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      return { success: true };
+    } catch (error) {
+      console.error('Delete note error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  // ====== Availability ======
+
+  async getAvailability(userId, startDate, endDate) {
+    try {
+      let query = supabaseClient
+        .from('availability')
+        .select('*, profiles!availability_user_id_fkey(first_name, last_name)')
+        .order('date', { ascending: true });
+
+      if (userId) query = query.eq('user_id', userId);
+      if (startDate) query = query.gte('date', startDate);
+      if (endDate) query = query.lte('date', endDate);
+
+      const { data, error } = await query;
+      if (error) throw error;
+      return { success: true, data: data || [] };
+    } catch (error) {
+      console.error('Get availability error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async setAvailability(availabilityData) {
+    try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { data, error } = await supabaseClient
+        .from('availability')
+        .insert([{ user_id: user.id, ...availabilityData }])
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      console.error('Set availability error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async deleteAvailability(id) {
+    try {
+      const { error } = await supabaseClient
+        .from('availability')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      return { success: true };
+    } catch (error) {
+      console.error('Delete availability error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  // ====== Messaging / Chat ======
+
+  async getConversations() {
+    try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { data, error } = await supabaseClient
+        .from('conversations')
+        .select('*, conversation_participants(user_id, profiles(first_name, last_name, role)), messages(content, created_at, sender_id)')
+        .order('updated_at', { ascending: false });
+
+      if (error) throw error;
+      return { success: true, data: data || [] };
+    } catch (error) {
+      console.error('Get conversations error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async getMessages(conversationId, limit = 100) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('messages')
+        .select('*, profiles!messages_sender_id_fkey(first_name, last_name, role)')
+        .eq('conversation_id', conversationId)
+        .order('created_at', { ascending: true })
+        .limit(limit);
+
+      if (error) throw error;
+      return { success: true, data: data || [] };
+    } catch (error) {
+      console.error('Get messages error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async createConversation(participantIds, subject, type = 'direct') {
+    try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { data: conv, error: convError } = await supabaseClient
+        .from('conversations')
+        .insert([{ created_by: user.id, subject, type }])
+        .select()
+        .single();
+
+      if (convError) throw convError;
+
+      const allParticipants = [...new Set([user.id, ...participantIds])];
+      const { error: partError } = await supabaseClient
+        .from('conversation_participants')
+        .insert(allParticipants.map(uid => ({
+          conversation_id: conv.id,
+          user_id: uid
+        })));
+
+      if (partError) throw partError;
+      return { success: true, data: conv };
+    } catch (error) {
+      console.error('Create conversation error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async sendMessage(conversationId, content) {
+    try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { data, error } = await supabaseClient
+        .from('messages')
+        .insert([{ conversation_id: conversationId, sender_id: user.id, content }])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // Update conversation timestamp
+      await supabaseClient
+        .from('conversations')
+        .update({ updated_at: new Date().toISOString() })
+        .eq('id', conversationId);
+
+      return { success: true, data };
+    } catch (error) {
+      console.error('Send message error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async markConversationRead(conversationId) {
+    try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { error } = await supabaseClient
+        .from('conversation_participants')
+        .update({ last_read_at: new Date().toISOString() })
+        .eq('conversation_id', conversationId)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      return { success: true };
+    } catch (error) {
+      console.error('Mark read error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  // ====== Contact Form → Lead ======
+
+  async submitContactForm(formData) {
+    try {
+      // Save as lead (no auth required for public form)
+      const { data, error } = await supabaseClient
+        .from('leads')
+        .insert([{
+          company_name: formData.company || formData.name || 'Unbekannt',
+          contact_name: formData.name,
+          email: formData.email,
+          phone: formData.phone || null,
+          source: 'website',
+          notes: formData.message || '',
+          status: 'new'
+        }])
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      console.error('Contact form error:', error);
+      return { success: false, error: error.message };
+    }
   }
 };
 
@@ -344,6 +892,20 @@ const utils = {
       day: '2-digit', month: '2-digit', year: 'numeric',
       hour: '2-digit', minute: '2-digit'
     }).format(date);
+  },
+
+  sanitizeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  },
+
+  validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  },
+
+  validatePhone(phone) {
+    return /^[+]?[\d\s()-]{6,20}$/.test(phone);
   }
 };
 
