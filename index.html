@@ -229,6 +229,19 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
     </div>
   </section>
 
+  <!-- DEMO -->
+  <section class="demo-sec" id="demo">
+    <div class="demo-card fi">
+      <h2 data-i18n="demo.title">Demo sofort testen</h2>
+      <p data-i18n="demo.subtitle">Ruf unsere Demo-Nummer an und erlebe Call Lana live:</p>
+      <div class="demo-row">
+        <input type="tel" class="demo-input" value="+49 5121 206 789" readonly id="demoPhone">
+        <button class="demo-btn" onclick="copyPhone()" data-i18n="demo.button">Kopieren</button>
+      </div>
+      <p class="demo-note" id="copyFeedback" data-i18n="demo.legal">Kostenlos &bull; Keine Registrierung &bull; Sofort verfügbar</p>
+    </div>
+  </section>
+
   <!-- 2. LOGOS -->
   <section class="logos-sec">
     <p class="logos-label" data-i18n="trusted.title">Vertraut von Unternehmen wie</p>
@@ -331,32 +344,7 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
     </div>
   </section>
 
-  <!-- 6. TRUST & DSGVO -->
-  <section class="section alt">
-    <div class="sec-header fi">
-      <span class="sec-badge" data-i18n="trust.label">Sicherheit & Datenschutz</span>
-      <h2 class="sec-title" data-i18n="trust.title">Deine Daten sind bei uns sicher</h2>
-    </div>
-    <div class="trust-grid">
-      <div class="trust-card fi">
-        <span class="trust-icon">&#x1f6e1;&#xfe0f;</span>
-        <h3 data-i18n="trust.gdpr.title">DSGVO-konform</h3>
-        <p data-i18n="trust.gdpr.desc">Server bei Hetzner in Nürnberg, Deutschland. Volle Datenkontrolle.</p>
-      </div>
-      <div class="trust-card fi">
-        <span class="trust-icon">&#x1f512;</span>
-        <h3 data-i18n="trust.encrypt.title">Ende-zu-Ende verschlüsselt</h3>
-        <p data-i18n="trust.encrypt.desc">256-Bit SSL. Alle Gespräche und Daten sind vollständig verschlüsselt.</p>
-      </div>
-      <div class="trust-card fi">
-        <span class="trust-icon">&#x1f1ea;&#x1f1fa;</span>
-        <h3 data-i18n="trust.euai.title">EU AI Act konform</h3>
-        <p data-i18n="trust.euai.desc">OpenAI nur über Microsoft Azure EU-Server. Keine Daten verlassen Europa.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 7. USE CASES -->
+  <!-- USE CASES -->
   <section class="section">
     <div class="sec-header fi">
       <span class="sec-badge">Einsatzbereiche</span>
@@ -482,20 +470,32 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
     </div>
   </section>
 
-  <!-- 11. DEMO -->
-  <section class="demo-sec" id="demo">
-    <div class="demo-card fi">
-      <h2 data-i18n="demo.title">Demo sofort testen</h2>
-      <p data-i18n="demo.subtitle">Ruf unsere Demo-Nummer an und erlebe Call Lana live:</p>
-      <div class="demo-row">
-        <input type="tel" class="demo-input" value="+49 5121 206 789" readonly id="demoPhone">
-        <button class="demo-btn" onclick="copyPhone()" data-i18n="demo.button">Kopieren</button>
+  <!-- TRUST & DSGVO -->
+  <section class="section alt">
+    <div class="sec-header fi">
+      <span class="sec-badge" data-i18n="trust.label">Sicherheit & Datenschutz</span>
+      <h2 class="sec-title" data-i18n="trust.title">Deine Daten sind bei uns sicher</h2>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-card fi">
+        <span class="trust-icon">&#x1f6e1;&#xfe0f;</span>
+        <h3 data-i18n="trust.gdpr.title">DSGVO-konform</h3>
+        <p data-i18n="trust.gdpr.desc">Server bei Hetzner in Nürnberg, Deutschland. Volle Datenkontrolle.</p>
       </div>
-      <p class="demo-note" id="copyFeedback" data-i18n="demo.legal">Kostenlos &bull; Keine Registrierung &bull; Sofort verfügbar</p>
+      <div class="trust-card fi">
+        <span class="trust-icon">&#x1f512;</span>
+        <h3 data-i18n="trust.encrypt.title">Ende-zu-Ende verschlüsselt</h3>
+        <p data-i18n="trust.encrypt.desc">256-Bit SSL. Alle Gespräche und Daten sind vollständig verschlüsselt.</p>
+      </div>
+      <div class="trust-card fi">
+        <span class="trust-icon">&#x1f1ea;&#x1f1fa;</span>
+        <h3 data-i18n="trust.euai.title">EU AI Act konform</h3>
+        <p data-i18n="trust.euai.desc">OpenAI nur über Microsoft Azure EU-Server. Keine Daten verlassen Europa.</p>
+      </div>
     </div>
   </section>
 
-  <!-- 12. FINAL CTA -->
+  <!-- FINAL CTA -->
   <section class="final-cta">
     <h2>Bereit, keinen Anruf mehr zu verpassen?</h2>
     <p>Starte jetzt kostenlos — keine Kreditkarte, keine Vertragsbindung. 14 Tage testen.</p>

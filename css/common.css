@@ -175,6 +175,13 @@ textarea.form-input { min-height: 80px; resize: vertical; }
 
 @media (max-width: 600px) {
   .stats-grid { grid-template-columns: 1fr; }
-  .modal { margin: 16px; padding: 24px; }
+  .modal { margin: 12px; padding: 20px; }
   .kanban-board { grid-template-columns: 1fr; }
+  .content { padding: 16px 12px; }
+  h1 { font-size: 1.2rem; }
+  .page-desc { font-size: .85rem; margin-bottom: 20px; }
+  .stat-card { padding: 14px; }
+  .stat-value { font-size: 1.2rem; }
+  .form-input, .form-select { padding: 10px 12px; font-size: 13px; }
+  .btn { padding: 9px 16px; font-size: 12px; }
 }
