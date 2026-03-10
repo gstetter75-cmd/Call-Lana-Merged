@@ -118,6 +118,11 @@ tr:hover td{background:rgba(124,58,237,.03);}
 .pm-type-btn.active{border-color:var(--pu);color:var(--pu3);background:rgba(124,58,237,.08);}
 .pm-type-btn span{font-size:16px;}
 
+/* TOPUP BUTTONS */
+.topup-btn{background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:14px 8px;font-size:15px;font-weight:800;font-family:'Syne',sans-serif;color:var(--tx2);cursor:pointer;transition:all .2s;}
+.topup-btn:hover{border-color:var(--border2);color:var(--tx);}
+.topup-btn.active{border-color:var(--pu);color:var(--pu3);background:rgba(124,58,237,.08);}
+
 /* PLAN CARD */
 .plan-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;text-align:center;}
 .plan-name{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:4px;}
@@ -610,26 +615,176 @@ tr:hover td{background:rgba(124,58,237,.03);}
 
     <!-- ===================== BILLING ===================== -->
     <div id="page-billing" class="page-section">
-      <h1>Guthaben</h1>
-      <p class="page-desc">Verwalte dein Guthaben und deine Nutzung.</p>
+      <h1>Guthaben & Verbrauch</h1>
+      <p class="page-desc">Verwalte dein Guthaben, überwache deinen Verbrauch und konfiguriere automatische Aufladungen.</p>
 
-      <div class="balance-card">
-        <div class="balance-label">Aktuelles Guthaben</div>
-        <div class="balance-value-big" id="balanceValue">–</div>
-        <div class="balance-sub" id="balanceSub">Lade…</div>
-        <button class="btn-primary" onclick="showToast('Zahlungsanbindung wird bald verfügbar sein.')" style="margin-top:16px;">Guthaben aufladen</button>
+      <!-- Top Row: Balance + Plan Usage + Spending -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px;">
+        <!-- Balance Card -->
+        <div class="balance-card" style="margin-bottom:0;">
+          <div class="balance-label">Aktuelles Guthaben</div>
+          <div class="balance-value-big" id="balanceValue">–</div>
+          <div class="balance-sub" id="balanceSub">Lade…</div>
+          <button class="btn-primary" style="margin-top:16px;" onclick="openTopupModal()">Guthaben aufladen</button>
+        </div>
+
+        <!-- Plan Minutes Usage -->
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;">
+          <div class="balance-label">Tarifminuten</div>
+          <div style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin:8px 0 4px;">
+            <span id="minutesUsed">0</span><span style="font-size:1rem;color:var(--tx3);font-weight:600;"> / <span id="minutesIncluded">0</span> Min.</span>
+          </div>
+          <div style="background:var(--bg3);border-radius:8px;height:10px;margin:12px 0 8px;overflow:hidden;">
+            <div id="minutesBar" style="height:100%;border-radius:8px;background:linear-gradient(90deg,var(--pu),var(--cyan));width:0%;transition:width .5s;"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--tx3);">
+            <span id="minutesPercent">0% verbraucht</span>
+            <span id="minutesRemaining">0 Min. übrig</span>
+          </div>
+          <div id="overageInfo" style="display:none;margin-top:12px;padding:10px 12px;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.25);border-radius:8px;font-size:12px;color:var(--orange);">
+            <strong id="overageMinutes">0</strong> Überschreitungsminuten · <strong id="overageCost">0,00 €</strong> vom Guthaben
+          </div>
+        </div>
+
+        <!-- Monthly Spending -->
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;">
+          <div class="balance-label">Ausgaben diesen Monat</div>
+          <div style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin:8px 0 4px;" id="monthlySpending">0,00 €</div>
+          <div style="font-size:12px;color:var(--tx3);margin-bottom:12px;">
+            Limit: <strong id="hardCapDisplay">300,00 €</strong>
+          </div>
+          <div style="background:var(--bg3);border-radius:8px;height:10px;margin-bottom:8px;overflow:hidden;">
+            <div id="spendingBar" style="height:100%;border-radius:8px;background:linear-gradient(90deg,var(--green),var(--orange));width:0%;transition:width .5s;"></div>
+          </div>
+          <div style="font-size:11px;color:var(--tx3);" id="spendingPercent">0% vom Limit</div>
+        </div>
       </div>
 
-      <div class="data-section">
+      <!-- Auto-Reload & Hard Cap Settings -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+        <!-- Auto-Reload -->
+        <div class="data-section">
+          <div class="data-header">
+            <h2>Auto-Aufladung</h2>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+              <input type="checkbox" id="autoReloadToggle" style="width:16px;height:16px;accent-color:var(--pu);cursor:pointer;" onchange="saveAutoReloadSettings()">
+              <span style="font-size:12px;font-weight:600;color:var(--tx3);">Aktiviert</span>
+            </label>
+          </div>
+          <div style="padding:20px;" id="autoReloadSettings">
+            <p style="font-size:13px;color:var(--tx2);margin-bottom:16px;">Guthaben wird automatisch aufgeladen, wenn es unter den Schwellwert fällt.</p>
+            <div class="form-row">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Schwellwert</label>
+                <select class="form-select" id="autoReloadThreshold" onchange="saveAutoReloadSettings()">
+                  <option value="200">2,00 €</option>
+                  <option value="500" selected>5,00 €</option>
+                  <option value="1000">10,00 €</option>
+                  <option value="2000">20,00 €</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Aufladebetrag</label>
+                <select class="form-select" id="autoReloadAmount" onchange="saveAutoReloadSettings()">
+                  <option value="2000">20,00 €</option>
+                  <option value="5000" selected>50,00 €</option>
+                  <option value="10000">100,00 €</option>
+                  <option value="20000">200,00 €</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hard Cap -->
+        <div class="data-section">
+          <div class="data-header">
+            <h2>Ausgabenlimit</h2>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+              <input type="checkbox" id="hardCapToggle" checked style="width:16px;height:16px;accent-color:var(--pu);cursor:pointer;" onchange="saveHardCapSettings()">
+              <span style="font-size:12px;font-weight:600;color:var(--tx3);">Aktiviert</span>
+            </label>
+          </div>
+          <div style="padding:20px;">
+            <p style="font-size:13px;color:var(--tx2);margin-bottom:16px;">Monatliches Ausgabenlimit (inkl. Tarifgebühr). Bei Erreichen wird der Dienst pausiert.</p>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Maximalbetrag pro Monat</label>
+              <select class="form-select" id="hardCapAmount" onchange="saveHardCapSettings()">
+                <option value="10000">100,00 €</option>
+                <option value="15000">150,00 €</option>
+                <option value="20000">200,00 €</option>
+                <option value="30000" selected>300,00 €</option>
+                <option value="50000">500,00 €</option>
+                <option value="100000">1.000,00 €</option>
+              </select>
+            </div>
+            <div class="info-box" style="margin-top:12px;">
+              Bei Erreichen des Limits wird der KI-Assistent pausiert und du wirst per E-Mail benachrichtigt.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Usage Details -->
+      <div class="data-section" style="margin-bottom:20px;">
         <div class="data-header">
           <h2>Nutzung diesen Monat</h2>
         </div>
         <div style="padding:20px;">
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;" id="usageGrid">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
             <div><div class="stat-label">Anrufe</div><div style="font-size:1.2rem;font-weight:700;margin-top:4px;" id="usageCalls">–</div></div>
-            <div><div class="stat-label">Minuten</div><div style="font-size:1.2rem;font-weight:700;margin-top:4px;" id="usageMinutes">–</div></div>
-            <div><div class="stat-label">Kosten</div><div style="font-size:1.2rem;font-weight:700;margin-top:4px;" id="usageCost">–</div></div>
+            <div><div class="stat-label">Minuten gesamt</div><div style="font-size:1.2rem;font-weight:700;margin-top:4px;" id="usageMinutes">–</div></div>
+            <div><div class="stat-label">Tarifkosten</div><div style="font-size:1.2rem;font-weight:700;margin-top:4px;" id="usagePlanCost">–</div></div>
+            <div><div class="stat-label">Überschreitung</div><div style="font-size:1.2rem;font-weight:700;margin-top:4px;" id="usageOverageCost">–</div></div>
           </div>
+        </div>
+      </div>
+
+      <!-- Transaction History -->
+      <div class="data-section">
+        <div class="data-header">
+          <h2>Transaktionen</h2>
+          <span class="badge" id="txCount">0</span>
+        </div>
+        <div id="txBody">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Datum</th><th>Typ</th><th>Beschreibung</th><th>Betrag</th><th>Guthaben</th></tr></thead>
+              <tbody id="txTableBody">
+                <tr><td colspan="5" style="text-align:center;color:var(--tx3);padding:30px;">Keine Transaktionen vorhanden</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top-up Modal -->
+    <div class="modal-overlay" id="topupModal" style="display:none;">
+      <div class="modal" style="max-width:440px;">
+        <div class="modal-header">
+          <h2>Guthaben aufladen</h2>
+          <button class="modal-close" onclick="closeTopupModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size:13px;color:var(--tx2);margin-bottom:20px;">Wähle einen Betrag. Die Abbuchung erfolgt über deine hinterlegte Zahlungsmethode.</p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;">
+            <button class="topup-btn" data-amount="1000" onclick="selectTopup(this)">10 €</button>
+            <button class="topup-btn" data-amount="2000" onclick="selectTopup(this)">20 €</button>
+            <button class="topup-btn active" data-amount="5000" onclick="selectTopup(this)">50 €</button>
+            <button class="topup-btn" data-amount="10000" onclick="selectTopup(this)">100 €</button>
+            <button class="topup-btn" data-amount="20000" onclick="selectTopup(this)">200 €</button>
+            <button class="topup-btn" data-amount="50000" onclick="selectTopup(this)">500 €</button>
+          </div>
+          <div style="font-size:12px;color:var(--tx3);margin-bottom:8px;">Oder eigenen Betrag eingeben:</div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <input type="number" class="form-input" id="customTopup" placeholder="0,00" min="5" max="1000" step="0.01" style="flex:1;">
+            <span style="font-size:14px;font-weight:700;color:var(--tx2);">€</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="closeTopupModal()">Abbrechen</button>
+          <button class="btn-primary" id="topupConfirmBtn" onclick="confirmTopup()">50,00 € aufladen</button>
         </div>
       </div>
     </div>
@@ -1657,6 +1812,265 @@ document.getElementById('logoutBtn').addEventListener('click', async () => {
 });
 
 // ==========================================
+// BILLING & BALANCE
+// ==========================================
+const OVERAGE_RATE_CENTS = 15; // 0,15€ per minute overage
+
+let selectedTopupAmount = 5000; // default 50€
+
+function openTopupModal() {
+  document.getElementById('topupModal').style.display = 'flex';
+  document.getElementById('customTopup').value = '';
+  selectTopup(document.querySelector('.topup-btn.active'));
+}
+
+function closeTopupModal() {
+  document.getElementById('topupModal').style.display = 'none';
+}
+
+function selectTopup(btn) {
+  document.querySelectorAll('.topup-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedTopupAmount = parseInt(btn.dataset.amount);
+  document.getElementById('customTopup').value = '';
+  updateTopupButton();
+}
+
+document.getElementById('customTopup')?.addEventListener('input', function() {
+  if (this.value) {
+    document.querySelectorAll('.topup-btn').forEach(b => b.classList.remove('active'));
+    selectedTopupAmount = Math.round(parseFloat(this.value) * 100);
+  }
+  updateTopupButton();
+});
+
+function updateTopupButton() {
+  const custom = document.getElementById('customTopup').value;
+  const amount = custom ? Math.round(parseFloat(custom) * 100) : selectedTopupAmount;
+  document.getElementById('topupConfirmBtn').textContent = formatCents(amount) + ' aufladen';
+}
+
+function formatCents(cents) {
+  return (cents / 100).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
+}
+
+async function confirmTopup() {
+  const custom = document.getElementById('customTopup').value;
+  const amount = custom ? Math.round(parseFloat(custom) * 100) : selectedTopupAmount;
+
+  if (amount < 500) { showToast('Mindestbetrag: 5,00 €', true); return; }
+  if (amount > 100000) { showToast('Maximalbetrag: 1.000,00 €', true); return; }
+
+  const btn = document.getElementById('topupConfirmBtn');
+  btn.disabled = true;
+  btn.textContent = 'Wird aufgeladen...';
+
+  const user = await clanaAuth.getUser();
+  if (!user) { showToast('Nicht angemeldet.', true); btn.disabled = false; updateTopupButton(); return; }
+
+  try {
+    // Get current balance
+    const { data: account, error: accErr } = await supabaseClient
+      .from('subscriptions').select('balance_cents').eq('user_id', user.id).single();
+    if (accErr) throw accErr;
+
+    const newBalance = (account?.balance_cents || 0) + amount;
+
+    // Update balance
+    const { error: updErr } = await supabaseClient
+      .from('subscriptions')
+      .update({ balance_cents: newBalance })
+      .eq('user_id', user.id);
+    if (updErr) throw updErr;
+
+    // Log transaction
+    await supabaseClient.from('billing_transactions').insert([{
+      user_id: user.id,
+      type: 'topup',
+      amount_cents: amount,
+      balance_after_cents: newBalance,
+      description: 'Guthaben aufgeladen: ' + formatCents(amount)
+    }]);
+
+    showToast('Guthaben aufgeladen: ' + formatCents(amount));
+    closeTopupModal();
+    await loadBillingData();
+  } catch (err) {
+    showToast('Fehler: ' + err.message, true);
+  } finally {
+    btn.disabled = false;
+    updateTopupButton();
+  }
+}
+
+async function saveAutoReloadSettings() {
+  const user = await clanaAuth.getUser();
+  if (!user) return;
+
+  const enabled = document.getElementById('autoReloadToggle').checked;
+  const threshold = parseInt(document.getElementById('autoReloadThreshold').value);
+  const amount = parseInt(document.getElementById('autoReloadAmount').value);
+
+  try {
+    await supabaseClient.from('subscriptions').update({
+      auto_reload_enabled: enabled,
+      auto_reload_threshold_cents: threshold,
+      auto_reload_amount_cents: amount
+    }).eq('user_id', user.id);
+    showToast(enabled ? 'Auto-Aufladung aktiviert' : 'Auto-Aufladung deaktiviert');
+  } catch (err) {
+    showToast('Fehler: ' + err.message, true);
+  }
+}
+
+async function saveHardCapSettings() {
+  const user = await clanaAuth.getUser();
+  if (!user) return;
+
+  const enabled = document.getElementById('hardCapToggle').checked;
+  const amount = parseInt(document.getElementById('hardCapAmount').value);
+
+  try {
+    await supabaseClient.from('subscriptions').update({
+      hard_cap_enabled: enabled,
+      hard_cap_cents: amount
+    }).eq('user_id', user.id);
+    showToast(enabled ? 'Ausgabenlimit auf ' + formatCents(amount) + ' gesetzt' : 'Ausgabenlimit deaktiviert');
+    await loadBillingData();
+  } catch (err) {
+    showToast('Fehler: ' + err.message, true);
+  }
+}
+
+async function loadBillingData() {
+  const user = await clanaAuth.getUser();
+  if (!user) return;
+
+  try {
+    // Load billing account
+    const { data: account } = await supabaseClient
+      .from('subscriptions').select('*').eq('user_id', user.id).single();
+
+    if (!account) return;
+
+    // Balance
+    const balance = account.balance_cents || 0;
+    document.getElementById('balanceValue').textContent = formatCents(balance);
+    document.getElementById('balanceSub').textContent = balance > 0 ? 'Verfügbar' : 'Kein Guthaben vorhanden';
+
+    // Plan minutes usage (subscriptions table field names)
+    const used = Math.round(parseFloat(account.used_minutes) || 0);
+    const included = account.included_minutes || 0;
+    const overage = Math.round(parseFloat(account.overage_minutes) || 0);
+    const percent = included > 0 ? Math.min(100, Math.round((used / included) * 100)) : 0;
+    const remaining = Math.max(0, included - used);
+
+    document.getElementById('minutesUsed').textContent = used;
+    document.getElementById('minutesIncluded').textContent = included;
+    document.getElementById('minutesBar').style.width = percent + '%';
+    document.getElementById('minutesBar').style.background =
+      percent >= 90 ? 'linear-gradient(90deg, var(--orange), var(--red))' :
+      percent >= 70 ? 'linear-gradient(90deg, var(--pu), var(--orange))' :
+      'linear-gradient(90deg, var(--pu), var(--cyan))';
+    document.getElementById('minutesPercent').textContent = percent + '% verbraucht';
+    document.getElementById('minutesRemaining').textContent = remaining + ' Min. übrig';
+
+    // Overage info
+    const overageEl = document.getElementById('overageInfo');
+    if (overage > 0) {
+      overageEl.style.display = 'block';
+      document.getElementById('overageMinutes').textContent = overage;
+      document.getElementById('overageCost').textContent = formatCents(overage * OVERAGE_RATE_CENTS);
+    } else {
+      overageEl.style.display = 'none';
+    }
+
+    // Monthly spending
+    const planCost = account.plan_price_cents || 0;
+    const overageCost = overage * OVERAGE_RATE_CENTS;
+    const totalSpending = planCost + overageCost;
+    const hardCap = account.hard_cap_cents || 30000;
+    const spendPercent = Math.min(100, Math.round((totalSpending / hardCap) * 100));
+
+    document.getElementById('monthlySpending').textContent = formatCents(totalSpending);
+    document.getElementById('hardCapDisplay').textContent = formatCents(hardCap);
+    document.getElementById('spendingBar').style.width = spendPercent + '%';
+    document.getElementById('spendingBar').style.background =
+      spendPercent >= 90 ? 'linear-gradient(90deg, var(--orange), var(--red))' :
+      'linear-gradient(90deg, var(--green), var(--cyan))';
+    document.getElementById('spendingPercent').textContent = spendPercent + '% vom Limit';
+
+    // Auto-reload settings
+    document.getElementById('autoReloadToggle').checked = account.auto_reload_enabled || false;
+    document.getElementById('autoReloadThreshold').value = account.auto_reload_threshold_cents || 500;
+    document.getElementById('autoReloadAmount').value = account.auto_reload_amount_cents || 5000;
+
+    // Hard cap settings
+    document.getElementById('hardCapToggle').checked = account.hard_cap_enabled !== false;
+    document.getElementById('hardCapAmount').value = account.hard_cap_cents || 30000;
+
+    // Usage stats
+    document.getElementById('usageCalls').textContent = '–'; // from calls table
+    document.getElementById('usageMinutes').textContent = used + overage;
+    document.getElementById('usagePlanCost').textContent = formatCents(planCost);
+    document.getElementById('usageOverageCost').textContent = formatCents(overageCost);
+
+    // Load transactions
+    await loadTransactions();
+  } catch (err) {
+    // Billing account might not exist yet
+  }
+}
+
+async function loadTransactions() {
+  const user = await clanaAuth.getUser();
+  if (!user) return;
+
+  try {
+    const { data, error } = await supabaseClient
+      .from('billing_transactions')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(20);
+
+    if (error) throw error;
+
+    document.getElementById('txCount').textContent = (data || []).length;
+
+    const typeLabels = {
+      plan_charge: 'Tarifgebühr',
+      topup: 'Aufladung',
+      auto_reload: 'Auto-Aufladung',
+      usage_charge: 'Verbrauch',
+      refund: 'Erstattung',
+      credit: 'Gutschrift'
+    };
+
+    const tbody = document.getElementById('txTableBody');
+    if (!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--tx3);padding:30px;">Keine Transaktionen vorhanden</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = data.map(tx => {
+      const isPositive = ['topup', 'auto_reload', 'refund', 'credit'].includes(tx.type);
+      const amountColor = isPositive ? 'var(--green)' : 'var(--tx2)';
+      const prefix = isPositive ? '+' : '-';
+      return `<tr>
+        <td>${new Date(tx.created_at).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>
+        <td><span class="status-badge ${isPositive ? 'completed' : 'active'}">${typeLabels[tx.type] || tx.type}</span></td>
+        <td>${tx.description || '–'}</td>
+        <td style="font-weight:700;color:${amountColor};">${prefix}${formatCents(Math.abs(tx.amount_cents))}</td>
+        <td style="color:var(--tx3);">${tx.balance_after_cents != null ? formatCents(tx.balance_after_cents) : '–'}</td>
+      </tr>`;
+    }).join('');
+  } catch (err) {
+    // Table might not exist yet
+  }
+}
+
+// ==========================================
 // PAYMENT METHODS
 // ==========================================
 let currentPmPriority = 1;
@@ -1872,14 +2286,16 @@ function detectCardBrand(number) {
   return 'Karte';
 }
 
-// Load payment methods when navigating to the page
+// Load data when navigating to billing/payment pages
 const origNavigate = navigateToPage;
 navigateToPage = function(page, updateHash) {
   origNavigate(page, updateHash);
   if (page === 'payment') loadPaymentMethods();
+  if (page === 'billing') loadBillingData();
 };
 // Also load on initial hash
 if (window.location.hash === '#payment') loadPaymentMethods();
+if (window.location.hash === '#billing') loadBillingData();
 </script>
 <script src="cookie-consent.js"></script>
 </body>
