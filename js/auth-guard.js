@@ -15,28 +15,25 @@ const AuthGuard = {
   },
 
   async init() {
-    const session = await window.clanaAuth.getSession();
-    if (!session) {
+    // Use getUser() for server-side token verification (not cached getSession)
+    const user = await window.clanaAuth.getUser();
+    if (!user) {
+      // Token invalid or expired — clear stale session to prevent redirect loop
+      await window.clanaAuth.signOut();
       window.location.href = 'login.html';
       return null;
     }
     const profile = await this.getProfile();
     if (!profile) {
-      // Session exists but profile fetch failed — build a minimal fallback
-      // instead of redirecting to login (which causes a redirect loop)
-      const user = await window.clanaAuth.getUser();
-      if (user) {
-        return {
-          id: user.id,
-          email: user.email,
-          role: 'customer',
-          first_name: user.user_metadata?.firstName || '',
-          last_name: user.user_metadata?.lastName || '',
-          organizations: null
-        };
-      }
-      window.location.href = 'login.html';
-      return null;
+      // Session valid but profile fetch failed — build a minimal fallback
+      return {
+        id: user.id,
+        email: user.email,
+        role: user.user_metadata?.role || 'customer',
+        first_name: user.user_metadata?.firstName || '',
+        last_name: user.user_metadata?.lastName || '',
+        organizations: null
+      };
     }
     return profile;
   },

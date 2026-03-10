@@ -189,11 +189,11 @@ async function redirectByRole() {
 }
 
 // ==========================================
-// CHECK IF ALREADY LOGGED IN
+// CHECK IF ALREADY LOGGED IN (use getUser for server-side verification)
 // ==========================================
 (async () => {
-  const session = await clanaAuth.getSession();
-  if (session) {
+  const user = await clanaAuth.getUser();
+  if (user) {
     showAlert('Du bist bereits eingeloggt. Weiterleitung...', 'info');
     setTimeout(async () => {
       await redirectByRole();
