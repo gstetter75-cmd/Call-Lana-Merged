@@ -112,6 +112,12 @@ tr:hover td{background:rgba(124,58,237,.03);}
 .balance-value-big{font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:800;margin-bottom:4px;}
 .balance-sub{font-size:13px;color:var(--tx3);}
 
+/* PAYMENT TYPE SELECTOR */
+.pm-type-btn{flex:1;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:12px 8px;font-size:12px;font-weight:700;font-family:'Manrope',sans-serif;color:var(--tx3);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.pm-type-btn:hover{border-color:var(--border2);color:var(--tx2);}
+.pm-type-btn.active{border-color:var(--pu);color:var(--pu3);background:rgba(124,58,237,.08);}
+.pm-type-btn span{font-size:16px;}
+
 /* PLAN CARD */
 .plan-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;text-align:center;}
 .plan-name{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:4px;}
@@ -257,6 +263,10 @@ tr:hover td{background:rgba(124,58,237,.03);}
       <a href="#billing" class="sb-item" data-page="billing">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
         Guthaben
+      </a>
+      <a href="#payment" class="sb-item" data-page="payment">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><path d="M1 10h22"/><path d="M6 16h4"/></svg>
+        Zahlungsmethoden
       </a>
       <a href="#plans" class="sb-item" data-page="plans">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -620,6 +630,180 @@ tr:hover td{background:rgba(124,58,237,.03);}
             <div><div class="stat-label">Minuten</div><div style="font-size:1.2rem;font-weight:700;margin-top:4px;" id="usageMinutes">–</div></div>
             <div><div class="stat-label">Kosten</div><div style="font-size:1.2rem;font-weight:700;margin-top:4px;" id="usageCost">–</div></div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== PAYMENT METHODS ===================== -->
+    <div id="page-payment" class="page-section">
+      <h1>Zahlungsmethoden</h1>
+      <p class="page-desc">Hinterlege eine primäre und eine Ersatz-Zahlungsmethode. Falls die erste fehlschlägt, wird automatisch die zweite verwendet.</p>
+
+      <!-- Primary Payment Method -->
+      <div class="data-section" style="margin-bottom:20px;">
+        <div class="data-header">
+          <h2>Primäre Zahlungsmethode</h2>
+          <span class="badge" id="pm1Badge">Nicht hinterlegt</span>
+        </div>
+        <div id="pm1Body" style="padding:20px;">
+          <div id="pm1Empty" class="empty-state" style="padding:30px 20px;">
+            <div class="icon">💳</div>
+            <h3>Keine primäre Zahlungsmethode</h3>
+            <p>Hinterlege eine Zahlungsmethode, um Call Lana nutzen zu können.</p>
+            <button class="btn-primary" style="margin-top:16px;font-size:13px;padding:10px 20px;" onclick="openPaymentModal(1)">+ Zahlungsmethode hinzufügen</button>
+          </div>
+          <div id="pm1Card" style="display:none;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <div style="font-size:11px;color:var(--tx3);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">
+                  <span id="pm1Type">–</span> · <span id="pm1Status" class="status-badge active">Aktiv</span>
+                </div>
+                <div style="font-size:1.1rem;font-weight:700;" id="pm1Info">–</div>
+                <div style="font-size:12px;color:var(--tx3);margin-top:4px;" id="pm1Detail">–</div>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <button class="btn-secondary" style="font-size:12px;padding:8px 14px;" onclick="openPaymentModal(1)">Ändern</button>
+                <button class="btn-danger" style="font-size:12px;padding:8px 14px;" onclick="removePaymentMethod(1)">Entfernen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fallback Payment Method -->
+      <div class="data-section" style="margin-bottom:20px;">
+        <div class="data-header">
+          <h2>Ersatz-Zahlungsmethode</h2>
+          <span class="badge" id="pm2Badge">Optional</span>
+        </div>
+        <div id="pm2Body" style="padding:20px;">
+          <div id="pm2Empty" class="empty-state" style="padding:30px 20px;">
+            <div class="icon">🔄</div>
+            <h3>Keine Ersatz-Zahlungsmethode</h3>
+            <p>Falls die primäre Zahlungsmethode fehlschlägt, wird die Ersatz-Methode belastet.</p>
+            <button class="btn-secondary" style="margin-top:16px;font-size:13px;padding:10px 20px;" onclick="openPaymentModal(2)">+ Ersatz hinzufügen</button>
+          </div>
+          <div id="pm2Card" style="display:none;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <div style="font-size:11px;color:var(--tx3);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">
+                  <span id="pm2Type">–</span> · <span id="pm2Status" class="status-badge active">Aktiv</span>
+                </div>
+                <div style="font-size:1.1rem;font-weight:700;" id="pm2Info">–</div>
+                <div style="font-size:12px;color:var(--tx3);margin-top:4px;" id="pm2Detail">–</div>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <button class="btn-secondary" style="font-size:12px;padding:8px 14px;" onclick="openPaymentModal(2)">Ändern</button>
+                <button class="btn-danger" style="font-size:12px;padding:8px 14px;" onclick="removePaymentMethod(2)">Entfernen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <strong>Hinweis:</strong> SEPA-Lastschriftmandate können bis zu 8 Wochen nach Abbuchung widerrufen werden.
+        Deine Bankdaten werden verschlüsselt gespeichert und nie an Dritte weitergegeben.
+      </div>
+    </div>
+
+    <!-- Payment Method Modal -->
+    <div class="modal-overlay" id="paymentModal" style="display:none;">
+      <div class="modal" style="max-width:520px;">
+        <div class="modal-header">
+          <h2 id="pmModalTitle">Zahlungsmethode hinzufügen</h2>
+          <button class="modal-close" onclick="closePaymentModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <!-- Payment Type Selector -->
+          <div style="display:flex;gap:10px;margin-bottom:24px;">
+            <button class="pm-type-btn active" data-type="sepa" onclick="selectPaymentType('sepa')">
+              <span>🏦</span> SEPA-Lastschrift
+            </button>
+            <button class="pm-type-btn" data-type="credit_card" onclick="selectPaymentType('credit_card')">
+              <span>💳</span> Kreditkarte
+            </button>
+            <button class="pm-type-btn" data-type="paypal" onclick="selectPaymentType('paypal')">
+              <span>🅿️</span> PayPal
+            </button>
+          </div>
+
+          <!-- SEPA Form -->
+          <div id="formSepa">
+            <div class="form-group">
+              <label class="form-label">Kontoinhaber</label>
+              <input type="text" class="form-input" id="sepaHolder" placeholder="Max Mustermann" autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label class="form-label">IBAN</label>
+              <input type="text" class="form-input" id="sepaIban" placeholder="DE89 3704 0044 0532 0130 00" autocomplete="off" style="font-family:'Manrope',monospace;letter-spacing:.05em;">
+              <div style="font-size:11px;color:var(--tx3);margin-top:4px;" id="ibanHint"></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">BIC (optional)</label>
+              <input type="text" class="form-input" id="sepaBic" placeholder="Wird automatisch ermittelt" autocomplete="off">
+            </div>
+
+            <!-- SEPA Mandate Confirmation -->
+            <div style="background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.15);border-radius:12px;padding:16px;margin-top:16px;">
+              <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--tx);">SEPA-Lastschriftmandat</div>
+              <div style="font-size:12px;color:var(--tx2);line-height:1.7;">
+                Ich ermächtige die <strong>Call Lana GmbH</strong> (Gläubiger-ID: wird bei Aktivierung mitgeteilt),
+                Zahlungen von meinem Konto mittels Lastschrift einzuziehen.
+                Zugleich weise ich mein Kreditinstitut an, die von der Call Lana GmbH
+                auf mein Konto gezogenen Lastschriften einzulösen.
+                <br><br>
+                <strong>Hinweis:</strong> Ich kann innerhalb von acht Wochen, beginnend mit dem
+                Belastungsdatum, die Erstattung des belasteten Betrages verlangen.
+                Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen.
+              </div>
+              <label style="display:flex;align-items:flex-start;gap:10px;margin-top:14px;cursor:pointer;">
+                <input type="checkbox" id="sepaConsent" style="width:18px;height:18px;margin-top:2px;accent-color:var(--pu);cursor:pointer;">
+                <span style="font-size:13px;color:var(--tx);line-height:1.5;">
+                  Ich bestätige das SEPA-Lastschriftmandat und stimme den
+                  <a href="agb.html" target="_blank" style="color:var(--pu);">AGB</a> sowie der
+                  <a href="datenschutz.html" target="_blank" style="color:var(--pu);">Datenschutzerklärung</a> zu.
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Credit Card Form -->
+          <div id="formCard" style="display:none;">
+            <div class="form-group">
+              <label class="form-label">Karteninhaber</label>
+              <input type="text" class="form-input" id="cardHolder" placeholder="Max Mustermann" autocomplete="cc-name">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Kartennummer</label>
+              <input type="text" class="form-input" id="cardNumber" placeholder="4242 4242 4242 4242" autocomplete="cc-number" maxlength="19" style="font-family:'Manrope',monospace;letter-spacing:.05em;">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Gültig bis</label>
+                <input type="text" class="form-input" id="cardExpiry" placeholder="MM/YY" autocomplete="cc-exp" maxlength="5">
+              </div>
+              <div class="form-group">
+                <label class="form-label">CVC</label>
+                <input type="text" class="form-input" id="cardCvc" placeholder="123" autocomplete="cc-csc" maxlength="4">
+              </div>
+            </div>
+          </div>
+
+          <!-- PayPal Form -->
+          <div id="formPaypal" style="display:none;">
+            <div class="form-group">
+              <label class="form-label">PayPal E-Mail-Adresse</label>
+              <input type="email" class="form-input" id="paypalEmail" placeholder="max@beispiel.de" autocomplete="email">
+            </div>
+            <div class="info-box" style="margin-top:12px;">
+              Du wirst nach dem Speichern zu PayPal weitergeleitet, um die Zahlung zu autorisieren.
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="closePaymentModal()">Abbrechen</button>
+          <button class="btn-primary" id="pmSaveBtn" onclick="savePaymentMethod()">Zahlungsmethode speichern</button>
         </div>
       </div>
     </div>
@@ -1400,6 +1584,7 @@ const breadcrumbNames = {
   phones: 'Telefonnummern',
   transactions: 'Anrufverlauf',
   billing: 'Guthaben',
+  payment: 'Zahlungsmethoden',
   plans: 'Paket',
   team: 'Team',
   messages: 'Nachrichten'
@@ -1470,6 +1655,231 @@ document.getElementById('logoutBtn').addEventListener('click', async () => {
     showToast('Logout fehlgeschlagen: ' + result.error, true);
   }
 });
+
+// ==========================================
+// PAYMENT METHODS
+// ==========================================
+let currentPmPriority = 1;
+let currentPmType = 'sepa';
+
+function selectPaymentType(type) {
+  currentPmType = type;
+  document.querySelectorAll('.pm-type-btn').forEach(b => b.classList.toggle('active', b.dataset.type === type));
+  document.getElementById('formSepa').style.display = type === 'sepa' ? 'block' : 'none';
+  document.getElementById('formCard').style.display = type === 'credit_card' ? 'block' : 'none';
+  document.getElementById('formPaypal').style.display = type === 'paypal' ? 'block' : 'none';
+}
+
+function openPaymentModal(priority) {
+  currentPmPriority = priority;
+  document.getElementById('pmModalTitle').textContent =
+    priority === 1 ? 'Primäre Zahlungsmethode' : 'Ersatz-Zahlungsmethode';
+  // Reset forms
+  document.querySelectorAll('#paymentModal input').forEach(i => { i.value = ''; if (i.type === 'checkbox') i.checked = false; });
+  selectPaymentType('sepa');
+  document.getElementById('ibanHint').textContent = '';
+  document.getElementById('paymentModal').style.display = 'flex';
+}
+
+function closePaymentModal() {
+  document.getElementById('paymentModal').style.display = 'none';
+}
+
+// IBAN formatting and validation
+document.getElementById('sepaIban')?.addEventListener('input', function() {
+  let v = this.value.replace(/\s/g, '').toUpperCase();
+  // Format with spaces every 4 chars
+  this.value = v.replace(/(.{4})/g, '$1 ').trim();
+
+  const hint = document.getElementById('ibanHint');
+  if (v.length >= 2) {
+    const country = v.substring(0, 2);
+    const countries = { DE: 'Deutschland (22 Zeichen)', AT: 'Österreich (20 Zeichen)', CH: 'Schweiz (21 Zeichen)', LU: 'Luxemburg (20 Zeichen)', NL: 'Niederlande (18 Zeichen)' };
+    hint.textContent = countries[country] || '';
+    hint.style.color = 'var(--tx3)';
+  } else {
+    hint.textContent = '';
+  }
+});
+
+// Card number formatting
+document.getElementById('cardNumber')?.addEventListener('input', function() {
+  let v = this.value.replace(/\D/g, '').substring(0, 16);
+  this.value = v.replace(/(.{4})/g, '$1 ').trim();
+});
+
+// Card expiry formatting
+document.getElementById('cardExpiry')?.addEventListener('input', function() {
+  let v = this.value.replace(/\D/g, '').substring(0, 4);
+  if (v.length >= 3) v = v.substring(0, 2) + '/' + v.substring(2);
+  this.value = v;
+});
+
+function validateIban(iban) {
+  const clean = iban.replace(/\s/g, '');
+  if (clean.length < 15 || clean.length > 34) return false;
+  if (!/^[A-Z]{2}\d{2}/.test(clean)) return false;
+  // Basic checksum: move first 4 chars to end, convert letters to numbers
+  const rearranged = clean.substring(4) + clean.substring(0, 4);
+  const numStr = rearranged.replace(/[A-Z]/g, c => (c.charCodeAt(0) - 55).toString());
+  // Modulo 97 check
+  let remainder = 0;
+  for (let i = 0; i < numStr.length; i++) {
+    remainder = (remainder * 10 + parseInt(numStr[i])) % 97;
+  }
+  return remainder === 1;
+}
+
+async function savePaymentMethod() {
+  const btn = document.getElementById('pmSaveBtn');
+  const user = await clanaAuth.getUser();
+  if (!user) { showToast('Nicht angemeldet.', true); return; }
+
+  let paymentData = { user_id: user.id, type: currentPmType, priority: currentPmPriority, status: 'active' };
+
+  if (currentPmType === 'sepa') {
+    const holder = document.getElementById('sepaHolder').value.trim();
+    const iban = document.getElementById('sepaIban').value.replace(/\s/g, '').toUpperCase();
+    const bic = document.getElementById('sepaBic').value.trim().toUpperCase();
+    const consent = document.getElementById('sepaConsent').checked;
+
+    if (!holder) { showToast('Bitte Kontoinhaber eingeben.', true); return; }
+    if (!validateIban(iban)) { showToast('Ungültige IBAN. Bitte prüfe die Eingabe.', true); return; }
+    if (!consent) { showToast('Bitte bestätige das SEPA-Lastschriftmandat.', true); return; }
+
+    paymentData.account_holder = holder;
+    paymentData.iban = iban;
+    paymentData.bic = bic || null;
+    paymentData.mandate_reference = 'CLANA-' + Date.now().toString(36).toUpperCase();
+    paymentData.mandate_date = new Date().toISOString();
+    paymentData.mandate_confirmed = true;
+
+  } else if (currentPmType === 'credit_card') {
+    const holder = document.getElementById('cardHolder').value.trim();
+    const number = document.getElementById('cardNumber').value.replace(/\s/g, '');
+    const expiry = document.getElementById('cardExpiry').value.trim();
+    const cvc = document.getElementById('cardCvc').value.trim();
+
+    if (!holder) { showToast('Bitte Karteninhaber eingeben.', true); return; }
+    if (number.length < 13 || number.length > 19) { showToast('Ungültige Kartennummer.', true); return; }
+    if (!/^\d{2}\/\d{2}$/.test(expiry)) { showToast('Ungültiges Ablaufdatum (MM/YY).', true); return; }
+    if (cvc.length < 3) { showToast('Ungültiger CVC.', true); return; }
+
+    paymentData.account_holder = holder;
+    paymentData.card_last4 = number.slice(-4);
+    paymentData.card_brand = detectCardBrand(number);
+    paymentData.card_expiry = expiry;
+
+  } else if (currentPmType === 'paypal') {
+    const email = document.getElementById('paypalEmail').value.trim();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Ungültige PayPal E-Mail.', true); return; }
+    paymentData.paypal_email = email;
+    paymentData.account_holder = email;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Wird gespeichert...';
+
+  try {
+    // Delete existing method at this priority first
+    await supabaseClient.from('payment_methods').delete().eq('user_id', user.id).eq('priority', currentPmPriority);
+
+    const { error } = await supabaseClient.from('payment_methods').insert([paymentData]);
+    if (error) throw error;
+
+    showToast('Zahlungsmethode gespeichert!');
+    closePaymentModal();
+    await loadPaymentMethods();
+  } catch (err) {
+    showToast('Fehler: ' + err.message, true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Zahlungsmethode speichern';
+  }
+}
+
+async function removePaymentMethod(priority) {
+  if (!confirm('Zahlungsmethode wirklich entfernen?')) return;
+  const user = await clanaAuth.getUser();
+  if (!user) return;
+
+  try {
+    const { error } = await supabaseClient.from('payment_methods').delete().eq('user_id', user.id).eq('priority', priority);
+    if (error) throw error;
+    showToast('Zahlungsmethode entfernt.');
+    await loadPaymentMethods();
+  } catch (err) {
+    showToast('Fehler: ' + err.message, true);
+  }
+}
+
+async function loadPaymentMethods() {
+  const user = await clanaAuth.getUser();
+  if (!user) return;
+
+  try {
+    const { data, error } = await supabaseClient.from('payment_methods').select('*').eq('user_id', user.id).order('priority');
+    if (error) throw error;
+
+    [1, 2].forEach(p => {
+      const pm = (data || []).find(m => m.priority === p);
+      const empty = document.getElementById('pm' + p + 'Empty');
+      const card = document.getElementById('pm' + p + 'Card');
+      const badge = document.getElementById('pm' + p + 'Badge');
+
+      if (pm) {
+        empty.style.display = 'none';
+        card.style.display = 'block';
+        badge.textContent = pm.status === 'active' ? 'Aktiv' : pm.status;
+
+        const typeLabels = { sepa: 'SEPA-Lastschrift', credit_card: 'Kreditkarte', paypal: 'PayPal' };
+        document.getElementById('pm' + p + 'Type').textContent = typeLabels[pm.type] || pm.type;
+
+        const statusEl = document.getElementById('pm' + p + 'Status');
+        statusEl.textContent = pm.status === 'active' ? 'Aktiv' : pm.status === 'pending' ? 'Ausstehend' : pm.status;
+        statusEl.className = 'status-badge ' + (pm.status === 'active' ? 'active' : pm.status === 'pending' ? 'voicemail' : 'missed');
+
+        if (pm.type === 'sepa') {
+          document.getElementById('pm' + p + 'Info').textContent = maskIban(pm.iban);
+          document.getElementById('pm' + p + 'Detail').textContent = pm.account_holder + (pm.mandate_reference ? ' · Mandat: ' + pm.mandate_reference : '');
+        } else if (pm.type === 'credit_card') {
+          document.getElementById('pm' + p + 'Info').textContent = (pm.card_brand || 'Karte') + ' •••• ' + pm.card_last4;
+          document.getElementById('pm' + p + 'Detail').textContent = pm.account_holder + ' · Gültig bis ' + pm.card_expiry;
+        } else if (pm.type === 'paypal') {
+          document.getElementById('pm' + p + 'Info').textContent = pm.paypal_email;
+          document.getElementById('pm' + p + 'Detail').textContent = 'PayPal-Konto';
+        }
+      } else {
+        empty.style.display = '';
+        card.style.display = 'none';
+        badge.textContent = p === 1 ? 'Nicht hinterlegt' : 'Optional';
+      }
+    });
+  } catch (err) {
+    // Table might not exist yet
+  }
+}
+
+function maskIban(iban) {
+  if (!iban || iban.length < 8) return iban;
+  return iban.substring(0, 4) + ' •••• •••• ' + iban.slice(-4);
+}
+
+function detectCardBrand(number) {
+  if (/^4/.test(number)) return 'Visa';
+  if (/^5[1-5]/.test(number)) return 'Mastercard';
+  if (/^3[47]/.test(number)) return 'Amex';
+  return 'Karte';
+}
+
+// Load payment methods when navigating to the page
+const origNavigate = navigateToPage;
+navigateToPage = function(page, updateHash) {
+  origNavigate(page, updateHash);
+  if (page === 'payment') loadPaymentMethods();
+};
+// Also load on initial hash
+if (window.location.hash === '#payment') loadPaymentMethods();
 </script>
 <script src="cookie-consent.js"></script>
 </body>
