@@ -104,17 +104,75 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
 .final-cta .hero-btns{margin-bottom:0;}
 
 @media(max-width:900px){
-  .features-grid,.trust-grid,.uc-grid,.steps-grid,.testimonials-grid{grid-template-columns:1fr;}
-  .stats-row{flex-direction:column;}.stat-item{border-right:none;border-bottom:1px solid var(--border);}.stat-item:last-child{border-bottom:none;}
-  .logos-row{gap:28px;}
+  .features-grid,.trust-grid,.uc-grid,.testimonials-grid{grid-template-columns:1fr 1fr;}
+  .steps-grid{grid-template-columns:1fr;}
+  .stats-row{flex-direction:row;flex-wrap:wrap;}.stat-item{flex:1 1 45%;border-right:none;border-bottom:1px solid var(--border);}.stat-item:last-child{border-bottom:none;}
+  .logos-row{gap:20px;}
 }
 @media(max-width:600px){
-  .hero{padding:120px 4% 60px;}
-  .hero-btns{flex-direction:column;align-items:center;}
+  .hero{padding:100px 4% 48px;}
+  .hero h1{font-size:clamp(1.8rem,7vw,2.4rem);}
+  .hero-lead{font-size:.9rem;margin-bottom:28px;}
+  .hero-btns{flex-direction:column;align-items:center;gap:10px;}
+  .hero-social{flex-direction:column;gap:8px;}.hero-social .divider{display:none;}
+
+  /* Stats: 2x2 grid */
+  .stats-sec{padding:40px 4%;}
+  .stats-row{gap:0;}.stat-item{padding:16px 12px;}.stat-num{font-size:clamp(1.5rem,5vw,2rem);}
+  .stat-label{font-size:12px;}
+
+  /* Steps: compact */
+  .steps-grid{gap:16px;}
+  .step-card{padding:20px 18px;text-align:left;display:flex;gap:16px;align-items:flex-start;}
+  .step-card .step-num{margin-bottom:0;flex-shrink:0;width:40px;height:40px;font-size:.9rem;}
+  .step-card h3{font-size:1rem;margin-bottom:6px;}
+  .step-card p{font-size:.82rem;}
+
+  /* Features: 2-col compact cards */
+  .features-grid{grid-template-columns:1fr 1fr;gap:12px;}
+  .feature-card{padding:20px 16px;}
+  .feature-icon{width:38px;height:38px;font-size:1.2rem;margin-bottom:12px;}
+  .feature-card h3{font-size:.9rem;margin-bottom:6px;}
+  .feature-card p{font-size:.78rem;line-height:1.55;}
+
+  /* Trust: stay 1 col but compact */
+  .trust-grid{grid-template-columns:1fr;gap:12px;}
+  .trust-card{padding:24px 20px;display:flex;gap:16px;align-items:flex-start;text-align:left;}
+  .trust-icon{font-size:1.8rem;margin-bottom:0;flex-shrink:0;}
+  .trust-card h3{font-size:.95rem;margin-bottom:4px;}
+  .trust-card p{font-size:.82rem;}
+
+  /* Use cases: 2-col compact */
+  .uc-grid{grid-template-columns:1fr 1fr;gap:12px;}
+  .uc-card{padding:20px 16px;}
+  .uc-icon{font-size:1.6rem;margin-bottom:10px;}
+  .uc-card h3{font-size:.88rem;margin-bottom:6px;}
+  .uc-card p{font-size:.78rem;line-height:1.55;}
+
+  /* Testimonials: horizontal scroll */
+  .testimonials-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;padding-bottom:12px;-webkit-overflow-scrolling:touch;}
+  .testimonial-card{min-width:280px;flex-shrink:0;scroll-snap-align:start;padding:24px 20px;}
+  .testimonial-text{font-size:.85rem;margin-bottom:14px;}
+
+  /* Integrations badges */
+  .int-row{gap:10px;}.int-badge{padding:10px 16px;font-size:.82rem;}
+
+  /* Demo */
+  .demo-sec{padding:48px 4%;}
   .demo-row{flex-direction:column;}
-  .demo-card{padding:36px 24px;}
-  .hero-social{flex-direction:column;gap:10px;}
-  .hero-social .divider{display:none;}
+  .demo-card{padding:32px 20px;}
+  .demo-card h2{font-size:clamp(1.2rem,4vw,1.6rem);}
+
+  /* Final CTA */
+  .final-cta{padding:56px 4%;}
+  .final-cta h2{font-size:clamp(1.3rem,5vw,1.8rem);}
+  .final-cta p{font-size:.9rem;}
+
+  /* Logos */
+  .logos-sec{padding:28px 4%;}
+  .logos-label{margin-bottom:16px;font-size:11px;}
+  .logos-row{gap:16px;}
+  .logos-row span{font-size:12px;}
 }
 </style>
 <script type="application/ld+json">
