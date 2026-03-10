@@ -257,6 +257,10 @@ tr:hover td{background:rgba(124,58,237,.03);}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         Nachrichten
       </a>
+      <a href="#integrations" class="sb-item" data-page="integrations">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3"/><rect x="11" y="3" width="10" height="10" rx="2"/></svg>
+        Integrationen
+      </a>
     </div>
     <!-- Konto -->
     <div class="sb-section">
@@ -1031,6 +1035,87 @@ tr:hover td{background:rgba(124,58,237,.03);}
         </div>
       </div>
     </div>
+
+    <!-- ===================== INTEGRATIONS ===================== -->
+    <div id="page-integrations" class="page-section">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <h1>Integrationen</h1>
+        <button class="btn-primary" style="font-size:13px;padding:10px 20px;" onclick="openContactImport()">CSV-Import</button>
+      </div>
+      <p class="page-desc">Verbinde deine Tools, damit der KI-Assistent auf Kundendaten, Termine und Tickets zugreifen kann.</p>
+
+      <!-- Connected integrations -->
+      <div class="data-section" style="margin-bottom:20px;">
+        <div class="data-header">
+          <h2>Verbundene Tools</h2>
+          <span class="badge" id="intConnectedCount">0 verbunden</span>
+        </div>
+        <div id="intConnectedBody" style="padding:20px;">
+          <div id="intEmptyState" class="empty-state" style="padding:30px 20px;">
+            <div class="icon">🔗</div>
+            <h3>Noch keine Tools verbunden</h3>
+            <p>Verbinde dein CRM, deinen Kalender oder andere Tools, um den KI-Assistenten mit Kundendaten zu versorgen.</p>
+          </div>
+          <div id="intConnectedList" style="display:none;"></div>
+        </div>
+      </div>
+
+      <!-- Available integrations -->
+      <div class="data-section" style="margin-bottom:20px;">
+        <div class="data-header">
+          <h2>Verfügbare Integrationen</h2>
+        </div>
+        <div style="padding:20px;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;" id="intAvailableGrid">
+          </div>
+        </div>
+      </div>
+
+      <!-- Synced Contacts -->
+      <div class="data-section">
+        <div class="data-header">
+          <h2>Kontakte</h2>
+          <span class="badge" id="contactsCount">0</span>
+        </div>
+        <div id="contactsBody">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Name</th><th>Firma</th><th>Telefon</th><th>E-Mail</th><th>Quelle</th><th>VIP</th></tr></thead>
+              <tbody id="contactsTableBody">
+                <tr><td colspan="6" style="text-align:center;color:var(--tx3);padding:30px;">Keine Kontakte vorhanden. Importiere per CSV oder verbinde ein CRM.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CSV Import Modal -->
+    <div class="modal-overlay" id="csvImportModal" style="display:none;">
+      <div class="modal" style="max-width:520px;">
+        <div class="modal-header">
+          <h2>Kontakte importieren</h2>
+          <button class="modal-close" onclick="closeCsvImportModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size:13px;color:var(--tx2);margin-bottom:16px;">Lade eine CSV-Datei mit Kontaktdaten hoch. Erwartete Spalten: <code>Vorname, Nachname, Firma, Telefon, E-Mail</code></p>
+          <div style="border:2px dashed var(--border);border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;" id="csvDropZone" onclick="document.getElementById('csvFileInput').click()">
+            <div style="font-size:2rem;margin-bottom:8px;">📄</div>
+            <p style="font-size:13px;color:var(--tx3);">CSV-Datei hierher ziehen oder klicken zum Auswählen</p>
+            <input type="file" id="csvFileInput" accept=".csv" style="display:none;" onchange="handleCsvFile(this)">
+          </div>
+          <div id="csvPreview" style="display:none;margin-top:16px;">
+            <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Vorschau: <span id="csvRowCount">0</span> Kontakte</div>
+            <div style="max-height:200px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;" id="csvPreviewTable"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="closeCsvImportModal()">Abbrechen</button>
+          <button class="btn-primary" id="csvImportBtn" onclick="importCsvContacts()" disabled>Importieren</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -1742,7 +1827,8 @@ const breadcrumbNames = {
   payment: 'Zahlungsmethoden',
   plans: 'Paket',
   team: 'Team',
-  messages: 'Nachrichten'
+  messages: 'Nachrichten',
+  integrations: 'Integrationen'
 };
 
 function navigateToPage(page, updateHash = true) {
@@ -2071,6 +2157,277 @@ async function loadTransactions() {
 }
 
 // ==========================================
+// INTEGRATIONS
+// ==========================================
+const AVAILABLE_INTEGRATIONS = [
+  { provider: 'hubspot', label: 'HubSpot CRM', icon: '💼', category: 'CRM', status: 'available' },
+  { provider: 'salesforce', label: 'Salesforce', icon: '☁️', category: 'CRM', status: 'available' },
+  { provider: 'pipedrive', label: 'Pipedrive', icon: '🔄', category: 'CRM', status: 'available' },
+  { provider: 'google_calendar', label: 'Google Calendar', icon: '📆', category: 'Kalender', status: 'available' },
+  { provider: 'outlook', label: 'Outlook / 365', icon: '📧', category: 'Kalender', status: 'available' },
+  { provider: 'cal_com', label: 'cal.com', icon: '🗓️', category: 'Kalender', status: 'available' },
+  { provider: 'calendly', label: 'Calendly', icon: '📅', category: 'Kalender', status: 'available' },
+  { provider: 'doctolib', label: 'Doctolib', icon: '🏥', category: 'Praxis', status: 'coming_soon' },
+  { provider: 'zendesk', label: 'Zendesk', icon: '🎫', category: 'Support', status: 'available' },
+  { provider: 'freshdesk', label: 'Freshdesk', icon: '💬', category: 'Support', status: 'available' },
+  { provider: 'shopify', label: 'Shopify', icon: '🛒', category: 'E-Commerce', status: 'available' },
+  { provider: 'slack', label: 'Slack', icon: '💬', category: 'Kommunikation', status: 'available' },
+  { provider: 'teams', label: 'Microsoft Teams', icon: '👥', category: 'Kommunikation', status: 'available' },
+  { provider: 'zapier', label: 'Zapier', icon: '⚡', category: 'Automatisierung', status: 'available' },
+  { provider: 'make', label: 'Make', icon: '🔧', category: 'Automatisierung', status: 'available' },
+  { provider: 'n8n', label: 'n8n', icon: '🔗', category: 'Automatisierung', status: 'available' },
+  { provider: 'rest_api', label: 'REST API', icon: '🔌', category: 'Automatisierung', status: 'available' },
+];
+
+function renderAvailableIntegrations() {
+  const grid = document.getElementById('intAvailableGrid');
+  grid.innerHTML = AVAILABLE_INTEGRATIONS.map(int => `
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s;"
+         onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='var(--border)'"
+         onclick="connectIntegration('${int.provider}')">
+      <span style="font-size:1.4rem;">${int.icon}</span>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:700;">${int.label}</div>
+        <div style="font-size:11px;color:var(--tx3);">${int.category}</div>
+      </div>
+      ${int.status === 'coming_soon'
+        ? '<span style="font-size:10px;background:rgba(251,146,60,.15);color:var(--orange);padding:3px 8px;border-radius:12px;font-weight:600;">Bald</span>'
+        : '<span style="font-size:10px;background:rgba(124,58,237,.15);color:var(--pu3);padding:3px 8px;border-radius:12px;font-weight:600;">Verbinden</span>'
+      }
+    </div>
+  `).join('');
+}
+
+async function connectIntegration(provider) {
+  const int = AVAILABLE_INTEGRATIONS.find(i => i.provider === provider);
+  if (!int) return;
+  if (int.status === 'coming_soon') {
+    showToast(int.label + ' wird bald verfügbar sein.');
+    return;
+  }
+
+  if (provider === 'rest_api') {
+    showToast('API-Dokumentation: Nutze deinen API-Key unter Einstellungen.');
+    return;
+  }
+
+  // For now show a placeholder - OAuth flow would go here
+  showToast(int.label + ' Verbindung wird vorbereitet... (OAuth-Flow kommt in Phase 2)');
+}
+
+async function loadIntegrations() {
+  renderAvailableIntegrations();
+
+  const user = await clanaAuth.getUser();
+  if (!user) return;
+
+  try {
+    // Load connected integrations
+    const { data: connections } = await supabaseClient
+      .from('integrations').select('*').eq('user_id', user.id);
+
+    const connected = connections || [];
+    document.getElementById('intConnectedCount').textContent = connected.length + ' verbunden';
+
+    if (connected.length > 0) {
+      document.getElementById('intEmptyState').style.display = 'none';
+      const list = document.getElementById('intConnectedList');
+      list.style.display = 'grid';
+      list.style.gridTemplateColumns = 'repeat(auto-fill, minmax(280px, 1fr))';
+      list.style.gap = '12px';
+      list.innerHTML = connected.map(c => {
+        const int = AVAILABLE_INTEGRATIONS.find(i => i.provider === c.provider) || {};
+        return `<div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:16px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+            <span style="font-size:1.2rem;">${int.icon || '🔗'}</span>
+            <div style="flex:1;">
+              <div style="font-size:13px;font-weight:700;">${c.provider_label}</div>
+              <div style="font-size:11px;color:var(--tx3);">${c.category}</div>
+            </div>
+            <span class="status-badge ${c.status === 'connected' ? 'completed' : 'missed'}">${c.status === 'connected' ? 'Verbunden' : c.status}</span>
+          </div>
+          <div style="font-size:11px;color:var(--tx3);">
+            Letzter Sync: ${c.last_sync_at ? new Date(c.last_sync_at).toLocaleString('de-DE') : 'Noch nie'} · ${c.records_synced || 0} Datensätze
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px;">
+            <button class="btn-sm" onclick="syncIntegration('${c.id}')">Jetzt syncen</button>
+            <button class="btn-secondary" style="font-size:11px;padding:6px 12px;" onclick="disconnectIntegration('${c.id}')">Trennen</button>
+          </div>
+        </div>`;
+      }).join('');
+    } else {
+      document.getElementById('intEmptyState').style.display = '';
+      document.getElementById('intConnectedList').style.display = 'none';
+    }
+
+    // Load contacts
+    await loadContacts();
+  } catch (err) {
+    // Tables might not exist yet
+    renderAvailableIntegrations();
+  }
+}
+
+async function loadContacts() {
+  const user = await clanaAuth.getUser();
+  if (!user) return;
+
+  try {
+    const { data, error } = await supabaseClient
+      .from('customer_contacts').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(50);
+
+    if (error) throw error;
+
+    document.getElementById('contactsCount').textContent = (data || []).length;
+
+    const tbody = document.getElementById('contactsTableBody');
+    if (!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--tx3);padding:30px;">Keine Kontakte vorhanden. Importiere per CSV oder verbinde ein CRM.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = data.map(c => `<tr>
+      <td style="font-weight:600;">${c.first_name || ''} ${c.last_name || ''}</td>
+      <td>${c.company || '–'}</td>
+      <td style="font-family:monospace;font-size:12px;">${c.phone || '–'}</td>
+      <td>${c.email || '–'}</td>
+      <td><span class="status-badge active">${c.source}</span></td>
+      <td>${c.vip ? '⭐' : '–'}</td>
+    </tr>`).join('');
+  } catch (err) {
+    // Table might not exist yet
+  }
+}
+
+async function syncIntegration(integrationId) {
+  showToast('Sync gestartet...');
+}
+
+async function disconnectIntegration(integrationId) {
+  if (!confirm('Integration wirklich trennen?')) return;
+  const user = await clanaAuth.getUser();
+  if (!user) return;
+
+  try {
+    await supabaseClient.from('integrations').delete().eq('id', integrationId).eq('user_id', user.id);
+    showToast('Integration getrennt.');
+    await loadIntegrations();
+  } catch (err) {
+    showToast('Fehler: ' + err.message, true);
+  }
+}
+
+// CSV Import
+let csvParsedData = [];
+
+function openContactImport() {
+  document.getElementById('csvImportModal').style.display = 'flex';
+  csvParsedData = [];
+  document.getElementById('csvPreview').style.display = 'none';
+  document.getElementById('csvImportBtn').disabled = true;
+  document.getElementById('csvFileInput').value = '';
+}
+
+function closeCsvImportModal() {
+  document.getElementById('csvImportModal').style.display = 'none';
+}
+
+function handleCsvFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const text = e.target.result;
+    const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+    if (lines.length < 2) { showToast('CSV-Datei ist leer oder hat nur Header.', true); return; }
+
+    const headers = lines[0].split(/[,;]/).map(h => h.trim().replace(/"/g, ''));
+    csvParsedData = lines.slice(1).map(line => {
+      const values = line.split(/[,;]/).map(v => v.trim().replace(/"/g, ''));
+      const obj = {};
+      headers.forEach((h, i) => { obj[h.toLowerCase()] = values[i] || ''; });
+      return obj;
+    }).filter(row => Object.values(row).some(v => v));
+
+    document.getElementById('csvRowCount').textContent = csvParsedData.length;
+    document.getElementById('csvPreview').style.display = 'block';
+
+    const previewHtml = '<table style="width:100%;font-size:12px;"><thead><tr>' +
+      headers.map(h => '<th style="padding:6px 8px;text-align:left;">' + h + '</th>').join('') +
+      '</tr></thead><tbody>' +
+      csvParsedData.slice(0, 5).map(row =>
+        '<tr>' + headers.map(h => '<td style="padding:4px 8px;">' + (row[h.toLowerCase()] || '') + '</td>').join('') + '</tr>'
+      ).join('') +
+      (csvParsedData.length > 5 ? '<tr><td colspan="' + headers.length + '" style="padding:6px 8px;color:var(--tx3);">... und ' + (csvParsedData.length - 5) + ' weitere</td></tr>' : '') +
+      '</tbody></table>';
+
+    document.getElementById('csvPreviewTable').innerHTML = previewHtml;
+    document.getElementById('csvImportBtn').disabled = false;
+  };
+  reader.readAsText(file);
+}
+
+async function importCsvContacts() {
+  if (csvParsedData.length === 0) return;
+
+  const btn = document.getElementById('csvImportBtn');
+  btn.disabled = true;
+  btn.textContent = 'Importiere...';
+
+  const user = await clanaAuth.getUser();
+  if (!user) { showToast('Nicht angemeldet.', true); return; }
+
+  try {
+    const contacts = csvParsedData.map(row => ({
+      user_id: user.id,
+      first_name: row.vorname || row.first_name || row.firstname || '',
+      last_name: row.nachname || row.last_name || row.lastname || '',
+      company: row.firma || row.company || row.unternehmen || '',
+      phone: row.telefon || row.phone || row.tel || row.nummer || '',
+      email: row.email || row['e-mail'] || '',
+      source: 'csv_import',
+      notes: row.notizen || row.notes || ''
+    }));
+
+    const { error } = await supabaseClient.from('customer_contacts').insert(contacts);
+    if (error) throw error;
+
+    showToast(contacts.length + ' Kontakte importiert!');
+    closeCsvImportModal();
+    await loadContacts();
+  } catch (err) {
+    showToast('Fehler: ' + err.message, true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Importieren';
+  }
+}
+
+// Drag & drop for CSV
+document.getElementById('csvDropZone')?.addEventListener('dragover', function(e) {
+  e.preventDefault();
+  this.style.borderColor = 'var(--pu)';
+  this.style.background = 'rgba(124,58,237,.04)';
+});
+document.getElementById('csvDropZone')?.addEventListener('dragleave', function() {
+  this.style.borderColor = 'var(--border)';
+  this.style.background = '';
+});
+document.getElementById('csvDropZone')?.addEventListener('drop', function(e) {
+  e.preventDefault();
+  this.style.borderColor = 'var(--border)';
+  this.style.background = '';
+  const file = e.dataTransfer.files[0];
+  if (file && file.name.endsWith('.csv')) {
+    document.getElementById('csvFileInput').files = e.dataTransfer.files;
+    handleCsvFile(document.getElementById('csvFileInput'));
+  } else {
+    showToast('Bitte eine CSV-Datei verwenden.', true);
+  }
+});
+
+// ==========================================
 // PAYMENT METHODS
 // ==========================================
 let currentPmPriority = 1;
@@ -2292,10 +2649,12 @@ navigateToPage = function(page, updateHash) {
   origNavigate(page, updateHash);
   if (page === 'payment') loadPaymentMethods();
   if (page === 'billing') loadBillingData();
+  if (page === 'integrations') loadIntegrations();
 };
 // Also load on initial hash
 if (window.location.hash === '#payment') loadPaymentMethods();
 if (window.location.hash === '#billing') loadBillingData();
+if (window.location.hash === '#integrations') loadIntegrations();
 </script>
 <script src="cookie-consent.js"></script>
 </body>

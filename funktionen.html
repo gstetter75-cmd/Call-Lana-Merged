@@ -36,6 +36,8 @@
 .int-card:hover{border-color:var(--pu);transform:translateY(-3px);box-shadow:var(--shadow-lg);}
 .int-card .ic-ico{font-size:1.8rem;margin-bottom:10px;display:block;}
 .int-card span{font-size:.88rem;font-weight:600;color:var(--tx2);}
+.int-cat{grid-column:1/-1;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--pu);margin-top:18px;padding-bottom:0;}
+.int-cat:first-child{margin-top:0;}
 
 /* DSGVO strip */
 .dsgvo-strip{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:48px;max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
@@ -167,15 +169,49 @@
       <p class="sec-sub">Über 200 Integrationen verfügbar – von CRM bis Kalender, von Ticketsystem bis E-Mail.</p>
     </div>
     <div class="int-grid">
-      <div class="int-card fi"><span class="ic-ico">📆</span><span>Google Calendar</span></div>
-      <div class="int-card fi"><span class="ic-ico">🗓️</span><span>cal.com</span></div>
+      <!-- CRM & Vertrieb -->
+      <div class="int-cat">CRM &amp; Vertrieb</div>
       <div class="int-card fi"><span class="ic-ico">💼</span><span>HubSpot CRM</span></div>
       <div class="int-card fi"><span class="ic-ico">☁️</span><span>Salesforce</span></div>
-      <div class="int-card fi"><span class="ic-ico">📧</span><span>Outlook / Gmail</span></div>
+      <div class="int-card fi"><span class="ic-ico">🔄</span><span>Pipedrive</span></div>
+      <div class="int-card fi"><span class="ic-ico">📊</span><span>Zoho CRM</span></div>
+      <div class="int-card fi"><span class="ic-ico">🚀</span><span>GoHighLevel</span></div>
+      <!-- Kalender & Termine -->
+      <div class="int-cat">Kalender &amp; Termine</div>
+      <div class="int-card fi"><span class="ic-ico">📆</span><span>Google Calendar</span></div>
+      <div class="int-card fi"><span class="ic-ico">🗓️</span><span>cal.com</span></div>
+      <div class="int-card fi"><span class="ic-ico">📅</span><span>Calendly</span></div>
+      <div class="int-card fi"><span class="ic-ico">📧</span><span>Outlook / 365</span></div>
+      <!-- Arztpraxen -->
+      <div class="int-cat">Arztpraxen</div>
+      <div class="int-card fi"><span class="ic-ico">🏥</span><span>Doctolib</span></div>
+      <div class="int-card fi"><span class="ic-ico">💊</span><span>CGM / Turbomed</span></div>
+      <div class="int-card fi"><span class="ic-ico">🩺</span><span>Samedi</span></div>
+      <!-- Hotels & Gastro -->
+      <div class="int-cat">Hotels &amp; Gastro</div>
+      <div class="int-card fi"><span class="ic-ico">🏨</span><span>Apaleo PMS</span></div>
+      <div class="int-card fi"><span class="ic-ico">🍽️</span><span>aleno</span></div>
+      <div class="int-card fi"><span class="ic-ico">🛎️</span><span>OpenTable</span></div>
+      <!-- E-Commerce -->
+      <div class="int-cat">E-Commerce</div>
+      <div class="int-card fi"><span class="ic-ico">🛒</span><span>Shopify</span></div>
+      <div class="int-card fi"><span class="ic-ico">📦</span><span>JTL Wawi</span></div>
+      <div class="int-card fi"><span class="ic-ico">🛍️</span><span>WooCommerce</span></div>
+      <!-- Support & Tickets -->
+      <div class="int-cat">Support &amp; Tickets</div>
       <div class="int-card fi"><span class="ic-ico">🎫</span><span>Zendesk</span></div>
+      <div class="int-card fi"><span class="ic-ico">💬</span><span>Freshdesk</span></div>
+      <!-- Kommunikation -->
+      <div class="int-cat">Kommunikation</div>
+      <div class="int-card fi"><span class="ic-ico">💬</span><span>Slack</span></div>
+      <div class="int-card fi"><span class="ic-ico">👥</span><span>Microsoft Teams</span></div>
+      <!-- Automatisierung -->
+      <div class="int-cat">Automatisierung</div>
       <div class="int-card fi"><span class="ic-ico">⚡</span><span>Zapier</span></div>
-      <div class="int-card fi"><span class="ic-ico">🔧</span><span>Make / Integromat</span></div>
+      <div class="int-card fi"><span class="ic-ico">🔧</span><span>Make</span></div>
+      <div class="int-card fi"><span class="ic-ico">🔗</span><span>n8n</span></div>
       <div class="int-card fi"><span class="ic-ico">🔌</span><span>REST API</span></div>
+      <!-- Mehr -->
       <div class="int-card fi"><span class="ic-ico">➕</span><span>200+ weitere</span></div>
     </div>
   </section>
