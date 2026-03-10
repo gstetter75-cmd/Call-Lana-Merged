@@ -246,40 +246,38 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
 <div class="toast" id="toast"></div>
 
 <script src="supabase-config.js"></script>
+<script src="js/auth-guard.js"></script>
 <script>
 // ==========================================
 // GLOBALS
 // ==========================================
 let currentUser = null;
+let currentProfile = null;
 let userSettings = {};
 
 // ==========================================
-// AUTH CHECK (Supabase)
+// AUTH CHECK (role-based via AuthGuard)
 // ==========================================
 (async () => {
-  const session = await clanaAuth.getSession();
-  if (!session) {
-    window.location.href = 'login.html';
-    return;
-  }
+  currentProfile = await AuthGuard.init();
+  if (!currentProfile) return;
 
-  currentUser = session.user;
-  const meta = currentUser.user_metadata || {};
-  const name = meta.fullName || ((meta.firstName || '') + ' ' + (meta.lastName || '')).trim() || currentUser.email.split('@')[0];
+  currentUser = await clanaAuth.getUser();
+  const name = AuthGuard.getDisplayName(currentProfile);
 
   // Sidebar user info
   document.getElementById('userName').textContent = name;
-  document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
+  document.getElementById('userAvatar').textContent = AuthGuard.getInitials(currentProfile);
 
-  // Profile form
-  document.getElementById('firstName').value = meta.firstName || '';
-  document.getElementById('lastName').value = meta.lastName || '';
-  document.getElementById('email').value = currentUser.email;
-  document.getElementById('company').value = meta.company || '';
-  document.getElementById('industry').value = meta.industry || '';
+  // Profile form — use profiles table data first, fall back to auth metadata
+  document.getElementById('firstName').value = currentProfile.first_name || '';
+  document.getElementById('lastName').value = currentProfile.last_name || '';
+  document.getElementById('email').value = currentProfile.email || currentUser?.email || '';
+  document.getElementById('company').value = currentProfile.company || '';
+  document.getElementById('industry').value = currentProfile.industry || '';
 
   // Last login
-  const lastSign = currentUser.last_sign_in_at;
+  const lastSign = currentUser?.last_sign_in_at;
   if (lastSign) {
     document.getElementById('lastLogin').textContent = new Intl.DateTimeFormat('de-DE', {
       day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
@@ -313,9 +311,10 @@ async function saveProfile() {
   }
 
   btn.disabled = true;
-  btn.textContent = 'Speichert…';
+  btn.textContent = 'Speichert...';
 
-  const result = await clanaAuth.updateProfile({
+  // Update auth metadata
+  const authResult = await clanaAuth.updateProfile({
     firstName: fn,
     lastName: ln,
     fullName: fn + ' ' + ln,
@@ -323,15 +322,25 @@ async function saveProfile() {
     industry: ind
   });
 
+  // Update profiles table
+  if (currentProfile?.id) {
+    await clanaDB.updateProfile(currentProfile.id, {
+      first_name: fn,
+      last_name: ln,
+      company: co,
+      industry: ind
+    });
+  }
+
   btn.disabled = false;
   btn.textContent = 'Änderungen speichern';
 
-  if (result.success) {
+  if (authResult.success) {
     document.getElementById('userName').textContent = fn + ' ' + ln;
     document.getElementById('userAvatar').textContent = fn.charAt(0).toUpperCase();
     showToast('Profil erfolgreich aktualisiert!');
   } else {
-    errEl.textContent = 'Fehler: ' + result.error;
+    errEl.textContent = 'Fehler: ' + authResult.error;
   }
 }
 

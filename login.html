@@ -156,6 +156,7 @@ label{font-size:11.5px;font-weight:700;color:var(--tx3);letter-spacing:.06em;tex
 </div>
 
 <script src="supabase-config.js"></script>
+<script src="js/auth-guard.js"></script>
 <script>
 // ==========================================
 // GLOBAL STATE
@@ -164,15 +165,32 @@ let loginAttempts = 0;
 const MAX_ATTEMPTS = 5;
 
 // ==========================================
+// ROLE-BASED REDIRECT
+// ==========================================
+async function redirectByRole() {
+  try {
+    const profile = await AuthGuard.getProfile();
+    if (profile) {
+      const home = AuthGuard.ROLE_HOME[profile.role] || 'dashboard.html';
+      window.location.href = home;
+    } else {
+      window.location.href = 'dashboard.html';
+    }
+  } catch (err) {
+    window.location.href = 'dashboard.html';
+  }
+}
+
+// ==========================================
 // CHECK IF ALREADY LOGGED IN
 // ==========================================
 (async () => {
   const session = await clanaAuth.getSession();
   if (session) {
-    showAlert('Du bist bereits eingeloggt. Weiterleitung zum Dashboard...', 'info');
-    setTimeout(() => {
-      window.location.href = 'dashboard.html';
-    }, 1500);
+    showAlert('Du bist bereits eingeloggt. Weiterleitung...', 'info');
+    setTimeout(async () => {
+      await redirectByRole();
+    }, 500);
   }
   
   // Check for "Remember Me"
@@ -283,10 +301,10 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     }
     
     loginAttempts = 0;
-    showAlert('✓ Login erfolgreich! Weiterleitung zum Dashboard...', 'success');
-    
-    setTimeout(() => {
-      window.location.href = 'dashboard.html';
+    showAlert('✓ Login erfolgreich! Weiterleitung...', 'success');
+
+    setTimeout(async () => {
+      await redirectByRole();
     }, 1000);
     
   } else {

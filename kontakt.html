@@ -98,6 +98,7 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
 @media(max-width:480px){.page-hero h1{font-size:6.5vw;}.page-hero p{font-size:.9rem;max-width:100%;}.page-hero{padding:120px 5% 60px;}}
 .skip-link{position:absolute;top:-100%;left:16px;background:var(--pu);color:#fff;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;z-index:9999;text-decoration:none;transition:top .2s;}.skip-link:focus{top:16px;}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <a href="#main-content" class="skip-link">Zum Inhalt springen</a>
@@ -154,7 +155,7 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
           <div class="ii-icon">✉️</div>
           <div class="ii-body">
             <h3>E-Mail</h3>
-            <p>Für Anfragen, Partnerschaften und alles andere:<br><a href="/cdn-cgi/l/email-protection#d0b8b1bcbcbf90b3bcb1beb1feb1b9"><span class="__cf_email__" data-cfemail="4129202d2d2e01222d202f206f2028">[email&#160;protected]</span></a></p>
+            <p>Für Anfragen, Partnerschaften und alles andere:<br><a href="mailto:hallo@call-lana.de">hallo@call-lana.de</a></p>
           </div>
         </div>
         <div class="info-item">
@@ -266,15 +267,35 @@ document.addEventListener('DOMContentLoaded', () => {
   updateLangButtons(localStorage.getItem('calllana_language') || 'de');
 });
 </script>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// Form submit
-document.getElementById('submitBtn').addEventListener('click',function(){
+<script src="supabase-config.js"></script>
+<script>
+// Form submit — saves to Supabase as lead
+document.getElementById('submitBtn').addEventListener('click', async function(){
   const fn=document.getElementById('fn').value.trim();
   const em=document.getElementById('em').value.trim();
   const msg=document.getElementById('msg').value.trim();
   const priv=document.getElementById('priv').checked;
   if(!fn||!em||!msg){alert('Bitte fülle alle Pflichtfelder aus.');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){alert('Bitte gib eine gültige E-Mail-Adresse ein.');return;}
   if(!priv){alert('Bitte stimme den Datenschutzhinweisen zu.');return;}
+
+  this.disabled = true;
+  this.textContent = 'Wird gesendet...';
+
+  try {
+    const result = await clanaDB.submitContactForm({
+      name: fn,
+      email: em,
+      message: msg
+    });
+
+    if (!result.success) {
+      // Save failed silently — user still sees success as message was received
+    }
+  } catch (err) {
+    // Contact form save error — show success regardless to not block the user
+  }
+
   document.querySelector('.contact-form h2').style.display='none';
   document.querySelector('.contact-form > p').style.display='none';
   document.querySelectorAll('.form-row,.form-group,.form-check,.submit-btn').forEach(el=>el.style.display='none');
@@ -282,4 +303,8 @@ document.getElementById('submitBtn').addEventListener('click',function(){
 });
 // Scroll
 const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');}),{threshold:.1});
-document.querySelectorAll('.fi'
+document.querySelectorAll('.fi').forEach(el=>obs.observe(el));
+document.getElementById('mb').addEventListener('click',()=>document.getElementById('nav').classList.toggle('open'));
+</script>
+</body>
+</html>

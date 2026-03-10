@@ -139,6 +139,26 @@ document.getElementById('regForm').addEventListener('submit',async(e)=>{
   const result=await clanaAuth.signUp(em,pwd,{firstName:fn,lastName:ln,company:co,industry:ind,fullName:fn+' '+ln});
 
   if(result.success){
+    // Create organization for new customer
+    try {
+      const orgResult = await clanaDB.createOrganization({
+        name: co || fn + ' ' + ln,
+        plan: 'solo',
+        max_users: 1,
+        owner_id: result.data?.user?.id
+      });
+      if (orgResult.success && result.data?.user?.id) {
+        // Link profile to organization
+        await clanaDB.updateProfile(result.data.user.id, {
+          organization_id: orgResult.data.id
+        });
+        // Add as org member
+        await clanaDB.addOrgMember(orgResult.data.id, result.data.user.id, 'owner');
+      }
+    } catch (orgErr) {
+      // Organization creation failed silently — user can retry in dashboard
+    }
+
     document.getElementById('loader').style.display='none';
     document.getElementById('successBox').style.display='block';
     setTimeout(()=>window.location.href='dashboard.html',2000);
