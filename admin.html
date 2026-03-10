@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Admin – Call Lana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/common.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  .admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+  .search-input { background: var(--bg3); border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px 10px 36px; color: var(--tx); font-size: 13px; font-family: 'Manrope', sans-serif; outline: none; width: 280px; transition: all .2s; background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' fill='none' stroke='%236b5f8a' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='7' cy='7' r='5'/%3E%3Cpath d='M11 11l3 3'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: 12px center; }
+  .search-input:focus { border-color: var(--pu); }
+  .role-badge { text-transform: capitalize; }
+  .user-actions { display: flex; gap: 6px; }
+  .user-actions button { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; color: var(--tx3); font-size: 11px; cursor: pointer; transition: all .2s; font-family: 'Manrope', sans-serif; }
+  .user-actions button:hover { border-color: var(--pu); color: var(--pu3); }
+  .system-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+  .system-stat { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+  .system-stat-label { font-size: 11px; color: var(--tx3); font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
+  .system-stat-value { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; }
+  .tab-bar { display: flex; gap: 4px; margin-bottom: 24px; background: var(--bg2); border-radius: 10px; padding: 4px; }
+  .tab-btn { background: none; border: none; padding: 8px 16px; border-radius: 8px; color: var(--tx3); font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Manrope', sans-serif; transition: all .2s; }
+  .tab-btn.active { background: var(--pu); color: white; }
+  .tab-btn:hover:not(.active) { color: var(--tx2); }
+  @media (max-width: 900px) { .system-stats { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-container"></div>
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="topbar-hamburger"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button>
+        <div class="topbar-breadcrumb">Administration <span>/ <span id="breadcrumb-page">Benutzer</span></span></div>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- TAB BAR -->
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="users">Benutzer</button>
+        <button class="tab-btn" data-tab="orgs">Organisationen</button>
+        <button class="tab-btn" data-tab="system">System</button>
+      </div>
+
+      <!-- USERS TAB -->
+      <div class="page-section active" id="tab-users">
+        <div class="admin-header">
+          <h1>Benutzer verwalten</h1>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <input type="text" class="search-input" id="user-search" placeholder="Benutzer suchen...">
+            <button class="btn btn-sm" id="btn-add-user">+ Benutzer</button>
+          </div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;">
+          <table class="data-table" id="users-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>E-Mail</th>
+                <th>Rolle</th>
+                <th>Organisation</th>
+                <th>Status</th>
+                <th>Erstellt</th>
+                <th>Aktionen</th>
+              </tr>
+            </thead>
+            <tbody id="users-tbody">
+              <tr><td colspan="7" style="text-align:center;color:var(--tx3);padding:40px;">Laden...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ORGS TAB -->
+      <div class="page-section" id="tab-orgs">
+        <div class="admin-header">
+          <h1>Organisationen</h1>
+          <button class="btn btn-sm" id="btn-add-org">+ Organisation</button>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;">
+          <table class="data-table" id="orgs-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Plan</th>
+                <th>Inhaber</th>
+                <th>Mitglieder</th>
+                <th>Status</th>
+                <th>Erstellt</th>
+                <th>Aktionen</th>
+              </tr>
+            </thead>
+            <tbody id="orgs-tbody">
+              <tr><td colspan="7" style="text-align:center;color:var(--tx3);padding:40px;">Laden...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SYSTEM TAB -->
+      <div class="page-section" id="tab-system">
+        <h1>System-Statistiken</h1>
+        <p class="page-desc">Globale Kennzahlen und System-Health</p>
+
+        <!-- Primary KPIs -->
+        <div class="system-stats">
+          <div class="system-stat">
+            <div class="system-stat-label">Benutzer gesamt</div>
+            <div class="system-stat-value" id="sys-total-users">-</div>
+          </div>
+          <div class="system-stat">
+            <div class="system-stat-label">Organisationen</div>
+            <div class="system-stat-value" id="sys-total-orgs">-</div>
+          </div>
+          <div class="system-stat">
+            <div class="system-stat-label">Assistenten</div>
+            <div class="system-stat-value" id="sys-total-assistants">-</div>
+          </div>
+        </div>
+
+        <!-- Secondary KPIs -->
+        <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px;">
+          <div class="stat-card">
+            <div class="stat-icon purple"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="9" r="7"/><path d="M9 6v6M6 9h6"/></svg></div>
+            <div class="stat-label">Neue Leads (7 Tage)</div>
+            <div class="stat-value" id="sys-new-leads">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon cyan"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10l4 4 8-8"/></svg></div>
+            <div class="stat-label">Aktive Leads</div>
+            <div class="stat-value" id="sys-active-leads">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="14" height="14" rx="2"/><path d="M5 9l3 3 5-5"/></svg></div>
+            <div class="stat-label">Offene Tasks</div>
+            <div class="stat-value" id="sys-open-tasks">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 18L10 4l8 14"/></svg></div>
+            <div class="stat-label">Conversion Rate</div>
+            <div class="stat-value" id="sys-conversion">-</div>
+          </div>
+        </div>
+
+        <!-- Role Distribution -->
+        <h2 style="margin-bottom:16px;">Rollenverteilung</h2>
+        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px;">
+          <div class="stat-card">
+            <div class="stat-label">Superadmins</div>
+            <div class="stat-value" id="sys-role-superadmin">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Sales</div>
+            <div class="stat-value" id="sys-role-sales">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Customers</div>
+            <div class="stat-value" id="sys-role-customer">-</div>
+          </div>
+        </div>
+
+        <!-- Plan Distribution -->
+        <h2 style="margin-bottom:16px;">Plan-Verteilung</h2>
+        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px;">
+          <div class="stat-card">
+            <div class="stat-label">Solo</div>
+            <div class="stat-value" id="sys-plan-solo">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Team</div>
+            <div class="stat-value" id="sys-plan-team">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Business</div>
+            <div class="stat-value" id="sys-plan-business">-</div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <h2 style="margin-bottom:16px;">Letzte Aktivität</h2>
+        <div class="card" style="padding:0;overflow:hidden;">
+          <table class="data-table">
+            <thead>
+              <tr><th>Zeitpunkt</th><th>Benutzer</th><th>Aktion</th><th>Details</th></tr>
+            </thead>
+            <tbody id="sys-activity-tbody">
+              <tr><td colspan="4" style="text-align:center;color:var(--tx3);padding:20px;">Wird geladen...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Edit User Role Modal -->
+<div class="modal-overlay" id="modal-edit-role">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Rolle bearbeiten</h3>
+      <button class="modal-close" onclick="closeModal('modal-edit-role')">&times;</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Benutzer</label>
+      <input type="text" class="form-input" id="edit-role-user" disabled>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Rolle</label>
+      <select class="form-input form-select" id="edit-role-select">
+        <option value="customer">Customer</option>
+        <option value="sales">Sales</option>
+        <option value="superadmin">Superadmin</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Organisation</label>
+      <select class="form-input form-select" id="edit-role-org">
+        <option value="">Keine</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-edit-role')">Abbrechen</button>
+      <button class="btn" id="btn-save-role">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Org Modal -->
+<div class="modal-overlay" id="modal-add-org">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Organisation erstellen</h3>
+      <button class="modal-close" onclick="closeModal('modal-add-org')">&times;</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Name</label>
+      <input type="text" class="form-input" id="org-name" placeholder="Firmenname">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Plan</label>
+      <select class="form-input form-select" id="org-plan">
+        <option value="solo">Solo (1 User)</option>
+        <option value="team">Team (5 User)</option>
+        <option value="business">Business (unbegrenzt)</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-add-org')">Abbrechen</button>
+      <button class="btn" id="btn-create-org">Erstellen</button>
+    </div>
+  </div>
+</div>
+
+<script src="supabase-config.js"></script>
+<script src="js/auth-guard.js"></script>
+<script src="js/components.js"></script>
+<script>
+let currentProfile = null;
+let editingUserId = null;
+
+async function init() {
+  currentProfile = await AuthGuard.requireSuperadmin();
+  if (!currentProfile) return;
+
+  await Components.loadSidebar('sidebar-container', currentProfile);
+
+  // Sidebar logout
+  document.getElementById('sidebar-logout')?.addEventListener('click', async () => {
+    await clanaAuth.signOut();
+    window.location.href = 'login.html';
+  });
+
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
+
+  // Handle hash navigation
+  const hash = window.location.hash.replace('#', '') || 'users';
+  switchTab(hash);
+
+  loadUsers();
+  loadOrgs();
+  loadSystemStats();
+
+  // Search
+  document.getElementById('user-search')?.addEventListener('input', (e) => {
+    const q = e.target.value.toLowerCase();
+    document.querySelectorAll('#users-tbody tr').forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(q) ? '' : 'none';
+    });
+  });
+
+  // Add org
+  document.getElementById('btn-add-org')?.addEventListener('click', () => openModal('modal-add-org'));
+  document.getElementById('btn-create-org')?.addEventListener('click', createOrg);
+  document.getElementById('btn-save-role')?.addEventListener('click', saveUserRole);
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  const section = document.getElementById('tab-' + tab);
+  if (section) section.classList.add('active');
+  document.getElementById('breadcrumb-page').textContent =
+    tab === 'users' ? 'Benutzer' : tab === 'orgs' ? 'Organisationen' : 'System';
+  window.location.hash = tab;
+}
+
+async function loadUsers() {
+  const result = await clanaDB.getAllProfiles();
+  if (!result.success) {
+    Components.toast('Fehler beim Laden der Benutzer', 'error');
+    return;
+  }
+  const tbody = document.getElementById('users-tbody');
+  if (!result.data.length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty-state">Keine Benutzer gefunden</td></tr>';
+    return;
+  }
+  tbody.innerHTML = result.data.map(u => `
+    <tr>
+      <td><strong>${clanaUtils.sanitizeHtml(u.first_name || '')} ${clanaUtils.sanitizeHtml(u.last_name || '')}</strong></td>
+      <td>${clanaUtils.sanitizeHtml(u.email || '')}</td>
+      <td><span class="badge badge-${u.role === 'superadmin' ? 'red' : u.role === 'sales' ? 'orange' : 'green'} role-badge">${u.role}</span></td>
+      <td>${u.organizations?.name || '—'}</td>
+      <td><span class="badge ${u.is_active ? 'badge-green' : 'badge-red'}">${u.is_active ? 'Aktiv' : 'Gesperrt'}</span></td>
+      <td>${clanaUtils.formatDate(u.created_at)}</td>
+      <td>
+        <div class="user-actions">
+          <button onclick="editUserRole('${u.id}', '${clanaUtils.sanitizeHtml(u.email || '')}', '${u.role}', '${u.organization_id || ''}')">Rolle</button>
+          <button onclick="toggleUserActive('${u.id}', ${u.is_active})">${u.is_active ? 'Sperren' : 'Aktivieren'}</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function loadOrgs() {
+  const result = await clanaDB.getOrganizations();
+  if (!result.success) return;
+  const tbody = document.getElementById('orgs-tbody');
+  if (!result.data.length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty-state">Keine Organisationen</td></tr>';
+    return;
+  }
+  tbody.innerHTML = result.data.map(o => `
+    <tr>
+      <td><strong>${clanaUtils.sanitizeHtml(o.name)}</strong></td>
+      <td><span class="badge badge-purple">${o.plan}</span></td>
+      <td>${o.profiles ? `${o.profiles.first_name || ''} ${o.profiles.last_name || ''}` : '—'}</td>
+      <td>${o.max_users || 1}</td>
+      <td><span class="badge ${o.is_active ? 'badge-green' : 'badge-red'}">${o.is_active ? 'Aktiv' : 'Inaktiv'}</span></td>
+      <td>${clanaUtils.formatDate(o.created_at)}</td>
+      <td>
+        <div class="user-actions">
+          <button onclick="editOrg('${o.id}')">Bearbeiten</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function loadSystemStats() {
+  const [users, orgs, leads, tasks] = await Promise.all([
+    clanaDB.getAllProfiles(),
+    clanaDB.getOrganizations(),
+    clanaDB.getLeads(),
+    clanaDB.getTasks()
+  ]);
+
+  const allUsers = users.data || [];
+  const allOrgs = orgs.data || [];
+  const allLeads = leads.data || [];
+  const allTasks = tasks.data || [];
+
+  // Primary KPIs
+  document.getElementById('sys-total-users').textContent = allUsers.length;
+  document.getElementById('sys-total-orgs').textContent = allOrgs.length;
+
+  // Secondary KPIs
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  const newLeads = allLeads.filter(l => l.created_at >= sevenDaysAgo);
+  const activeLeads = allLeads.filter(l => !['won', 'lost'].includes(l.status));
+  const openTasks = allTasks.filter(t => t.status !== 'done');
+  const wonLeads = allLeads.filter(l => l.status === 'won');
+  const conversionRate = allLeads.length ? Math.round((wonLeads.length / allLeads.length) * 100) : 0;
+
+  document.getElementById('sys-new-leads').textContent = newLeads.length;
+  document.getElementById('sys-active-leads').textContent = activeLeads.length;
+  document.getElementById('sys-open-tasks').textContent = openTasks.length;
+  document.getElementById('sys-conversion').textContent = conversionRate + '%';
+
+  // Role distribution
+  const roles = { superadmin: 0, sales: 0, customer: 0 };
+  allUsers.forEach(u => { if (roles[u.role] !== undefined) roles[u.role]++; });
+  document.getElementById('sys-role-superadmin').textContent = roles.superadmin;
+  document.getElementById('sys-role-sales').textContent = roles.sales;
+  document.getElementById('sys-role-customer').textContent = roles.customer;
+
+  // Plan distribution
+  const plans = { solo: 0, team: 0, business: 0 };
+  allOrgs.forEach(o => { if (plans[o.plan] !== undefined) plans[o.plan]++; });
+  document.getElementById('sys-plan-solo').textContent = plans.solo;
+  document.getElementById('sys-plan-team').textContent = plans.team;
+  document.getElementById('sys-plan-business').textContent = plans.business;
+
+  // Assistants count
+  try {
+    const assistantsResult = await clanaDB.getAssistants();
+    document.getElementById('sys-total-assistants').textContent = assistantsResult.data?.length || 0;
+  } catch (e) {
+    document.getElementById('sys-total-assistants').textContent = '-';
+  }
+
+  // Recent activity (newest leads + tasks as proxy)
+  const recentItems = [
+    ...newLeads.slice(0, 5).map(l => ({
+      time: l.created_at,
+      user: l.profiles ? `${l.profiles.first_name || ''} ${l.profiles.last_name || ''}` : '—',
+      action: 'Neuer Lead',
+      details: clanaUtils.sanitizeHtml(l.company_name)
+    })),
+    ...allTasks.filter(t => t.created_at >= sevenDaysAgo).slice(0, 5).map(t => ({
+      time: t.created_at,
+      user: t.profiles ? `${t.profiles.first_name || ''} ${t.profiles.last_name || ''}` : '—',
+      action: 'Neue Aufgabe',
+      details: clanaUtils.sanitizeHtml(t.title)
+    }))
+  ].sort((a, b) => new Date(b.time) - new Date(a.time)).slice(0, 10);
+
+  const tbody = document.getElementById('sys-activity-tbody');
+  if (recentItems.length) {
+    tbody.innerHTML = recentItems.map(item => `
+      <tr>
+        <td>${clanaUtils.formatDate(item.time)}</td>
+        <td>${item.user}</td>
+        <td><span class="badge badge-purple">${item.action}</span></td>
+        <td>${item.details}</td>
+      </tr>
+    `).join('');
+  } else {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--tx3);padding:20px;">Keine Aktivität in den letzten 7 Tagen</td></tr>';
+  }
+}
+
+function editUserRole(userId, email, currentRole, currentOrgId) {
+  editingUserId = userId;
+  document.getElementById('edit-role-user').value = email;
+  document.getElementById('edit-role-select').value = currentRole;
+  // Load orgs into select
+  loadOrgSelect(currentOrgId);
+  openModal('modal-edit-role');
+}
+
+async function loadOrgSelect(currentOrgId) {
+  const result = await clanaDB.getOrganizations();
+  const select = document.getElementById('edit-role-org');
+  select.innerHTML = '<option value="">Keine</option>';
+  if (result.success && result.data) {
+    result.data.forEach(o => {
+      const opt = document.createElement('option');
+      opt.value = o.id;
+      opt.textContent = o.name;
+      if (o.id === currentOrgId) opt.selected = true;
+      select.appendChild(opt);
+    });
+  }
+}
+
+async function saveUserRole() {
+  if (!editingUserId) return;
+  const role = document.getElementById('edit-role-select').value;
+  const orgId = document.getElementById('edit-role-org').value || null;
+
+  const result = await clanaDB.updateProfile(editingUserId, { role, organization_id: orgId });
+  if (result.success) {
+    Components.toast('Rolle aktualisiert', 'success');
+    closeModal('modal-edit-role');
+    loadUsers();
+  } else {
+    Components.toast('Fehler: ' + result.error, 'error');
+  }
+}
+
+async function toggleUserActive(userId, currentlyActive) {
+  const result = await clanaDB.updateProfile(userId, { is_active: !currentlyActive });
+  if (result.success) {
+    Components.toast(currentlyActive ? 'Benutzer gesperrt' : 'Benutzer aktiviert', 'success');
+    loadUsers();
+  } else {
+    Components.toast('Fehler: ' + result.error, 'error');
+  }
+}
+
+async function createOrg() {
+  const name = document.getElementById('org-name').value.trim();
+  const plan = document.getElementById('org-plan').value;
+  if (!name) { Components.toast('Name ist erforderlich', 'error'); return; }
+
+  const maxUsers = plan === 'solo' ? 1 : plan === 'team' ? 5 : 999;
+  const result = await clanaDB.createOrganization({ name, plan, max_users: maxUsers, owner_id: currentProfile.id });
+  if (result.success) {
+    Components.toast('Organisation erstellt', 'success');
+    closeModal('modal-add-org');
+    document.getElementById('org-name').value = '';
+    loadOrgs();
+    loadSystemStats();
+  } else {
+    Components.toast('Fehler: ' + result.error, 'error');
+  }
+}
+
+function editOrg(orgId) {
+  Components.toast('Org-Bearbeitung wird implementiert', 'info');
+}
+
+function openModal(id) { document.getElementById(id)?.classList.add('active'); }
+function closeModal(id) { document.getElementById(id)?.classList.remove('active'); }
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('active');
+  });
+});
+
+init();
+</script>
+</body>
+</html>
