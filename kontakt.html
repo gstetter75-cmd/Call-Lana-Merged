@@ -4,99 +4,65 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Kontakt & Demo – Call Lana KI-Telefonassistent</title>
 <meta name="description" content="Kontaktiere Call Lana: Demo buchen, Fragen stellen oder direkt loslegen. Antwort innerhalb von 24 Stunden garantiert.">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<meta property="og:title" content="Kontakt & Demo – Call Lana KI-Telefonassistent">
+<meta property="og:description" content="Kontaktiere Call Lana: Demo buchen, Fragen stellen oder direkt loslegen. Antwort innerhalb von 24 Stunden garantiert.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/marketing.css">
 <style>
-:root{--bg:#06060f;--bg2:#0d0d1a;--bg3:#13132a;--card:#0f0f22;--border:rgba(124,58,237,.18);--pu:#7c3aed;--pu2:#9d5cf6;--pu3:#c084fc;--cyan:#22d3ee;--green:#a3e635;--tx:#f0eeff;--tx2:#a89dc0;--tx3:#6b5f8a;--r:20px;}
-*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;overflow-x:hidden;}
-body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--tx);overflow-x:hidden;line-height:1.6;}
-/* Language Switcher */
-.lang-switcher{position:fixed;top:80px;right:20px;z-index:200;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px;display:flex;gap:4px;}
-.lang-btn{background:none;border:none;padding:6px 12px;border-radius:8px;color:var(--tx3);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
-.lang-btn.active{background:var(--pu);color:white;}
-.lang-btn:hover:not(.active){background:rgba(124,58,237,.1);color:var(--tx);}
-
-nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 6%;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,6,15,.82);backdrop-filter:blur(22px);border-bottom:1px solid rgba(123,47,255,.13);}
-.logo{display:flex;align-items:center;gap:6px;text-decoration:none;}
-.logo-mark{width:38px;height:38px;background:linear-gradient(135deg,var(--pu),var(--pu3));border-radius:11px;display:flex;align-items:center;justify-content:center;color:white;font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;box-shadow:0 0 20px rgba(124,58,237,.5);}
-.logo-name{font-family:'Syne',sans-serif;font-size:1.65rem;font-weight:800;letter-spacing:-.02em;color:var(--tx);}.logo-name span{color:var(--pu3);}
-.nav-links{display:flex;gap:32px;list-style:none;}.nav-links a{color:var(--tx2);text-decoration:none;font-size:14.5px;font-weight:500;transition:color .25s;}.nav-links a:hover{color:var(--tx);}.nav-links a.active{color:var(--tx);font-weight:700;}
-.nav-cta{background:linear-gradient(135deg,var(--pu),var(--pu2));color:#fff !important;padding:10px 24px;border-radius:50px;font-weight:700;font-size:14px;text-decoration:none;box-shadow:0 0 18px rgba(123,47,255,.3);transition:all .25s;}.nav-cta:hover{box-shadow:0 0 32px rgba(123,47,255,.55);transform:translateY(-1px);}
-.mob-btn{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px;}.mob-btn span{display:block;width:24px;height:2px;background:var(--tx);border-radius:2px;}
-.btn-p{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--pu),var(--pu2));color:#fff;padding:15px 34px;border-radius:50px;font-size:15.5px;font-weight:700;text-decoration:none;transition:all .3s;box-shadow:0 0 28px rgba(123,47,255,.38);}.btn-p:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(123,47,255,.6);}
-.g1{background:linear-gradient(120deg,var(--pu3),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.fi{opacity:0;transform:translateY(20px);transition:all .6s ease;}.fi.vis{opacity:1;transform:translateY(0);}
-.sec-lbl{text-align:center;color:var(--pu3);font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px;}
-
-/* PAGE HERO */
-.page-hero{padding:160px 6% 80px;text-align:center;position:relative;overflow:hidden;}
-.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(123,47,255,.18),transparent 70%);}
-.page-hero::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(123,47,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(123,47,255,.05) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 75%);}
-.page-hero-content{position:relative;z-index:2;}
-.page-hero h1{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,5vw,4rem);font-weight:800;line-height:1.08;margin-bottom:20px;word-break:break-word;}
-.page-hero p{color:var(--tx2);font-size:1.1rem;max-width:560px;margin:0 auto;line-height:1.75;}
-
-/* MAIN CONTACT SECTION */
-.contact-sec{padding:80px 6% 96px;position:relative;}
+/* CONTACT GRID */
+.contact-sec{padding:80px 5% 96px;}
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;max-width:1060px;margin:0 auto;align-items:start;}
 
 /* LEFT: info */
-.contact-info{}
-.contact-info h2{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,3.2vw,2.4rem);font-weight:800;margin-bottom:16px;line-height:1.15;}
+.contact-info h2{font-size:clamp(1.8rem,3.2vw,2.4rem);font-weight:900;margin-bottom:16px;line-height:1.15;letter-spacing:-.02em;}
 .contact-info > p{color:var(--tx2);font-size:.98rem;line-height:1.75;margin-bottom:36px;}
 .info-items{display:flex;flex-direction:column;gap:20px;margin-bottom:36px;}
 .info-item{display:flex;align-items:flex-start;gap:16px;}
-.ii-icon{width:46px;height:46px;background:rgba(123,47,255,.12);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;border:1px solid rgba(123,47,255,.2);flex-shrink:0;}
-.ii-body h3{font-weight:700;font-size:.97rem;margin-bottom:4px;}
+.ii-icon{width:46px;height:46px;background:var(--pu-light);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;border:1px solid var(--border);flex-shrink:0;}
+.ii-body h3{font-weight:700;font-size:.97rem;margin-bottom:4px;color:var(--tx);}
 .ii-body p{color:var(--tx2);font-size:.88rem;line-height:1.6;}
-.ii-body a{color:var(--pu3);text-decoration:none;}
+.ii-body a{color:var(--pu);text-decoration:none;font-weight:600;}.ii-body a:hover{text-decoration:underline;}
 
-.demo-cta-box{background:linear-gradient(135deg,rgba(123,47,255,.12),rgba(34,211,238,.05));border:1px solid rgba(123,47,255,.28);border-radius:var(--r);padding:28px 30px;}
-.demo-cta-box h3{font-size:1.05rem;font-weight:700;margin-bottom:10px;}
+.demo-cta-box{background:var(--pu-lighter);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px 30px;}
+.demo-cta-box h3{font-size:1.05rem;font-weight:700;margin-bottom:10px;color:var(--tx);}
 .demo-cta-box p{color:var(--tx2);font-size:.9rem;line-height:1.65;margin-bottom:20px;}
 
 /* RIGHT: FORM */
-.contact-form{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:40px;}
-.contact-form h2{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:6px;}
+.contact-form{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:40px;box-shadow:var(--shadow-lg);}
+.contact-form h2{font-size:1.4rem;font-weight:900;margin-bottom:6px;color:var(--tx);letter-spacing:-.02em;}
 .contact-form > p{color:var(--tx2);font-size:.9rem;margin-bottom:28px;}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
 .form-group{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
-label{font-size:13px;font-weight:600;color:var(--tx2);}
-.fi-inp{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:11px;padding:13px 16px;color:var(--tx);font-size:14.5px;font-family:'Manrope',sans-serif;outline:none;transition:border-color .25s;width:100%;}
-.fi-inp::placeholder{color:rgba(150,150,180,.38);}
-.fi-inp:focus{border-color:var(--pu);}
+.form-group label{font-size:13px;font-weight:600;color:var(--tx2);}
+.fi-inp{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:13px 16px;color:var(--tx);font-size:14.5px;font-family:'Inter',sans-serif;outline:none;transition:all .2s;width:100%;}
+.fi-inp::placeholder{color:var(--tx4);}
+.fi-inp:focus{border-color:var(--pu);box-shadow:0 0 0 3px rgba(124,58,237,.12);}
 select.fi-inp{cursor:pointer;}
 textarea.fi-inp{resize:vertical;min-height:110px;}
 .form-check{display:flex;align-items:flex-start;gap:11px;margin:18px 0;}
 .form-check input{margin-top:3px;accent-color:var(--pu);width:16px;height:16px;flex-shrink:0;}
-.form-check label{font-size:13px;color:var(--tx2);line-height:1.55;}
-.form-check a{color:var(--pu3);}
-.submit-btn{width:100%;background:linear-gradient(135deg,var(--pu),var(--pu2));border:none;border-radius:50px;padding:16px;color:#fff;font-weight:700;font-size:15.5px;cursor:pointer;font-family:'Manrope',sans-serif;transition:all .3s;box-shadow:0 0 24px rgba(123,47,255,.35);}
-.submit-btn:hover{box-shadow:0 0 44px rgba(123,47,255,.6);transform:translateY(-2px);}
+.form-check label{font-size:13px;color:var(--tx2);line-height:1.55;font-weight:400;}
+.form-check a{color:var(--pu);font-weight:600;text-decoration:none;}.form-check a:hover{text-decoration:underline;}
+.submit-btn{width:100%;background:var(--pu);border:none;border-radius:12px;padding:16px;color:#fff;font-weight:700;font-size:15.5px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .25s;box-shadow:0 4px 14px rgba(124,58,237,.35);}
+.submit-btn:hover{background:var(--pu2);box-shadow:0 6px 20px rgba(124,58,237,.4);transform:translateY(-2px);}
 .form-success{display:none;text-align:center;padding:40px 20px;}
 .form-success .check{font-size:3rem;margin-bottom:16px;}
-.form-success h3{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:10px;}
+.form-success h3{font-size:1.4rem;font-weight:900;margin-bottom:10px;color:var(--tx);}
 .form-success p{color:var(--tx2);line-height:1.65;}
 
 /* TRUST ROW */
-.trust-row{display:flex;justify-content:center;gap:36px;flex-wrap:wrap;padding:60px 6%;border-top:1px solid rgba(255,255,255,.05);}
+.trust-row{display:flex;justify-content:center;gap:36px;flex-wrap:wrap;padding:60px 5%;border-top:1px solid var(--border);}
 .trust-item{display:flex;align-items:center;gap:12px;color:var(--tx2);font-size:14px;}
 .trust-item strong{color:var(--tx);}
 .trust-item span{font-size:1.5rem;}
 
-/* FOOTER */
-footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);padding:60px 6% 32px;}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;}
-.footer-brand p{font-size:.88rem;color:var(--tx2);line-height:1.75;margin:14px 0 20px;}
-.footer-col h4{font-size:12px;font-weight:700;color:var(--tx);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;}
-.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
-.footer-col a{color:var(--tx2);text-decoration:none;font-size:14px;transition:color .2s;}
-.footer-col a:hover{color:var(--tx);}
-.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:28px;text-align:center;}
-.footer-copy{font-size:12.5px;color:var(--tx2);}
-@media(max-width:900px){.contact-grid{grid-template-columns:1fr;}.form-row{grid-template-columns:1fr;}.lang-switcher{top:72px;right:10px;}}
-@media(max-width:768px){.nav-links,.nav-cta{display:none;}.mob-btn{display:flex;}nav.open .nav-links{display:flex;flex-direction:column;position:fixed;top:72px;left:0;right:0;background:rgba(6,6,15,.97);padding:26px 6%;gap:20px;border-bottom:1px solid var(--border);z-index:199;}nav.open .nav-cta{display:block;margin-top:8px;text-align:center;}.footer-grid{grid-template-columns:1fr 1fr;}.trust-row{gap:20px;}}
-@media(max-width:480px){.page-hero h1{font-size:6.5vw;}.page-hero p{font-size:.9rem;max-width:100%;}.page-hero{padding:120px 5% 60px;}}
-.skip-link{position:absolute;top:-100%;left:16px;background:var(--pu);color:#fff;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;z-index:9999;text-decoration:none;transition:top .2s;}.skip-link:focus{top:16px;}
+@media(max-width:900px){.contact-grid{grid-template-columns:1fr;}.form-row{grid-template-columns:1fr;}}
+@media(max-width:480px){.contact-sec{padding:48px 4% 64px;}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -112,20 +78,19 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
 <nav id="nav">
   <a href="index.html" class="logo"><div class="logo-mark">CL</div><span class="logo-name">Call <span>Lana</span></span></a>
   <ul class="nav-links">
-    <li><a href="index.html" data-i18n="nav.home">Start</a></li>
-    <li><a href="funktionen.html" data-i18n="nav.features">Funktionen</a></li>
-    <li><a href="branchen.html" data-i18n="nav.industries">Branchen</a></li>
-    <li><a href="preise.html" data-i18n="nav.pricing">Preise</a></li>
-    <li><a href="kontakt.html" class="active" data-i18n="nav.contact">Kontakt</a></li>
+    <li><a href="funktionen.html">Funktionen</a></li>
+    <li><a href="branchen.html">Branchen</a></li>
+    <li><a href="preise.html">Preise</a></li>
+    <li><a href="kontakt.html" class="active">Kontakt</a></li>
   </ul>
-  <a href="preise.html" class="nav-cta" data-i18n="nav.dashboard">Zum Dashboard →</a>
-  <button class="mob-btn" id="mb" aria-label="Menü"><span></span><span></span><span></span></button>
+  <div class="nav-right"><a href="login.html" class="nav-login">Login</a><a href="registrierung.html" class="nav-cta">Kostenlos starten</a></div>
+  <button class="mob-btn" id="mb" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 
 <div class="page-hero" id="main-content">
   <div class="page-hero-content">
-    <div class="sec-lbl" data-i18n="kontakt.hero.label">Kontakt</div>
-    <h1 data-i18n="kontakt.hero.title">Lass uns <span class="g1">sprechen</span></h1>
+    <div class="sec-badge" data-i18n="kontakt.hero.label">Kontakt</div>
+    <h1 data-i18n-html="kontakt.hero.title">Lass uns <span class="gradient">sprechen</span></h1>
     <p data-i18n="kontakt.hero.desc">Demo buchen, Fragen stellen oder direkt loslegen – wir sind für dich da. Antwort innerhalb von 24 Stunden garantiert.</p>
   </div>
 </div>
@@ -134,7 +99,7 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
   <div class="contact-grid">
     <!-- LEFT INFO -->
     <div class="contact-info fi">
-      <h2>Wir freuen uns <span class="g1">auf dich</span></h2>
+      <h2>Wir freuen uns <span class="gradient">auf dich</span></h2>
       <p>Ob du eine Demo sehen möchtest, spezifische Fragen zu deiner Branche hast oder ein Enterprise-Angebot benötigst – unser Team ist für dich da.</p>
       <div class="info-items">
         <div class="info-item">
@@ -169,7 +134,7 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
       <div class="demo-cta-box">
         <h3>🎯 Lieber direkt starten?</h3>
         <p>Kostenlos registrieren und innerhalb von 30 Minuten live gehen. Keine Kreditkarte, keine Vertragsbindung.</p>
-        <a href="registrierung.html" class="btn-p">✦ Kostenlos starten</a>
+        <a href="registrierung.html" class="btn-primary btn-sm">Kostenlos starten</a>
       </div>
     </div>
 
@@ -197,6 +162,7 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
         <input type="checkbox" id="priv">
         <label for="priv">Ich habe die <a href="datenschutz.html">Datenschutzhinweise</a> gelesen und bin mit der Verarbeitung meiner Daten einverstanden.</label>
       </div>
+      <div class="form-error" id="formError" style="display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--red);margin-bottom:14px;"></div>
       <button class="submit-btn" id="submitBtn">Nachricht senden →</button>
       <div class="form-success" id="formSuccess">
         <div class="check">✅</div>
@@ -209,7 +175,7 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
 
 <!-- TRUST ROW -->
 <div class="trust-row">
-  <div class="trust-item"><span>⭐</span> <strong>4,5/5</strong> auf Trustpilot</div>
+  <div class="trust-item"><span>⭐</span> <strong>4,8/5</strong> auf Trustpilot</div>
   <div class="trust-item"><span>🏢</span> Über <strong>5.000 Unternehmen</strong> vertrauen Call Lana</div>
   <div class="trust-item"><span>🇩🇪</span> Server in <strong>Deutschland</strong></div>
   <div class="trust-item"><span>🔒</span> <strong>100% DSGVO</strong>-konform</div>
@@ -218,41 +184,12 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
 
 <footer>
   <div class="footer-grid">
-    <div class="footer-brand">
-      <a href="index.html" class="logo">
-        <div class="logo-mark">CL</div>
-        <span class="logo-name">Call <span>Lana</span></span>
-      </a>
-      <p>Der KI-Telefonassistent auf Deutsch. DSGVO-konform, skalierbar, sofort einsatzbereit.</p>
-    </div>
-    <div class="footer-col">
-      <h4 data-i18n="footer.product">Produkt</h4>
-      <ul>
-        <li><a href="funktionen.html">Funktionen</a></li>
-        <li><a href="branchen.html">Branchen</a></li>
-        <li><a href="preise.html">Preise</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4 data-i18n="footer.legal">Rechtliches</h4>
-      <ul>
-        <li><a href="impressum.html">Impressum</a></li>
-        <li><a href="datenschutz.html">Datenschutz</a></li>
-        <li><a href="agb.html">AGB</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4 data-i18n="footer.account">Konto</h4>
-      <ul>
-        <li><a href="registrierung.html">Registrieren</a></li>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="dashboard.html">Dashboard</a></li>
-      </ul>
-    </div>
+    <div class="footer-brand"><a href="index.html" class="logo"><div class="logo-mark">CL</div><span class="logo-name">Call <span>Lana</span></span></a><p>Der KI-Telefonassistent auf Deutsch. DSGVO-konform, skalierbar, sofort einsatzbereit.</p></div>
+    <div class="footer-col"><h4>Produkt</h4><ul><li><a href="funktionen.html">Funktionen</a></li><li><a href="branchen.html">Branchen</a></li><li><a href="preise.html">Preise</a></li></ul></div>
+    <div class="footer-col"><h4>Rechtliches</h4><ul><li><a href="impressum.html">Impressum</a></li><li><a href="datenschutz.html">Datenschutz</a></li><li><a href="agb.html">AGB</a></li></ul></div>
+    <div class="footer-col"><h4>Konto</h4><ul><li><a href="registrierung.html">Registrieren</a></li><li><a href="login.html">Login</a></li><li><a href="dashboard.html">Dashboard</a></li></ul></div>
   </div>
-  <div class="footer-bottom">
-    <p class="footer-copy">Copyright 2026 by Call Lana – Alle Rechte vorbehalten</p>
-  </div>
+  <div class="footer-bottom"><p class="footer-copy">Copyright 2026 by Call Lana — Alle Rechte vorbehalten</p></div>
 </footer>
 <script src="i18n.js"></script>
 <script src="cookie-consent.js"></script>
@@ -275,9 +212,9 @@ document.getElementById('submitBtn').addEventListener('click', async function(){
   const em=document.getElementById('em').value.trim();
   const msg=document.getElementById('msg').value.trim();
   const priv=document.getElementById('priv').checked;
-  if(!fn||!em||!msg){alert('Bitte fülle alle Pflichtfelder aus.');return;}
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){alert('Bitte gib eine gültige E-Mail-Adresse ein.');return;}
-  if(!priv){alert('Bitte stimme den Datenschutzhinweisen zu.');return;}
+  if(!fn||!em||!msg){showFormError('Bitte fülle alle Pflichtfelder aus.');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){showFormError('Bitte gib eine gültige E-Mail-Adresse ein.');return;}
+  if(!priv){showFormError('Bitte stimme den Datenschutzhinweisen zu.');return;}
 
   this.disabled = true;
   this.textContent = 'Wird gesendet...';
@@ -290,21 +227,28 @@ document.getElementById('submitBtn').addEventListener('click', async function(){
     });
 
     if (!result.success) {
-      // Save failed silently — user still sees success as message was received
+      showFormError('Senden fehlgeschlagen. Bitte versuche es erneut oder schreib uns direkt an hallo@call-lana.de');
+      this.disabled = false;
+      this.textContent = 'Nachricht senden →';
+      return;
     }
   } catch (err) {
-    // Contact form save error — show success regardless to not block the user
+    showFormError('Ein Fehler ist aufgetreten. Bitte versuche es erneut oder schreib uns direkt an hallo@call-lana.de');
+    this.disabled = false;
+    this.textContent = 'Nachricht senden →';
+    return;
   }
 
   document.querySelector('.contact-form h2').style.display='none';
   document.querySelector('.contact-form > p').style.display='none';
-  document.querySelectorAll('.form-row,.form-group,.form-check,.submit-btn').forEach(el=>el.style.display='none');
+  document.querySelectorAll('.form-row,.form-group,.form-check,.submit-btn,.form-error').forEach(el=>el.style.display='none');
   document.getElementById('formSuccess').style.display='block';
 });
-// Scroll
+// Scroll reveal
 const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');}),{threshold:.1});
 document.querySelectorAll('.fi').forEach(el=>obs.observe(el));
 document.getElementById('mb').addEventListener('click',()=>document.getElementById('nav').classList.toggle('open'));
+function showFormError(msg){const el=document.getElementById('formError');el.textContent=msg;el.style.display='block';el.scrollIntoView({behavior:'smooth',block:'nearest'});}
 </script>
 </body>
 </html>

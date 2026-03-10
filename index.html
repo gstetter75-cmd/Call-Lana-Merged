@@ -4,172 +4,117 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Call Lana – Der KI-Telefonassistent auf Deutsch</title>
 <meta name="description" content="KI-Telefonassistent auf Deutsch. DSGVO-konform, sofort einsatzbereit. 30 Minuten Setup.">
+<meta property="og:title" content="Call Lana – Der KI-Telefonassistent auf Deutsch">
+<meta property="og:description" content="KI-Telefonassistent auf Deutsch. DSGVO-konform, sofort einsatzbereit. 30 Minuten Setup.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/marketing.css">
 <style>
-:root{--bg:#06060f;--bg2:#0d0d1a;--bg3:#13132a;--card:#0f0f22;--border:rgba(124,58,237,.18);--pu:#7c3aed;--pu2:#9d5cf6;--pu3:#c084fc;--cyan:#22d3ee;--green:#a3e635;--tx:#f0eeff;--tx2:#a89dc0;--tx3:#6b5f8a;}
-*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:auto;overflow-x:hidden;}
-body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--tx);overflow-x:hidden;line-height:1.6;}
+/* ===== INDEX PAGE-SPECIFIC STYLES ===== */
+.hero{padding:140px 5% 80px;text-align:center;position:relative;overflow:hidden;background:linear-gradient(180deg,var(--pu-lighter) 0%,var(--white) 100%);}
+.hero-content{max-width:780px;margin:0 auto;position:relative;z-index:2;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--pu-light);border:1px solid rgba(124,58,237,.15);border-radius:50px;padding:6px 18px;font-size:13px;font-weight:600;color:var(--pu);margin-bottom:28px;}
+.hero-badge svg{width:16px;height:16px;}
+h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spacing:-.03em;margin-bottom:20px;color:var(--tx);}
+.hero-lead{font-size:clamp(1rem,2vw,1.2rem);color:var(--tx2);max-width:580px;margin:0 auto 40px;line-height:1.7;font-weight:400;}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;}
+.hero-social{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;}
+.hero-social .rating{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--tx);}
+.stars{color:#facc15;font-size:16px;letter-spacing:1px;}
+.hero-social .divider{width:1px;height:20px;background:var(--border2);}
+.hero-social .users-count{font-size:14px;color:var(--tx2);font-weight:500;}
 
-/* Language Switcher */
-.lang-switcher{position:fixed;top:80px;right:20px;z-index:200;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px;display:flex;gap:4px;}
-.lang-btn{background:none;border:none;padding:6px 12px;border-radius:8px;color:var(--tx3);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
-.lang-btn.active{background:var(--pu);color:white;}
-.lang-btn:hover:not(.active){background:rgba(124,58,237,.1);color:var(--tx);}
+.logos-sec{padding:48px 5%;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg);}
+.logos-label{text-align:center;color:var(--tx4);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:28px;}
+.logos-row{display:flex;justify-content:center;align-items:center;gap:48px;flex-wrap:wrap;}
+.logos-row span{font-size:15px;font-weight:700;color:var(--tx4);letter-spacing:.02em;transition:color .2s;}
+.logos-row span:hover{color:var(--tx2);}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 6%;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,6,15,.8);backdrop-filter:blur(22px);border-bottom:1px solid var(--border);}
-.logo{display:flex;align-items:center;gap:6px;text-decoration:none;}
-.logo-text{font-family:'Syne',sans-serif;font-size:1.65rem;font-weight:800;letter-spacing:-.02em;}
-.logo-mark{width:38px;height:38px;background:linear-gradient(135deg,var(--pu),var(--pu3));border-radius:11px;display:flex;align-items:center;justify-content:center;color:white;font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;box-shadow:0 0 20px rgba(124,58,237,.5);}
-.logo-name{color:var(--tx);}.logo-name span{color:var(--pu3);}
-.nav-links{display:flex;gap:32px;list-style:none;}
-.nav-links a{color:var(--tx2);text-decoration:none;font-size:14.5px;font-weight:500;transition:color .25s;}
-.nav-links a:hover{color:var(--tx);}
-.nav-cta{background:linear-gradient(135deg,var(--pu),var(--pu2));color:#fff !important;padding:10px 24px;border-radius:50px;font-weight:700;font-size:14px;text-decoration:none;transition:all .25s;box-shadow:0 0 18px rgba(124,58,237,.3);}
-.nav-cta:hover{box-shadow:0 0 32px rgba(124,58,237,.55);transform:translateY(-1px);}
-.mob-btn{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px;}.mob-btn span{display:block;width:24px;height:2px;background:var(--tx);border-radius:2px;}
+.stats-sec{padding:72px 5%;background:var(--white);}
+.stats-row{display:flex;justify-content:center;gap:0;max-width:900px;margin:0 auto;}
+.stat-item{flex:1;text-align:center;padding:24px 20px;border-right:1px solid var(--border);}
+.stat-item:last-child{border-right:none;}
+.stat-num{font-size:clamp(2rem,4vw,3rem);font-weight:900;color:var(--pu);line-height:1;margin-bottom:8px;letter-spacing:-.02em;}
+.stat-label{font-size:14px;color:var(--tx3);font-weight:500;}
 
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:120px 6% 100px;text-align:center;}
-.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(123,47,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(123,47,255,.06) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 75%);z-index:0;}
-.orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;}
-.o1{width:750px;height:750px;background:radial-gradient(circle,rgba(123,47,255,.55),transparent 70%);top:-200px;left:50%;transform:translateX(-50%);opacity:.28;animation:of1 14s ease-in-out infinite;}
-.o2{width:420px;height:420px;background:radial-gradient(circle,rgba(34,211,238,.5),transparent 70%);bottom:5%;left:-80px;opacity:.15;animation:of2 17s ease-in-out infinite;}
-.o3{width:380px;height:380px;background:radial-gradient(circle,rgba(192,132,252,.55),transparent 70%);bottom:10%;right:-60px;opacity:.2;animation:of3 11s ease-in-out infinite;}
-@keyframes of1{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-50px);}}
-@keyframes of2{0%,100%{transform:translate(0,0);}50%{transform:translate(50px,-70px);}}
-@keyframes of3{0%,100%{transform:translate(0,0);}50%{transform:translate(-40px,50px);}}
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;max-width:1100px;margin:0 auto;}
+.step-card{text-align:center;padding:36px 28px;border-radius:var(--radius-lg);}
+.step-num{width:48px;height:48px;border-radius:50%;background:var(--pu-light);color:var(--pu);font-weight:800;font-size:1.1rem;display:inline-flex;align-items:center;justify-content:center;margin-bottom:20px;}
+.step-card h3{font-size:1.15rem;font-weight:800;margin-bottom:10px;color:var(--tx);}
+.step-card p{font-size:.93rem;color:var(--tx2);line-height:1.7;}
 
-@media (prefers-reduced-motion: reduce) {
-  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;}
-}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1100px;margin:0 auto;}
+.feature-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:36px 28px;transition:all .3s;}
+.feature-card:hover{border-color:var(--pu);box-shadow:var(--shadow-lg);transform:translateY(-4px);}
+.feature-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:18px;background:var(--pu-light);}
+.feature-card h3{font-size:1.1rem;font-weight:800;margin-bottom:10px;color:var(--tx);}
+.feature-card p{font-size:.9rem;color:var(--tx2);line-height:1.7;}
 
-.hero-content{position:relative;z-index:2;max-width:820px;}
-.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(123,47,255,.11);border:1px solid rgba(123,47,255,.28);border-radius:50px;padding:7px 20px;font-size:11.5px;font-weight:700;color:var(--pu3);margin-bottom:38px;letter-spacing:.08em;text-transform:uppercase;}
-h1{font-family:'Syne',sans-serif;font-size:clamp(2.4rem,7vw,5.8rem);font-weight:800;line-height:1.04;margin-bottom:0;}
-.h1-sub{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,5vw,4rem);font-weight:700;line-height:1.1;margin-bottom:28px;background:linear-gradient(120deg,var(--cyan) 0%,var(--pu3) 55%,var(--green) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.hero-lead{font-size:clamp(1.05rem,2vw,1.25rem);color:var(--tx2);max-width:560px;margin:0 auto 52px;font-weight:400;line-height:1.75;}
+.trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1100px;margin:0 auto;}
+.trust-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:36px 28px;text-align:center;transition:all .3s;}
+.trust-card:hover{border-color:var(--green);box-shadow:0 8px 24px rgba(5,150,105,.08);}
+.trust-icon{font-size:2.4rem;margin-bottom:16px;display:block;}
+.trust-card h3{font-size:1.1rem;font-weight:800;margin-bottom:10px;color:var(--tx);}
+.trust-card p{font-size:.9rem;color:var(--tx2);line-height:1.7;}
 
-.wave{display:flex;align-items:center;justify-content:center;gap:4px;height:52px;margin-bottom:52px;}
-.wb{width:4px;border-radius:4px;background:linear-gradient(180deg,var(--pu),var(--pu3));animation:wa 1.2s ease-in-out infinite;box-shadow:0 0 5px rgba(123,47,255,.45);}
-@keyframes wa{0%,100%{height:6px;opacity:.35;}50%{height:var(--h);opacity:1;}}
+.uc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1100px;margin:0 auto;}
+.uc-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:36px 28px;transition:all .3s;text-decoration:none;color:inherit;display:block;}
+.uc-card:hover{border-color:var(--pu);box-shadow:var(--shadow-lg);transform:translateY(-4px);}
+.uc-icon{font-size:2.2rem;margin-bottom:16px;display:block;}
+.uc-card h3{font-size:1.1rem;font-weight:800;margin-bottom:10px;color:var(--tx);}
+.uc-card p{font-size:.9rem;color:var(--tx2);line-height:1.7;}
 
-.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;}
-.btn-p{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--pu),var(--pu2));color:#fff;padding:17px 38px;border-radius:50px;font-size:16px;font-weight:700;text-decoration:none;transition:all .3s;box-shadow:0 0 30px rgba(123,47,255,.4);}
-.btn-p:hover{transform:translateY(-2px);box-shadow:0 0 55px rgba(123,47,255,.65);}
-.btn-s{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);color:var(--tx);padding:17px 38px;border-radius:50px;font-size:16px;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,.13);transition:all .3s;}
-.btn-s:hover{background:rgba(255,255,255,.09);transform:translateY(-2px);}
+.int-row{display:flex;justify-content:center;flex-wrap:wrap;gap:14px;max-width:800px;margin:0 auto 24px;}
+.int-badge{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:14px 24px;font-size:.95rem;font-weight:700;color:var(--tx);transition:all .25s;display:inline-flex;align-items:center;gap:10px;}
+.int-badge:hover{border-color:var(--pu);box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.int-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.dot-hub{background:#ff7a59;}.dot-pipe{background:#21b979;}.dot-cal{background:var(--tx);}.dot-zap{background:#ff4a00;}.dot-make{background:#6d3aef;}
+.int-more{font-size:.9rem;color:var(--tx3);text-align:center;}
 
-/* TICKER */
-.trusted{padding:36px 0;overflow:hidden;border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);background:rgba(14,14,28,.6);}
-.trusted-lbl{text-align:center;color:var(--tx2);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:22px;}
-.ticker-wrap{overflow:hidden;}
-.ticker-t{display:flex;gap:54px;animation:tick 25s linear infinite;white-space:nowrap;align-items:center;}
-@keyframes tick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
-.ti{display:inline-flex;align-items:center;font-size:14px;font-weight:700;color:rgba(150,150,180,.48);letter-spacing:.03em;flex-shrink:0;transition:color .25s;}
-.ti:hover{color:var(--tx);}
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1100px;margin:0 auto;}
+.testimonial-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:32px 28px;transition:all .3s;}
+.testimonial-card:hover{box-shadow:var(--shadow-lg);}
+.testimonial-stars{color:#facc15;font-size:16px;margin-bottom:16px;letter-spacing:2px;}
+.testimonial-text{font-size:.95rem;color:var(--tx2);line-height:1.75;margin-bottom:20px;font-style:italic;}
+.testimonial-author{display:flex;align-items:center;gap:12px;}
+.testimonial-avatar{width:40px;height:40px;border-radius:50%;background:var(--pu-light);color:var(--pu);font-weight:700;font-size:.85rem;display:flex;align-items:center;justify-content:center;}
+.testimonial-name{font-weight:700;font-size:.88rem;color:var(--tx);}
+.testimonial-role{font-size:.8rem;color:var(--tx3);}
 
-/* STATS */
-.stats{display:flex;justify-content:center;flex-wrap:wrap;padding:80px 6%;gap:0;position:relative;}
-.stat{flex:1;min-width:160px;max-width:260px;padding:38px 16px;text-align:center;border-right:1px solid rgba(255,255,255,.07);position:relative;z-index:1;}
-.stat:last-child{border-right:none;}
-.sn{font-family:'Syne',sans-serif;font-size:3.2rem;font-weight:800;background:linear-gradient(135deg,var(--pu3),var(--pu));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:10px;}
-.sl{font-size:13.5px;color:var(--tx2);font-weight:500;}
+.demo-sec{padding:80px 5%;}
+.demo-card{background:var(--pu);border-radius:var(--radius-xl);padding:56px;max-width:800px;margin:0 auto;text-align:center;color:white;position:relative;overflow:hidden;}
+.demo-card::before{content:'';position:absolute;top:-50%;right:-20%;width:400px;height:400px;border-radius:50%;background:rgba(255,255,255,.06);}
+.demo-card h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:900;margin-bottom:12px;position:relative;}
+.demo-card>p{font-size:1.05rem;opacity:.85;margin-bottom:32px;position:relative;}
+.demo-row{display:flex;gap:10px;justify-content:center;position:relative;max-width:420px;margin:0 auto;}
+.demo-input{flex:1;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.25);border-radius:12px;padding:14px 16px;color:white;font-size:15px;font-weight:600;outline:none;font-family:inherit;}
+.demo-input::placeholder{color:rgba(255,255,255,.5);}
+.demo-btn{background:white;border:none;border-radius:12px;padding:14px 24px;color:var(--pu);font-weight:700;font-size:14px;cursor:pointer;transition:all .2s;font-family:inherit;}
+.demo-btn:hover{box-shadow:var(--shadow-lg);transform:translateY(-1px);}
+.demo-note{font-size:13px;opacity:.7;margin-top:14px;position:relative;}
 
-/* SECTION SHARED */
-.sec-lbl{display:inline-block;font-size:11.5px;font-weight:700;color:var(--pu3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;}
-.sec-title{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.12;margin-bottom:20px;color:var(--tx);}
-.sec-sub{font-size:1.05rem;color:var(--tx2);max-width:560px;margin:0 auto 48px;line-height:1.7;}
-
-/* TRUST & DSGVO */
-.trust-sec{padding:96px 6% 80px;text-align:center;position:relative;overflow:hidden;}
-.trust-sec::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(123,47,255,.07),transparent 70%);pointer-events:none;}
-.trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto;position:relative;z-index:1;}
-.trust-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:40px 28px;text-align:center;transition:all .35s;}
-.trust-card:hover{border-color:var(--pu);transform:translateY(-4px);box-shadow:0 12px 40px rgba(123,47,255,.2);}
-.trust-icon{font-size:2.8rem;margin-bottom:20px;display:block;}
-.trust-t{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;margin-bottom:10px;color:var(--tx);}
-.trust-d{font-size:.9rem;color:var(--tx2);line-height:1.7;}
-
-/* USE-CASES */
-.uc-sec{padding:96px 6%;text-align:center;position:relative;background:linear-gradient(180deg,transparent,rgba(14,14,28,.5),transparent);}
-.uc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto;}
-.uc-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:44px 30px 38px;text-align:left;transition:all .35s;text-decoration:none;color:inherit;display:block;}
-.uc-card:hover{border-color:var(--pu);transform:translateY(-5px);box-shadow:0 16px 48px rgba(123,47,255,.22);}
-.uc-icon{font-size:2.6rem;margin-bottom:22px;display:block;}
-.uc-t{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:12px;color:var(--tx);}
-.uc-d{font-size:.92rem;color:var(--tx2);line-height:1.7;}
-
-/* INTEGRATIONS */
-.int-sec{padding:96px 6%;text-align:center;position:relative;}
-.int-sec::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:900px;height:500px;background:radial-gradient(ellipse,rgba(34,211,238,.04),transparent 70%);pointer-events:none;}
-.int-row{display:flex;justify-content:center;flex-wrap:wrap;gap:16px;max-width:800px;margin:0 auto 32px;position:relative;z-index:1;}
-.int-badge{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 32px;font-size:1rem;font-weight:700;color:var(--tx);transition:all .3s;display:inline-flex;align-items:center;gap:10px;letter-spacing:.01em;}
-.int-badge:hover{border-color:var(--pu);transform:translateY(-3px);box-shadow:0 8px 30px rgba(123,47,255,.2);background:rgba(124,58,237,.08);}
-.int-badge .int-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-.int-dot-hub{background:#ff7a59;}
-.int-dot-pipe{background:#21b979;}
-.int-dot-cal{background:var(--tx);}
-.int-dot-zap{background:#ff4a00;}
-.int-dot-make{background:#6d3aef;}
-.int-more{font-size:.92rem;color:var(--tx3);margin-top:8px;position:relative;z-index:1;}
-
-.demo-sec{padding:80px 6%;display:flex;justify-content:center;}
-.demo-card{background:rgba(14,14,28,.95);border:1px solid rgba(123,47,255,.25);border-radius:24px;padding:44px 48px;max-width:580px;width:100%;box-shadow:0 0 60px rgba(123,47,255,.1);}
-.demo-card h2{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:8px;}
-.demo-card > p{color:var(--tx2);font-size:.95rem;margin-bottom:28px;line-height:1.65;}
-.demo-row{display:flex;gap:10px;}
-.demo-input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(123,47,255,.28);border-radius:12px;padding:14px 16px;color:var(--tx);font-size:15px;outline:none;}
-.demo-btn{background:linear-gradient(135deg,var(--pu),var(--pu2));border:none;border-radius:12px;padding:14px 22px;color:#fff;font-weight:700;font-size:14px;cursor:pointer;transition:all .25s;}
-.demo-btn:hover{box-shadow:0 0 28px rgba(123,47,255,.6);transform:translateY(-1px);}
-.demo-note{font-size:12px;color:var(--tx2);margin-top:12px;text-align:center;}
-.demo-legal{font-size:11.5px;color:rgba(136,136,170,.6);margin-top:8px;text-align:center;}
-
-.teaser-sec{padding:0 6% 96px;}
-.teaser-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1100px;margin:0 auto;}
-.tc{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px 28px;transition:all .35s;text-decoration:none;color:inherit;display:block;}
-.tc:hover{border-color:var(--pu);transform:translateY(-4px);box-shadow:0 12px 40px rgba(123,47,255,.25);}
-.ti-icon{font-size:2.2rem;margin-bottom:18px;display:block;}
-.ti-t{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;margin-bottom:10px;color:var(--tx);}
-.ti-d{font-size:.9rem;color:var(--tx2);line-height:1.65;}
-
-/* SCROLL REVEAL */
-.fi{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
-.fi.vis{opacity:1;transform:translateY(0);}
-
-footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);padding:60px 6% 32px;}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;}
-.footer-brand p{font-size:.88rem;color:var(--tx2);line-height:1.75;margin:14px 0 20px;}
-.footer-col h4{font-size:12px;font-weight:700;color:var(--tx);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;}
-.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
-.footer-col a{color:var(--tx2);text-decoration:none;font-size:14px;transition:color .2s;}
-.footer-col a:hover{color:var(--tx);}
-.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:28px;text-align:center;}
-.footer-copy{font-size:12.5px;color:var(--tx2);}
+.final-cta{padding:96px 5%;text-align:center;background:var(--bg);}
+.final-cta h2{font-size:clamp(1.7rem,3.5vw,2.5rem);font-weight:900;margin-bottom:16px;letter-spacing:-.02em;}
+.final-cta p{font-size:1.05rem;color:var(--tx2);margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto;}
+.final-cta .hero-btns{margin-bottom:0;}
 
 @media(max-width:900px){
-  .nav-links,.nav-cta{display:none;}.mob-btn{display:flex;}
-  nav.open .nav-links{display:flex;flex-direction:column;position:fixed;top:72px;left:0;right:0;background:rgba(6,6,15,.97);padding:26px 6%;gap:20px;border-bottom:1px solid var(--border);z-index:199;}
-  nav.open .nav-cta{display:block;margin-top:8px;text-align:center;}
-  .teaser-grid,.trust-grid,.uc-grid{grid-template-columns:1fr;}
-  .int-row{flex-direction:column;align-items:center;}
-  .footer-grid{grid-template-columns:1fr 1fr;gap:32px;}
-  .stats{flex-direction:column;}.stat{border-right:none;border-bottom:1px solid rgba(255,255,255,.07);}.stat:last-child{border-bottom:none;}
-  .lang-switcher{top:72px;right:10px;}
+  .features-grid,.trust-grid,.uc-grid,.steps-grid,.testimonials-grid{grid-template-columns:1fr;}
+  .stats-row{flex-direction:column;}.stat-item{border-right:none;border-bottom:1px solid var(--border);}.stat-item:last-child{border-bottom:none;}
+  .logos-row{gap:28px;}
 }
 @media(max-width:600px){
-  nav{padding:0 4%;}
-  .hero,.demo-sec,.teaser-sec,.trust-sec,.uc-sec,.int-sec{padding-left:4%;padding-right:4%;}
-  h1{font-size:6.5vw;}
-  .h1-sub{font-size:5vw;}
-  .hero-lead{max-width:100%;font-size:.9rem;}
-  .hero-content{max-width:100%;}
-  .hero-btns{flex-direction:column;}
+  .hero{padding:120px 4% 60px;}
+  .hero-btns{flex-direction:column;align-items:center;}
   .demo-row{flex-direction:column;}
-  .footer-grid{grid-template-columns:1fr;}
-  .orb{display:none;}
+  .demo-card{padding:36px 24px;}
+  .hero-social{flex-direction:column;gap:10px;}
+  .hero-social .divider{display:none;}
 }
-.skip-link{position:absolute;top:-100%;left:16px;background:var(--pu);color:#fff;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;z-index:9999;text-decoration:none;transition:top .2s;}.skip-link:focus{top:16px;}
 </style>
 </head>
 <body>
@@ -181,150 +126,302 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
   <button class="lang-btn" onclick="i18n.setLanguage('en'); updateLangButtons('en')">EN</button>
 </div>
 
+<!-- NAV -->
 <nav id="nav">
   <a href="index.html" class="logo">
     <div class="logo-mark">CL</div>
     <span class="logo-name">Call <span>Lana</span></span>
   </a>
   <ul class="nav-links">
-    <li><a href="index.html" data-i18n="nav.home">Start</a></li>
     <li><a href="funktionen.html" data-i18n="nav.features">Funktionen</a></li>
     <li><a href="branchen.html" data-i18n="nav.industries">Branchen</a></li>
     <li><a href="preise.html" data-i18n="nav.pricing">Preise</a></li>
     <li><a href="kontakt.html" data-i18n="nav.contact">Kontakt</a></li>
   </ul>
-  <a href="login.html" class="nav-cta" data-i18n="nav.dashboard">Zum Dashboard →</a>
-  <button class="mob-btn" id="mb" aria-label="Menü"><span></span><span></span><span></span></button>
+  <div class="nav-right">
+    <a href="login.html" class="nav-login">Login</a>
+    <a href="registrierung.html" class="nav-cta">Kostenlos starten</a>
+  </div>
+  <button class="mob-btn" id="mb" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 
 <main id="main-content">
 
   <!-- 1. HERO -->
   <section class="hero">
-    <div class="orb o1" aria-hidden="true"></div>
-    <div class="orb o2" aria-hidden="true"></div>
-    <div class="orb o3" aria-hidden="true"></div>
     <div class="hero-content">
-      <div class="badge"><span data-i18n="hero.badge">Deine KI-Telefonagentin</span></div>
-      <h1 data-i18n="hero.title">Schluss mit nervigen Bandansagen</h1>
-      <p class="h1-sub" data-i18n="hero.subtitle">Entdecke Lana, deine intelligente KI-Telefonagentin.</p>
-      <p class="hero-lead" data-i18n="hero.lead">Lana versteht deine Anrufer wirklich – dank NLP und natürlichem Dialog. Kein „Drücken Sie die 1" mehr. Einfach natürlich sprechen, rund um die Uhr, DSGVO-konform.</p>
-
-      <div class="wave">
-        <span class="wb" style="--h:14px;animation-delay:0s"></span>
-        <span class="wb" style="--h:30px;animation-delay:.1s"></span>
-        <span class="wb" style="--h:18px;animation-delay:.2s"></span>
-        <span class="wb" style="--h:38px;animation-delay:.3s"></span>
-        <span class="wb" style="--h:24px;animation-delay:.4s"></span>
-        <span class="wb" style="--h:42px;animation-delay:.5s"></span>
-        <span class="wb" style="--h:28px;animation-delay:.6s"></span>
-        <span class="wb" style="--h:20px;animation-delay:.7s"></span>
+      <div class="hero-badge">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm3.22 5.97l-3.5 3.5a.75.75 0 01-1.06 0l-1.5-1.5a.75.75 0 111.06-1.06l.97.97 2.97-2.97a.75.75 0 011.06 1.06z"/></svg>
+        <span data-i18n="hero.badge">Der KI-Telefonassistent auf Deutsch</span>
       </div>
-
+      <h1>Kein Anruf bleibt<br><span class="gradient">unbeantwortet.</span></h1>
+      <p class="hero-lead" data-i18n="hero.lead">Lana nimmt deine Anrufe entgegen, versteht Anliegen per NLP und handelt sofort — Termine buchen, Fragen beantworten, Leads qualifizieren. 24/7, DSGVO-konform.</p>
       <div class="hero-btns">
-        <a href="registrierung.html" class="btn-p" data-i18n="hero.cta.primary">Jetzt kostenlos testen →</a>
-        <a href="#demo" class="btn-s" data-i18n="hero.cta.secondary">Demo anhören</a>
+        <a href="registrierung.html" class="btn-primary" data-i18n="hero.cta.primary">Jetzt kostenlos testen</a>
+        <a href="#demo" class="btn-secondary" data-i18n="hero.cta.secondary">Demo anhören</a>
+      </div>
+      <div class="hero-social">
+        <div class="rating"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>&nbsp;4,8/5</div>
+        <div class="divider"></div>
+        <div class="users-count">5.000+ Unternehmen vertrauen Call Lana</div>
       </div>
     </div>
   </section>
 
-  <!-- 2. TRUSTED TICKER (kept as-is) -->
-  <section class="trusted">
-    <p class="trusted-lbl" data-i18n="trusted.title">Vertraut von führenden Unternehmen</p>
-    <div class="ticker-wrap">
-      <div class="ticker-t">
-        <span class="ti">TerpZero</span>
-        <span class="ti">SalesStaff</span>
-        <span class="ti">DCR-Agentur</span>
-        <span class="ti">Brillen.de</span>
-        <span class="ti">RS Solutions</span>
-        <span class="ti">TerpZero</span>
-        <span class="ti">SalesStaff</span>
-        <span class="ti">DCR-Agentur</span>
-        <span class="ti">Brillen.de</span>
-        <span class="ti">RS Solutions</span>
+  <!-- 2. LOGOS -->
+  <section class="logos-sec">
+    <p class="logos-label" data-i18n="trusted.title">Vertraut von Unternehmen wie</p>
+    <div class="logos-row">
+      <span>TerpZero</span>
+      <span>SalesStaff</span>
+      <span>DCR-Agentur</span>
+      <span>Brillen.de</span>
+      <span>RS Solutions</span>
+      <span>Kanzlei Weber</span>
+    </div>
+  </section>
+
+  <!-- 3. STATS -->
+  <section class="stats-sec">
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-num">2M+</div>
+        <div class="stat-label" data-i18n="stats.calls">Bearbeitete Anrufe</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">&lt;2s</div>
+        <div class="stat-label" data-i18n="stats.response">Reaktionszeit</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">99,8%</div>
+        <div class="stat-label" data-i18n="stats.uptime">Verfügbarkeit</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">30 Min</div>
+        <div class="stat-label">Setup-Zeit</div>
       </div>
     </div>
   </section>
 
-  <!-- 3. STATS (kept as-is) -->
-  <section class="stats">
-    <div class="stat">
-      <div class="sn">2M+</div>
-      <div class="sl" data-i18n="stats.calls">Bearbeitete Anrufe</div>
+  <!-- 4. HOW IT WORKS -->
+  <section class="section alt">
+    <div class="sec-header fi">
+      <span class="sec-badge">So funktioniert's</span>
+      <h2 class="sec-title">In 3 Schritten live</h2>
+      <p class="sec-sub">Keine Programmierung, kein IT-Team. Call Lana ist in wenigen Minuten einsatzbereit.</p>
     </div>
-    <div class="stat">
-      <div class="sn">&lt;2s</div>
-      <div class="sl" data-i18n="stats.response">Durchschn. Reaktionszeit</div>
-    </div>
-    <div class="stat">
-      <div class="sn">99,8%</div>
-      <div class="sl" data-i18n="stats.uptime">Verfügbarkeit</div>
+    <div class="steps-grid">
+      <div class="step-card fi">
+        <div class="step-num">1</div>
+        <h3>Rufnummer einrichten</h3>
+        <p>Eigene Nummer erhalten oder bestehende weiterleiten. Funktioniert mit jedem Anbieter.</p>
+      </div>
+      <div class="step-card fi">
+        <div class="step-num">2</div>
+        <h3>Lana konfigurieren</h3>
+        <p>Branche, Tonfall und Anweisungen festlegen. Lana passt sich deinem Unternehmen an.</p>
+      </div>
+      <div class="step-card fi">
+        <div class="step-num">3</div>
+        <h3>Anrufe entgegennehmen</h3>
+        <p>Lana ist live. Alle Anrufe, Transkripte und Aktionen siehst du im Dashboard.</p>
+      </div>
     </div>
   </section>
 
-  <!-- 4. TRUST & DSGVO (NEW) -->
-  <section class="trust-sec">
-    <span class="sec-lbl fi" data-i18n="trust.label">SICHERHEIT &amp; DATENSCHUTZ</span>
-    <h2 class="sec-title fi" data-i18n="trust.title">Deine Daten sind bei uns sicher</h2>
+  <!-- 5. FEATURES -->
+  <section class="section">
+    <div class="sec-header fi">
+      <span class="sec-badge">Funktionen</span>
+      <h2 class="sec-title">Alles, was dein Telefon braucht</h2>
+      <p class="sec-sub">Von natürlichem Dialog bis zum CRM-Push — Lana übernimmt den gesamten Anrufprozess.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card fi">
+        <div class="feature-icon">&#x1f5e3;&#xfe0f;</div>
+        <h3>Natürlicher Dialog</h3>
+        <p>Kein "Drucken Sie die 1". Anrufer sprechen natürlich, Lana versteht dank NLP sofort.</p>
+      </div>
+      <div class="feature-card fi">
+        <div class="feature-icon">&#x1f4c5;</div>
+        <h3>Terminbuchung</h3>
+        <p>Automatische Kalenderintegration über Cal.com. Termine werden direkt gebucht.</p>
+      </div>
+      <div class="feature-card fi">
+        <div class="feature-icon">&#x1f4ca;</div>
+        <h3>Echtzeit-Dashboard</h3>
+        <p>Alle Anrufe, Transkripte und KPIs auf einen Blick. Volle Transparenz.</p>
+      </div>
+      <div class="feature-card fi">
+        <div class="feature-icon">&#x1f3af;</div>
+        <h3>Lead-Qualifizierung</h3>
+        <p>Lana erkennt Kaufinteresse und pusht qualifizierte Leads direkt in dein CRM.</p>
+      </div>
+      <div class="feature-card fi">
+        <div class="feature-icon">&#x1f4dd;</div>
+        <h3>Transkription</h3>
+        <p>Jedes Gespräch wird in Echtzeit transkribiert und ist sofort durchsuchbar.</p>
+      </div>
+      <div class="feature-card fi">
+        <div class="feature-icon">&#x1f504;</div>
+        <h3>Weiterleitung</h3>
+        <p>Bei komplexen Anfragen leitet Lana nahtlos an den richtigen Mitarbeiter weiter.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. TRUST & DSGVO -->
+  <section class="section alt">
+    <div class="sec-header fi">
+      <span class="sec-badge" data-i18n="trust.label">Sicherheit & Datenschutz</span>
+      <h2 class="sec-title" data-i18n="trust.title">Deine Daten sind bei uns sicher</h2>
+    </div>
     <div class="trust-grid">
       <div class="trust-card fi">
         <span class="trust-icon">&#x1f6e1;&#xfe0f;</span>
-        <h3 class="trust-t" data-i18n="trust.gdpr.title">DSGVO-konform</h3>
-        <p class="trust-d" data-i18n="trust.gdpr.desc">Server bei Hetzner in Nürnberg, Deutschland. Volle Datenkontrolle.</p>
+        <h3 data-i18n="trust.gdpr.title">DSGVO-konform</h3>
+        <p data-i18n="trust.gdpr.desc">Server bei Hetzner in Nürnberg, Deutschland. Volle Datenkontrolle.</p>
       </div>
       <div class="trust-card fi">
         <span class="trust-icon">&#x1f512;</span>
-        <h3 class="trust-t" data-i18n="trust.encrypt.title">Ende-zu-Ende verschlüsselt</h3>
-        <p class="trust-d" data-i18n="trust.encrypt.desc">256-Bit SSL. Alle Gespräche und Daten sind vollständig verschlüsselt.</p>
+        <h3 data-i18n="trust.encrypt.title">Ende-zu-Ende verschlüsselt</h3>
+        <p data-i18n="trust.encrypt.desc">256-Bit SSL. Alle Gespräche und Daten sind vollständig verschlüsselt.</p>
       </div>
       <div class="trust-card fi">
         <span class="trust-icon">&#x1f1ea;&#x1f1fa;</span>
-        <h3 class="trust-t" data-i18n="trust.euai.title">EU AI Act konform</h3>
-        <p class="trust-d" data-i18n="trust.euai.desc">OpenAI nur über Microsoft Azure EU-Server. Keine Daten verlassen Europa.</p>
+        <h3 data-i18n="trust.euai.title">EU AI Act konform</h3>
+        <p data-i18n="trust.euai.desc">OpenAI nur über Microsoft Azure EU-Server. Keine Daten verlassen Europa.</p>
       </div>
     </div>
   </section>
 
-  <!-- 5. USE-CASES (NEW) -->
-  <section class="uc-sec">
-    <span class="sec-lbl fi" data-i18n="uc.label">EINSATZBEREICHE</span>
-    <h2 class="sec-title fi" data-i18n="uc.title">Lana passt sich deinem Business an</h2>
+  <!-- 7. USE CASES -->
+  <section class="section">
+    <div class="sec-header fi">
+      <span class="sec-badge">Einsatzbereiche</span>
+      <h2 class="sec-title">Lana passt sich deinem Business an</h2>
+      <p class="sec-sub">Egal ob Arztpraxis, E-Commerce oder Agentur — Call Lana versteht deinen Alltag.</p>
+    </div>
     <div class="uc-grid">
-      <div class="uc-card fi">
-        <span class="uc-icon">&#x1f4c5;</span>
-        <h3 class="uc-t" data-i18n="uc.service.title">Dienstleister &amp; Praxen</h3>
-        <p class="uc-d" data-i18n="uc.service.desc">Terminbuchung per Telefon, automatische Kalenderintegration via Cal.com. Kein Anruf geht verloren.</p>
-      </div>
-      <div class="uc-card fi">
+      <a href="branchen.html" class="uc-card fi">
+        <span class="uc-icon">&#x1f3e5;</span>
+        <h3>Praxen & Kliniken</h3>
+        <p>Terminbuchung, Rezeptanfragen und Patienteninformation — rund um die Uhr.</p>
+      </a>
+      <a href="branchen.html" class="uc-card fi">
+        <span class="uc-icon">&#x1f3e8;</span>
+        <h3>Hotels & Gastronomie</h3>
+        <p>Reservierungen, Zimmerverfügbarkeit und Gästeanfragen automatisiert.</p>
+      </a>
+      <a href="branchen.html" class="uc-card fi">
+        <span class="uc-icon">&#x1f527;</span>
+        <h3>Handwerk & Service</h3>
+        <p>Auftragsannahme und Terminkoordination — auch wenn du auf der Baustelle bist.</p>
+      </a>
+      <a href="branchen.html" class="uc-card fi">
+        <span class="uc-icon">&#x2696;&#xfe0f;</span>
+        <h3>Kanzleien & Beratung</h3>
+        <p>Mandantenanfragen erfassen, Rückrufwünsche notieren und priorisieren.</p>
+      </a>
+      <a href="branchen.html" class="uc-card fi">
         <span class="uc-icon">&#x1f6d2;</span>
-        <h3 class="uc-t" data-i18n="uc.ecommerce.title">E-Commerce &amp; Support</h3>
-        <p class="uc-d" data-i18n="uc.ecommerce.desc">24/7 Kundenservice, FAQ-Beantwortung, Bestellstatus – alles automatisiert.</p>
-      </div>
-      <div class="uc-card fi">
-        <span class="uc-icon">&#x1f3af;</span>
-        <h3 class="uc-t" data-i18n="uc.sales.title">Agenturen &amp; Vertrieb</h3>
-        <p class="uc-d" data-i18n="uc.sales.desc">Lead-Qualifizierung am Telefon, automatischer CRM-Push. Mehr Abschlüsse, weniger Aufwand.</p>
-      </div>
+        <h3>E-Commerce & Support</h3>
+        <p>24/7 Kundenservice, Bestellstatus und FAQ-Beantwortung ohne Wartezeit.</p>
+      </a>
+      <a href="branchen.html" class="uc-card fi">
+        <span class="uc-icon">&#x1f4c8;</span>
+        <h3>Agenturen & Vertrieb</h3>
+        <p>Lead-Qualifizierung am Telefon und automatischer Push in dein CRM.</p>
+      </a>
     </div>
   </section>
 
-  <!-- 6. INTEGRATIONS (NEW) -->
-  <section class="int-sec">
-    <span class="sec-lbl fi" data-i18n="int.label">INTEGRATIONEN</span>
-    <h2 class="sec-title fi" data-i18n="int.title">Verbindet sich nahtlos mit deinen Tools</h2>
-    <p class="sec-sub fi" data-i18n="int.subtitle">Lana arbeitet mit den Tools, die du bereits nutzt.</p>
+  <!-- 8. INTEGRATIONS -->
+  <section class="section alt">
+    <div class="sec-header fi">
+      <span class="sec-badge" data-i18n="int.label">Integrationen</span>
+      <h2 class="sec-title" data-i18n="int.title">Verbindet sich nahtlos mit deinen Tools</h2>
+      <p class="sec-sub" data-i18n="int.subtitle">Lana arbeitet mit den Tools, die du bereits nutzt.</p>
+    </div>
     <div class="int-row fi">
-      <span class="int-badge"><span class="int-dot int-dot-hub"></span>HubSpot</span>
-      <span class="int-badge"><span class="int-dot int-dot-pipe"></span>Pipedrive</span>
-      <span class="int-badge"><span class="int-dot int-dot-cal"></span>Cal.com</span>
-      <span class="int-badge"><span class="int-dot int-dot-zap"></span>Zapier</span>
-      <span class="int-badge"><span class="int-dot int-dot-make"></span>Make.com</span>
+      <span class="int-badge"><span class="int-dot dot-hub"></span>HubSpot</span>
+      <span class="int-badge"><span class="int-dot dot-pipe"></span>Pipedrive</span>
+      <span class="int-badge"><span class="int-dot dot-cal"></span>Cal.com</span>
+      <span class="int-badge"><span class="int-dot dot-zap"></span>Zapier</span>
+      <span class="int-badge"><span class="int-dot dot-make"></span>Make.com</span>
     </div>
     <p class="int-more fi" data-i18n="int.more">Und viele weitere über Zapier und Make.com</p>
   </section>
 
-  <!-- 7. DEMO (kept as-is) -->
+  <!-- 9. TESTIMONIALS -->
+  <section class="section">
+    <div class="sec-header fi">
+      <span class="sec-badge">Kundenstimmen</span>
+      <h2 class="sec-title">Was unsere Kunden sagen</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card fi">
+        <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="testimonial-text">"Seit Call Lana verpassen wir keinen einzigen Anruf mehr. Die Terminbuchung läuft vollautomatisch — unsere Patienten sind begeistert."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">SM</div>
+          <div><div class="testimonial-name">Dr. Sarah Müller</div><div class="testimonial-role">Zahnärztin, München</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card fi">
+        <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="testimonial-text">"Die Lead-Qualifizierung per Telefon hat unsere Conversion um 34% gesteigert. Absolute Game-Changer für unser Sales-Team."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">TW</div>
+          <div><div class="testimonial-name">Thomas Weber</div><div class="testimonial-role">CEO, DCR-Agentur</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card fi">
+        <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="testimonial-text">"Setup in 20 Minuten, läuft seitdem fehlerfrei. Endlich kann ich mich auf mein Handwerk konzentrieren statt ans Telefon."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">MK</div>
+          <div><div class="testimonial-name">Michael Klein</div><div class="testimonial-role">Elektroinstallateur</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. FAQ -->
+  <section class="section alt">
+    <div class="sec-header fi">
+      <span class="sec-badge">Häufige Fragen</span>
+      <h2 class="sec-title">Alles, was du wissen musst</h2>
+    </div>
+    <div class="faq-list fi">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Wie schnell ist Call Lana einsatzbereit?<span class="faq-arrow">&#x25BE;</span></div>
+        <div class="faq-a">In der Regel dauert das Setup weniger als 30 Minuten. Du erhältst eine eigene Rufnummer, konfigurierst Lana im Dashboard und bist live. Kein IT-Team nötig.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Ist Call Lana DSGVO-konform?<span class="faq-arrow">&#x25BE;</span></div>
+        <div class="faq-a">Ja, vollständig. Unsere Server stehen bei Hetzner in Nürnberg. Alle Daten bleiben in der EU. Wir nutzen OpenAI ausschließlich über Microsoft Azure EU-Server.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Welche Sprachen unterstützt Lana?<span class="faq-arrow">&#x25BE;</span></div>
+        <div class="faq-a">Aktuell Deutsch und Englisch. Weitere Sprachen sind in Planung. Lana erkennt automatisch die Sprache des Anrufers.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Was passiert bei komplexen Anfragen?<span class="faq-arrow">&#x25BE;</span></div>
+        <div class="faq-a">Lana erkennt, wenn ein Gespräch menschliche Betreuung braucht und leitet nahtlos an den zuständigen Mitarbeiter weiter — inklusive Kontext und Zusammenfassung.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Kann ich Lana jederzeit kündigen?<span class="faq-arrow">&#x25BE;</span></div>
+        <div class="faq-a">Ja, alle Pläne sind monatlich kündbar. Keine Mindestlaufzeit, keine versteckten Gebühren.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Welche Integrationen gibt es?<span class="faq-arrow">&#x25BE;</span></div>
+        <div class="faq-a">Direkte Integrationen mit HubSpot, Pipedrive und Cal.com. Über Zapier und Make.com verbindest du Call Lana mit über 5.000 weiteren Tools.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. DEMO -->
   <section class="demo-sec" id="demo">
     <div class="demo-card fi">
       <h2 data-i18n="demo.title">Demo sofort testen</h2>
@@ -333,34 +430,23 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
         <input type="tel" class="demo-input" value="+49 5121 206 789" readonly id="demoPhone">
         <button class="demo-btn" onclick="copyPhone()" data-i18n="demo.button">Kopieren</button>
       </div>
-      <p class="demo-note" id="copyFeedback"></p>
-      <p class="demo-legal" data-i18n="demo.legal">Kostenlos • Keine Registrierung nötig • Sofort verfügbar</p>
+      <p class="demo-note" id="copyFeedback" data-i18n="demo.legal">Kostenlos &bull; Keine Registrierung &bull; Sofort verfügbar</p>
     </div>
   </section>
 
-  <!-- 8. TEASER CARDS (updated content) -->
-  <section class="teaser-sec">
-    <div class="teaser-grid">
-      <a href="funktionen.html" class="tc fi">
-        <span class="ti-icon">&#x26a1;</span>
-        <h3 class="ti-t" data-i18n="feature.quick.title">In 30 Minuten live</h3>
-        <p class="ti-d" data-i18n="feature.quick.desc">Keine Programmierung. Rufnummer einrichten, Lana konfigurieren, starten.</p>
-      </a>
-      <a href="funktionen.html" class="tc fi">
-        <span class="ti-icon">&#x1f1e9;&#x1f1ea;</span>
-        <h3 class="ti-t" data-i18n="feature.gdpr.title">100% DSGVO-konform</h3>
-        <p class="ti-d" data-i18n="feature.gdpr.desc">Server in Deutschland. Volle Datenkontrolle. EU AI Act konform.</p>
-      </a>
-      <a href="preise.html" class="tc fi">
-        <span class="ti-icon">&#x1f4b0;</span>
-        <h3 class="ti-t" data-i18n="feature.pricing.title">Ab 99€/Monat</h3>
-        <p class="ti-d" data-i18n="feature.pricing.desc">1.000 Inklusivminuten. Transparent. Fair. Jederzeit kündbar.</p>
-      </a>
+  <!-- 12. FINAL CTA -->
+  <section class="final-cta">
+    <h2>Bereit, keinen Anruf mehr zu verpassen?</h2>
+    <p>Starte jetzt kostenlos — keine Kreditkarte, keine Vertragsbindung. 14 Tage testen.</p>
+    <div class="hero-btns">
+      <a href="registrierung.html" class="btn-primary">Kostenlos starten</a>
+      <a href="kontakt.html" class="btn-secondary">Demo buchen</a>
     </div>
   </section>
 
 </main>
 
+<!-- FOOTER -->
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
@@ -396,7 +482,7 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
     </div>
   </div>
   <div class="footer-bottom">
-    <p class="footer-copy" data-i18n="footer.copyright">Copyright 2026 by Call Lana – Alle Rechte vorbehalten</p>
+    <p class="footer-copy" data-i18n="footer.copyright">Copyright 2026 by Call Lana &mdash; Alle Rechte vorbehalten</p>
   </div>
 </footer>
 
@@ -406,52 +492,54 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
 function updateLangButtons(lang) {
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.classList.remove('active');
-    if (btn.textContent.toLowerCase() === lang) {
-      btn.classList.add('active');
-    }
+    if (btn.textContent.toLowerCase() === lang) btn.classList.add('active');
   });
 }
 
-document.getElementById('mb').addEventListener('click',()=>document.getElementById('nav').classList.toggle('open'));
+// Mobile menu toggle
+document.getElementById('mb').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
 
+// Nav shadow on scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 10);
+}, { passive: true });
+
+// FAQ toggle
+function toggleFaq(el) {
+  el.parentElement.classList.toggle('open');
+}
+
+// Copy phone
+function copyPhone() {
+  const phone = document.getElementById('demoPhone');
+  const feedback = document.getElementById('copyFeedback');
+  navigator.clipboard.writeText(phone.value).then(() => {
+    feedback.textContent = '\u2713 Nummer kopiert! Jetzt anrufen.';
+    feedback.style.color = 'white';
+    setTimeout(() => {
+      feedback.textContent = '';
+      if (typeof i18n !== 'undefined') feedback.textContent = i18n.t('demo.legal');
+    }, 3000);
+  });
+}
+
+// Scroll reveal
 document.addEventListener('DOMContentLoaded', () => {
   const currentLang = localStorage.getItem('calllana_language') || 'de';
   updateLangButtons(currentLang);
 
-  /* Scroll-reveal IntersectionObserver */
   const faders = document.querySelectorAll('.fi');
   if ('IntersectionObserver' in window) {
     const obs = new IntersectionObserver((entries) => {
       entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('vis');
-          obs.unobserve(e.target);
-        }
+        if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); }
       });
-    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     faders.forEach(el => obs.observe(el));
   } else {
     faders.forEach(el => el.classList.add('vis'));
   }
 });
-
-function copyPhone() {
-  const phone = document.getElementById('demoPhone');
-  const btn = event.target;
-  const feedback = document.getElementById('copyFeedback');
-
-  navigator.clipboard.writeText(phone.value).then(() => {
-    const msg = i18n.t('demo.copied');
-    btn.textContent = '\u2713';
-    feedback.textContent = msg;
-    feedback.style.color = 'var(--green)';
-
-    setTimeout(() => {
-      btn.textContent = i18n.t('demo.button');
-      feedback.textContent = '';
-    }, 3000);
-  });
-}
 </script>
 </body>
 </html>

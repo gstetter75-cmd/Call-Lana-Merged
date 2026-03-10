@@ -4,115 +4,64 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Funktionen – Call Lana KI-Telefonassistent</title>
 <meta name="description" content="Alle Funktionen von Call Lana: KI-Stimmen, Terminplanung, CRM-Integration, Live-Dashboard, Outbound-Anrufe und mehr. In 30 Minuten live.">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<meta property="og:title" content="Funktionen – Call Lana KI-Telefonassistent">
+<meta property="og:description" content="Alle Funktionen von Call Lana: KI-Stimmen, Terminplanung, CRM-Integration, Live-Dashboard, Outbound-Anrufe und mehr. In 30 Minuten live.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/marketing.css">
 <style>
-:root{--bg:#06060f;--bg2:#0d0d1a;--bg3:#13132a;--card:#0f0f22;--border:rgba(124,58,237,.18);--pu:#7c3aed;--pu2:#9d5cf6;--pu3:#c084fc;--cyan:#22d3ee;--green:#a3e635;--tx:#f0eeff;--tx2:#a89dc0;--tx3:#6b5f8a;--r:20px;}
-*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;overflow-x:hidden;}
-body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--tx);overflow-x:hidden;line-height:1.6;}
-/* Language Switcher */
-.lang-switcher{position:fixed;top:80px;right:20px;z-index:200;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px;display:flex;gap:4px;}
-.lang-btn{background:none;border:none;padding:6px 12px;border-radius:8px;color:var(--tx3);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
-.lang-btn.active{background:var(--pu);color:white;}
-.lang-btn:hover:not(.active){background:rgba(124,58,237,.1);color:var(--tx);}
+/* Page-specific styles for funktionen.html */
 
-nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 6%;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,6,15,.82);backdrop-filter:blur(22px);border-bottom:1px solid rgba(123,47,255,.13);}
-.logo{display:flex;align-items:center;gap:6px;text-decoration:none;}
-.logo-mark{width:38px;height:38px;background:linear-gradient(135deg,var(--pu),var(--pu3));border-radius:11px;display:flex;align-items:center;justify-content:center;color:white;font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;box-shadow:0 0 20px rgba(124,58,237,.5);}
-.logo-name{font-family:'Syne',sans-serif;font-size:1.65rem;font-weight:800;letter-spacing:-.02em;color:var(--tx);}.logo-name span{color:var(--pu3);}
-.nav-links{display:flex;gap:32px;list-style:none;}.nav-links a{color:var(--tx2);text-decoration:none;font-size:14.5px;font-weight:500;transition:color .25s;}.nav-links a:hover{color:var(--tx);}.nav-links a.active{color:var(--tx);font-weight:700;}
-.nav-cta{background:linear-gradient(135deg,var(--pu),var(--pu2));color:#fff !important;padding:10px 24px;border-radius:50px;font-weight:700;font-size:14px;text-decoration:none;transition:all .25s;box-shadow:0 0 18px rgba(123,47,255,.3);}.nav-cta:hover{box-shadow:0 0 32px rgba(123,47,255,.55);transform:translateY(-1px);}
-.mob-btn{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px;}.mob-btn span{display:block;width:24px;height:2px;background:var(--tx);border-radius:2px;}
-.btn-p{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--pu),var(--pu2));color:#fff;padding:15px 34px;border-radius:50px;font-size:15.5px;font-weight:700;text-decoration:none;transition:all .3s;box-shadow:0 0 28px rgba(123,47,255,.38);}.btn-p:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(123,47,255,.6);}
-.btn-s{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);color:var(--tx);padding:15px 34px;border-radius:50px;font-size:15.5px;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,.13);transition:all .3s;}.btn-s:hover{background:rgba(255,255,255,.09);transform:translateY(-2px);}
-.sec{padding:96px 6%;position:relative;}.sec-alt{background:var(--card);}
-.sec-lbl{text-align:center;color:var(--pu3);font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px;}
-h2.sec-t{font-family:'Syne',sans-serif;font-size:clamp(1.9rem,3.8vw,2.9rem);font-weight:800;text-align:center;margin-bottom:14px;line-height:1.12;}
-.sec-sub{text-align:center;color:var(--tx2);font-size:1rem;max-width:560px;margin:0 auto 60px;line-height:1.72;}
-.g1{background:linear-gradient(120deg,var(--pu3),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.g2{background:linear-gradient(120deg,var(--green),#68d391);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.fi{opacity:0;transform:translateY(20px);transition:all .6s ease;}.fi.vis{opacity:1;transform:translateY(0);}
+/* Feature grid: auto-fit for flexibility */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:1100px;margin:0 auto;}
 
-/* PAGE HERO */
-.page-hero{padding:160px 6% 80px;text-align:center;position:relative;overflow:hidden;}
-.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(123,47,255,.18),transparent 70%);z-index:0;}
-.page-hero::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(123,47,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(123,47,255,.05) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 75%);z-index:0;}
-.page-hero-content{position:relative;z-index:2;}
-.page-hero h1{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,5vw,4rem);font-weight:800;line-height:1.08;margin-bottom:20px;word-break:break-word;}
-.page-hero p{color:var(--tx2);font-size:1.1rem;max-width:580px;margin:0 auto 40px;line-height:1.75;}
-
-/* FEATURES GRID */
-.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px;max-width:1100px;margin:0 auto;position:relative;z-index:1;}
-.fc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:34px 30px;transition:all .35s;position:relative;overflow:hidden;}
-.fc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--pu),var(--pu3));opacity:0;transition:opacity .3s;}
-.fc:hover::before{opacity:1;}
-.fc::after{content:'';position:absolute;top:-60px;right:-60px;width:150px;height:150px;background:radial-gradient(circle,rgba(123,47,255,.1),transparent 70%);border-radius:50%;opacity:0;transition:all .4s;}
-.fc:hover::after{opacity:1;top:-30px;right:-30px;}
-.fc:hover{border-color:rgba(123,47,255,.38);transform:translateY(-5px);box-shadow:0 20px 54px rgba(0,0,0,.44),0 0 32px rgba(123,47,255,.1);}
-.fc-icon{width:50px;height:50px;background:rgba(123,47,255,.12);border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:21px;border:1px solid rgba(123,47,255,.2);position:relative;z-index:1;}
-.fc h3{font-size:1.08rem;font-weight:700;margin-bottom:10px;position:relative;z-index:1;}
-.fc p{color:var(--tx2);font-size:.92rem;line-height:1.72;position:relative;z-index:1;}
-
-/* WAVE SPLIT SECTION */
-.wave-split{display:grid;grid-template-columns:1fr 1fr;min-height:480px;overflow:hidden;}
-.ws-text{padding:80px 8%;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2;}
-.ws-text .sec-lbl{text-align:left;}
-.ws-text h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,3.2vw,2.5rem);font-weight:800;text-align:left;margin-bottom:18px;line-height:1.15;}
-.ws-text p{color:var(--tx2);font-size:.98rem;line-height:1.75;margin-bottom:28px;}
-.ws-canvas{position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(123,47,255,.05),rgba(34,211,238,.03));}
-#wc{width:100%;height:100%;display:block;}
-
-/* SETUP STEPS */
-.steps-wrap{max-width:860px;margin:0 auto;position:relative;z-index:1;}
-.steps-wrap::before{content:'';position:absolute;left:25px;top:30px;bottom:30px;width:2px;background:linear-gradient(180deg,var(--pu),transparent);z-index:0;}
-.step{display:grid;grid-template-columns:54px 1fr;gap:26px;align-items:flex-start;padding:26px 0;border-bottom:1px solid rgba(255,255,255,.05);opacity:0;transform:translateX(-16px);transition:all .5s;position:relative;z-index:1;}
+/* Steps timeline */
+.steps-wrap{max-width:860px;margin:0 auto;position:relative;}
+.steps-wrap::before{content:'';position:absolute;left:25px;top:30px;bottom:30px;width:2px;background:linear-gradient(180deg,var(--pu),var(--pu-light));z-index:0;}
+.step{display:grid;grid-template-columns:54px 1fr;gap:26px;align-items:flex-start;padding:26px 0;border-bottom:1px solid var(--border);opacity:0;transform:translateX(-16px);transition:all .5s;position:relative;z-index:1;}
 .step.vis{opacity:1;transform:translateX(0);}
 .step:last-child{border-bottom:none;}
-.snum{width:52px;height:52px;background:linear-gradient(135deg,var(--pu),var(--pu2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;flex-shrink:0;box-shadow:0 0 18px rgba(123,47,255,.32);position:relative;}
-.snum::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid rgba(123,47,255,.28);}
-.step-body h3{font-size:1.08rem;font-weight:700;margin-bottom:8px;padding-top:12px;}
+.step-num{width:52px;height:52px;background:var(--pu);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;font-weight:800;flex-shrink:0;box-shadow:0 4px 14px rgba(124,58,237,.3);}
+.step-body h3{font-size:1.08rem;font-weight:800;margin-bottom:8px;padding-top:12px;color:var(--tx);}
 .step-body p{color:var(--tx2);font-size:.93rem;line-height:1.72;}
 
-/* INTEGRATIONS */
-.int-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;max-width:1000px;margin:0 auto;position:relative;z-index:1;}
-.int-card{background:rgba(14,14,28,.95);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:22px 18px;text-align:center;transition:all .3s;}
-.int-card:hover{border-color:rgba(123,47,255,.35);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.3);}
+/* Integration grid */
+.int-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;max-width:1000px;margin:0 auto;}
+.int-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:22px 18px;text-align:center;transition:all .3s;}
+.int-card:hover{border-color:var(--pu);transform:translateY(-3px);box-shadow:var(--shadow-lg);}
 .int-card .ic-ico{font-size:1.8rem;margin-bottom:10px;display:block;}
 .int-card span{font-size:.88rem;font-weight:600;color:var(--tx2);}
 
-/* DSGVO STRIP */
-.dsgvo-strip{background:rgba(14,14,28,.95);border:1px solid rgba(123,47,255,.2);border-radius:var(--r);padding:48px;max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;position:relative;z-index:1;}
+/* DSGVO strip */
+.dsgvo-strip{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:48px;max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
 .dsgvo-item{text-align:center;}
 .dsgvo-item .di-ico{font-size:2rem;margin-bottom:14px;display:block;}
-.dsgvo-item h3{font-size:1rem;font-weight:700;margin-bottom:8px;}
+.dsgvo-item h3{font-size:1rem;font-weight:800;margin-bottom:8px;color:var(--tx);}
 .dsgvo-item p{color:var(--tx2);font-size:.88rem;line-height:1.65;}
 
-/* CTA */
-.cta-sec{padding:96px 6%;text-align:center;position:relative;overflow:hidden;}
-.cta-sec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 50% 50%,rgba(123,47,255,.13),transparent 65%);}
-.cta-sec h2{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;margin-bottom:16px;position:relative;}
-.cta-sec p{color:var(--tx2);font-size:1.05rem;margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto;position:relative;}
-.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;}
+/* Technology split section */
+.tech-split{display:grid;grid-template-columns:1fr 1fr;gap:48px;max-width:1100px;margin:0 auto;align-items:center;}
+.tech-text .sec-badge{margin-bottom:16px;}
+.tech-text h2{font-size:clamp(1.7rem,3.2vw,2.3rem);font-weight:900;line-height:1.15;letter-spacing:-.02em;margin-bottom:18px;color:var(--tx);}
+.tech-text p{color:var(--tx2);font-size:.98rem;line-height:1.75;margin-bottom:16px;}
+.tech-visual{background:var(--pu-lighter);border:1.5px solid var(--border);border-radius:var(--radius-xl);padding:48px;display:flex;flex-direction:column;gap:20px;align-items:center;justify-content:center;min-height:320px;}
+.tech-visual-item{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 24px;width:100%;max-width:320px;box-shadow:var(--shadow-sm);transition:all .3s;}
+.tech-visual-item:hover{box-shadow:var(--shadow-md);transform:translateX(4px);}
+.tech-visual-item .tv-icon{font-size:1.4rem;flex-shrink:0;}
+.tech-visual-item .tv-text{font-size:.9rem;font-weight:600;color:var(--tx);}
 
-/* FOOTER */
-footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);padding:60px 6% 32px;}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;}
-.footer-brand p{font-size:.88rem;color:var(--tx2);line-height:1.75;margin:14px 0 20px;}
-.footer-col h4{font-size:12px;font-weight:700;color:var(--tx);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;}
-.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
-.footer-col a{color:var(--tx2);text-decoration:none;font-size:14px;transition:color .2s;}
-.footer-col a:hover{color:var(--tx);}
-.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:28px;text-align:center;}
-.footer-copy{font-size:12.5px;color:var(--tx2);}
-
-/* PARTICLES */
-.ptcl-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
-.ptcl{position:absolute;border-radius:50%;opacity:0;animation:fpup linear infinite;}
-@keyframes fpup{0%{opacity:0;transform:translateY(0) scale(0);}10%{opacity:.6;}90%{opacity:.2;}100%{opacity:0;transform:translateY(-360px) scale(1.4);}}
-
-@media(max-width:900px){.wave-split{grid-template-columns:1fr;}.ws-canvas{height:280px;}.dsgvo-strip{grid-template-columns:1fr;gap:24px;}.lang-switcher{top:72px;right:10px;}}
-@media(max-width:768px){.nav-links,.nav-cta{display:none;}.mob-btn{display:flex;}nav.open .nav-links{display:flex;flex-direction:column;position:fixed;top:72px;left:0;right:0;background:rgba(6,6,15,.97);padding:26px 6%;gap:20px;border-bottom:1px solid var(--border);z-index:199;}nav.open .nav-cta{display:block;margin-top:8px;text-align:center;}.footer-grid{grid-template-columns:1fr 1fr;}.sec{padding:68px 5%;}.steps-wrap::before{display:none;}}
-@media(max-width:480px){.page-hero h1{font-size:6.5vw;}.page-hero p{font-size:.9rem;max-width:100%;}.page-hero{padding:120px 5% 60px;}}
-.skip-link{position:absolute;top:-100%;left:16px;background:var(--pu);color:#fff;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;z-index:9999;text-decoration:none;transition:top .2s;}.skip-link:focus{top:16px;}
+@media(max-width:900px){
+  .tech-split{grid-template-columns:1fr;}
+  .dsgvo-strip{grid-template-columns:1fr;gap:24px;}
+  .steps-wrap::before{display:none;}
+}
+@media(max-width:600px){
+  .feat-grid{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
@@ -124,149 +73,150 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
   <button class="lang-btn" onclick="i18n.setLanguage('en'); updateLangButtons('en')">EN</button>
 </div>
 
+<!-- NAV -->
 <nav id="nav">
-  <a href="index.html" class="logo"><div class="logo-mark">CL</div><span class="logo-name">Call <span>Lana</span></span></a>
+  <a href="index.html" class="logo">
+    <div class="logo-mark">CL</div>
+    <span class="logo-name">Call <span>Lana</span></span>
+  </a>
   <ul class="nav-links">
-    <li><a href="index.html" data-i18n="nav.home">Start</a></li>
-    <li><a href="funktionen.html" class="active" data-i18n="nav.features">Funktionen</a></li>
-    <li><a href="branchen.html" data-i18n="nav.industries">Branchen</a></li>
-    <li><a href="preise.html" data-i18n="nav.pricing">Preise</a></li>
-    <li><a href="kontakt.html" data-i18n="nav.contact">Kontakt</a></li>
+    <li><a href="funktionen.html" class="active">Funktionen</a></li>
+    <li><a href="branchen.html">Branchen</a></li>
+    <li><a href="preise.html">Preise</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
   </ul>
-  <a href="preise.html" class="nav-cta" data-i18n="nav.dashboard">Zum Dashboard →</a>
-  <button class="mob-btn" id="mb" aria-label="Menü"><span></span><span></span><span></span></button>
+  <div class="nav-right">
+    <a href="login.html" class="nav-login">Login</a>
+    <a href="registrierung.html" class="nav-cta">Kostenlos starten</a>
+  </div>
+  <button class="mob-btn" id="mb" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 
-<!-- PAGE HERO -->
-<div class="page-hero" id="main-content">
-  <div class="page-hero-content">
-    <div class="sec-lbl" data-i18n="funktionen.hero.label">Funktionen</div>
-    <h1 data-i18n="funktionen.hero.title">Alles, was deine KI <span class="g1">leisten kann</span></h1>
-    <p data-i18n="funktionen.hero.desc">Von der Stimmauswahl bis zum Echtzeit-Dashboard – Call Lana ist von Grund auf so gebaut, dass es in deinen Alltag passt und wirklich hilft.</p>
-    <a href="preise.html" class="btn-p" data-i18n="funktionen.hero.cta">Jetzt starten</a>
-  </div>
-</div>
+<main id="main-content">
 
-<!-- CORE FEATURES -->
-<section class="sec">
-  <div class="ptcl-bg" id="pp1"></div>
-  <div class="sec-lbl" data-i18n="funktionen.core.label">Was Call Lana kann</div>
-  <h2 class="sec-t fi" data-i18n="funktionen.core.title">Die wichtigsten <span class="g1">Funktionen</span></h2>
-  <p class="sec-sub fi">Alles aus einer Hand – kein Flickenteppich aus Tools, sondern eine durchdachte Lösung.</p>
-  <div class="feat-grid">
-    <div class="fc fi"><div class="fc-icon">🎙️</div><h3>Natürliche KI-Stimmen</h3><p>Wähle aus mehreren männlichen und weiblichen Stimmen. Alle klingen verblüffend menschlich – empathisch, kontextbewusst, ohne Roboter-Einerlei.</p></div>
-    <div class="fc fi"><div class="fc-icon">📋</div><h3>Individuelle Skripte & Aufgaben</h3><p>Du bestimmst, was deine KI weiß und tut. Unternehmensinfos, Antworten auf häufige Fragen, Weiterleitungsregeln – alles konfigurierbar.</p></div>
-    <div class="fc fi"><div class="fc-icon">📞</div><h3>Eigene Rufnummer</h3><p>Call Lana bekommt eine eigene Nummer – oder leitet deine bestehende weiter. In Sekunden einsatzbereit, keine Technikkenntnisse nötig.</p></div>
-    <div class="fc fi"><div class="fc-icon">🔄</div><h3>Eingehende & ausgehende Anrufe</h3><p>Nicht nur reaktiv: Call Lana kann auch aktiv anrufen. Per API lassen sich Kampagnen, Erinnerungen und Follow-ups vollautomatisch starten.</p></div>
-    <div class="fc fi"><div class="fc-icon">📅</div><h3>Terminplanung in Echtzeit</h3><p>Kompatibel mit cal.com und allen gängigen Kalendertools. Die KI vereinbart, verschiebt und bestätigt Termine direkt im Gespräch.</p></div>
-    <div class="fc fi"><div class="fc-icon">📊</div><h3>Live-Reporting & Dashboard</h3><p>Sieh in Echtzeit, worüber gesprochen wird. Gesprächstranskripte, Stimmungsanalyse, Erfolgsquoten – vollständig exportierbar.</p></div>
-    <div class="fc fi"><div class="fc-icon">✉️</div><h3>Transkription per E-Mail</h3><p>Wenn du nicht erreichbar bist, transkribiert Lana das Gespräch und schickt dir eine strukturierte Zusammenfassung per E-Mail.</p></div>
-    <div class="fc fi"><div class="fc-icon">🔀</div><h3>Intelligente Weiterleitung</h3><p>Bei komplexen Anliegen oder VIP-Kunden leitet Lana nahtlos an den richtigen Mitarbeiter weiter – mit vollständigem Gesprächskontext.</p></div>
-    <div class="fc fi"><div class="fc-icon">🔑</div><h3>API-Zugang</h3><p>Entwickler können alle Funktionen über die REST-API steuern. Telefonnummern, Gesprächsparameter, Variablen – alles programmierbar.</p></div>
-  </div>
-</section>
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <span class="sec-badge" data-i18n="funktionen.hero.label">Funktionen</span>
+      <h1 data-i18n-html="funktionen.hero.title">Alles, was deine KI <span class="gradient">leisten kann</span></h1>
+      <p data-i18n="funktionen.hero.desc">Von der Stimmauswahl bis zum Echtzeit-Dashboard – Call Lana ist von Grund auf so gebaut, dass es in deinen Alltag passt und wirklich hilft.</p>
+      <a href="preise.html" class="btn-primary" data-i18n="funktionen.hero.cta">Jetzt starten</a>
+    </div>
+  </section>
 
-<!-- WAVE / AI VISUAL -->
-<div class="wave-split">
-  <div class="ws-text">
-    <div class="sec-lbl">Technologie</div>
-    <h2>KI, die wirklich <span class="g1">zuhört</span></h2>
-    <p>Call Lana versteht Deutsch in all seinen Facetten – Dialekte, Akzente, Fachbegriffe. Unser eigener Orchestration-Layer verarbeitet alles lokal, damit deine Daten nie die EU verlassen.</p>
-    <p style="margin-bottom:0;">Wir sind einer der wenigen Anbieter in Europa, die keine US-Dienste einfach whitelabeln – sondern eigene Technologie entwickeln.</p>
-  </div>
-  <div class="ws-canvas"><canvas id="wc"></canvas></div>
-</div>
+  <!-- CORE FEATURES -->
+  <section class="section">
+    <div class="sec-header fi">
+      <span class="sec-badge" data-i18n="funktionen.core.label">Was Call Lana kann</span>
+      <h2 class="sec-title" data-i18n-html="funktionen.core.title">Die wichtigsten <span class="gradient">Funktionen</span></h2>
+      <p class="sec-sub">Alles aus einer Hand – kein Flickenteppich aus Tools, sondern eine durchdachte Lösung.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="card fi"><div class="card-icon">🎙️</div><h3>Natürliche KI-Stimmen</h3><p>Wähle aus mehreren männlichen und weiblichen Stimmen. Alle klingen verblüffend menschlich – empathisch, kontextbewusst, ohne Roboter-Einerlei.</p></div>
+      <div class="card fi"><div class="card-icon">📋</div><h3>Individuelle Skripte & Aufgaben</h3><p>Du bestimmst, was deine KI weiß und tut. Unternehmensinfos, Antworten auf häufige Fragen, Weiterleitungsregeln – alles konfigurierbar.</p></div>
+      <div class="card fi"><div class="card-icon">📞</div><h3>Eigene Rufnummer</h3><p>Call Lana bekommt eine eigene Nummer – oder leitet deine bestehende weiter. In Sekunden einsatzbereit, keine Technikkenntnisse nötig.</p></div>
+      <div class="card fi"><div class="card-icon">🔄</div><h3>Eingehende & ausgehende Anrufe</h3><p>Nicht nur reaktiv: Call Lana kann auch aktiv anrufen. Per API lassen sich Kampagnen, Erinnerungen und Follow-ups vollautomatisch starten.</p></div>
+      <div class="card fi"><div class="card-icon">📅</div><h3>Terminplanung in Echtzeit</h3><p>Kompatibel mit cal.com und allen gängigen Kalendertools. Die KI vereinbart, verschiebt und bestätigt Termine direkt im Gespräch.</p></div>
+      <div class="card fi"><div class="card-icon">📊</div><h3>Live-Reporting & Dashboard</h3><p>Sieh in Echtzeit, worüber gesprochen wird. Gesprächstranskripte, Stimmungsanalyse, Erfolgsquoten – vollständig exportierbar.</p></div>
+      <div class="card fi"><div class="card-icon">✉️</div><h3>Transkription per E-Mail</h3><p>Wenn du nicht erreichbar bist, transkribiert Lana das Gespräch und schickt dir eine strukturierte Zusammenfassung per E-Mail.</p></div>
+      <div class="card fi"><div class="card-icon">🔀</div><h3>Intelligente Weiterleitung</h3><p>Bei komplexen Anliegen oder VIP-Kunden leitet Lana nahtlos an den richtigen Mitarbeiter weiter – mit vollständigem Gesprächskontext.</p></div>
+      <div class="card fi"><div class="card-icon">🔑</div><h3>API-Zugang</h3><p>Entwickler können alle Funktionen über die REST-API steuern. Telefonnummern, Gesprächsparameter, Variablen – alles programmierbar.</p></div>
+    </div>
+  </section>
 
-<!-- SETUP STEPS -->
-<section class="sec sec-alt">
-  <div class="sec-lbl">Einrichtung</div>
-  <h2 class="sec-t fi">In 5 Schritten <span class="g2">live</span></h2>
-  <p class="sec-sub fi">Kein IT-Team, keine langen Projekte. Innerhalb von 30 Minuten ist dein KI-Assistent aktiv.</p>
-  <div class="steps-wrap">
-    <div class="step"><div class="snum">1</div><div class="step-body"><h3>Stimme wählen</h3><p>Männlich oder weiblich, jung oder reif – wähle die Stimme, die dein Unternehmen am besten repräsentiert.</p></div></div>
-    <div class="step"><div class="snum">2</div><div class="step-body"><h3>Aufgaben & Skripte definieren</h3><p>Trage ein, was die KI wissen und können soll: FAQ, Weiterleitungsregeln, Unternehmensinfos, Sonderszenarien.</p></div></div>
-    <div class="step"><div class="snum">3</div><div class="step-body"><h3>Rufnummer einrichten</h3><p>Neue Nummer in Sekunden, oder bestehende Weiterleitung aktivieren – ganz ohne Technik-Stress.</p></div></div>
-    <div class="step"><div class="snum">4</div><div class="step-body"><h3>Systeme verbinden</h3><p>CRM, Kalender, Ticketsystem – Call Lana integriert sich per Klick in über 200 Tools. Kein Code nötig.</p></div></div>
-    <div class="step"><div class="snum">5</div><div class="step-body"><h3>Live schalten & beobachten</h3><p>Ab sofort übernimmt Call Lana. Im Dashboard siehst du live alle Gespräche, Themen und Ergebnisse.</p></div></div>
-  </div>
-</section>
+  <!-- TECHNOLOGY -->
+  <section class="section alt">
+    <div class="tech-split">
+      <div class="tech-text fi">
+        <span class="sec-badge">Technologie</span>
+        <h2>KI, die wirklich <span class="gradient">zuhört</span></h2>
+        <p>Call Lana versteht Deutsch in all seinen Facetten – Dialekte, Akzente, Fachbegriffe. Unser eigener Orchestration-Layer verarbeitet alles lokal, damit deine Daten nie die EU verlassen.</p>
+        <p>Wir sind einer der wenigen Anbieter in Europa, die keine US-Dienste einfach whitelabeln – sondern eigene Technologie entwickeln.</p>
+      </div>
+      <div class="tech-visual fi">
+        <div class="tech-visual-item"><span class="tv-icon">🇩🇪</span><span class="tv-text">Deutsch-optimiertes NLP</span></div>
+        <div class="tech-visual-item"><span class="tv-icon">🔒</span><span class="tv-text">Datenverarbeitung in der EU</span></div>
+        <div class="tech-visual-item"><span class="tv-icon">⚡</span><span class="tv-text">Eigener Orchestration-Layer</span></div>
+        <div class="tech-visual-item"><span class="tv-icon">🎯</span><span class="tv-text">Kontextbewusstes Verstehen</span></div>
+      </div>
+    </div>
+  </section>
 
-<!-- INTEGRATIONS -->
-<section class="sec">
-  <div class="sec-lbl">Integrationen</div>
-  <h2 class="sec-t fi">Verbindet sich mit <span class="g1">deinen Tools</span></h2>
-  <p class="sec-sub fi">Über 200 Integrationen verfügbar – von CRM bis Kalender, von Ticketsystem bis E-Mail.</p>
-  <div class="int-grid">
-    <div class="int-card fi"><span class="ic-ico">📆</span><span>Google Calendar</span></div>
-    <div class="int-card fi"><span class="ic-ico">🗓️</span><span>cal.com</span></div>
-    <div class="int-card fi"><span class="ic-ico">💼</span><span>HubSpot CRM</span></div>
-    <div class="int-card fi"><span class="ic-ico">☁️</span><span>Salesforce</span></div>
-    <div class="int-card fi"><span class="ic-ico">📧</span><span>Outlook / Gmail</span></div>
-    <div class="int-card fi"><span class="ic-ico">🎫</span><span>Zendesk</span></div>
-    <div class="int-card fi"><span class="ic-ico">⚡</span><span>Zapier</span></div>
-    <div class="int-card fi"><span class="ic-ico">🔧</span><span>Make / Integromat</span></div>
-    <div class="int-card fi"><span class="ic-ico">🔌</span><span>REST API</span></div>
-    <div class="int-card fi"><span class="ic-ico">➕</span><span>200+ weitere</span></div>
-  </div>
-</section>
+  <!-- SETUP STEPS -->
+  <section class="section">
+    <div class="sec-header fi">
+      <span class="sec-badge">Einrichtung</span>
+      <h2 class="sec-title">In 5 Schritten <span class="gradient">live</span></h2>
+      <p class="sec-sub">Kein IT-Team, keine langen Projekte. Innerhalb von 30 Minuten ist dein KI-Assistent aktiv.</p>
+    </div>
+    <div class="steps-wrap">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><h3>Stimme wählen</h3><p>Männlich oder weiblich, jung oder reif – wähle die Stimme, die dein Unternehmen am besten repräsentiert.</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><h3>Aufgaben & Skripte definieren</h3><p>Trage ein, was die KI wissen und können soll: FAQ, Weiterleitungsregeln, Unternehmensinfos, Sonderszenarien.</p></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><h3>Rufnummer einrichten</h3><p>Neue Nummer in Sekunden, oder bestehende Weiterleitung aktivieren – ganz ohne Technik-Stress.</p></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><h3>Systeme verbinden</h3><p>CRM, Kalender, Ticketsystem – Call Lana integriert sich per Klick in über 200 Tools. Kein Code nötig.</p></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><h3>Live schalten & beobachten</h3><p>Ab sofort übernimmt Call Lana. Im Dashboard siehst du live alle Gespräche, Themen und Ergebnisse.</p></div></div>
+    </div>
+  </section>
 
-<!-- DSGVO -->
-<section class="sec sec-alt">
-  <div class="sec-lbl">Datenschutz</div>
-  <h2 class="sec-t fi">100% <span class="g1">DSGVO-konform</span></h2>
-  <p class="sec-sub fi">Transparenz ist uns wichtig – deshalb erklären wir genau, wie und wo wir deine Daten verarbeiten.</p>
-  <div class="dsgvo-strip fi">
-    <div class="dsgvo-item"><span class="di-ico">🇩🇪</span><h3>Server in Deutschland</h3><p>Unsere Infrastruktur läuft bei Hetzner in Nürnberg. Deine Daten verlassen niemals die EU.</p></div>
-    <div class="dsgvo-item"><span class="di-ico">🤝</span><h3>OpenAI via Azure EU</h3><p>Wir nutzen OpenAI ausschließlich über Microsoft Azure-Server in Europa – DSGVO- und EU AI Act-konform.</p></div>
-    <div class="dsgvo-item"><span class="di-ico">🗑️</span><h3>Datenlöschung auf Knopfdruck</h3><p>Wir speichern nur das Nötigste. Auf Wunsch löschen wir alle deine Daten in Echtzeit – vollständig und nachweisbar.</p></div>
-  </div>
-</section>
+  <!-- INTEGRATIONS -->
+  <section class="section alt">
+    <div class="sec-header fi">
+      <span class="sec-badge">Integrationen</span>
+      <h2 class="sec-title">Verbindet sich mit <span class="gradient">deinen Tools</span></h2>
+      <p class="sec-sub">Über 200 Integrationen verfügbar – von CRM bis Kalender, von Ticketsystem bis E-Mail.</p>
+    </div>
+    <div class="int-grid">
+      <div class="int-card fi"><span class="ic-ico">📆</span><span>Google Calendar</span></div>
+      <div class="int-card fi"><span class="ic-ico">🗓️</span><span>cal.com</span></div>
+      <div class="int-card fi"><span class="ic-ico">💼</span><span>HubSpot CRM</span></div>
+      <div class="int-card fi"><span class="ic-ico">☁️</span><span>Salesforce</span></div>
+      <div class="int-card fi"><span class="ic-ico">📧</span><span>Outlook / Gmail</span></div>
+      <div class="int-card fi"><span class="ic-ico">🎫</span><span>Zendesk</span></div>
+      <div class="int-card fi"><span class="ic-ico">⚡</span><span>Zapier</span></div>
+      <div class="int-card fi"><span class="ic-ico">🔧</span><span>Make / Integromat</span></div>
+      <div class="int-card fi"><span class="ic-ico">🔌</span><span>REST API</span></div>
+      <div class="int-card fi"><span class="ic-ico">➕</span><span>200+ weitere</span></div>
+    </div>
+  </section>
 
-<!-- CTA -->
-<section class="cta-sec">
-  <h2 data-i18n="funktionen.cta.title">Alles klar – <span class="g1">starte jetzt</span></h2>
-  <p data-i18n="funktionen.cta.desc">Teste Call Lana 14 Tage lang kostenlos. Keine Kreditkarte, keine Vertragsbindung.</p>
-  <div class="cta-btns"><a href="preise.html" class="btn-p">✦ Kostenlos starten</a><a href="kontakt.html" class="btn-s">📅 Demo buchen</a></div>
-</section>
+  <!-- DSGVO -->
+  <section class="section">
+    <div class="sec-header fi">
+      <span class="sec-badge">Datenschutz</span>
+      <h2 class="sec-title">100% <span class="gradient">DSGVO-konform</span></h2>
+      <p class="sec-sub">Transparenz ist uns wichtig – deshalb erklären wir genau, wie und wo wir deine Daten verarbeiten.</p>
+    </div>
+    <div class="dsgvo-strip fi">
+      <div class="dsgvo-item"><span class="di-ico">🇩🇪</span><h3>Server in Deutschland</h3><p>Unsere Infrastruktur läuft bei Hetzner in Nürnberg. Deine Daten verlassen niemals die EU.</p></div>
+      <div class="dsgvo-item"><span class="di-ico">🤝</span><h3>OpenAI via Azure EU</h3><p>Wir nutzen OpenAI ausschließlich über Microsoft Azure-Server in Europa – DSGVO- und EU AI Act-konform.</p></div>
+      <div class="dsgvo-item"><span class="di-ico">🗑️</span><h3>Datenlöschung auf Knopfdruck</h3><p>Wir speichern nur das Nötigste. Auf Wunsch löschen wir alle deine Daten in Echtzeit – vollständig und nachweisbar.</p></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-sec">
+    <h2 data-i18n-html="funktionen.cta.title">Alles klar – <span class="gradient">starte jetzt</span></h2>
+    <p data-i18n="funktionen.cta.desc">Teste Call Lana 14 Tage lang kostenlos. Keine Kreditkarte, keine Vertragsbindung.</p>
+    <div class="cta-btns">
+      <a href="preise.html" class="btn-primary">Kostenlos starten</a>
+      <a href="kontakt.html" class="btn-secondary">Demo buchen</a>
+    </div>
+  </section>
+
+</main>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
-      <a href="index.html" class="logo">
-        <div class="logo-mark">CL</div>
-        <span class="logo-name">Call <span>Lana</span></span>
-      </a>
+      <a href="index.html" class="logo"><div class="logo-mark">CL</div><span class="logo-name">Call <span>Lana</span></span></a>
       <p>Der KI-Telefonassistent auf Deutsch. DSGVO-konform, skalierbar, sofort einsatzbereit.</p>
     </div>
-    <div class="footer-col">
-      <h4 data-i18n="footer.product">Produkt</h4>
-      <ul>
-        <li><a href="funktionen.html">Funktionen</a></li>
-        <li><a href="branchen.html">Branchen</a></li>
-        <li><a href="preise.html">Preise</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4 data-i18n="footer.legal">Rechtliches</h4>
-      <ul>
-        <li><a href="impressum.html">Impressum</a></li>
-        <li><a href="datenschutz.html">Datenschutz</a></li>
-        <li><a href="agb.html">AGB</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4 data-i18n="footer.account">Konto</h4>
-      <ul>
-        <li><a href="registrierung.html">Registrieren</a></li>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="dashboard.html">Dashboard</a></li>
-      </ul>
-    </div>
+    <div class="footer-col"><h4>Produkt</h4><ul><li><a href="funktionen.html">Funktionen</a></li><li><a href="branchen.html">Branchen</a></li><li><a href="preise.html">Preise</a></li></ul></div>
+    <div class="footer-col"><h4>Rechtliches</h4><ul><li><a href="impressum.html">Impressum</a></li><li><a href="datenschutz.html">Datenschutz</a></li><li><a href="agb.html">AGB</a></li></ul></div>
+    <div class="footer-col"><h4>Konto</h4><ul><li><a href="registrierung.html">Registrieren</a></li><li><a href="login.html">Login</a></li><li><a href="dashboard.html">Dashboard</a></li></ul></div>
   </div>
-  <div class="footer-bottom">
-    <p class="footer-copy">Copyright 2026 by Call Lana – Alle Rechte vorbehalten</p>
-  </div>
+  <div class="footer-bottom"><p class="footer-copy">Copyright 2026 by Call Lana — Alle Rechte vorbehalten</p></div>
 </footer>
 
 <script src="i18n.js"></script>
@@ -278,25 +228,30 @@ function updateLangButtons(lang) {
     if (btn.textContent.toLowerCase() === lang) btn.classList.add('active');
   });
 }
+
+// Mobile menu toggle
+document.getElementById('mb').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
+
+// Nav shadow on scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 10);
+}, { passive: true });
+
+// Scroll reveal
 document.addEventListener('DOMContentLoaded', () => {
-  updateLangButtons(localStorage.getItem('calllana_language') || 'de');
+  const currentLang = localStorage.getItem('calllana_language') || 'de';
+  updateLangButtons(currentLang);
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fi,.step').forEach((el, i) => {
+    el.style.transitionDelay = (Math.min(i * 0.06, 0.4)) + 's';
+    obs.observe(el);
+  });
 });
-</script>
-<script>
-// Waveform canvas
-(function(){const c=document.getElementById('wc');if(!c)return;const ctx=c.getContext('2d');let W,H,t=0;function rs(){W=c.width=c.offsetWidth;H=c.height=c.offsetHeight;}rs();window.addEventListener('resize',rs);
-function draw(){ctx.clearRect(0,0,W,H);t+=.014;
-const ws=[{a:55,f:.013,s:1,c:'rgba(123,47,255,',lw:2.4},{a:36,f:.02,s:1.3,c:'rgba(192,132,252,',lw:1.7},{a:22,f:.028,s:.9,c:'rgba(34,211,238,',lw:1.3},{a:14,f:.036,s:1.7,c:'rgba(163,230,53,',lw:1}];
-ws.forEach(({a,f,s,c,lw},wi)=>{ctx.beginPath();for(let x=0;x<=W;x+=2){const y=H/2+Math.sin(x*f+t*s)*a+Math.sin(x*f*.6+t*s*1.2+wi)*a*.4;x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);}const g=ctx.createLinearGradient(0,0,W,0);g.addColorStop(0,c+'0)');g.addColorStop(.3,c+'.65)');g.addColorStop(.7,c+'.65)');g.addColorStop(1,c+'0)');ctx.strokeStyle=g;ctx.lineWidth=lw;ctx.stroke();});
-for(let i=0;i<5;i++){const x=(i/4)*W;const y=H/2+Math.sin(x*.013+t)*55+Math.sin(x*.02+t*1.3)*36;ctx.beginPath();ctx.arc(x,y,3+Math.sin(t+i)*1.2,0,Math.PI*2);ctx.fillStyle=`rgba(192,132,252,${.5+Math.sin(t+i)*.3})`;ctx.shadowBlur=8;ctx.shadowColor='rgba(123,47,255,.8)';ctx.fill();ctx.shadowBlur=0;}
-requestAnimationFrame(draw);}draw();})();
-// Particles
-function mkP(id,n){const el=document.getElementById(id);if(!el)return;for(let i=0;i<n;i++){const p=document.createElement('div');p.className='ptcl';p.style.cssText=`left:${Math.random()*100}%;bottom:0;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;background:${Math.random()>.5?'rgba(192,132,252,.7)':'rgba(34,211,238,.5)'};animation-duration:${Math.random()*10+8}s;animation-delay:${Math.random()*12}s;`;el.appendChild(p);}}
-mkP('pp1',22);
-// Scroll
-const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');}),{threshold:.1});
-document.querySelectorAll('.fi,.step').forEach((el,i)=>{el.style.transitionDelay=(Math.min(i*.06,0.4))+'s';obs.observe(el);});
-document.getElementById('mb').addEventListener('click',()=>document.getElementById('nav').classList.toggle('open'));
 </script>
 </body>
 </html>

@@ -22,6 +22,19 @@ const AuthGuard = {
     }
     const profile = await this.getProfile();
     if (!profile) {
+      // Session exists but profile fetch failed — build a minimal fallback
+      // instead of redirecting to login (which causes a redirect loop)
+      const user = await window.clanaAuth.getUser();
+      if (user) {
+        return {
+          id: user.id,
+          email: user.email,
+          role: 'customer',
+          first_name: user.user_metadata?.firstName || '',
+          last_name: user.user_metadata?.lastName || '',
+          organizations: null
+        };
+      }
       window.location.href = 'login.html';
       return null;
     }
@@ -33,13 +46,24 @@ const AuthGuard = {
       const user = await window.clanaAuth.getUser();
       if (!user) return null;
 
+      // First try with organization join
       const { data, error } = await supabaseClient
         .from('profiles')
         .select('*, organizations(name, plan)')
         .eq('id', user.id)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        // Fallback: try without organization join
+        const { data: profileOnly, error: profileError } = await supabaseClient
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        if (profileError) throw profileError;
+        return { ...profileOnly, organizations: null };
+      }
       return data;
     } catch (err) {
       console.error('Profile fetch error:', err);

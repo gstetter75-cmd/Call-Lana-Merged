@@ -4,84 +4,30 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Branchen – Call Lana KI-Telefonassistent</title>
 <meta name="description" content="Call Lana für jede Branche: Arztpraxen, Hotels, Immobilien, Handwerk, E-Commerce, Kanzleien. KI-Telefonassistent passend für deinen Alltag.">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<meta property="og:title" content="Branchen – Call Lana KI-Telefonassistent">
+<meta property="og:description" content="Call Lana für jede Branche: Arztpraxen, Hotels, Immobilien, Handwerk, E-Commerce, Kanzleien. KI-Telefonassistent passend für deinen Alltag.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/marketing.css">
 <style>
-:root{--bg:#06060f;--bg2:#0d0d1a;--bg3:#13132a;--card:#0f0f22;--border:rgba(124,58,237,.18);--pu:#7c3aed;--pu2:#9d5cf6;--pu3:#c084fc;--cyan:#22d3ee;--green:#a3e635;--tx:#f0eeff;--tx2:#a89dc0;--tx3:#6b5f8a;--r:20px;}
-*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;overflow-x:hidden;}
-body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--tx);overflow-x:hidden;line-height:1.6;}
-/* Language Switcher */
-.lang-switcher{position:fixed;top:80px;right:20px;z-index:200;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px;display:flex;gap:4px;}
-.lang-btn{background:none;border:none;padding:6px 12px;border-radius:8px;color:var(--tx3);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
-.lang-btn.active{background:var(--pu);color:white;}
-.lang-btn:hover:not(.active){background:rgba(124,58,237,.1);color:var(--tx);}
+/* Branch cards */
+.bc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;max-width:1100px;margin:0 auto;}
+.bc{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:36px 28px;transition:all .3s;position:relative;overflow:hidden;}
+.bc:hover{border-color:var(--pu);box-shadow:var(--shadow-lg);transform:translateY(-4px);}
+.bc-top{display:flex;align-items:center;gap:16px;margin-bottom:18px;}
+.bc-icon{font-size:1.8rem;width:52px;height:52px;background:var(--pu-light);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.bc-top h3{font-size:1.1rem;font-weight:800;color:var(--tx);}
+.bc>p{color:var(--tx2);font-size:.92rem;line-height:1.7;margin-bottom:18px;}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 6%;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,6,15,.82);backdrop-filter:blur(22px);border-bottom:1px solid rgba(123,47,255,.13);}
-.logo{display:flex;align-items:center;gap:6px;text-decoration:none;}
-.logo-mark{width:38px;height:38px;background:linear-gradient(135deg,var(--pu),var(--pu3));border-radius:11px;display:flex;align-items:center;justify-content:center;color:white;font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;box-shadow:0 0 20px rgba(124,58,237,.5);}
-.logo-name{font-family:'Syne',sans-serif;font-size:1.65rem;font-weight:800;letter-spacing:-.02em;color:var(--tx);}.logo-name span{color:var(--pu3);}
-.nav-links{display:flex;gap:32px;list-style:none;}.nav-links a{color:var(--tx2);text-decoration:none;font-size:14.5px;font-weight:500;transition:color .25s;}.nav-links a:hover{color:var(--tx);}.nav-links a.active{color:var(--tx);font-weight:700;}
-.nav-cta{background:linear-gradient(135deg,var(--pu),var(--pu2));color:#fff !important;padding:10px 24px;border-radius:50px;font-weight:700;font-size:14px;text-decoration:none;transition:all .25s;box-shadow:0 0 18px rgba(123,47,255,.3);}.nav-cta:hover{box-shadow:0 0 32px rgba(123,47,255,.55);transform:translateY(-1px);}
-.mob-btn{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px;}.mob-btn span{display:block;width:24px;height:2px;background:var(--tx);border-radius:2px;}
-.btn-p{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--pu),var(--pu2));color:#fff;padding:15px 34px;border-radius:50px;font-size:15.5px;font-weight:700;text-decoration:none;transition:all .3s;box-shadow:0 0 28px rgba(123,47,255,.38);}.btn-p:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(123,47,255,.6);}
-.btn-s{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);color:var(--tx);padding:15px 34px;border-radius:50px;font-size:15.5px;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,.13);transition:all .3s;}.btn-s:hover{background:rgba(255,255,255,.09);transform:translateY(-2px);}
-.sec{padding:96px 6%;position:relative;}.sec-alt{background:var(--card);}
-.sec-lbl{text-align:center;color:var(--pu3);font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px;}
-h2.sec-t{font-family:'Syne',sans-serif;font-size:clamp(1.9rem,3.8vw,2.9rem);font-weight:800;text-align:center;margin-bottom:14px;line-height:1.12;}
-.sec-sub{text-align:center;color:var(--tx2);font-size:1rem;max-width:560px;margin:0 auto 60px;line-height:1.72;}
-.g1{background:linear-gradient(120deg,var(--pu3),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.fi{opacity:0;transform:translateY(20px);transition:all .6s ease;}.fi.vis{opacity:1;transform:translateY(0);}
-
-/* PAGE HERO */
-.page-hero{padding:160px 6% 80px;text-align:center;position:relative;overflow:hidden;}
-.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(123,47,255,.18),transparent 70%);}
-.page-hero::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(123,47,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(123,47,255,.05) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 75%);}
-.page-hero-content{position:relative;z-index:2;}
-.page-hero h1{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,5vw,4rem);font-weight:800;line-height:1.08;margin-bottom:20px;word-break:break-word;}
-.page-hero p{color:var(--tx2);font-size:1.1rem;max-width:580px;margin:0 auto 40px;line-height:1.75;}
-
-/* BRANCHE CARDS – big detailed cards */
-.bc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;max-width:1100px;margin:0 auto;position:relative;z-index:1;}
-.bc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:36px 32px;transition:all .35s;position:relative;overflow:hidden;}
-.bc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pu),var(--pu3));opacity:0;transition:opacity .3s;}
-.bc:hover::before{opacity:1;}
-.bc:hover{border-color:rgba(123,47,255,.35);transform:translateY(-5px);box-shadow:0 22px 56px rgba(0,0,0,.42),0 0 34px rgba(123,47,255,.1);}
-.bc-top{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
-.bc-icon{font-size:2.2rem;width:58px;height:58px;background:rgba(123,47,255,.1);border-radius:16px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(123,47,255,.2);flex-shrink:0;}
-.bc-top h3{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;}
-.bc > p{color:var(--tx2);font-size:.93rem;line-height:1.72;margin-bottom:20px;}
-.bc-list{list-style:none;display:flex;flex-direction:column;gap:9px;}
-.bc-list li{display:flex;align-items:flex-start;gap:10px;color:var(--tx2);font-size:.9rem;line-height:1.55;}
-.bc-list li::before{content:'✓';color:var(--pu3);font-weight:700;flex-shrink:0;margin-top:1px;}
-
-/* USE CASES ROW */
-.uc-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;max-width:1000px;margin:0 auto;position:relative;z-index:1;}
-.uc{background:rgba(14,14,28,.95);border:1px solid rgba(255,255,255,.07);border-radius:var(--r);padding:26px 22px;text-align:center;transition:all .3s;}
-.uc:hover{border-color:rgba(123,47,255,.3);transform:translateY(-3px);}
+/* Use-case row */
+.uc-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;max-width:1100px;margin:0 auto;}
+.uc{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:28px 22px;text-align:center;transition:all .3s;}
+.uc:hover{border-color:var(--pu);box-shadow:var(--shadow-md);transform:translateY(-3px);}
 .uc span{font-size:1.8rem;display:block;margin-bottom:12px;}
-.uc h3{font-size:.95rem;font-weight:700;margin-bottom:7px;}
-.uc p{color:var(--tx2);font-size:.84rem;line-height:1.6;}
-
-/* CTA */
-.cta-sec{padding:96px 6%;text-align:center;position:relative;overflow:hidden;}
-.cta-sec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 50% 50%,rgba(123,47,255,.13),transparent 65%);}
-.cta-sec h2{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;margin-bottom:16px;position:relative;}
-.cta-sec p{color:var(--tx2);font-size:1.05rem;margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto;position:relative;}
-.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;}
-
-/* FOOTER */
-footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);padding:60px 6% 32px;}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;}
-.footer-brand p{font-size:.88rem;color:var(--tx2);line-height:1.75;margin:14px 0 20px;}
-.footer-col h4{font-size:12px;font-weight:700;color:var(--tx);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;}
-.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
-.footer-col a{color:var(--tx2);text-decoration:none;font-size:14px;transition:color .2s;}
-.footer-col a:hover{color:var(--tx);}
-.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:28px;text-align:center;}
-.footer-copy{font-size:12.5px;color:var(--tx2);}
-@media(max-width:900px){.lang-switcher{top:72px;right:10px;}}
-@media(max-width:768px){.nav-links,.nav-cta{display:none;}.mob-btn{display:flex;}nav.open .nav-links{display:flex;flex-direction:column;position:fixed;top:72px;left:0;right:0;background:rgba(6,6,15,.97);padding:26px 6%;gap:20px;border-bottom:1px solid var(--border);z-index:199;}nav.open .nav-cta{display:block;margin-top:8px;text-align:center;}.footer-grid{grid-template-columns:1fr 1fr;}.sec{padding:68px 5%;}}
-@media(max-width:480px){.page-hero h1{font-size:6.5vw;}.page-hero p{font-size:.9rem;max-width:100%;}.page-hero{padding:120px 5% 60px;}}
-.skip-link{position:absolute;top:-100%;left:16px;background:var(--pu);color:#fff;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;z-index:9999;text-decoration:none;transition:top .2s;}.skip-link:focus{top:16px;}
+.uc h3{font-size:.95rem;font-weight:800;margin-bottom:7px;color:var(--tx);}
+.uc p{color:var(--tx2);font-size:.84rem;line-height:1.65;}
 </style>
 </head>
 <body>
@@ -96,69 +42,73 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
 <nav id="nav">
   <a href="index.html" class="logo"><div class="logo-mark">CL</div><span class="logo-name">Call <span>Lana</span></span></a>
   <ul class="nav-links">
-    <li><a href="index.html" data-i18n="nav.home">Start</a></li>
-    <li><a href="funktionen.html" data-i18n="nav.features">Funktionen</a></li>
-    <li><a href="branchen.html" class="active" data-i18n="nav.industries">Branchen</a></li>
-    <li><a href="preise.html" data-i18n="nav.pricing">Preise</a></li>
-    <li><a href="kontakt.html" data-i18n="nav.contact">Kontakt</a></li>
+    <li><a href="funktionen.html">Funktionen</a></li>
+    <li><a href="branchen.html" class="active">Branchen</a></li>
+    <li><a href="preise.html">Preise</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
   </ul>
-  <a href="preise.html" class="nav-cta" data-i18n="nav.dashboard">Zum Dashboard →</a>
-  <button class="mob-btn" id="mb" aria-label="Menü"><span></span><span></span><span></span></button>
+  <div class="nav-right"><a href="login.html" class="nav-login">Login</a><a href="registrierung.html" class="nav-cta">Kostenlos starten</a></div>
+  <button class="mob-btn" id="mb" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 
+<!-- PAGE HERO -->
 <div class="page-hero" id="main-content">
   <div class="page-hero-content">
-    <div class="sec-lbl" data-i18n="branchen.hero.label">Branchen</div>
-    <h1 data-i18n="branchen.hero.title">Call Lana passt sich <span class="g1">deiner Welt</span> an</h1>
+    <div class="sec-badge" data-i18n="branchen.hero.label">Branchen</div>
+    <h1 data-i18n-html="branchen.hero.title">Call Lana passt sich <span class="gradient">deiner Welt</span> an</h1>
     <p data-i18n="branchen.hero.desc">Egal ob Arztpraxis, Hotellerie, Handwerk oder Kanzlei – unser KI-Assistent versteht deinen Alltag und entlastet dich dort, wo es am meisten hilft.</p>
-    <a href="kontakt.html" class="btn-s">📅 Demo für deine Branche buchen</a>
+    <a href="kontakt.html" class="btn-secondary">Demo für deine Branche buchen</a>
   </div>
 </div>
 
 <!-- BRANCHEN CARDS -->
-<section class="sec">
-  <div class="sec-lbl" data-i18n="branchen.cases.label">Anwendungsfälle</div>
-  <h2 class="sec-t fi" data-i18n="branchen.cases.title">Wer von <span class="g1">Call Lana profitiert</span></h2>
-  <p class="sec-sub fi">Über 5.000 Unternehmen aus den unterschiedlichsten Branchen vertrauen täglich auf Call Lana.</p>
+<section class="section">
+  <div class="sec-header">
+    <div class="sec-badge" data-i18n="branchen.cases.label">Anwendungsfälle</div>
+    <h2 class="sec-title fi" data-i18n-html="branchen.cases.title">Wer von <span class="gradient">Call Lana profitiert</span></h2>
+    <p class="sec-sub fi">Über 5.000 Unternehmen aus den unterschiedlichsten Branchen vertrauen täglich auf Call Lana.</p>
+  </div>
   <div class="bc-grid">
     <div class="bc fi">
       <div class="bc-top"><div class="bc-icon">🏥</div><h3>Arztpraxen & Kliniken</h3></div>
       <p>Entlaste dein Praxis-Team von Routineanrufen und sei rund um die Uhr für Patienten erreichbar.</p>
-      <ul class="bc-list"><li>Terminvergabe und -verschiebung automatisch</li><li>Rezeptanfragen entgegennehmen und weiterleiten</li><li>Erreichbarkeit außerhalb der Sprechzeiten</li><li>Wichtige Anrufe sofort an Bereitschaftsdienst</li></ul>
+      <ul class="check-list"><li>Terminvergabe und -verschiebung automatisch</li><li>Rezeptanfragen entgegennehmen und weiterleiten</li><li>Erreichbarkeit außerhalb der Sprechzeiten</li><li>Wichtige Anrufe sofort an Bereitschaftsdienst</li></ul>
     </div>
     <div class="bc fi">
       <div class="bc-top"><div class="bc-icon">🏨</div><h3>Hotels & Gastronomie</h3></div>
       <p>Gäste erwarten Erreichbarkeit rund um die Uhr. Lana ist immer da – auch wenn dein Team im Einsatz ist.</p>
-      <ul class="bc-list"><li>Buchungsanfragen und Zimmerverfügbarkeit</li><li>Check-in-Infos, Parken, Anfahrt automatisch</li><li>Tischreservierungen in Echtzeit</li><li>Mehrsprachig verfügbar</li></ul>
+      <ul class="check-list"><li>Buchungsanfragen und Zimmerverfügbarkeit</li><li>Check-in-Infos, Parken, Anfahrt automatisch</li><li>Tischreservierungen in Echtzeit</li><li>Mehrsprachig verfügbar</li></ul>
     </div>
     <div class="bc fi">
       <div class="bc-top"><div class="bc-icon">🏠</div><h3>Immobilien & Makler</h3></div>
       <p>Qualifiziere Interessenten bereits am Telefon – bevor du überhaupt involviert bist.</p>
-      <ul class="bc-list"><li>Erstkontakt und Interessentenqualifizierung</li><li>Besichtigungstermine vereinbaren</li><li>Objektinfos automatisch bereitstellen</li><li>Lead-Daten direkt ins CRM übertragen</li></ul>
+      <ul class="check-list"><li>Erstkontakt und Interessentenqualifizierung</li><li>Besichtigungstermine vereinbaren</li><li>Objektinfos automatisch bereitstellen</li><li>Lead-Daten direkt ins CRM übertragen</li></ul>
     </div>
     <div class="bc fi">
       <div class="bc-top"><div class="bc-icon">🔧</div><h3>Handwerk & Service</h3></div>
       <p>Du bist auf der Baustelle – Lana nimmt die Anrufe an, plant Termine und hält deinen Betrieb am Laufen.</p>
-      <ul class="bc-list"><li>Auftragsannahme und Erstbewertung</li><li>Terminplanung rund um die Uhr</li><li>Notfallprotokoll für dringende Fälle</li><li>Zusammenfassung per E-Mail nach jedem Anruf</li></ul>
+      <ul class="check-list"><li>Auftragsannahme und Erstbewertung</li><li>Terminplanung rund um die Uhr</li><li>Notfallprotokoll für dringende Fälle</li><li>Zusammenfassung per E-Mail nach jedem Anruf</li></ul>
     </div>
     <div class="bc fi">
       <div class="bc-top"><div class="bc-icon">🛒</div><h3>Handel & E-Commerce</h3></div>
       <p>Skaliere deinen Kundenservice ohne mehr Personal. Lana bearbeitet Standardanfragen vollautomatisch.</p>
-      <ul class="bc-list"><li>Bestellstatus und Lieferstatus</li><li>Rückgaben und Reklamationen</li><li>Produktfragen und Verfügbarkeit</li><li>Weiterleitung bei komplexen Fällen</li></ul>
+      <ul class="check-list"><li>Bestellstatus und Lieferstatus</li><li>Rückgaben und Reklamationen</li><li>Produktfragen und Verfügbarkeit</li><li>Weiterleitung bei komplexen Fällen</li></ul>
     </div>
     <div class="bc fi">
       <div class="bc-top"><div class="bc-icon">⚖️</div><h3>Kanzleien & Beratung</h3></div>
       <p>Erstgespräche kosten Zeit. Lana übernimmt die Vorqualifizierung und gibt dir strukturierte Infos.</p>
-      <ul class="bc-list"><li>Mandantenerstkontakt und Anliegen erfassen</li><li>Terminvereinbarung mit Vorqualifizierung</li><li>Vertrauliche Transkription für die Akte</li><li>Weiterleitung nach Fachgebiet</li></ul>
+      <ul class="check-list"><li>Mandantenerstkontakt und Anliegen erfassen</li><li>Terminvereinbarung mit Vorqualifizierung</li><li>Vertrauliche Transkription für die Akte</li><li>Weiterleitung nach Fachgebiet</li></ul>
     </div>
   </div>
 </section>
 
 <!-- USE CASE TYPES -->
-<section class="sec sec-alt">
-  <div class="sec-lbl">Aufgaben</div>
-  <h2 class="sec-t fi">Was Call Lana konkret <span class="g1">übernimmt</span></h2>
-  <p class="sec-sub fi">Call Lana ist kein starres Skript – sondern ein flexibler Assistent, der wirklich versteht, was gefragt wird.</p>
+<section class="section alt">
+  <div class="sec-header">
+    <div class="sec-badge">Aufgaben</div>
+    <h2 class="sec-title fi">Was Call Lana konkret <span class="gradient">übernimmt</span></h2>
+    <p class="sec-sub fi">Call Lana ist kein starres Skript – sondern ein flexibler Assistent, der wirklich versteht, was gefragt wird.</p>
+  </div>
   <div class="uc-row">
     <div class="uc fi"><span>📋</span><h3>Sekretariat</h3><p>Anrufe annehmen, weiterleiten, Nachrichten aufnehmen.</p></div>
     <div class="uc fi"><span>📝</span><h3>Transkription</h3><p>Gespräch aufnehmen und strukturiert per E-Mail zuschicken.</p></div>
@@ -171,49 +121,22 @@ footer{background:rgba(14,14,28,.8);border-top:1px solid rgba(255,255,255,.08);p
 
 <!-- CTA -->
 <section class="cta-sec">
-  <h2 data-i18n="branchen.cta.title">Für welche Branche <span class="g1">arbeitest du?</span></h2>
+  <h2 data-i18n-html="branchen.cta.title">Für welche Branche <span class="gradient">arbeitest du?</span></h2>
   <p data-i18n="branchen.cta.desc">Buche eine persönliche Demo – wir zeigen dir, wie Call Lana genau für deinen Betrieb aussehen würde.</p>
-  <div class="cta-btns"><a href="kontakt.html" class="btn-p">📅 Demo buchen</a><a href="preise.html" class="btn-s">✦ Direkt starten</a></div>
+  <div class="cta-btns"><a href="kontakt.html" class="btn-primary">Demo buchen</a><a href="preise.html" class="btn-secondary">Direkt starten</a></div>
 </section>
 
+<!-- FOOTER -->
 <footer>
   <div class="footer-grid">
-    <div class="footer-brand">
-      <a href="index.html" class="logo">
-        <div class="logo-mark">CL</div>
-        <span class="logo-name">Call <span>Lana</span></span>
-      </a>
-      <p>Der KI-Telefonassistent auf Deutsch. DSGVO-konform, skalierbar, sofort einsatzbereit.</p>
-    </div>
-    <div class="footer-col">
-      <h4 data-i18n="footer.product">Produkt</h4>
-      <ul>
-        <li><a href="funktionen.html">Funktionen</a></li>
-        <li><a href="branchen.html">Branchen</a></li>
-        <li><a href="preise.html">Preise</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4 data-i18n="footer.legal">Rechtliches</h4>
-      <ul>
-        <li><a href="impressum.html">Impressum</a></li>
-        <li><a href="datenschutz.html">Datenschutz</a></li>
-        <li><a href="agb.html">AGB</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4 data-i18n="footer.account">Konto</h4>
-      <ul>
-        <li><a href="registrierung.html">Registrieren</a></li>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="dashboard.html">Dashboard</a></li>
-      </ul>
-    </div>
+    <div class="footer-brand"><a href="index.html" class="logo"><div class="logo-mark">CL</div><span class="logo-name">Call <span>Lana</span></span></a><p>Der KI-Telefonassistent auf Deutsch. DSGVO-konform, skalierbar, sofort einsatzbereit.</p></div>
+    <div class="footer-col"><h4>Produkt</h4><ul><li><a href="funktionen.html">Funktionen</a></li><li><a href="branchen.html">Branchen</a></li><li><a href="preise.html">Preise</a></li></ul></div>
+    <div class="footer-col"><h4>Rechtliches</h4><ul><li><a href="impressum.html">Impressum</a></li><li><a href="datenschutz.html">Datenschutz</a></li><li><a href="agb.html">AGB</a></li></ul></div>
+    <div class="footer-col"><h4>Konto</h4><ul><li><a href="registrierung.html">Registrieren</a></li><li><a href="login.html">Login</a></li><li><a href="dashboard.html">Dashboard</a></li></ul></div>
   </div>
-  <div class="footer-bottom">
-    <p class="footer-copy">Copyright 2026 by Call Lana – Alle Rechte vorbehalten</p>
-  </div>
+  <div class="footer-bottom"><p class="footer-copy">Copyright 2026 by Call Lana — Alle Rechte vorbehalten</p></div>
 </footer>
+
 <script src="i18n.js"></script>
 <script src="cookie-consent.js"></script>
 <script>
@@ -231,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');}),{threshold:.1});
 document.querySelectorAll('.fi').forEach((el,i)=>{el.style.transitionDelay=(Math.min(i*.06,.4))+'s';obs.observe(el);});
 document.getElementById('mb').addEventListener('click',()=>document.getElementById('nav').classList.toggle('open'));
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>10);});
 </script>
 </body>
 </html>

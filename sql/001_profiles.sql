@@ -30,12 +30,23 @@ CREATE TABLE IF NOT EXISTS profiles (
 -- 3. Enable RLS
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 
--- 4. RLS Policies
--- Superadmin: full access
-CREATE POLICY "superadmin_profiles_all" ON profiles
-  FOR ALL USING (
-    EXISTS (SELECT 1 FROM profiles p WHERE p.id = auth.uid() AND p.role = 'superadmin')
+-- 4. Helper function to check superadmin role without recursive RLS
+-- Uses auth.users metadata to avoid querying profiles table from its own policy
+CREATE OR REPLACE FUNCTION is_superadmin()
+RETURNS boolean AS $$
+BEGIN
+  RETURN EXISTS (
+    SELECT 1 FROM auth.users
+    WHERE id = auth.uid()
+    AND raw_user_meta_data->>'role' = 'superadmin'
   );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER STABLE;
+
+-- RLS Policies
+-- Superadmin: full access (uses helper function to avoid recursive self-reference)
+CREATE POLICY "superadmin_profiles_all" ON profiles
+  FOR ALL USING (is_superadmin());
 
 -- Users can read own profile
 CREATE POLICY "users_read_own_profile" ON profiles
@@ -57,6 +68,7 @@ CREATE POLICY "sales_read_org_profiles" ON profiles
   );
 
 -- 5. Auto-create profile on signup
+-- Also syncs role to auth.users metadata for the is_superadmin() helper
 CREATE OR REPLACE FUNCTION handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -69,6 +81,10 @@ BEGIN
     NEW.raw_user_meta_data->>'company',
     NEW.raw_user_meta_data->>'industry'
   );
+  -- Sync default role to auth.users metadata
+  UPDATE auth.users
+  SET raw_user_meta_data = COALESCE(raw_user_meta_data, '{}'::jsonb) || '{"role": "customer"}'::jsonb
+  WHERE id = NEW.id;
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;

@@ -97,26 +97,26 @@ const translations = {
 
     // Funktionen page
     'funktionen.hero.label': 'Funktionen',
-    'funktionen.hero.title': 'Alles, was deine KI <span class="g1">leisten kann</span>',
+    'funktionen.hero.title': 'Alles, was deine KI <span class="gradient">leisten kann</span>',
     'funktionen.hero.desc': 'Von der Stimmauswahl bis zum Echtzeit-Dashboard – Call Lana ist von Grund auf so gebaut, dass es in deinen Alltag passt und wirklich hilft.',
     'funktionen.hero.cta': 'Jetzt starten',
     'funktionen.core.label': 'Was Call Lana kann',
-    'funktionen.core.title': 'Die wichtigsten <span class="g1">Funktionen</span>',
-    'funktionen.cta.title': 'Alles klar – <span class="g1">starte jetzt</span>',
+    'funktionen.core.title': 'Die wichtigsten <span class="gradient">Funktionen</span>',
+    'funktionen.cta.title': 'Alles klar – <span class="gradient">starte jetzt</span>',
     'funktionen.cta.desc': 'Teste Call Lana 14 Tage lang kostenlos. Keine Kreditkarte, keine Vertragsbindung.',
 
     // Branchen page
     'branchen.hero.label': 'Branchen',
-    'branchen.hero.title': 'Call Lana passt sich <span class="g1">deiner Welt</span> an',
+    'branchen.hero.title': 'Call Lana passt sich <span class="gradient">deiner Welt</span> an',
     'branchen.hero.desc': 'Egal ob Arztpraxis, Hotellerie, Handwerk oder Kanzlei – unser KI-Assistent versteht deinen Alltag und entlastet dich dort, wo es am meisten hilft.',
     'branchen.cases.label': 'Anwendungsfälle',
-    'branchen.cases.title': 'Wer von <span class="g1">Call Lana profitiert</span>',
-    'branchen.cta.title': 'Für welche Branche <span class="g1">arbeitest du?</span>',
+    'branchen.cases.title': 'Wer von <span class="gradient">Call Lana profitiert</span>',
+    'branchen.cta.title': 'Für welche Branche <span class="gradient">arbeitest du?</span>',
     'branchen.cta.desc': 'Buche eine persönliche Demo – wir zeigen dir, wie Call Lana genau für deinen Betrieb aussehen würde.',
 
     // Kontakt page
     'kontakt.hero.label': 'Kontakt',
-    'kontakt.hero.title': 'Lass uns <span class="g1">sprechen</span>',
+    'kontakt.hero.title': 'Lass uns <span class="gradient">sprechen</span>',
     'kontakt.hero.desc': 'Demo buchen, Fragen stellen oder direkt loslegen – wir sind für dich da. Antwort innerhalb von 24 Stunden garantiert.',
     'kontakt.form.title': 'Schreib uns',
     'kontakt.form.desc': 'Wir antworten innerhalb von 24 Stunden – versprochen.',
@@ -241,26 +241,26 @@ const translations = {
 
     // Funktionen page
     'funktionen.hero.label': 'Features',
-    'funktionen.hero.title': 'Everything your AI <span class="g1">can do</span>',
+    'funktionen.hero.title': 'Everything your AI <span class="gradient">can do</span>',
     'funktionen.hero.desc': 'From voice selection to real-time dashboard – Call Lana is built from the ground up to fit your daily workflow and truly help.',
     'funktionen.hero.cta': 'Get started',
     'funktionen.core.label': 'What Call Lana can do',
-    'funktionen.core.title': 'The key <span class="g1">features</span>',
-    'funktionen.cta.title': 'All clear – <span class="g1">start now</span>',
+    'funktionen.core.title': 'The key <span class="gradient">features</span>',
+    'funktionen.cta.title': 'All clear – <span class="gradient">start now</span>',
     'funktionen.cta.desc': 'Try Call Lana free for 14 days. No credit card, no contract.',
 
     // Branchen page
     'branchen.hero.label': 'Industries',
-    'branchen.hero.title': 'Call Lana adapts to <span class="g1">your world</span>',
+    'branchen.hero.title': 'Call Lana adapts to <span class="gradient">your world</span>',
     'branchen.hero.desc': 'Whether medical practice, hospitality, trades, or law firm – our AI assistant understands your daily routine and helps where it matters most.',
     'branchen.cases.label': 'Use Cases',
-    'branchen.cases.title': 'Who benefits from <span class="g1">Call Lana</span>',
-    'branchen.cta.title': 'Which industry <span class="g1">are you in?</span>',
+    'branchen.cases.title': 'Who benefits from <span class="gradient">Call Lana</span>',
+    'branchen.cta.title': 'Which industry <span class="gradient">are you in?</span>',
     'branchen.cta.desc': 'Book a personal demo – we\'ll show you how Call Lana would look for your business.',
 
     // Kontakt page
     'kontakt.hero.label': 'Contact',
-    'kontakt.hero.title': 'Let\'s <span class="g1">talk</span>',
+    'kontakt.hero.title': 'Let\'s <span class="gradient">talk</span>',
     'kontakt.hero.desc': 'Book a demo, ask questions, or get started right away – we\'re here for you. Response within 24 hours guaranteed.',
     'kontakt.form.title': 'Write to us',
     'kontakt.form.desc': 'We respond within 24 hours – promised.',
@@ -315,8 +315,15 @@ class I18n {
   }
 
   translatePage() {
+    // Safe: use textContent by default
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.dataset.i18n;
+      el.textContent = this.t(key);
+    });
+
+    // Explicit: use innerHTML only for keys that contain trusted HTML (e.g. gradient spans)
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const key = el.dataset.i18nHtml;
       el.innerHTML = this.t(key);
     });
 

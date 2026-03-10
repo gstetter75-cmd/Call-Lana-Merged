@@ -3,34 +3,37 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="Call Lana Login – Melde dich in deinem Dashboard an.">
+<meta property="og:title" content="Bestandskunden Login – Call Lana">
+<meta property="og:description" content="Call Lana Login – Melde dich in deinem Dashboard an.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
 <title>Bestandskunden Login – Call Lana</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/marketing.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--bg:#06060f;--bg2:#0d0d1a;--bg3:#13132a;--card:#0f0f22;--border:rgba(124,58,237,.18);--border2:rgba(124,58,237,.35);--pu:#7c3aed;--pu2:#9d5cf6;--pu3:#c084fc;--tx:#f0eeff;--tx2:#a89dc0;--tx3:#6b5f8a;--red:#f87171;--green:#4ade80;}
-*{margin:0;padding:0;box-sizing:border-box;}html{height:100%;}
-body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;-webkit-font-smoothing:antialiased;}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle at 30% 40%,rgba(124,58,237,.12),transparent 60%),radial-gradient(circle at 70% 80%,rgba(34,211,238,.06),transparent 50%);pointer-events:none;}
-body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(124,58,237,.08) 1px,transparent 1px);background-size:28px 28px;opacity:.5;pointer-events:none;}
+body{background:linear-gradient(160deg,#f5f3ff 0%,#ede9fe 40%,#fafafa 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
 
-.login-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:44px 48px;width:100%;max-width:440px;position:relative;z-index:2;box-shadow:0 0 0 1px rgba(124,58,237,.1),0 32px 80px rgba(0,0,0,.5);}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:36px;justify-content:center;}
-.logo-mark{width:38px;height:38px;background:linear-gradient(135deg,var(--pu),var(--pu3));border-radius:11px;display:flex;align-items:center;justify-content:center;color:white;font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;box-shadow:0 0 20px rgba(124,58,237,.5);}
-.logo-name{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;color:var(--tx);}.logo-name span{color:var(--pu3);}
+/* Minimal nav for login */
+.login-nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 5%;height:72px;display:flex;align-items:center;background:rgba(255,255,255,.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
 
-.badge{display:inline-block;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);color:var(--green);padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;margin-bottom:20px;letter-spacing:.06em;}
+.login-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-xl);padding:44px 48px;width:100%;max-width:440px;position:relative;z-index:2;box-shadow:var(--shadow-xl);}
+.login-card .logo{margin-bottom:36px;justify-content:center;}
 
-h1{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;text-align:center;margin-bottom:6px;}
+.badge{display:inline-block;background:var(--green-light);border:1px solid rgba(5,150,105,.2);color:var(--green);padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;margin-bottom:20px;letter-spacing:.06em;}
+
+h1{font-size:1.7rem;font-weight:900;text-align:center;margin-bottom:6px;color:var(--tx);letter-spacing:-.02em;}
 .sub{text-align:center;color:var(--tx2);font-size:.9rem;margin-bottom:32px;}
-.sub a{color:var(--pu3);text-decoration:none;font-weight:600;}.sub a:hover{text-decoration:underline;}
+.sub a{color:var(--pu);text-decoration:none;font-weight:600;}.sub a:hover{text-decoration:underline;}
 
 .fgrp{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
-label{font-size:11.5px;font-weight:700;color:var(--tx3);letter-spacing:.06em;text-transform:uppercase;}
-.finp{background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:13px 15px;color:var(--tx);font-size:14.5px;font-family:'Manrope',sans-serif;outline:none;transition:all .2s;width:100%;}
-.finp::placeholder{color:var(--tx3);}
-.finp:focus{border-color:var(--pu);background:rgba(124,58,237,.05);box-shadow:0 0 0 3px rgba(124,58,237,.15);}
+.fgrp label{font-size:11.5px;font-weight:700;color:var(--tx3);letter-spacing:.06em;text-transform:uppercase;}
+.finp{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:13px 15px;color:var(--tx);font-size:14.5px;font-family:'Inter',sans-serif;outline:none;transition:all .2s;width:100%;}
+.finp::placeholder{color:var(--tx4);}
+.finp:focus{border-color:var(--pu);background:var(--white);box-shadow:0 0 0 3px rgba(124,58,237,.12);}
 .finp.err{border-color:var(--red);}
 .err-msg{font-size:11.5px;color:var(--red);min-height:14px;display:block;}
 
@@ -38,34 +41,34 @@ label{font-size:11.5px;font-weight:700;color:var(--tx3);letter-spacing:.06em;tex
 .remember{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--tx3);cursor:pointer;}
 .remember input{width:16px;height:16px;cursor:pointer;accent-color:var(--pu);}
 .forgot{font-size:12.5px;color:var(--tx3);cursor:pointer;transition:color .2s;text-decoration:none;}
-.forgot:hover{color:var(--pu3);}
+.forgot:hover{color:var(--pu);}
 
 .pw-wrap{position:relative;}
 .pw-toggle{position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--tx3);font-size:13px;transition:color .2s;}
-.pw-toggle:hover{color:var(--pu3);}
+.pw-toggle:hover{color:var(--pu);}
 
-.submit-btn{width:100%;background:linear-gradient(135deg,var(--pu),var(--pu2));border:none;border-radius:12px;padding:14px;color:white;font-weight:700;font-size:15px;font-family:'Manrope',sans-serif;cursor:pointer;transition:all .2s;box-shadow:0 0 20px rgba(124,58,237,.35);margin-top:4px;}
-.submit-btn:hover{transform:translateY(-1px);box-shadow:0 0 32px rgba(124,58,237,.55);}
+.submit-btn{width:100%;background:var(--pu);border:none;border-radius:12px;padding:14px;color:white;font-weight:700;font-size:15px;font-family:'Inter',sans-serif;cursor:pointer;transition:all .25s;box-shadow:0 4px 14px rgba(124,58,237,.35);margin-top:4px;}
+.submit-btn:hover{background:var(--pu2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(124,58,237,.4);}
 .submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 
 .trust-row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:24px;padding-top:20px;border-top:1px solid var(--border);}
 .ti{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--tx3);}
 
 .alert-box{border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:16px;display:none;}
-.alert-box.error{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);color:var(--red);}
-.alert-box.success{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.25);color:var(--green);}
-.alert-box.info{background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.25);color:#22d3ee;}
+.alert-box.error{background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.2);color:var(--red);}
+.alert-box.success{background:var(--green-light);border:1px solid rgba(5,150,105,.2);color:var(--green);}
+.alert-box.info{background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.2);color:#0891b2;}
 
 .loader{display:none;text-align:center;padding:20px;}
 .loader-spinner{border:3px solid var(--border);border-top:3px solid var(--pu);border-radius:50%;width:32px;height:32px;animation:spin 1s linear infinite;margin:0 auto;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
-.quick-links{background:rgba(124,58,237,.05);border:1px solid var(--border);border-radius:12px;padding:16px;margin-top:20px;}
+.quick-links{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-top:20px;}
 .quick-links h3{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;}
 .quick-links ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
 .quick-links a{color:var(--tx2);text-decoration:none;font-size:13px;display:flex;align-items:center;gap:8px;transition:color .2s;}
-.quick-links a:hover{color:var(--pu3);}
-.quick-links a::before{content:'→';color:var(--pu3);}
+.quick-links a:hover{color:var(--pu);}
+.quick-links a::before{content:'→';color:var(--pu);}
 
 @media(max-width:500px){
   .login-card{padding:32px 28px;}
@@ -74,16 +77,21 @@ label{font-size:11.5px;font-weight:700;color:var(--tx3);letter-spacing:.06em;tex
 </style>
 </head>
 <body>
+
+<div class="login-nav">
+  <a href="index.html" class="logo"><div class="logo-mark">CL</div><span class="logo-name">Call <span>Lana</span></span></a>
+</div>
+
 <div class="login-card">
   <a href="index.html" class="logo">
     <div class="logo-mark">CL</div>
     <span class="logo-name">Call <span>Lana</span></span>
   </a>
-  
+
   <div style="text-align:center;">
     <span class="badge">🔐 Bestandskunden-Login</span>
   </div>
-  
+
   <h1>Willkommen zurück</h1>
   <p class="sub">Noch kein Konto? <a href="registrierung.html">Jetzt kostenlos registrieren →</a></p>
 
@@ -96,29 +104,29 @@ label{font-size:11.5px;font-weight:700;color:var(--tx3);letter-spacing:.06em;tex
   <form id="loginForm" novalidate>
     <div class="fgrp">
       <label for="em">E-Mail-Adresse</label>
-      <input 
-        type="email" 
-        id="em" 
-        name="email" 
-        class="finp" 
-        placeholder="max@unternehmen.de" 
-        autocomplete="email" 
+      <input
+        type="email"
+        id="em"
+        name="email"
+        class="finp"
+        placeholder="max@unternehmen.de"
+        autocomplete="email"
         required
         aria-describedby="em-err"
       >
       <span class="err-msg" id="em-err" role="alert"></span>
     </div>
-    
+
     <div class="fgrp">
       <label for="pw">Passwort</label>
       <div class="pw-wrap">
-        <input 
-          type="password" 
-          id="pw" 
-          name="password" 
-          class="finp" 
-          placeholder="Dein Passwort" 
-          autocomplete="current-password" 
+        <input
+          type="password"
+          id="pw"
+          name="password"
+          class="finp"
+          placeholder="Dein Passwort"
+          autocomplete="current-password"
           required
           aria-describedby="pw-err"
         >
@@ -126,7 +134,7 @@ label{font-size:11.5px;font-weight:700;color:var(--tx3);letter-spacing:.06em;tex
       </div>
       <span class="err-msg" id="pw-err" role="alert"></span>
     </div>
-    
+
     <div class="row-between">
       <label class="remember">
         <input type="checkbox" id="rememberMe">
@@ -134,7 +142,7 @@ label{font-size:11.5px;font-weight:700;color:var(--tx3);letter-spacing:.06em;tex
       </label>
       <a href="#" class="forgot" id="forgotBtn">Passwort vergessen?</a>
     </div>
-    
+
     <button type="submit" class="submit-btn" id="subBtn">Zum Dashboard →</button>
   </form>
 
@@ -170,15 +178,16 @@ const MAX_ATTEMPTS = 5;
 async function redirectByRole() {
   try {
     const profile = await AuthGuard.getProfile();
-    if (profile) {
+    if (profile && profile.role) {
       const home = AuthGuard.ROLE_HOME[profile.role] || 'dashboard.html';
       window.location.href = home;
-    } else {
-      window.location.href = 'dashboard.html';
+      return;
     }
   } catch (err) {
-    window.location.href = 'dashboard.html';
+    console.error('Redirect by role failed:', err);
   }
+  // Fallback: always go to dashboard — AuthGuard.init() handles session
+  window.location.href = 'dashboard.html';
 }
 
 // ==========================================
@@ -192,7 +201,7 @@ async function redirectByRole() {
       await redirectByRole();
     }, 500);
   }
-  
+
   // Check for "Remember Me"
   const rememberedEmail = localStorage.getItem('calllana_remember_email');
   if (rememberedEmail) {
@@ -207,7 +216,7 @@ async function redirectByRole() {
 document.getElementById('pwToggle').addEventListener('click', () => {
   const pw = document.getElementById('pw');
   const btn = document.getElementById('pwToggle');
-  
+
   if (pw.type === 'password') {
     pw.type = 'text';
     btn.textContent = '🙈';
@@ -224,24 +233,24 @@ document.getElementById('pwToggle').addEventListener('click', () => {
 // ==========================================
 document.getElementById('forgotBtn').addEventListener('click', async (e) => {
   e.preventDefault();
-  
+
   const email = document.getElementById('em').value.trim();
-  
+
   if (!email) {
     showAlert('Bitte gib deine E-Mail-Adresse ein, um das Passwort zurückzusetzen.', 'error');
     document.getElementById('em').focus();
     return;
   }
-  
+
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     showAlert('Bitte gib eine gültige E-Mail-Adresse ein.', 'error');
     return;
   }
-  
+
   showAlert('Passwort-Reset-Link wird gesendet...', 'info');
-  
+
   const result = await clanaAuth.resetPassword(email);
-  
+
   if (result.success) {
     showAlert('✓ Passwort-Reset-Link wurde an ' + email + ' gesendet! Prüfe dein Postfach.', 'success');
   } else {
@@ -254,22 +263,22 @@ document.getElementById('forgotBtn').addEventListener('click', async (e) => {
 // ==========================================
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  
+
   if (loginAttempts >= MAX_ATTEMPTS) {
     showAlert('Zu viele Login-Versuche. Bitte warte 5 Minuten.', 'error');
     return;
   }
-  
+
   document.querySelectorAll('.err-msg').forEach(el => el.textContent = '');
   document.querySelectorAll('.finp').forEach(el => el.classList.remove('err'));
   hideAlert();
-  
+
   const email = document.getElementById('em').value.trim();
   const password = document.getElementById('pw').value;
   const rememberMe = document.getElementById('rememberMe').checked;
-  
+
   let valid = true;
-  
+
   if (!email) {
     showError('em', 'E-Mail ist erforderlich.');
     valid = false;
@@ -277,7 +286,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     showError('em', 'Ungültige E-Mail-Adresse.');
     valid = false;
   }
-  
+
   if (!password) {
     showError('pw', 'Passwort ist erforderlich.');
     valid = false;
@@ -285,36 +294,36 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     showError('pw', 'Passwort zu kurz (mind. 6 Zeichen).');
     valid = false;
   }
-  
+
   if (!valid) return;
-  
+
   document.getElementById('loginForm').style.display = 'none';
   document.getElementById('loader').style.display = 'block';
-  
+
   const result = await clanaAuth.signIn(email, password);
-  
+
   if (result.success) {
     if (rememberMe) {
       localStorage.setItem('calllana_remember_email', email);
     } else {
       localStorage.removeItem('calllana_remember_email');
     }
-    
+
     loginAttempts = 0;
     showAlert('✓ Login erfolgreich! Weiterleitung...', 'success');
 
     setTimeout(async () => {
       await redirectByRole();
     }, 1000);
-    
+
   } else {
     loginAttempts++;
-    
+
     document.getElementById('loginForm').style.display = 'block';
     document.getElementById('loader').style.display = 'none';
-    
+
     let errorMsg = 'Login fehlgeschlagen. ';
-    
+
     if (result.error.includes('Invalid login')) {
       errorMsg += 'E-Mail oder Passwort falsch.';
     } else if (result.error.includes('Email not confirmed')) {
@@ -322,11 +331,11 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     } else {
       errorMsg += result.error;
     }
-    
+
     if (loginAttempts >= MAX_ATTEMPTS - 1) {
       errorMsg += ` (Noch ${MAX_ATTEMPTS - loginAttempts} Versuch übrig)`;
     }
-    
+
     showAlert(errorMsg, 'error');
   }
 });
@@ -343,7 +352,7 @@ function showAlert(message, type = 'error') {
   box.textContent = message;
   box.className = 'alert-box ' + type;
   box.style.display = 'block';
-  
+
   if (type === 'success' || type === 'info') {
     setTimeout(() => hideAlert(), 5000);
   }
