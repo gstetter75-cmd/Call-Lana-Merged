@@ -77,12 +77,11 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
 .int-more{font-size:.9rem;color:var(--tx3);text-align:center;}
 
 .testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1100px;margin:0 auto;}
-.testimonial-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:32px 28px;transition:all .3s;}
+.testimonial-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:32px 28px;transition:all .3s;display:block;}
 .testimonial-card:hover{box-shadow:var(--shadow-lg);}
-.testimonial-stars{color:#facc15;font-size:16px;margin-bottom:16px;letter-spacing:2px;}
+.testimonial-card .testimonial-avatar{width:40px;height:40px;border-radius:50%;background:var(--pu-light);color:var(--pu);font-weight:700;font-size:.85rem;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.testimonial-stars{color:#facc15;font-size:16px;margin-bottom:12px;letter-spacing:2px;}
 .testimonial-text{font-size:.95rem;color:var(--tx2);line-height:1.75;margin-bottom:20px;font-style:italic;}
-.testimonial-author{display:flex;align-items:center;gap:12px;}
-.testimonial-avatar{width:40px;height:40px;border-radius:50%;background:var(--pu-light);color:var(--pu);font-weight:700;font-size:.85rem;display:flex;align-items:center;justify-content:center;}
 .testimonial-name{font-weight:700;font-size:.88rem;color:var(--tx);}
 .testimonial-role{font-size:.8rem;color:var(--tx3);}
 
@@ -149,10 +148,13 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
   .uc-card h3{font-size:.88rem;margin-bottom:6px;}
   .uc-card p{font-size:.78rem;line-height:1.55;}
 
-  /* Testimonials: horizontal scroll */
-  .testimonials-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;padding-bottom:12px;-webkit-overflow-scrolling:touch;}
-  .testimonial-card{min-width:280px;flex-shrink:0;scroll-snap-align:start;padding:24px 20px;}
-  .testimonial-text{font-size:.85rem;margin-bottom:14px;}
+  /* Testimonials: compact vertical */
+  .testimonials-grid{grid-template-columns:1fr;gap:12px;}
+  .testimonial-card{padding:20px 18px;display:flex;gap:14px;align-items:flex-start;}
+  .testimonial-card .testimonial-stars{display:none;}
+  .testimonial-text{font-size:.84rem;margin-bottom:10px;line-height:1.6;}
+  .testimonial-avatar{width:36px;height:36px;font-size:.75rem;flex-shrink:0;}
+  .testimonial-card .t-body{flex:1;min-width:0;}
 
   /* Integrations badges */
   .int-row{gap:10px;}.int-badge{padding:10px 16px;font-size:.82rem;}
@@ -420,27 +422,27 @@ h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.1;letter-spa
     </div>
     <div class="testimonials-grid">
       <div class="testimonial-card fi">
-        <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="testimonial-text">"Seit Call Lana verpassen wir keinen einzigen Anruf mehr. Die Terminbuchung läuft vollautomatisch — unsere Patienten sind begeistert."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">SM</div>
-          <div><div class="testimonial-name">Dr. Sarah Müller</div><div class="testimonial-role">Zahnärztin, München</div></div>
+        <div class="testimonial-avatar">SM</div>
+        <div class="t-body">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testimonial-text">"Seit Call Lana verpassen wir keinen einzigen Anruf mehr. Die Terminbuchung läuft vollautomatisch — unsere Patienten sind begeistert."</p>
+          <div class="testimonial-name">Dr. Sarah Müller</div><div class="testimonial-role">Zahnärztin, München</div>
         </div>
       </div>
       <div class="testimonial-card fi">
-        <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="testimonial-text">"Die Lead-Qualifizierung per Telefon hat unsere Conversion um 34% gesteigert. Absolute Game-Changer für unser Sales-Team."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">TW</div>
-          <div><div class="testimonial-name">Thomas Weber</div><div class="testimonial-role">CEO, DCR-Agentur</div></div>
+        <div class="testimonial-avatar">TW</div>
+        <div class="t-body">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testimonial-text">"Die Lead-Qualifizierung per Telefon hat unsere Conversion um 34% gesteigert. Absolute Game-Changer für unser Sales-Team."</p>
+          <div class="testimonial-name">Thomas Weber</div><div class="testimonial-role">CEO, DCR-Agentur</div>
         </div>
       </div>
       <div class="testimonial-card fi">
-        <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="testimonial-text">"Setup in 20 Minuten, läuft seitdem fehlerfrei. Endlich kann ich mich auf mein Handwerk konzentrieren statt ans Telefon."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">MK</div>
-          <div><div class="testimonial-name">Michael Klein</div><div class="testimonial-role">Elektroinstallateur</div></div>
+        <div class="testimonial-avatar">MK</div>
+        <div class="t-body">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testimonial-text">"Setup in 20 Minuten, läuft seitdem fehlerfrei. Endlich kann ich mich auf mein Handwerk konzentrieren statt ans Telefon."</p>
+          <div class="testimonial-name">Michael Klein</div><div class="testimonial-role">Elektroinstallateur</div>
         </div>
       </div>
     </div>
