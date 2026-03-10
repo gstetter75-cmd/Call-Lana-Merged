@@ -2146,7 +2146,7 @@ async function loadTransactions() {
       return `<tr>
         <td>${new Date(tx.created_at).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>
         <td><span class="status-badge ${isPositive ? 'completed' : 'active'}">${typeLabels[tx.type] || tx.type}</span></td>
-        <td>${tx.description || '–'}</td>
+        <td>${escHtml(tx.description || '–')}</td>
         <td style="font-weight:700;color:${amountColor};">${prefix}${formatCents(Math.abs(tx.amount_cents))}</td>
         <td style="color:var(--tx3);">${tx.balance_after_cents != null ? formatCents(tx.balance_after_cents) : '–'}</td>
       </tr>`;
@@ -2241,8 +2241,8 @@ async function loadIntegrations() {
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
             <span style="font-size:1.2rem;">${int.icon || '🔗'}</span>
             <div style="flex:1;">
-              <div style="font-size:13px;font-weight:700;">${c.provider_label}</div>
-              <div style="font-size:11px;color:var(--tx3);">${c.category}</div>
+              <div style="font-size:13px;font-weight:700;">${escHtml(c.provider_label)}</div>
+              <div style="font-size:11px;color:var(--tx3);">${escHtml(c.category)}</div>
             </div>
             <span class="status-badge ${c.status === 'connected' ? 'completed' : 'missed'}">${c.status === 'connected' ? 'Verbunden' : c.status}</span>
           </div>
@@ -2287,11 +2287,11 @@ async function loadContacts() {
     }
 
     tbody.innerHTML = data.map(c => `<tr>
-      <td style="font-weight:600;">${c.first_name || ''} ${c.last_name || ''}</td>
-      <td>${c.company || '–'}</td>
-      <td style="font-family:monospace;font-size:12px;">${c.phone || '–'}</td>
-      <td>${c.email || '–'}</td>
-      <td><span class="status-badge active">${c.source}</span></td>
+      <td style="font-weight:600;">${escHtml(c.first_name || '')} ${escHtml(c.last_name || '')}</td>
+      <td>${escHtml(c.company || '–')}</td>
+      <td style="font-family:monospace;font-size:12px;">${escHtml(c.phone || '–')}</td>
+      <td>${escHtml(c.email || '–')}</td>
+      <td><span class="status-badge active">${escHtml(c.source)}</span></td>
       <td>${c.vip ? '⭐' : '–'}</td>
     </tr>`).join('');
   } catch (err) {
@@ -2336,6 +2336,12 @@ function handleCsvFile(input) {
   const file = input.files[0];
   if (!file) return;
 
+  if (file.size > 5 * 1024 * 1024) {
+    showToast('CSV-Datei darf maximal 5 MB gross sein.', true);
+    input.value = '';
+    return;
+  }
+
   const reader = new FileReader();
   reader.onload = function(e) {
     const text = e.target.result;
@@ -2349,6 +2355,12 @@ function handleCsvFile(input) {
       headers.forEach((h, i) => { obj[h.toLowerCase()] = values[i] || ''; });
       return obj;
     }).filter(row => Object.values(row).some(v => v));
+
+    if (csvParsedData.length > 5000) {
+      showToast('Maximal 5.000 Zeilen erlaubt. Die Datei enthält ' + csvParsedData.length + ' Zeilen.', true);
+      csvParsedData = [];
+      return;
+    }
 
     document.getElementById('csvRowCount').textContent = csvParsedData.length;
     document.getElementById('csvPreview').style.display = 'block';
@@ -2368,6 +2380,11 @@ function handleCsvFile(input) {
   reader.readAsText(file);
 }
 
+function stripHtml(str) {
+  if (!str) return str;
+  return str.replace(/<[^>]*>/g, '').trim();
+}
+
 async function importCsvContacts() {
   if (csvParsedData.length === 0) return;
 
@@ -2381,13 +2398,13 @@ async function importCsvContacts() {
   try {
     const contacts = csvParsedData.map(row => ({
       user_id: user.id,
-      first_name: row.vorname || row.first_name || row.firstname || '',
-      last_name: row.nachname || row.last_name || row.lastname || '',
-      company: row.firma || row.company || row.unternehmen || '',
-      phone: row.telefon || row.phone || row.tel || row.nummer || '',
-      email: row.email || row['e-mail'] || '',
+      first_name: stripHtml(row.vorname || row.first_name || row.firstname || ''),
+      last_name: stripHtml(row.nachname || row.last_name || row.lastname || ''),
+      company: stripHtml(row.firma || row.company || row.unternehmen || ''),
+      phone: stripHtml(row.telefon || row.phone || row.tel || row.nummer || ''),
+      email: stripHtml(row.email || row['e-mail'] || ''),
       source: 'csv_import',
-      notes: row.notizen || row.notes || ''
+      notes: stripHtml(row.notizen || row.notes || '')
     }));
 
     const { error } = await supabaseClient.from('customer_contacts').insert(contacts);

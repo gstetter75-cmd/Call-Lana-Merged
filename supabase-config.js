@@ -840,6 +840,15 @@ const db = {
 
   async submitContactForm(formData) {
     try {
+      // Validate required fields
+      if (!formData.name || formData.name.trim().length < 2) throw new Error('Name is required');
+      if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) throw new Error('Valid email is required');
+
+      // Client-side rate limit
+      const lastSubmit = parseInt(sessionStorage.getItem('lastContactSubmit') || '0');
+      if (Date.now() - lastSubmit < 30000) throw new Error('Please wait before submitting again');
+      sessionStorage.setItem('lastContactSubmit', Date.now().toString());
+
       // Save as lead (no auth required for public form)
       const { data, error } = await supabaseClient
         .from('leads')
