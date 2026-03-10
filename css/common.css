@@ -38,8 +38,7 @@ body {
 .sidebar { width: var(--sidebar-w); background: var(--sidebar); border-right: 1px solid var(--border); display: flex; flex-direction: column; height: 100vh; flex-shrink: 0; position: relative; z-index: 10; transition: transform .3s; }
 .sb-top { padding: 20px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
 .sb-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
-.sb-logo-mark { width: 32px; height: 32px; background: linear-gradient(135deg, var(--pu), var(--pu3)); border-radius: 9px; display: flex; align-items: center; justify-content: center; color: white; font-family: 'Syne', sans-serif; font-size: .95rem; font-weight: 700; box-shadow: 0 0 14px rgba(124,58,237,.4); }
-.sb-logo-name { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: var(--tx); }
+.sb-logo img { display: block; height: auto; }
 .sb-close { display: none; background: none; border: none; color: var(--tx3); font-size: 1.2rem; cursor: pointer; padding: 4px; }
 .sb-nav { flex: 1; padding: 16px 8px; overflow-y: auto; }
 .sb-section { margin-bottom: 20px; }
