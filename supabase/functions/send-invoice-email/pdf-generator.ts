@@ -101,7 +101,7 @@ export async function generateInvoicePdf(
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
-  const page = pdfDoc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
+  let page = pdfDoc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
   let y = PAGE_HEIGHT - 56; // Start from top
 
   const rightEdge = PAGE_WIDTH - MARGIN_RIGHT;
@@ -244,9 +244,7 @@ export async function generateInvoicePdf(
   for (const item of items) {
     // Check if we need a new page
     if (y < 120) {
-      const newPage = pdfDoc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
-      // For simplicity, continue on same page reference
-      // In production, you'd track and draw on newPage
+      page = pdfDoc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
       y = PAGE_HEIGHT - 60;
     }
 

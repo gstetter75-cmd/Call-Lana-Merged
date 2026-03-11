@@ -783,28 +783,12 @@ async function confirmTopup() {
   if (!user) { showToast('Nicht angemeldet.', true); btn.disabled = false; updateTopupButton(); return; }
 
   try {
-    // Get current balance
-    const { data: account, error: accErr } = await supabaseClient
-      .from('subscriptions').select('balance_cents').eq('user_id', user.id).single();
-    if (accErr) throw accErr;
-
-    const newBalance = (account?.balance_cents || 0) + amount;
-
-    // Update balance
-    const { error: updErr } = await supabaseClient
-      .from('subscriptions')
-      .update({ balance_cents: newBalance })
-      .eq('user_id', user.id);
-    if (updErr) throw updErr;
-
-    // Log transaction
-    await supabaseClient.from('billing_transactions').insert([{
-      user_id: user.id,
-      type: 'topup',
-      amount_cents: amount,
-      balance_after_cents: newBalance,
-      description: 'Guthaben aufgeladen: ' + formatCents(amount)
-    }]);
+    // Atomic balance topup via PostgreSQL function (prevents race conditions)
+    const { data, error } = await supabaseClient.rpc('atomic_balance_topup', {
+      p_user_id: currentUser.id,
+      p_amount_cents: amount
+    });
+    if (error) throw error;
 
     showToast('Guthaben aufgeladen: ' + formatCents(amount));
     closeTopupModal();
@@ -935,7 +919,7 @@ async function loadBillingData() {
     // Load transactions
     await loadTransactions();
   } catch (err) {
-    // Billing account might not exist yet
+    Logger.warn('loadBillingData', 'Billing account might not exist yet', err);
   }
 }
 
@@ -983,7 +967,7 @@ async function loadTransactions() {
       </tr>`;
     }).join('');
   } catch (err) {
-    // Table might not exist yet
+    Logger.warn('loadTransactions', 'Table might not exist yet', err);
   }
 }
 
@@ -1055,7 +1039,7 @@ async function loadIntegrations() {
 
     await loadContacts();
   } catch (err) {
-    // Tables might not exist yet
+    Logger.warn('loadIntegrations', 'Tables might not exist yet', err);
   }
 }
 
@@ -1086,7 +1070,7 @@ async function loadContacts() {
       <td>${c.vip ? '⭐' : '–'}</td>
     </tr>`).join('');
   } catch (err) {
-    // Table might not exist yet
+    Logger.warn('loadContacts', 'Table might not exist yet', err);
   }
 }
 
@@ -1439,7 +1423,7 @@ async function loadPaymentMethods() {
       }
     });
   } catch (err) {
-    // Table might not exist yet
+    Logger.warn('loadPaymentMethods', 'Table might not exist yet', err);
   }
 }
 

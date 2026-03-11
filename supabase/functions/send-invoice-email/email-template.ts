@@ -4,6 +4,19 @@
 // ==========================================
 
 /**
+ * Escape HTML special characters to prevent XSS.
+ */
+function escapeHtml(str: string | null | undefined): string {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+/**
  * Format cents to German EUR string.
  */
 function fmtCents(cents: number): string {
@@ -47,7 +60,8 @@ interface InvoiceSummary {
  */
 export function multiInvoiceEmailHtml(
   recipientName: string,
-  invoices: InvoiceSummary[]
+  invoices: InvoiceSummary[],
+  settings?: any
 ): string {
   const totalCents = invoices.reduce((sum, inv) => sum + (inv.gross_amount_cents || 0), 0);
 
@@ -56,7 +70,7 @@ export function multiInvoiceEmailHtml(
       (inv) => `
       <tr>
         <td style="padding:8px 12px;border-bottom:1px solid #eee;font-size:14px;color:#333;font-weight:600;">
-          ${inv.invoice_number}
+          ${escapeHtml(inv.invoice_number)}
         </td>
         <td style="padding:8px 12px;border-bottom:1px solid #eee;font-size:14px;color:#333;text-align:center;">
           ${fmtDate(inv.invoice_date)}
@@ -95,7 +109,7 @@ export function multiInvoiceEmailHtml(
 
               <!-- Greeting -->
               <p style="font-size:15px;color:#333;line-height:1.6;margin:0 0 20px 0;">
-                Guten Tag${recipientName ? " " + recipientName : ""},
+                Guten Tag${recipientName ? " " + escapeHtml(recipientName) : ""},
               </p>
               <p style="font-size:15px;color:#333;line-height:1.6;margin:0 0 24px 0;">
                 anbei erhalten Sie <strong>${invoices.length} Rechnungen</strong> von Call Lana.
@@ -159,7 +173,7 @@ export function multiInvoiceEmailHtml(
 </html>`;
 }
 
-export function invoiceEmailHtml(invoice: any, items: any[]): string {
+export function invoiceEmailHtml(invoice: any, items: any[], settings?: any): string {
   const netCents = invoice.net_amount_cents ?? 0;
   const taxCents = invoice.tax_amount_cents ?? 0;
   const grossCents = invoice.gross_amount_cents ?? 0;
@@ -170,10 +184,10 @@ export function invoiceEmailHtml(invoice: any, items: any[]): string {
       (item: any) => `
       <tr>
         <td style="padding:8px 12px;border-bottom:1px solid #eee;font-size:14px;color:#333;">
-          ${item.description || "\u2013"}
+          ${escapeHtml(item.description) || "\u2013"}
         </td>
         <td style="padding:8px 12px;border-bottom:1px solid #eee;font-size:14px;color:#333;text-align:center;">
-          ${item.quantity ?? 1} ${item.unit || "Stk."}
+          ${item.quantity ?? 1} ${escapeHtml(item.unit) || "Stk."}
         </td>
         <td style="padding:8px 12px;border-bottom:1px solid #eee;font-size:14px;color:#333;text-align:right;">
           ${fmtCents(item.net_amount_cents ?? 0)}
@@ -187,7 +201,7 @@ export function invoiceEmailHtml(invoice: any, items: any[]): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Rechnung ${invoice.invoice_number || ""}</title>
+  <title>Rechnung ${escapeHtml(invoice.invoice_number)}</title>
 </head>
 <body style="margin:0;padding:0;background-color:#f5f5f5;font-family:Arial,Helvetica,sans-serif;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f5f5f5;padding:24px 0;">
@@ -209,10 +223,10 @@ export function invoiceEmailHtml(invoice: any, items: any[]): string {
 
               <!-- Greeting -->
               <p style="font-size:15px;color:#333;line-height:1.6;margin:0 0 20px 0;">
-                Guten Tag${invoice.recipient_name ? " " + invoice.recipient_name : ""},
+                Guten Tag${invoice.recipient_name ? " " + escapeHtml(invoice.recipient_name) : ""},
               </p>
               <p style="font-size:15px;color:#333;line-height:1.6;margin:0 0 24px 0;">
-                anbei erhalten Sie Ihre Rechnung <strong>${invoice.invoice_number || ""}</strong>
+                anbei erhalten Sie Ihre Rechnung <strong>${escapeHtml(invoice.invoice_number)}</strong>
                 f\u00FCr den Leistungszeitraum
                 <strong>${fmtDate(invoice.period_start)} \u2013 ${fmtDate(invoice.period_end)}</strong>.
               </p>
@@ -224,7 +238,7 @@ export function invoiceEmailHtml(invoice: any, items: any[]): string {
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td style="font-size:13px;color:#666;padding-bottom:6px;">Rechnungsnr.</td>
-                        <td style="font-size:13px;color:#333;font-weight:600;padding-bottom:6px;text-align:right;">${invoice.invoice_number || "\u2013"}</td>
+                        <td style="font-size:13px;color:#333;font-weight:600;padding-bottom:6px;text-align:right;">${escapeHtml(invoice.invoice_number) || "\u2013"}</td>
                       </tr>
                       <tr>
                         <td style="font-size:13px;color:#666;padding-bottom:6px;">Datum</td>
@@ -289,19 +303,19 @@ export function invoiceEmailHtml(invoice: any, items: any[]): string {
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td style="font-size:13px;color:#666;padding-bottom:4px;width:140px;">IBAN:</td>
-                        <td style="font-size:13px;color:#333;font-weight:600;padding-bottom:4px;">DE94 1001 1001 2577 4557 38</td>
+                        <td style="font-size:13px;color:#333;font-weight:600;padding-bottom:4px;">${escapeHtml(settings?.iban || "")}</td>
                       </tr>
                       <tr>
                         <td style="font-size:13px;color:#666;padding-bottom:4px;">BIC:</td>
-                        <td style="font-size:13px;color:#333;font-weight:600;padding-bottom:4px;">NTSBDEB1XXX</td>
+                        <td style="font-size:13px;color:#333;font-weight:600;padding-bottom:4px;">${escapeHtml(settings?.bic || "")}</td>
                       </tr>
                       <tr>
                         <td style="font-size:13px;color:#666;padding-bottom:4px;">Bank:</td>
-                        <td style="font-size:13px;color:#333;font-weight:600;padding-bottom:4px;">N26</td>
+                        <td style="font-size:13px;color:#333;font-weight:600;padding-bottom:4px;">${escapeHtml(settings?.bank_name || "")}</td>
                       </tr>
                       <tr>
                         <td style="font-size:13px;color:#666;">Verwendungszweck:</td>
-                        <td style="font-size:13px;color:#333;font-weight:600;">${invoice.invoice_number || "\u2013"}</td>
+                        <td style="font-size:13px;color:#333;font-weight:600;">${escapeHtml(invoice.invoice_number) || "\u2013"}</td>
                       </tr>
                     </table>
                   </td>

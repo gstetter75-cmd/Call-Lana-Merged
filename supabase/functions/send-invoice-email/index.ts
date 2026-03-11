@@ -9,7 +9,7 @@ import { generateInvoicePdf } from "./pdf-generator.ts";
 import { invoiceEmailHtml, multiInvoiceEmailHtml } from "./email-template.ts";
 
 const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": Deno.env.get("ALLOWED_ORIGIN") || "https://call-lana.de",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -43,6 +43,66 @@ function createServiceClient() {
   return createClient(url, key, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
+}
+
+/**
+ * Authenticate the request. Accepts either:
+ * 1. Service role key (for DB triggers/cron jobs)
+ * 2. User JWT (for client-side "resend" button)
+ * Returns { authenticated: true, userId?: string } or { authenticated: false, error: string }
+ */
+async function authenticateRequest(
+  req: Request
+): Promise<{ authenticated: boolean; userId?: string; error?: string }> {
+  const authHeader = req.headers.get("authorization");
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return { authenticated: false, error: "Missing authorization header" };
+  }
+
+  const token = authHeader.replace("Bearer ", "");
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+  // Check if it's the service role key (DB triggers, cron)
+  if (token === serviceRoleKey) {
+    return { authenticated: true };
+  }
+
+  // Otherwise, try to validate as a user JWT
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY");
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return { authenticated: false, error: "Server configuration error" };
+  }
+
+  const userClient = createClient(supabaseUrl, supabaseAnonKey, {
+    global: { headers: { Authorization: `Bearer ${token}` } },
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+
+  const { data: { user }, error } = await userClient.auth.getUser();
+  if (error || !user) {
+    return { authenticated: false, error: "Invalid or expired token" };
+  }
+
+  return { authenticated: true, userId: user.id };
+}
+
+/**
+ * Verify that the authenticated user owns the given invoice(s).
+ */
+async function verifyInvoiceOwnership(
+  supabase: ReturnType<typeof createClient>,
+  userId: string,
+  invoiceIds: string[]
+): Promise<boolean> {
+  const { data, error } = await supabase
+    .from("invoices")
+    .select("id")
+    .in("id", invoiceIds)
+    .eq("user_id", userId);
+
+  if (error) return false;
+  return data?.length === invoiceIds.length;
 }
 
 /**
@@ -223,7 +283,7 @@ async function processSingleInvoice(
 
     // Build email
     const subject = `Ihre Rechnung ${invoice.invoice_number} \u2014 Call Lana`;
-    const htmlBody = invoiceEmailHtml(invoice, items);
+    const htmlBody = invoiceEmailHtml(invoice, items, settings);
     const fileName =
       `Rechnung_${(invoice.invoice_number || "Entwurf").replace(/[^a-zA-Z0-9_-]/g, "_")}.pdf`;
 
@@ -274,11 +334,28 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
+    // --- Authentication ---
+    const auth = await authenticateRequest(req);
+    if (!auth.authenticated) {
+      return new Response(
+        JSON.stringify({ error: auth.error || "Unauthorized" }),
+        { status: 401, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
+      );
+    }
+
     const body: InvoiceRequest = await req.json();
     const supabase = createServiceClient();
 
     // --- Batch mode: process all unsent draft invoices ---
     if (body.batch === true) {
+      // Only service role (no userId) may use batch mode
+      if (auth.userId) {
+        return new Response(
+          JSON.stringify({ error: "Batch mode is only available for service role" }),
+          { status: 403, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
+        );
+      }
+
       const { data: unsent, error } = await supabase
         .from("invoices")
         .select("id")
@@ -286,8 +363,9 @@ Deno.serve(async (req: Request) => {
         .eq("email_sent", false);
 
       if (error) {
+        console.error("Failed to query invoices:", error.message);
         return new Response(
-          JSON.stringify({ error: `Failed to query invoices: ${error.message}` }),
+          JSON.stringify({ error: "Failed to query invoices" }),
           { status: 500, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
         );
       }
@@ -296,6 +374,15 @@ Deno.serve(async (req: Request) => {
         return new Response(
           JSON.stringify({ message: "No unsent invoices found", results: [] }),
           { status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
+        );
+      }
+
+      // Rate limit: max 50 invoices per batch request
+      const MAX_BATCH_SIZE = 50;
+      if (unsent.length > MAX_BATCH_SIZE) {
+        return new Response(
+          JSON.stringify({ error: `Batch size exceeds limit of ${MAX_BATCH_SIZE} invoices` }),
+          { status: 400, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
         );
       }
 
@@ -318,6 +405,27 @@ Deno.serve(async (req: Request) => {
     // --- Multi-invoice mode: send multiple invoices in ONE email ---
     if (Array.isArray(body.invoice_ids) && body.invoice_ids.length > 0) {
       const invoiceIds: string[] = body.invoice_ids;
+
+      // Rate limit: max 20 invoices per multi-invoice request
+      const MAX_MULTI_SIZE = 20;
+      if (invoiceIds.length > MAX_MULTI_SIZE) {
+        return new Response(
+          JSON.stringify({ error: `Multi-invoice mode limited to ${MAX_MULTI_SIZE} invoices` }),
+          { status: 400, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
+        );
+      }
+
+      // If authenticated as user, verify ownership
+      if (auth.userId) {
+        const ownsAll = await verifyInvoiceOwnership(supabase, auth.userId, invoiceIds);
+        if (!ownsAll) {
+          return new Response(
+            JSON.stringify({ error: "Unauthorized: you do not own all specified invoices" }),
+            { status: 403, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
+          );
+        }
+      }
+
       const attachments: EmailAttachment[] = [];
       const invoiceSummaries: Array<{
         invoice_number: string;
@@ -327,14 +435,22 @@ Deno.serve(async (req: Request) => {
       }> = [];
       let recipientEmail = "";
       let recipientName = "";
+      let loadedSettings: any = null;
 
       // Load all invoices, generate PDFs, collect data
       for (const invId of invoiceIds) {
         const { invoice, items, settings } = await loadInvoiceData(supabase, invId);
+        if (!loadedSettings) loadedSettings = settings;
 
+        // Validate all invoices have the same recipient_email
         if (!recipientEmail && invoice.recipient_email) {
           recipientEmail = invoice.recipient_email;
           recipientName = invoice.recipient_name || "";
+        } else if (recipientEmail && invoice.recipient_email && invoice.recipient_email !== recipientEmail) {
+          return new Response(
+            JSON.stringify({ error: "All invoices must have the same recipient email address" }),
+            { status: 400, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
+          );
         }
 
         const pdfBytes = await generateInvoicePdf(invoice, items, settings);
@@ -358,7 +474,7 @@ Deno.serve(async (req: Request) => {
 
       // Build multi-invoice email
       const subject = "Ihre Rechnungen \u2014 Call Lana";
-      const htmlBody = multiInvoiceEmailHtml(recipientName, invoiceSummaries);
+      const htmlBody = multiInvoiceEmailHtml(recipientName, invoiceSummaries, loadedSettings);
 
       await sendViaResendMulti(recipientEmail, subject, htmlBody, attachments);
 
@@ -392,6 +508,17 @@ Deno.serve(async (req: Request) => {
       );
     }
 
+    // If authenticated as user, verify ownership
+    if (auth.userId) {
+      const ownsInvoice = await verifyInvoiceOwnership(supabase, auth.userId, [body.invoice_id]);
+      if (!ownsInvoice) {
+        return new Response(
+          JSON.stringify({ error: "Unauthorized: you do not own this invoice" }),
+          { status: 403, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
+        );
+      }
+    }
+
     // When called with a specific invoice_id, skip auto-check (manual trigger)
     const result = await processSingleInvoice(supabase, body.invoice_id, true);
 
@@ -411,10 +538,9 @@ Deno.serve(async (req: Request) => {
       { status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
     );
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error("Unhandled error:", message);
+    console.error("Unhandled error:", err instanceof Error ? err.message : String(err));
     return new Response(
-      JSON.stringify({ error: message }),
+      JSON.stringify({ error: "An internal error occurred. Please try again later." }),
       { status: 500, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
     );
   }

@@ -263,6 +263,9 @@ const db = {
 
   async getAllProfiles(filters = {}) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       let query = supabaseClient
         .from('profiles')
         .select('*, organizations(name, plan)')
@@ -285,6 +288,9 @@ const db = {
 
   async getOrganizations() {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const { data, error } = await supabaseClient
         .from('organizations')
         .select('*, profiles!organizations_owner_id_fkey(first_name, last_name, email)')
@@ -300,6 +306,9 @@ const db = {
 
   async getOrganization(id) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const { data, error } = await supabaseClient
         .from('organizations')
         .select('*, organization_members(*, profiles(first_name, last_name, email, role))')
@@ -316,6 +325,9 @@ const db = {
 
   async createOrganization(orgData) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const { data, error } = await supabaseClient
         .from('organizations')
         .insert([orgData])
@@ -332,6 +344,9 @@ const db = {
 
   async updateOrganization(id, updates) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const { data, error } = await supabaseClient
         .from('organizations')
         .update(updates)
@@ -351,6 +366,9 @@ const db = {
 
   async addOrgMember(orgId, userId, roleInOrg = 'member') {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const { data, error } = await supabaseClient
         .from('organization_members')
         .insert([{ organization_id: orgId, user_id: userId, role_in_org: roleInOrg }])
@@ -367,6 +385,9 @@ const db = {
 
   async removeOrgMember(orgId, userId) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const { error } = await supabaseClient
         .from('organization_members')
         .delete()
@@ -385,6 +406,9 @@ const db = {
 
   async getLeads(filters = {}) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       let query = supabaseClient
         .from('leads')
         .select('*, profiles!leads_assigned_to_fkey(first_name, last_name)')
@@ -405,6 +429,9 @@ const db = {
 
   async getLead(id) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const { data, error } = await supabaseClient
         .from('leads')
         .select('*, profiles!leads_assigned_to_fkey(first_name, last_name, email), notes(*, profiles!notes_author_id_fkey(first_name, last_name))')
@@ -421,6 +448,9 @@ const db = {
 
   async createLead(leadData) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const { data, error } = await supabaseClient
         .from('leads')
         .insert([leadData])
@@ -437,6 +467,9 @@ const db = {
 
   async updateLead(id, updates) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const { data, error } = await supabaseClient
         .from('leads')
         .update(updates)
@@ -454,6 +487,9 @@ const db = {
 
   async deleteLead(id) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const { error } = await supabaseClient
         .from('leads')
         .delete()
@@ -471,6 +507,9 @@ const db = {
 
   async getTasks(filters = {}) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       let query = supabaseClient
         .from('tasks')
         .select('*, profiles!tasks_assigned_to_fkey(first_name, last_name), leads(company_name)')
@@ -511,6 +550,9 @@ const db = {
 
   async updateTask(id, updates) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const { data, error } = await supabaseClient
         .from('tasks')
         .update(updates)
@@ -587,6 +629,9 @@ const db = {
 
   async getAvailability(userId, startDate, endDate) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       let query = supabaseClient
         .from('availability')
         .select('*, profiles!availability_user_id_fkey(first_name, last_name)')
@@ -664,6 +709,9 @@ const db = {
 
   async getMessages(conversationId, limit = 100) {
     try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const { data, error } = await supabaseClient
         .from('messages')
         .select('*, profiles!messages_sender_id_fkey(first_name, last_name, role)')
