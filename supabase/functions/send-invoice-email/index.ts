@@ -6,7 +6,7 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { generateInvoicePdf } from "./pdf-generator.ts";
-import { invoiceEmailHtml } from "./email-template.ts";
+import { invoiceEmailHtml, multiInvoiceEmailHtml } from "./email-template.ts";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -17,6 +17,7 @@ const CORS_HEADERS = {
 
 interface InvoiceRequest {
   invoice_id?: string;
+  invoice_ids?: string[];
   batch?: boolean;
 }
 
@@ -93,8 +94,26 @@ async function loadInvoiceData(
   };
 }
 
+interface EmailAttachment {
+  filename: string;
+  content: string; // base64
+  content_type: string;
+}
+
 /**
- * Send an email with PDF attachment via Resend API.
+ * Convert PDF bytes to a Resend-compatible attachment object.
+ */
+function pdfToAttachment(pdfBytes: Uint8Array, fileName: string): EmailAttachment {
+  const pdfBase64 = btoa(String.fromCharCode(...pdfBytes));
+  return {
+    filename: fileName,
+    content: pdfBase64,
+    content_type: "application/pdf",
+  };
+}
+
+/**
+ * Send an email with one or more PDF attachments via Resend API.
  */
 async function sendViaResend(
   to: string,
@@ -103,16 +122,25 @@ async function sendViaResend(
   pdfBytes: Uint8Array,
   fileName: string
 ): Promise<void> {
+  await sendViaResendMulti(to, subject, htmlBody, [
+    pdfToAttachment(pdfBytes, fileName),
+  ]);
+}
+
+/**
+ * Send an email with multiple attachments via Resend API.
+ */
+async function sendViaResendMulti(
+  to: string,
+  subject: string,
+  htmlBody: string,
+  attachments: EmailAttachment[]
+): Promise<void> {
   const apiKey = Deno.env.get("RESEND_API_KEY");
   if (!apiKey) throw new Error("Missing RESEND_API_KEY");
 
   const fromAddress =
     Deno.env.get("INVOICE_FROM_EMAIL") || "Call Lana <rechnung@call-lana.de>";
-
-  // Convert PDF bytes to base64 for Resend attachment
-  const pdfBase64 = btoa(
-    String.fromCharCode(...pdfBytes)
-  );
 
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -125,13 +153,7 @@ async function sendViaResend(
       to: [to],
       subject,
       html: htmlBody,
-      attachments: [
-        {
-          filename: fileName,
-          content: pdfBase64,
-          content_type: "application/pdf",
-        },
-      ],
+      attachments,
     }),
   });
 
@@ -289,6 +311,75 @@ Deno.serve(async (req: Request) => {
 
       return new Response(
         JSON.stringify({ message: `Batch complete: ${sent} sent, ${failed} skipped/failed`, results }),
+        { status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
+      );
+    }
+
+    // --- Multi-invoice mode: send multiple invoices in ONE email ---
+    if (Array.isArray(body.invoice_ids) && body.invoice_ids.length > 0) {
+      const invoiceIds: string[] = body.invoice_ids;
+      const attachments: EmailAttachment[] = [];
+      const invoiceSummaries: Array<{
+        invoice_number: string;
+        invoice_date: string;
+        gross_amount_cents: number;
+        recipient_name: string;
+      }> = [];
+      let recipientEmail = "";
+      let recipientName = "";
+
+      // Load all invoices, generate PDFs, collect data
+      for (const invId of invoiceIds) {
+        const { invoice, items, settings } = await loadInvoiceData(supabase, invId);
+
+        if (!recipientEmail && invoice.recipient_email) {
+          recipientEmail = invoice.recipient_email;
+          recipientName = invoice.recipient_name || "";
+        }
+
+        const pdfBytes = await generateInvoicePdf(invoice, items, settings);
+        const safeNumber = (invoice.invoice_number || "Entwurf").replace(/[^a-zA-Z0-9_-]/g, "_");
+        attachments.push(pdfToAttachment(pdfBytes, `${safeNumber}.pdf`));
+
+        invoiceSummaries.push({
+          invoice_number: invoice.invoice_number || "\u2013",
+          invoice_date: invoice.invoice_date,
+          gross_amount_cents: invoice.gross_amount_cents ?? invoice.total_gross_cents ?? 0,
+          recipient_name: invoice.recipient_name || "",
+        });
+      }
+
+      if (!recipientEmail) {
+        return new Response(
+          JSON.stringify({ error: "No recipient email found on any of the selected invoices" }),
+          { status: 422, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
+        );
+      }
+
+      // Build multi-invoice email
+      const subject = "Ihre Rechnungen \u2014 Call Lana";
+      const htmlBody = multiInvoiceEmailHtml(recipientName, invoiceSummaries);
+
+      await sendViaResendMulti(recipientEmail, subject, htmlBody, attachments);
+
+      // Mark all invoices as sent
+      const results: SendResult[] = [];
+      for (const invId of invoiceIds) {
+        try {
+          await markInvoiceSent(supabase, invId);
+          results.push({ invoice_id: invId, invoice_number: "", success: true });
+        } catch (err) {
+          const msg = err instanceof Error ? err.message : String(err);
+          results.push({ invoice_id: invId, invoice_number: "", success: false, error: msg });
+        }
+      }
+
+      const sent = results.filter((r) => r.success).length;
+      return new Response(
+        JSON.stringify({
+          message: `${sent} Rechnungen in einer E-Mail gesendet`,
+          results,
+        }),
         { status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
       );
     }

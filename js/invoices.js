@@ -34,7 +34,8 @@ function renderInvoiceTable(invoices) {
 
   if (!invoices || invoices.length === 0) {
     tableBody.innerHTML =
-      '<tr><td colspan="6" style="text-align:center;color:var(--tx3);padding:30px;">Keine Rechnungen vorhanden</td></tr>';
+      '<tr><td colspan="7" style="text-align:center;color:var(--tx3);padding:30px;">Keine Rechnungen vorhanden</td></tr>';
+    updateSelectionBar();
     return;
   }
 
@@ -45,6 +46,7 @@ function renderInvoiceTable(invoices) {
     const period = periodStart && periodEnd ? `${periodStart} – ${periodEnd}` : '–';
 
     return `<tr>
+      <td style="text-align:center;"><input type="checkbox" class="invoice-checkbox" data-invoice-id="${inv.id}" onchange="toggleInvoiceSelect(this)" style="cursor:pointer;width:16px;height:16px;accent-color:var(--pu);"></td>
       <td style="font-weight:600;">${escapeHtml(inv.invoice_number || '–')}</td>
       <td>${invoiceDate || '–'}</td>
       <td>${period}</td>
@@ -62,6 +64,11 @@ function renderInvoiceTable(invoices) {
       </td>
     </tr>`;
   }).join('');
+
+  // Reset select-all checkbox and selection bar after re-render
+  const selectAllCb = document.getElementById('selectAllInvoices');
+  if (selectAllCb) selectAllCb.checked = false;
+  updateSelectionBar();
 }
 
 /**
@@ -158,6 +165,159 @@ async function downloadInvoicePdf(invoiceId) {
     Logger.error('downloadInvoicePdf', err);
     if (typeof showToast === 'function') {
       showToast('PDF konnte nicht erstellt werden: ' + (err.message || err), true);
+    }
+  }
+}
+
+// ==========================================
+// MULTI-SELECT INVOICE FUNCTIONS
+// ==========================================
+
+/**
+ * Toggle individual invoice checkbox selection.
+ * Updates the select-all checkbox state and the selection bar.
+ * @param {HTMLInputElement} checkbox - The toggled checkbox
+ */
+function toggleInvoiceSelect(checkbox) {
+  const allCheckboxes = document.querySelectorAll('.invoice-checkbox');
+  const selectAllCb = document.getElementById('selectAllInvoices');
+
+  if (selectAllCb) {
+    const allChecked = [...allCheckboxes].every(cb => cb.checked);
+    const someChecked = [...allCheckboxes].some(cb => cb.checked);
+    selectAllCb.checked = allChecked;
+    selectAllCb.indeterminate = someChecked && !allChecked;
+  }
+
+  updateSelectionBar();
+}
+
+/**
+ * Select or deselect all invoice checkboxes.
+ * @param {HTMLInputElement} checkbox - The select-all checkbox
+ */
+function toggleAllInvoices(checkbox) {
+  const allCheckboxes = document.querySelectorAll('.invoice-checkbox');
+  allCheckboxes.forEach(cb => { cb.checked = checkbox.checked; });
+  updateSelectionBar();
+}
+
+/**
+ * Return an array of selected invoice IDs.
+ * @returns {string[]} Array of UUID strings
+ */
+function getSelectedInvoiceIds() {
+  const checked = document.querySelectorAll('.invoice-checkbox:checked');
+  return [...checked].map(cb => cb.getAttribute('data-invoice-id'));
+}
+
+/**
+ * Show or hide the floating selection action bar based on how many invoices are selected.
+ */
+function updateSelectionBar() {
+  const bar = document.getElementById('invoiceSelectionBar');
+  const countSpan = document.getElementById('invoiceSelectionCount');
+  if (!bar) return;
+
+  const ids = getSelectedInvoiceIds();
+  const count = ids.length;
+
+  if (count > 0) {
+    bar.style.display = 'flex';
+    if (countSpan) {
+      countSpan.textContent = count === 1
+        ? '1 Rechnung ausgewählt'
+        : `${count} Rechnungen ausgewählt`;
+    }
+  } else {
+    bar.style.display = 'none';
+  }
+}
+
+/**
+ * Send all selected invoices in a single email with multiple PDF attachments.
+ * Calls the Edge Function with { invoice_ids: [...] }.
+ */
+async function sendSelectedInvoices() {
+  const ids = getSelectedInvoiceIds();
+  if (ids.length === 0) return;
+
+  const label = ids.length === 1 ? '1 Rechnung' : `${ids.length} Rechnungen`;
+  const confirmed = confirm(`${label} per E-Mail senden?`);
+  if (!confirmed) return;
+
+  try {
+    if (typeof showToast === 'function') {
+      showToast(`${label} werden gesendet...`);
+    }
+
+    const { data: sessionData } = await supabaseClient.auth.getSession();
+    const accessToken = sessionData?.session?.access_token;
+
+    if (!accessToken) {
+      throw new Error('Nicht angemeldet. Bitte erneut einloggen.');
+    }
+
+    const supabaseUrl = supabaseClient.supabaseUrl || SUPABASE_URL;
+    const edgeFunctionUrl = supabaseUrl + '/functions/v1/send-invoice-email';
+
+    const response = await fetch(edgeFunctionUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken,
+      },
+      body: JSON.stringify({ invoice_ids: ids }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || 'Fehler beim Senden der Rechnungen');
+    }
+
+    if (typeof showToast === 'function') {
+      showToast(`${label} erfolgreich gesendet!`);
+    }
+
+    await loadInvoices();
+  } catch (err) {
+    Logger.error('sendSelectedInvoices', err);
+    if (typeof showToast === 'function') {
+      showToast('E-Mail konnte nicht gesendet werden: ' + (err.message || err), true);
+    }
+  }
+}
+
+/**
+ * Download all selected invoices as individual PDF files.
+ */
+async function downloadSelectedInvoices() {
+  const ids = getSelectedInvoiceIds();
+  if (ids.length === 0) return;
+
+  if (typeof showToast === 'function') {
+    showToast(`${ids.length} PDF(s) werden erstellt...`);
+  }
+
+  let successCount = 0;
+  let errorCount = 0;
+
+  for (const id of ids) {
+    try {
+      await downloadInvoicePdf(id);
+      successCount++;
+    } catch (err) {
+      Logger.error('downloadSelectedInvoices', err);
+      errorCount++;
+    }
+  }
+
+  if (typeof showToast === 'function') {
+    if (errorCount === 0) {
+      showToast(`${successCount} PDF(s) heruntergeladen.`);
+    } else {
+      showToast(`${successCount} heruntergeladen, ${errorCount} fehlgeschlagen.`, true);
     }
   }
 }
