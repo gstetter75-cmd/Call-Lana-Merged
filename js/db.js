@@ -1221,6 +1221,95 @@ const db = {
 
   // ====== CRM: Bulk Import ======
 
+  // ====== Lead Scoring ======
+
+  calculateLeadScore(lead) {
+    let score = 0;
+    const factors = {};
+
+    // Industry (max 20)
+    const highValueIndustries = ['handwerk', 'immobilien', 'recht', 'gesundheit'];
+    const medValueIndustries = ['auto', 'dienstleistung', 'it'];
+    if (highValueIndustries.includes(lead.industry)) { score += 20; factors.industry = 20; }
+    else if (medValueIndustries.includes(lead.industry)) { score += 15; factors.industry = 15; }
+    else if (lead.industry) { score += 10; factors.industry = 10; }
+
+    // Value (max 30)
+    const val = Number(lead.value) || 0;
+    if (val >= 5000) { score += 30; factors.value = 30; }
+    else if (val >= 2000) { score += 20; factors.value = 20; }
+    else if (val >= 500) { score += 10; factors.value = 10; }
+
+    // Completeness (max 20)
+    let complete = 0;
+    if (lead.email) complete += 5;
+    if (lead.phone) complete += 5;
+    if (lead.contact_name) complete += 5;
+    if (lead.industry) complete += 5;
+    score += complete;
+    factors.completeness = complete;
+
+    // Activity / Recency (max 30)
+    if (lead.updated_at) {
+      const daysSince = (Date.now() - new Date(lead.updated_at).getTime()) / 86400000;
+      if (daysSince < 3) { score += 30; factors.recency = 30; }
+      else if (daysSince < 7) { score += 25; factors.recency = 25; }
+      else if (daysSince < 14) { score += 15; factors.recency = 15; }
+      else if (daysSince < 30) { score += 5; factors.recency = 5; }
+    }
+
+    return { score: Math.min(score, 100), factors };
+  },
+
+  async updateLeadScore(leadId, lead) {
+    try {
+      const { score, factors } = this.calculateLeadScore(lead);
+      await supabaseClient.from('leads').update({ score, score_factors: factors }).eq('id', leadId);
+      return { success: true, score };
+    } catch (error) {
+      Logger.error('db.updateLeadScore', error);
+      return { success: false };
+    }
+  },
+
+  // ====== Email Templates ======
+
+  async getEmailTemplates() {
+    try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+      const { data, error } = await supabaseClient.from('email_templates').select('*').order('category');
+      if (error) throw error;
+      return { success: true, data: data || [] };
+    } catch (error) {
+      Logger.error('db.getEmailTemplates', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  // ====== Onboarding ======
+
+  async getOnboardingProgress(userId) {
+    try {
+      const { data, error } = await supabaseClient.from('onboarding_progress').select('step_key, completed_at').eq('user_id', userId);
+      if (error) throw error;
+      return { success: true, data: data || [] };
+    } catch (error) {
+      Logger.error('db.getOnboardingProgress', error);
+      return { success: true, data: [] };
+    }
+  },
+
+  async completeOnboardingStep(userId, stepKey) {
+    try {
+      await supabaseClient.from('onboarding_progress').upsert({ user_id: userId, step_key: stepKey, completed_at: new Date().toISOString() }, { onConflict: 'user_id,step_key' });
+      return { success: true };
+    } catch (error) {
+      Logger.error('db.completeOnboardingStep', error);
+      return { success: false };
+    }
+  },
+
   // ====== Duplicate Detection ======
 
   async checkDuplicate(email) {

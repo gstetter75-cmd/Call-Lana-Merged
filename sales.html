@@ -121,6 +121,19 @@
         <div class="card" style="margin-bottom:24px;padding:16px 20px;" id="conversion-funnel"></div>
 
         <div class="kanban-board" id="pipeline-board"></div>
+
+        <!-- Won vs Lost Chart -->
+        <div class="card" style="margin-top:24px;padding:16px 20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <h3 style="margin:0;font-size:14px;">Gewonnen vs. Verloren</h3>
+            <select class="form-input form-select" id="pipeline-period" style="width:140px;font-size:12px;" onchange="renderWonLostChart()">
+              <option value="30">Letzte 30 Tage</option>
+              <option value="90">Letzte 90 Tage</option>
+              <option value="365">Dieses Jahr</option>
+            </select>
+          </div>
+          <div id="won-lost-chart" style="display:flex;align-items:end;gap:4px;height:120px;"></div>
+        </div>
       </div>
 
       <!-- LEADS LIST -->
@@ -693,6 +706,13 @@ async function loadLeads() {
   const result = await clanaDB.getLeads();
   if (!result.success) { Components.toast('Fehler beim Laden der Leads', 'error'); return; }
   allLeads = result.data || [];
+  // Auto-calculate scores for leads without score
+  allLeads.forEach(l => {
+    if (!l.score) {
+      const { score } = clanaDB.calculateLeadScore(l);
+      l.score = score;
+    }
+  });
   renderPipeline();
   renderLeadsTable();
   updateLeadStats();
@@ -710,7 +730,10 @@ function renderPipeline() {
         </div>
         ${stageLeads.length ? stageLeads.map(lead => `
           <div class="kanban-card" draggable="true" ondragstart="event.dataTransfer.setData('text/plain','${lead.id}')" onclick="viewLead('${lead.id}')">
-            <div class="kanban-card-title">${clanaUtils.sanitizeHtml(lead.company_name)}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div class="kanban-card-title">${clanaUtils.sanitizeHtml(lead.company_name)}</div>
+              ${lead.score ? `<span style="font-size:10px;font-weight:700;padding:2px 6px;border-radius:6px;background:${lead.score>=70?'#10b98122':lead.score>=40?'#f59e0b22':'#ef444422'};color:${lead.score>=70?'#10b981':lead.score>=40?'#f59e0b':'#ef4444'};">${lead.score}</span>` : ''}
+            </div>
             ${lead.value ? `<div class="lead-value">${Number(lead.value).toLocaleString('de-DE')} €</div>` : ''}
             ${lead.contact_name ? `<div class="lead-contact">${clanaUtils.sanitizeHtml(lead.contact_name)}</div>` : ''}
           </div>
@@ -780,6 +803,7 @@ function renderLeadsTable() {
         <td><span class="badge" style="background:${stageInfo.color}22;color:${stageInfo.color}">${stageInfo.label}</span></td>
         <td>${l.value ? Number(l.value).toLocaleString('de-DE') + ' €' : '—'}</td>
         <td>${l.profiles ? `${l.profiles.first_name || ''} ${l.profiles.last_name || ''}` : '—'}</td>
+        <td>${l.score ? `<span style="font-weight:700;color:${l.score>=70?'#10b981':l.score>=40?'#f59e0b':'#ef4444'}">${l.score}</span>` : '—'}</td>
         <td>${clanaUtils.formatDate(l.created_at)}</td>
         <td><button class="btn btn-sm btn-outline" onclick="viewLead('${l.id}')">Details</button></td>
       </tr>
@@ -800,6 +824,84 @@ function updateLeadStats() {
 
   // Conversion Funnel
   renderFunnel();
+  renderWonLostChart();
+}
+
+function renderWonLostChart() {
+  const container = document.getElementById('won-lost-chart');
+  if (!container) return;
+  const days = Number(document.getElementById('pipeline-period')?.value || 30);
+  const cutoff = new Date(Date.now() - days * 86400000);
+
+  const recent = allLeads.filter(l => new Date(l.updated_at || l.created_at) >= cutoff);
+  const won = recent.filter(l => l.status === 'won');
+  const lost = recent.filter(l => l.status === 'lost');
+  const wonVal = won.reduce((s, l) => s + (Number(l.value) || 0), 0);
+  const lostVal = lost.reduce((s, l) => s + (Number(l.value) || 0), 0);
+  const maxVal = Math.max(wonVal, lostVal, 1);
+
+  container.innerHTML = `
+    <div style="flex:1;text-align:center;">
+      <div style="background:#10b981;border-radius:8px 8px 0 0;height:${Math.round((wonVal / maxVal) * 100)}px;margin:0 auto;width:60%;min-height:4px;transition:height .3s;"></div>
+      <div style="margin-top:8px;font-size:12px;font-weight:700;color:#10b981;">${won.length} Won</div>
+      <div style="font-size:11px;color:var(--tx3);">${wonVal.toLocaleString('de-DE')} €</div>
+    </div>
+    <div style="flex:1;text-align:center;">
+      <div style="background:#ef4444;border-radius:8px 8px 0 0;height:${Math.round((lostVal / maxVal) * 100)}px;margin:0 auto;width:60%;min-height:4px;transition:height .3s;"></div>
+      <div style="margin-top:8px;font-size:12px;font-weight:700;color:#ef4444;">${lost.length} Lost</div>
+      <div style="font-size:11px;color:var(--tx3);">${lostVal.toLocaleString('de-DE')} €</div>
+    </div>
+  `;
+}
+
+// Email Template quick-action
+async function openEmailTemplate(leadOrCustomer) {
+  const result = await clanaDB.getEmailTemplates();
+  if (!result.success || !result.data?.length) {
+    Components.toast('Keine E-Mail-Templates vorhanden', 'info');
+    return;
+  }
+  const templates = result.data;
+  const name = leadOrCustomer.contact_name || '';
+  const firma = leadOrCustomer.company_name || '';
+  const branche = CONFIG.getIndustryLabel(leadOrCustomer.industry);
+  const plan = CONFIG.getPlanLabel(leadOrCustomer.plan || 'starter');
+  const preis = CONFIG.getPlanPrice(leadOrCustomer.plan || 'starter');
+
+  // Show template picker
+  const list = templates.map(t => `<div style="padding:10px;border:1px solid var(--border);border-radius:8px;cursor:pointer;margin-bottom:6px;transition:background .15s;" onmouseenter="this.style.background='var(--bg3)'" onmouseleave="this.style.background=''" onclick="useEmailTemplate('${t.id}', this.parentElement)">
+    <div style="font-weight:600;font-size:13px;">${clanaUtils.sanitizeHtml(t.name)}</div>
+    <div style="font-size:11px;color:var(--tx3);">${clanaUtils.sanitizeHtml(t.category)}</div>
+  </div>`).join('');
+
+  // Store context for template use
+  window._emailCtx = { name, firma, branche, plan, preis, email: leadOrCustomer.email };
+
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.id = 'modal-email-templates';
+  overlay.style.display = 'flex';
+  overlay.innerHTML = `<div class="modal" style="max-width:440px;">
+    <div class="modal-header"><h3 class="modal-title">E-Mail Template wählen</h3><button class="modal-close" onclick="closeModal('modal-email-templates')">&times;</button></div>
+    <div style="max-height:350px;overflow-y:auto;">${list}</div>
+  </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal('modal-email-templates'); });
+}
+
+async function useEmailTemplate(templateId) {
+  const result = await clanaDB.getEmailTemplates();
+  const tpl = result.data?.find(t => t.id === templateId);
+  if (!tpl) return;
+  const ctx = window._emailCtx || {};
+
+  let subject = tpl.subject.replace(/\{\{kontakt\}\}/g, ctx.name).replace(/\{\{firma\}\}/g, ctx.firma).replace(/\{\{branche\}\}/g, ctx.branche).replace(/\{\{plan\}\}/g, ctx.plan).replace(/\{\{preis\}\}/g, ctx.preis);
+  let body = tpl.body.replace(/\{\{kontakt\}\}/g, ctx.name).replace(/\{\{firma\}\}/g, ctx.firma).replace(/\{\{branche\}\}/g, ctx.branche).replace(/\{\{plan\}\}/g, ctx.plan).replace(/\{\{preis\}\}/g, ctx.preis);
+
+  const mailto = `mailto:${ctx.email || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.open(mailto, '_blank');
+  closeModal('modal-email-templates');
+  Components.toast('E-Mail-Entwurf geöffnet', 'success');
 }
 
 function renderFunnel() {
