@@ -1040,7 +1040,17 @@ async function loadCommissions() {
   document.getElementById('comm-monthly').textContent = totalCommission.toLocaleString('de-DE', {minimumFractionDigits: 2}) + ' €';
   document.getElementById('comm-customers').textContent = activeCount;
   document.getElementById('comm-revenue').textContent = totalRevenue.toLocaleString('de-DE') + ' €';
-  document.getElementById('comm-last-month').textContent = totalCommission.toLocaleString('de-DE', {minimumFractionDigits: 2}) + ' €';
+  // Calculate last month's commission (customers active before this month)
+  const now = new Date();
+  const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59);
+  let lastMonthCommission = 0;
+  customers.forEach(c => {
+    if (c.is_active !== false && new Date(c.created_at) <= lastMonthEnd) {
+      const plan = c.organizations?.plan || 'starter';
+      lastMonthCommission += CONFIG.getPlanPrice(plan.toLowerCase()) * COMMISSION_RATE;
+    }
+  });
+  document.getElementById('comm-last-month').textContent = lastMonthCommission.toLocaleString('de-DE', {minimumFractionDigits: 2}) + ' €';
 
   if (rows.length) {
     tbody.innerHTML = rows.join('');

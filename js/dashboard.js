@@ -756,8 +756,8 @@ function navigateToPage(page, updateHash = true) {
   if (updateHash) window.location.hash = page;
 
   // Close sidebar on mobile
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebarOverlay').classList.remove('open');
+  document.querySelector('.sidebar')?.classList.remove('open');
+  document.getElementById('sidebarOverlay')?.classList.remove('open');
 
   // Reset editor tabs on enter
   if (page === 'assistant-edit') {
@@ -782,18 +782,14 @@ const initialPage = window.location.hash.slice(1) || 'home';
 if (initialPage !== 'home') navigateToPage(initialPage, false);
 
 // ==========================================
-// MOBILE SIDEBAR
+// MOBILE SIDEBAR (handled by Components.loadSidebar, hamburger is extra)
 // ==========================================
-document.getElementById('hamburgerBtn').addEventListener('click', () => {
-  document.getElementById('sidebar').classList.add('open');
-  document.getElementById('sidebarOverlay').classList.add('open');
+document.getElementById('hamburgerBtn')?.addEventListener('click', () => {
+  document.querySelector('.sidebar')?.classList.add('open');
+  document.getElementById('sidebarOverlay')?.classList.add('open');
 });
-document.getElementById('sidebarClose').addEventListener('click', () => {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebarOverlay').classList.remove('open');
-});
-document.getElementById('sidebarOverlay').addEventListener('click', () => {
-  document.getElementById('sidebar').classList.remove('open');
+document.getElementById('sidebarOverlay')?.addEventListener('click', () => {
+  document.querySelector('.sidebar')?.classList.remove('open');
   document.getElementById('sidebarOverlay').classList.remove('open');
 });
 
@@ -1522,7 +1518,7 @@ navigateToPage = function(page, updateHash) {
   if (_loadedPages.has(page)) return;
   _loadedPages.add(page);
   switch (page) {
-    case 'calls': loadAllCalls(); break;
+    case 'transactions': loadAllCalls(); break;
     case 'billing': loadBilling(); loadBillingData(); break;
     case 'plan': loadPlan(); break;
     case 'team': loadTeam(); break;

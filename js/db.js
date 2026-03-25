@@ -138,6 +138,24 @@ const db = {
     }
   },
 
+  async getAllAssistants() {
+    try {
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { data, error } = await supabaseClient
+        .from('assistants')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return { success: true, data: data || [] };
+    } catch (error) {
+      Logger.error('db.getAllAssistants', error);
+      return { success: false, error: 'Ein Fehler ist aufgetreten.' };
+    }
+  },
+
   async getAssistant(id) {
     try {
       const user = await auth.getUser();

@@ -534,16 +534,21 @@ async function loadSystemStats() {
   document.getElementById('sys-role-sales').textContent = roles.sales;
   document.getElementById('sys-role-customer').textContent = roles.customer;
 
-  // Plan distribution
+  // Plan distribution (handle both legacy solo/team and new starter/professional names)
   const plans = { solo: 0, team: 0, business: 0 };
-  allOrgs.forEach(o => { if (plans[o.plan] !== undefined) plans[o.plan]++; });
+  allOrgs.forEach(o => {
+    const p = (o.plan || '').toLowerCase();
+    if (p === 'starter' || p === 'solo') plans.solo++;
+    else if (p === 'professional' || p === 'team') plans.team++;
+    else if (p === 'business') plans.business++;
+  });
   document.getElementById('sys-plan-solo').textContent = plans.solo;
   document.getElementById('sys-plan-team').textContent = plans.team;
   document.getElementById('sys-plan-business').textContent = plans.business;
 
   // Assistants count
   try {
-    const assistantsResult = await clanaDB.getAssistants();
+    const assistantsResult = await clanaDB.getAllAssistants();
     document.getElementById('sys-total-assistants').textContent = assistantsResult.data?.length || 0;
   } catch (e) {
     document.getElementById('sys-total-assistants').textContent = '-';
@@ -975,6 +980,10 @@ async function loadOrgSelect(currentOrgId) {
 
 async function saveUserRole() {
   if (!editingUserId) return;
+  if (editingUserId === currentProfile.id) {
+    Components.toast('Du kannst deine eigene Rolle nicht ändern.', 'error');
+    return;
+  }
   const role = document.getElementById('edit-role-select').value;
   const orgId = document.getElementById('edit-role-org').value || null;
 
