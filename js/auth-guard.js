@@ -72,7 +72,7 @@ const AuthGuard = {
     const profile = await this.init();
     if (!profile) return null;
 
-    if (!allowedRoles.includes(profile.role)) {
+    if (!profile.role || !allowedRoles.includes(profile.role)) {
       const home = this.ROLE_HOME[profile.role] || 'login.html';
       window.location.href = home;
       return null;
