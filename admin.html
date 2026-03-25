@@ -45,6 +45,7 @@
       <!-- TAB BAR -->
       <div class="tab-bar">
         <button class="tab-btn active" data-tab="overview">Übersicht</button>
+        <button class="tab-btn" data-tab="analytics">Analytics</button>
         <button class="tab-btn" data-tab="customers">Kunden</button>
         <button class="tab-btn" data-tab="users">Benutzer</button>
         <button class="tab-btn" data-tab="orgs">Organisationen</button>
@@ -115,6 +116,26 @@
               <tr><td colspan="7" style="text-align:center;color:var(--tx3);padding:40px;">Laden...</td></tr>
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div class="page-section" id="tab-analytics">
+        <h1>Analytics & Prognosen</h1>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+          <div class="card" style="padding:16px;" id="admin-forecast"></div>
+          <div class="card" style="padding:16px;" id="admin-churn"></div>
+        </div>
+        <div class="card" style="padding:16px;margin-bottom:16px;" id="admin-cohorts"></div>
+        <div class="card" style="padding:16px;margin-bottom:16px;" id="admin-webhooks"></div>
+        <div class="card" style="padding:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <h3 style="margin:0;font-size:14px;">Automatische Rechnungen</h3>
+              <p style="margin:4px 0 0;font-size:12px;color:var(--tx3);">Generiere monatliche Rechnungen für alle aktiven Kunden basierend auf deren Plan.</p>
+            </div>
+            <button class="btn btn-sm" onclick="AdminAnalytics.generateMonthlyInvoices()">Rechnungen generieren</button>
+          </div>
         </div>
       </div>
 
@@ -380,6 +401,7 @@
 <script src="js/config.js"></script>
 <script src="js/dashboard-components.js"></script>
 <script src="js/global-search.js"></script>
+<script src="js/admin-analytics.js"></script>
 <script src="js/keyboard-shortcuts.js"></script>
 <script>
 let currentProfile = null;
@@ -440,9 +462,16 @@ function switchTab(tab) {
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
   const section = document.getElementById('tab-' + tab);
   if (section) section.classList.add('active');
-  const tabLabels = { overview: 'Übersicht', customers: 'Kunden', users: 'Benutzer', orgs: 'Organisationen', system: 'System' };
+  const tabLabels = { overview: 'Übersicht', analytics: 'Analytics', customers: 'Kunden', users: 'Benutzer', orgs: 'Organisationen', system: 'System' };
   document.getElementById('breadcrumb-page').textContent = tabLabels[tab] || tab;
   window.location.hash = tab;
+
+  if (tab === 'analytics' && typeof AdminAnalytics !== 'undefined') {
+    AdminAnalytics.renderRevenueForecast(document.getElementById('admin-forecast'));
+    AdminAnalytics.renderChurnWarnings(document.getElementById('admin-churn'));
+    AdminAnalytics.renderCohortAnalysis(document.getElementById('admin-cohorts'));
+    AdminAnalytics.renderWebhookConfig(document.getElementById('admin-webhooks'));
+  }
 }
 
 async function loadUsers() {
