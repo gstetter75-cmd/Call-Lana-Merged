@@ -1,164 +1,340 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Branchen – Call Lana KI-Telefonassistent</title>
-<meta name="description" content="KI-Telefonassistent Branchen: Call Lana für Arztpraxen, Hotels, Handwerk, Kanzleien und mehr. Erfahre, wie KI deinen Alltag entlastet – jetzt Demo buchen!">
-<meta property="og:title" content="Branchen – Call Lana KI-Telefonassistent">
-<meta property="og:description" content="KI-Telefonassistent Branchen: Call Lana für Arztpraxen, Hotels, Handwerk, Kanzleien und mehr. Erfahre, wie KI deinen Alltag entlastet – jetzt Demo buchen!">
-<meta property="og:type" content="website">
-<meta property="og:locale" content="de_DE">
-<link rel="canonical" href="https://call-lana.de/branchen">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/marketing.css">
-<style>
-/* Branch cards */
-.bc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;max-width:1100px;margin:0 auto;}
-.bc{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:36px 28px;transition:all .3s;position:relative;overflow:hidden;}
-.bc:hover{border-color:var(--pu);box-shadow:var(--shadow-lg);transform:translateY(-4px);}
-.bc-top{display:flex;align-items:center;gap:16px;margin-bottom:18px;}
-.bc-icon{font-size:1.8rem;width:52px;height:52px;background:var(--pu-light);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.bc-top h3{font-size:1.1rem;font-weight:800;color:var(--tx);}
-.bc>p{color:var(--tx2);font-size:.92rem;line-height:1.7;margin-bottom:18px;}
-
-/* Use-case row */
-.uc-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;max-width:1100px;margin:0 auto;}
-.uc{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:28px 22px;text-align:center;transition:all .3s;}
-.uc:hover{border-color:var(--pu);box-shadow:var(--shadow-md);transform:translateY(-3px);}
-.uc span{font-size:1.8rem;display:block;margin-bottom:12px;}
-.uc h3{font-size:.95rem;font-weight:800;margin-bottom:7px;color:var(--tx);}
-.uc p{color:var(--tx2);font-size:.84rem;line-height:1.65;}
-</style>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"Branchen – Call Lana KI-Telefonassistent","description":"Call Lana für jede Branche: Arztpraxen, Hotels, Immobilien, Handwerk, E-Commerce, Kanzleien.","provider":{"@type":"Organization","name":"Call Lana","url":"https://call-lana.de"}}
-</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <title>Branchen — Call Lana</title>
+  <meta name="description" content="Call Lana für Handwerker: Klempner, Elektriker, Dachdecker, Heizungsbauer und mehr." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/design.css" />
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: {
+          brand: { 50:'#FAF5FF', 100:'#F3E8FF', 200:'#E9D5FF', 300:'#D8B4FE', 400:'#7C3AED', 500:'#6D28D9', 600:'#5B21B6', 700:'#4C1D95', 800:'#3B0764', 900:'#2E1065' },
+          dark: { 950:'#FFFFFF', 900:'#F9FAFB', 850:'#F5F3FF', 800:'#F3F4F6', 700:'#E5E7EB', 600:'#D1D5DB', 500:'#9CA3AF' },
+          surface: { dark:'#FFFFFF', mid:'#F9FAFB' },
+        },
+        fontFamily: { display: ['"Space Grotesk"', 'system-ui', 'sans-serif'], body: ['"Inter"', 'system-ui', 'sans-serif'] },
+      }}
+    }
+  </script>
 </head>
-<body>
-<a href="#main-content" class="skip-link">Zum Inhalt springen</a>
+<body class="bg-white text-gray-900 antialiased overflow-x-hidden">
 
-<!-- Language Switcher -->
-<div class="lang-switcher">
-  <button class="lang-btn active" onclick="i18n.setLanguage('de'); updateLangButtons('de')">DE</button>
-  <button class="lang-btn" onclick="i18n.setLanguage('en'); updateLangButtons('en')">EN</button>
-</div>
+  <div id="nav-container"></div>
 
-<nav id="nav">
-  <a href="index.html" class="logo"><picture><source srcset="logo-nav.webp" type="image/webp"><img src="logo-nav.png" alt="Call Lana" height="40"></picture></a>
-  <ul class="nav-links">
-    <li><a href="funktionen.html">Funktionen</a></li>
-    <li><a href="branchen.html" class="active">Branchen</a></li>
-    <li><a href="preise.html">Preise</a></li>
-    <li><a href="kontakt.html">Kontakt</a></li>
-  </ul>
-  <div class="nav-right"><a href="login.html" class="nav-login">Login</a><a href="registrierung.html" class="nav-cta">Kostenlos starten</a></div>
-  <button class="mob-btn" id="mb" aria-label="Menu"><span></span><span></span><span></span></button>
-</nav>
-
-<!-- PAGE HERO -->
-<div class="page-hero" id="main-content">
-  <div class="page-hero-content">
-    <div class="sec-badge" data-i18n="branchen.hero.label">Branchen</div>
-    <h1 data-i18n-html="branchen.hero.title">Call Lana passt sich <span class="gradient">deiner Welt</span> an</h1>
-    <p data-i18n="branchen.hero.desc">Egal ob Arztpraxis, Hotellerie, Handwerk oder Kanzlei – unser KI-Assistent versteht deinen Alltag und entlastet dich dort, wo es am meisten hilft.</p>
-    <a href="kontakt.html" class="btn-secondary">Demo für deine Branche buchen</a>
-  </div>
-</div>
-
-<!-- BRANCHEN CARDS -->
-<section class="section">
-  <div class="sec-header">
-    <div class="sec-badge" data-i18n="branchen.cases.label">Anwendungsfälle</div>
-    <h2 class="sec-title fi" data-i18n-html="branchen.cases.title">Wer von <span class="gradient">Call Lana profitiert</span></h2>
-    <p class="sec-sub fi">Über 5.000 Unternehmen aus den unterschiedlichsten Branchen vertrauen täglich auf Call Lana.</p>
-  </div>
-  <div class="bc-grid">
-    <div class="bc fi">
-      <div class="bc-top"><div class="bc-icon">🏥</div><h3>Arztpraxen & Kliniken</h3></div>
-      <p>Entlaste dein Praxis-Team von Routineanrufen und sei rund um die Uhr für Patienten erreichbar.</p>
-      <ul class="check-list"><li>Terminvergabe und -verschiebung automatisch</li><li>Rezeptanfragen entgegennehmen und weiterleiten</li><li>Erreichbarkeit außerhalb der Sprechzeiten</li><li>Wichtige Anrufe sofort an Bereitschaftsdienst</li></ul>
+  <!-- ═══════════════════════════════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════════════════════════════ -->
+  <section class="bg-section-dark relative pt-28 pb-20 md:pt-32 md:pb-28" style="background: linear-gradient(135deg, #FFFFFF 0%, #FBF7FF 30%, #F5EEFF 60%, #EFE8FF 100%);">
+    <div class="warp-hero-bg" style="position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;"><canvas class="warp-bg-canvas" style="display:block;width:100%;height:100%;"></canvas></div>
+    <div class="hero-beam-bg"></div>
+    <div class="noise-overlay"></div>
+    <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
+      <span class="inline-block px-4 py-1.5 rounded-full border border-brand-400/30 bg-brand-400/10 text-brand-400 text-sm font-medium tracking-wide mb-6 font-body">
+        <span class="lang-de">Für Handwerksbetriebe</span><span class="lang-en hidden">For craftsmen</span>
+      </span>
+      <h1 class="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-tight mb-6">
+        <span class="lang-de">Call Lana passt sich<br class="hidden sm:block" /> deinem <span class="text-brand-400">Handwerk</span> an</span>
+        <span class="lang-en hidden">Call Lana adapts<br class="hidden sm:block" /> to your <span class="text-brand-400">craft</span></span>
+      </h1>
+      <p class="font-body text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed mb-10" style="line-height:1.7">
+        <span class="lang-de">Für alle Handwerksbetriebe — z.B. Klempner, Elektriker, Dachdecker, Bauunternehmen, Maler und viele weitere. Call Lana passt sich an dein Gewerk an und ist sofort einsatzbereit.</span>
+        <span class="lang-en hidden">For all trade businesses — e.g. plumbers, electricians, roofers, builders, painters and many more. Call Lana adapts to your trade and is ready to go immediately.</span>
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="registrierung.html" class="btn-brand px-8 py-4 text-base font-bold rounded-xl">
+          <span class="lang-de">Jetzt starten</span><span class="lang-en hidden">Get started</span>
+        </a>
+        <a href="#branchen" class="btn-outline px-8 py-4 text-base font-semibold rounded-xl">
+          <span class="lang-de">Alle Gewerke ansehen</span><span class="lang-en hidden">View all trades</span>
+        </a>
+      </div>
     </div>
-    <div class="bc fi">
-      <div class="bc-top"><div class="bc-icon">🏨</div><h3>Hotels & Gastronomie</h3></div>
-      <p>Gäste erwarten Erreichbarkeit rund um die Uhr. Lana ist immer da – auch wenn dein Team im Einsatz ist.</p>
-      <ul class="check-list"><li>Buchungsanfragen und Zimmerverfügbarkeit</li><li>Check-in-Infos, Parken, Anfahrt automatisch</li><li>Tischreservierungen in Echtzeit</li><li>Mehrsprachig verfügbar</li></ul>
-    </div>
-    <div class="bc fi">
-      <div class="bc-top"><div class="bc-icon">🏠</div><h3>Immobilien & Makler</h3></div>
-      <p>Qualifiziere Interessenten bereits am Telefon – bevor du überhaupt involviert bist.</p>
-      <ul class="check-list"><li>Erstkontakt und Interessentenqualifizierung</li><li>Besichtigungstermine vereinbaren</li><li>Objektinfos automatisch bereitstellen</li><li>Lead-Daten direkt ins CRM übertragen</li></ul>
-    </div>
-    <div class="bc fi">
-      <div class="bc-top"><div class="bc-icon">🔧</div><h3>Handwerk & Service</h3></div>
-      <p>Du bist auf der Baustelle – Lana nimmt die Anrufe an, plant Termine und hält deinen Betrieb am Laufen.</p>
-      <ul class="check-list"><li>Auftragsannahme und Erstbewertung</li><li>Terminplanung rund um die Uhr</li><li>Notfallprotokoll für dringende Fälle</li><li>Zusammenfassung per E-Mail nach jedem Anruf</li></ul>
-    </div>
-    <div class="bc fi">
-      <div class="bc-top"><div class="bc-icon">🛒</div><h3>Handel & E-Commerce</h3></div>
-      <p>Skaliere deinen Kundenservice ohne mehr Personal. Lana bearbeitet Standardanfragen vollautomatisch.</p>
-      <ul class="check-list"><li>Bestellstatus und Lieferstatus</li><li>Rückgaben und Reklamationen</li><li>Produktfragen und Verfügbarkeit</li><li>Weiterleitung bei komplexen Fällen</li></ul>
-    </div>
-    <div class="bc fi">
-      <div class="bc-top"><div class="bc-icon">⚖️</div><h3>Kanzleien & Beratung</h3></div>
-      <p>Erstgespräche kosten Zeit. Lana übernimmt die Vorqualifizierung und gibt dir strukturierte Infos.</p>
-      <ul class="check-list"><li>Mandantenerstkontakt und Anliegen erfassen</li><li>Terminvereinbarung mit Vorqualifizierung</li><li>Vertrauliche Transkription für die Akte</li><li>Weiterleitung nach Fachgebiet</li></ul>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- USE CASE TYPES -->
-<section class="section alt">
-  <div class="sec-header">
-    <div class="sec-badge">Aufgaben</div>
-    <h2 class="sec-title fi">Was Call Lana konkret <span class="gradient">übernimmt</span></h2>
-    <p class="sec-sub fi">Call Lana ist kein starres Skript – sondern ein flexibler Assistent, der wirklich versteht, was gefragt wird.</p>
-  </div>
-  <div class="uc-row">
-    <div class="uc fi"><span>📋</span><h3>Sekretariat</h3><p>Anrufe annehmen, weiterleiten, Nachrichten aufnehmen.</p></div>
-    <div class="uc fi"><span>📝</span><h3>Transkription</h3><p>Gespräch aufnehmen und strukturiert per E-Mail zuschicken.</p></div>
-    <div class="uc fi"><span>🎯</span><h3>Kundenservice</h3><p>FAQs, Reklamationen und Standardanfragen 24/7 bearbeiten.</p></div>
-    <div class="uc fi"><span>🛍️</span><h3>Bestellannahme</h3><p>Aufträge aufnehmen und ins System übertragen.</p></div>
-    <div class="uc fi"><span>📅</span><h3>Terminplanung</h3><p>Direkt im Gespräch Termine buchen – mit Kalenderanbindung.</p></div>
-    <div class="uc fi"><span>🔮</span><h3>100+ weitere</h3><p>Individuelle Szenarien? Kein Problem – Call Lana lernt deinen Betrieb.</p></div>
-  </div>
-</section>
+  <!-- ═══════════════════════════════════════════════════════════════
+       INDUSTRY CARDS
+  ═══════════════════════════════════════════════════════════════ -->
+  <section id="branchen" class="bg-section-light relative py-20 md:py-28">
+    <div class="noise-overlay"></div>
+    <div class="max-w-6xl mx-auto px-6 relative z-10">
+      <div class="text-center mb-14">
+        <h2 class="font-display text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+          <span class="lang-de">Dein Gewerk. <span class="text-brand-400">Deine Lösung.</span></span>
+          <span class="lang-en hidden">Your trade. <span class="text-brand-400">Your solution.</span></span>
+        </h2>
+        <p class="font-body text-gray-500 max-w-xl mx-auto" style="line-height:1.7">
+          <span class="lang-de">Call Lana ist speziell auf die Bedürfnisse von Handwerkern zugeschnitten — branchenspezifisch und sofort einsatzbereit.</span>
+          <span class="lang-en hidden">Call Lana is tailored specifically to the needs of craftsmen — industry-specific and ready to deploy.</span>
+        </p>
+      </div>
 
-<!-- CTA -->
-<section class="cta-sec">
-  <h2 data-i18n-html="branchen.cta.title">Für welche Branche <span class="gradient">arbeitest du?</span></h2>
-  <p data-i18n="branchen.cta.desc">Buche eine persönliche Demo – wir zeigen dir, wie Call Lana genau für deinen Betrieb aussehen würde.</p>
-  <div class="cta-btns"><a href="kontakt.html" class="btn-primary">Demo buchen</a><a href="preise.html" class="btn-secondary">Direkt starten</a></div>
-</section>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-grid">
-    <div class="footer-brand"><a href="index.html" class="logo"><picture><source srcset="logo-footer.webp" type="image/webp"><img src="logo-footer.png" alt="Call Lana" height="28"></picture></a><p>Der KI-Telefonassistent auf Deutsch. DSGVO-konform, skalierbar, sofort einsatzbereit.</p></div>
-    <div class="footer-col"><h4>Produkt</h4><ul><li><a href="funktionen.html">Funktionen</a></li><li><a href="branchen.html">Branchen</a></li><li><a href="preise.html">Preise</a></li></ul></div>
-    <div class="footer-col"><h4>Rechtliches</h4><ul><li><a href="impressum.html">Impressum</a></li><li><a href="datenschutz.html">Datenschutz</a></li><li><a href="agb.html">AGB</a></li></ul></div>
-    <div class="footer-col"><h4>Konto</h4><ul><li><a href="registrierung.html">Registrieren</a></li><li><a href="login.html">Login</a></li><li><a href="dashboard.html">Dashboard</a></li></ul></div>
-  </div>
-  <div class="footer-bottom"><p class="footer-copy">Copyright 2025 by Call Lana — Alle Rechte vorbehalten</p></div>
-</footer>
+        <!-- Klempner & Sanitär -->
+        <div class="feature-card bg-dark-800/50 border border-gray-200 rounded-2xl p-6 cursor-pointer" style="border-color:#E5E7EB;">
+          <div class="text-4xl mb-4">🔧</div>
+          <h3 class="font-display text-xl font-bold mb-2">
+            <span class="lang-de">Klempner & Sanitär</span><span class="lang-en hidden">Plumbing & Sanitation</span>
+          </h3>
+          <p class="font-body text-gray-500 text-sm mb-4" style="line-height:1.7">
+            <span class="lang-de">Rohrbruch um 3 Uhr nachts? Lana nimmt den Anruf an, priorisiert den Notfall und leitet sofort weiter.</span>
+            <span class="lang-en hidden">Pipe burst at 3 AM? Lana takes the call, prioritizes the emergency, and forwards immediately.</span>
+          </p>
+          <ul class="space-y-2 font-body text-sm text-gray-600">
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Notfall-Anrufe priorisieren</span><span class="lang-en hidden">Prioritize emergency calls</span></span></li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Wartungstermine buchen</span><span class="lang-en hidden">Book maintenance appointments</span></span></li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Angebote nachfassen</span><span class="lang-en hidden">Follow up on quotes</span></span></li>
+          </ul>
+        </div>
 
+        <!-- Elektriker -->
+        <div class="feature-card bg-dark-800/50 border border-gray-200 rounded-2xl p-6 cursor-pointer" style="border-color:#E5E7EB;">
+          <div class="text-4xl mb-4">⚡</div>
+          <h3 class="font-display text-xl font-bold mb-2">
+            <span class="lang-de">Elektriker</span><span class="lang-en hidden">Electricians</span>
+          </h3>
+          <p class="font-body text-gray-500 text-sm mb-4" style="line-height:1.7">
+            <span class="lang-de">Auf der Baustelle und keine Hand frei? Lana erfasst neue Aufträge und koordiniert deine Termine.</span>
+            <span class="lang-en hidden">On the job site with no free hands? Lana captures new orders and coordinates your schedule.</span>
+          </p>
+          <ul class="space-y-2 font-body text-sm text-gray-600">
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Aufträge erfassen</span><span class="lang-en hidden">Capture orders</span></span></li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Termine koordinieren</span><span class="lang-en hidden">Coordinate appointments</span></span></li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Rückrufe planen</span><span class="lang-en hidden">Plan callbacks</span></span></li>
+          </ul>
+        </div>
+
+        <!-- Dachdecker -->
+        <div class="feature-card bg-dark-800/50 border border-gray-200 rounded-2xl p-6 cursor-pointer" style="border-color:#E5E7EB;">
+          <div class="text-4xl mb-4">🏠</div>
+          <h3 class="font-display text-xl font-bold mb-2">
+            <span class="lang-de">Dachdecker</span><span class="lang-en hidden">Roofers</span>
+          </h3>
+          <p class="font-body text-gray-500 text-sm mb-4" style="line-height:1.7">
+            <span class="lang-de">Nach jedem Sturm klingelt das Telefon. Lana filtert dringende Schäden und plant Besichtigungen.</span>
+            <span class="lang-en hidden">After every storm the phone rings. Lana filters urgent damage and schedules inspections.</span>
+          </p>
+          <ul class="space-y-2 font-body text-sm text-gray-600">
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Sturmschaden-Anfragen bearbeiten</span><span class="lang-en hidden">Process storm damage requests</span></span></li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Besichtigungstermine</span><span class="lang-en hidden">Inspection appointments</span></span></li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Saisonale Wartung</span><span class="lang-en hidden">Seasonal maintenance</span></span></li>
+          </ul>
+        </div>
+
+        <!-- Heizung & Klimatechnik -->
+        <div class="feature-card bg-dark-800/50 border border-gray-200 rounded-2xl p-6 cursor-pointer" style="border-color:#E5E7EB;">
+          <div class="text-4xl mb-4">🔥</div>
+          <h3 class="font-display text-xl font-bold mb-2">
+            <span class="lang-de">Heizung & Klimatechnik</span><span class="lang-en hidden">Heating & HVAC</span>
+          </h3>
+          <p class="font-body text-gray-500 text-sm mb-4" style="line-height:1.7">
+            <span class="lang-de">Heizungsausfall im Winter? Lana leitet Notdienst-Anrufe weiter und verwaltet deine Wartungsverträge.</span>
+            <span class="lang-en hidden">Heating failure in winter? Lana forwards emergency calls and manages your maintenance contracts.</span>
+          </p>
+          <ul class="space-y-2 font-body text-sm text-gray-600">
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Notdienst-Weiterleitung</span><span class="lang-en hidden">Emergency forwarding</span></span></li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Wartungsverträge</span><span class="lang-en hidden">Maintenance contracts</span></span></li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Energieberatungs-Termine</span><span class="lang-en hidden">Energy consultation appointments</span></span></li>
+          </ul>
+        </div>
+
+        <!-- Bau & Renovierung -->
+        <div class="feature-card bg-dark-800/50 border border-gray-200 rounded-2xl p-6 cursor-pointer" style="border-color:#E5E7EB;">
+          <div class="text-4xl mb-4">🏗️</div>
+          <h3 class="font-display text-xl font-bold mb-2">
+            <span class="lang-de">Bau & Renovierung</span><span class="lang-en hidden">Construction & Renovation</span>
+          </h3>
+          <p class="font-body text-gray-500 text-sm mb-4" style="line-height:1.7">
+            <span class="lang-de">Großprojekte brauchen klare Kommunikation. Lana qualifiziert Anfragen und koordiniert alle Beteiligten.</span>
+            <span class="lang-en hidden">Large projects need clear communication. Lana qualifies inquiries and coordinates all parties.</span>
+          </p>
+          <ul class="space-y-2 font-body text-sm text-gray-600">
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Projektanfragen qualifizieren</span><span class="lang-en hidden">Qualify project inquiries</span></span></li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Baustellentermine koordinieren</span><span class="lang-en hidden">Coordinate site appointments</span></span></li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Subunternehmer-Kommunikation</span><span class="lang-en hidden">Subcontractor communication</span></span></li>
+          </ul>
+        </div>
+
+        <!-- Maler & Lackierer -->
+        <div class="feature-card bg-dark-800/50 border border-gray-200 rounded-2xl p-6 cursor-pointer" style="border-color:#E5E7EB;">
+          <div class="text-4xl mb-4">🖌️</div>
+          <h3 class="font-display text-xl font-bold mb-2">
+            <span class="lang-de">Maler & Lackierer</span><span class="lang-en hidden">Painters & Decorators</span>
+          </h3>
+          <p class="font-body text-gray-500 text-sm mb-4" style="line-height:1.7">
+            <span class="lang-de">Vom Kostenvoranschlag bis zur Nachfass — Lana hält den Kontakt zu deinen Kunden lückenlos.</span>
+            <span class="lang-en hidden">From quotes to follow-ups — Lana keeps seamless contact with your customers.</span>
+          </p>
+          <ul class="space-y-2 font-body text-sm text-gray-600">
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Kostenvoranschläge anfragen</span><span class="lang-en hidden">Request cost estimates</span></span></li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Besichtigungstermine</span><span class="lang-en hidden">Inspection appointments</span></span></li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span><span class="lang-de">Kundennachfass</span><span class="lang-en hidden">Customer follow-up</span></span></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       WAS CALL LANA KONKRET ÜBERNIMMT
+  ═══════════════════════════════════════════════════════════════ -->
+  <section class="bg-section-dark relative py-20 md:py-28">
+    <div class="noise-overlay"></div>
+    <div class="max-w-6xl mx-auto px-6 relative z-10">
+      <div class="text-center mb-14">
+        <h2 class="font-display text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+          <span class="lang-de">Was Call Lana <span class="text-brand-400">konkret übernimmt</span></span>
+          <span class="lang-en hidden">What Call Lana <span class="text-brand-400">actually handles</span></span>
+        </h2>
+        <p class="font-body text-gray-500 max-w-xl mx-auto" style="line-height:1.7">
+          <span class="lang-de">Sechs Kernfunktionen, die deinen Arbeitsalltag als Handwerker spürbar entlasten.</span>
+          <span class="lang-en hidden">Six core functions that noticeably lighten your daily workload as a craftsman.</span>
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Sekretariat -->
+        <div class="feature-card bg-dark-800/50 border border-gray-200 rounded-2xl p-6 cursor-pointer" style="border-color:#E5E7EB;">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-lg bg-brand-400/15 flex items-center justify-center">
+              <svg class="w-5 h-5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+            </div>
+            <h3 class="font-display text-lg font-bold">
+              <span class="lang-de">Sekretariat</span><span class="lang-en hidden">Reception</span>
+            </h3>
+          </div>
+          <p class="font-body text-sm text-gray-500" style="line-height:1.7">
+            <span class="lang-de">Anrufe annehmen, Nachrichten aufnehmen und Termine buchen — ganz ohne eigenes Büropersonal.</span>
+            <span class="lang-en hidden">Answer calls, take messages, and book appointments — without your own office staff.</span>
+          </p>
+        </div>
+
+        <!-- Transkription -->
+        <div class="feature-card bg-dark-800/50 border border-gray-200 rounded-2xl p-6 cursor-pointer" style="border-color:#E5E7EB;">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-lg bg-brand-400/15 flex items-center justify-center">
+              <svg class="w-5 h-5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </div>
+            <h3 class="font-display text-lg font-bold">
+              <span class="lang-de">Transkription</span><span class="lang-en hidden">Transcription</span>
+            </h3>
+          </div>
+          <p class="font-body text-sm text-gray-500" style="line-height:1.7">
+            <span class="lang-de">Gespräche verschriftlichen und per E-Mail oder SMS senden — alles dokumentiert und nachvollziehbar.</span>
+            <span class="lang-en hidden">Transcribe conversations and send via email or SMS — everything documented and traceable.</span>
+          </p>
+        </div>
+
+        <!-- Kundenservice -->
+        <div class="feature-card bg-dark-800/50 border border-gray-200 rounded-2xl p-6 cursor-pointer" style="border-color:#E5E7EB;">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-lg bg-brand-400/15 flex items-center justify-center">
+              <svg class="w-5 h-5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/></svg>
+            </div>
+            <h3 class="font-display text-lg font-bold">
+              <span class="lang-de">Kundenkommunikation</span><span class="lang-en hidden">Customer Communication</span>
+            </h3>
+          </div>
+          <p class="font-body text-sm text-gray-500" style="line-height:1.7">
+            <span class="lang-de">FAQ beantworten und Statusupdates geben — deine Kunden fühlen sich immer gut informiert.</span>
+            <span class="lang-en hidden">Answer FAQs and give status updates — your customers always feel well-informed.</span>
+          </p>
+        </div>
+
+        <!-- Benachrichtigung -->
+        <div class="feature-card bg-dark-800/50 border border-gray-200 rounded-2xl p-6 cursor-pointer" style="border-color:#E5E7EB;">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-lg bg-brand-400/15 flex items-center justify-center">
+              <svg class="w-5 h-5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+            </div>
+            <h3 class="font-display text-lg font-bold">
+              <span class="lang-de">Benachrichtigung</span><span class="lang-en hidden">Notifications</span>
+            </h3>
+          </div>
+          <p class="font-body text-sm text-gray-500" style="line-height:1.7">
+            <span class="lang-de">Echtzeit-Alerts und Auftragszusammenfassungen — du verpasst keinen wichtigen Anruf mehr.</span>
+            <span class="lang-en hidden">Real-time alerts and order summaries — you never miss an important call again.</span>
+          </p>
+        </div>
+
+        <!-- Terminplanung -->
+        <div class="feature-card bg-dark-800/50 border border-gray-200 rounded-2xl p-6 cursor-pointer" style="border-color:#E5E7EB;">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-lg bg-brand-400/15 flex items-center justify-center">
+              <svg class="w-5 h-5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+            <h3 class="font-display text-lg font-bold">
+              <span class="lang-de">Terminvereinbarung</span><span class="lang-en hidden">Appointment Scheduling</span>
+            </h3>
+          </div>
+          <p class="font-body text-sm text-gray-500" style="line-height:1.7">
+            <span class="lang-de">Kalender verwalten und automatisch synchronisieren — keine Doppelbuchungen, keine verpassten Termine.</span>
+            <span class="lang-en hidden">Manage calendars and sync automatically — no double bookings, no missed appointments.</span>
+          </p>
+        </div>
+
+        <!-- Reporting -->
+        <div class="feature-card bg-dark-800/50 border border-gray-200 rounded-2xl p-6 cursor-pointer" style="border-color:#E5E7EB;">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-lg bg-brand-400/15 flex items-center justify-center">
+              <svg class="w-5 h-5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <h3 class="font-display text-lg font-bold">
+              <span class="lang-de">Reporting</span><span class="lang-en hidden">Reporting</span>
+            </h3>
+          </div>
+          <p class="font-body text-sm text-gray-500" style="line-height:1.7">
+            <span class="lang-de">Anrufstatistiken und Kundenzufriedenheit messen — datenbasiert besser werden.</span>
+            <span class="lang-en hidden">Measure call statistics and customer satisfaction — improve with data.</span>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       CTA
+  ═══════════════════════════════════════════════════════════════ -->
+  <section class="bg-section-light relative py-20 md:py-28">
+    <div class="noise-overlay"></div>
+    <div class="max-w-3xl mx-auto px-6 text-center relative z-10">
+      <h2 class="font-display text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+        <span class="lang-de">Starte jetzt mit <span class="text-brand-400">Call Lana</span></span>
+        <span class="lang-en hidden">Get started with <span class="text-brand-400">Call Lana</span></span>
+      </h2>
+      <p class="font-body text-gray-500 max-w-lg mx-auto mb-8" style="line-height:1.7">
+        <span class="lang-de">Einrichtung in weniger als 15 Minuten. Keine Einrichtungsgebühr. 30 Tage Geld-zurück-Garantie.</span>
+        <span class="lang-en hidden">Setup in under 15 minutes. No setup fee. 30-day money-back guarantee.</span>
+      </p>
+      <a href="registrierung.html" class="btn-brand inline-flex items-center px-8 py-4 text-base font-bold rounded-xl">
+        <span class="lang-de">Jetzt starten</span><span class="lang-en hidden">Get started</span>
+        <svg class="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+      </a>
+      <p class="mt-6 font-body text-gray-500 text-sm">
+        <span class="lang-de">oder</span><span class="lang-en hidden">or</span>
+      </p>
+      <a href="demo.html" class="btn-brand inline-flex items-center px-8 py-4 text-base font-bold rounded-xl mt-2" style="background:transparent;border:2px solid #7C3AED;color:#7C3AED;">
+        <span class="lang-de">Buche eine Demo für deine Branche</span><span class="lang-en hidden">Book a demo for your industry</span>
+        <svg class="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <div id="footer-container"></div>
+
+  <script src="js/components.js"></script>
+  <script src="warp-bg.js"></script>
 <script src="i18n.js"></script>
 <script src="cookie-consent.js"></script>
-<script>
-function updateLangButtons(lang) {
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.classList.remove('active');
-    if (btn.textContent.toLowerCase() === lang) btn.classList.add('active');
-  });
-}
-document.addEventListener('DOMContentLoaded', () => {
-  updateLangButtons(localStorage.getItem('calllana_language') || 'de');
-});
-</script>
-<script>
-const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');}),{threshold:.1});
-document.querySelectorAll('.fi').forEach((el,i)=>{el.style.transitionDelay=(Math.min(i*.06,.4))+'s';obs.observe(el);});
-document.getElementById('mb').addEventListener('click',()=>document.getElementById('nav').classList.toggle('open'));
-window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>10);});
-</script>
 </body>
 </html>

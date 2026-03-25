@@ -1,263 +1,860 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Preise – Call Lana KI-Telefonassistent</title>
-<meta name="description" content="KI-Telefonassistent Preise: Call Lana ab 99 EUR/Monat. Solo, Team und Business-Tarife im Vergleich. Transparent und jederzeit kündbar – 14 Tage gratis testen!">
-<meta property="og:title" content="Preise – Call Lana KI-Telefonassistent">
-<meta property="og:description" content="KI-Telefonassistent Preise: Call Lana ab 99 EUR/Monat. Solo, Team und Business-Tarife im Vergleich. Transparent und jederzeit kündbar – 14 Tage gratis testen!">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://call-lana.de/preise">
-<meta property="og:locale" content="de_DE">
-<link rel="canonical" href="https://call-lana.de/preise">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/marketing.css">
-<style>
-/* Billing Toggle */
-.toggle-wrap{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:56px;}
-.toggle-label{font-size:14px;font-weight:600;color:var(--tx3);transition:color .2s;}
-.toggle-label.active{color:var(--tx);}
-.toggle{width:52px;height:28px;background:var(--bg3);border-radius:50px;cursor:pointer;position:relative;border:1px solid var(--border2);transition:background .3s;}
-.toggle.on{background:var(--pu);border-color:var(--pu);}
-.toggle::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:left .3s;box-shadow:var(--shadow-sm);}
-.toggle.on::after{left:27px;}
-.save-badge{background:var(--green-light);border:1px solid var(--green);color:var(--green);padding:3px 10px;border-radius:50px;font-size:12px;font-weight:700;}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <title>Preise — Call Lana</title>
+  <meta name="description" content="Call Lana Preise: Transparent, fair und skalierbar. Ab 99€/Monat." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/design.css" />
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: {
+          brand: { 50:'#FAF5FF', 100:'#F3E8FF', 200:'#E9D5FF', 300:'#D8B4FE', 400:'#7C3AED', 500:'#6D28D9', 600:'#5B21B6', 700:'#4C1D95', 800:'#3B0764', 900:'#2E1065' },
+          dark: { 950:'#FFFFFF', 900:'#F9FAFB', 850:'#F5F3FF', 800:'#F3F4F6', 700:'#E5E7EB', 600:'#D1D5DB', 500:'#9CA3AF' },
+          surface: { dark:'#FFFFFF', mid:'#F9FAFB' },
+        },
+        fontFamily: { display: ['"Space Grotesk"', 'system-ui', 'sans-serif'], body: ['"Inter"', 'system-ui', 'sans-serif'] },
+      }}
+    }
+  </script>
+  <style>
+    /* Custom slider styling */
+    input[type="range"].calc-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: #E5E7EB;
+      outline: none;
+      transition: background 0.15s ease;
+    }
+    input[type="range"].calc-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #5B21B6 100%);
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35), 0 0 0 3px rgba(124, 58, 237, 0.12);
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease;
+    }
+    input[type="range"].calc-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.45), 0 0 0 4px rgba(124, 58, 237, 0.18);
+    }
+    input[type="range"].calc-slider::-webkit-slider-thumb:active {
+      transform: scale(0.95);
+    }
+    input[type="range"].calc-slider::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #5B21B6 100%);
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35), 0 0 0 3px rgba(124, 58, 237, 0.12);
+    }
+    input[type="range"].calc-slider::-moz-range-track {
+      height: 6px;
+      border-radius: 3px;
+      background: #E5E7EB;
+    }
 
-/* Pricing Cards */
-.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1040px;margin:0 auto;}
-.pc{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:40px 32px;text-align:center;transition:all .3s;position:relative;}
-.pc:hover{box-shadow:var(--shadow-lg);transform:translateY(-4px);}
-.pc.featured{border-color:var(--pu);background:var(--pu-lighter);box-shadow:0 8px 30px rgba(124,58,237,.15);}
-.pc.featured:hover{box-shadow:0 12px 40px rgba(124,58,237,.25);transform:translateY(-4px);}
-.pc-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--pu);color:#fff;padding:5px 18px;border-radius:50px;font-size:12px;font-weight:700;white-space:nowrap;}
-.pc-tier{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;color:var(--pu);}
-.pc-price{font-size:3rem;font-weight:900;line-height:1;margin-bottom:6px;color:var(--tx);letter-spacing:-.02em;}
-.pc-price sup{font-size:1.2rem;vertical-align:super;font-weight:600;}
-.pc-price span{font-size:1rem;font-weight:500;color:var(--tx3);}
-.pc-per{color:var(--tx3);font-size:13px;margin-bottom:28px;}
-.pc-sep{height:1px;background:var(--border);margin-bottom:24px;}
-.pc-list{list-style:none;text-align:left;display:flex;flex-direction:column;gap:11px;margin-bottom:34px;}
-.pc-list li{display:flex;align-items:flex-start;gap:11px;color:var(--tx2);font-size:.9rem;}
-.pc-list li::before{content:'\2713';color:var(--pu);font-weight:700;flex-shrink:0;margin-top:1px;}
-.pc-list li.dim{opacity:.4;}
-.pc-list li.dim::before{content:'–';color:var(--tx4);}
-.pb{display:block;padding:14px 28px;border-radius:12px;font-weight:700;font-size:15px;text-decoration:none;text-align:center;transition:all .25s;cursor:pointer;}
-.pb-prim{background:var(--pu);color:#fff;box-shadow:0 4px 14px rgba(124,58,237,.3);}.pb-prim:hover{background:var(--pu2);box-shadow:0 6px 20px rgba(124,58,237,.4);transform:translateY(-2px);}
-.pb-out{border:1.5px solid var(--border2);color:var(--tx);background:var(--white);}.pb-out:hover{border-color:var(--pu);color:var(--pu);box-shadow:var(--shadow-md);}
+    /* Savings highlight animation */
+    @keyframes savingsPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.15); }
+      50% { box-shadow: 0 0 0 8px rgba(124, 58, 237, 0); }
+    }
+    .savings-highlight {
+      animation: savingsPulse 2s ease-in-out infinite;
+    }
 
-/* Comparison Table */
-.comp-table{max-width:920px;margin:0 auto;border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
-.ct-head{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--bg);border-bottom:1px solid var(--border);padding:18px 24px;}
-.ct-head span{font-size:13px;font-weight:700;text-align:center;color:var(--tx);}
-.ct-head span:first-child{text-align:left;}
-.ct-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:14px 24px;border-bottom:1px solid var(--border);align-items:center;}
-.ct-row:last-child{border-bottom:none;}
-.ct-row:nth-child(even){background:var(--bg);}
-.ct-row span{text-align:center;font-size:13.5px;color:var(--tx2);}
-.ct-row span:first-child{text-align:left;color:var(--tx);font-weight:500;}
-.ct-yes{color:var(--pu) !important;font-weight:700;}
-.ct-no{opacity:.3;}
+    /* Recommendation badge */
+    .plan-recommended {
+      position: relative;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .plan-recommended.is-recommended {
+      border-color: rgba(124, 58, 237, 0.4) !important;
+      box-shadow: 0 0 25px rgba(124, 58, 237, 0.12), 0 0 50px rgba(124, 58, 237, 0.06), 0 8px 30px rgba(124, 58, 237, 0.10);
+      transform: scale(1.02);
+      background: #FFFFFF !important;
+    }
+    /* Non-highlight recommended cards keep dark text */
+    .plan-recommended.is-recommended h3,
+    .plan-recommended.is-recommended .font-display.text-4xl,
+    .plan-recommended.is-recommended .font-display.text-3xl {
+      color: #111827 !important;
+    }
+    .plan-recommended.is-recommended .text-gray-500,
+    .plan-recommended.is-recommended .text-gray-600 {
+      color: #4B5563 !important;
+    }
+    .plan-recommended.is-recommended .btn-outline {
+      border-color: var(--color-primary) !important;
+      color: var(--color-primary) !important;
+      background: #FFFFFF !important;
+    }
 
-@media(max-width:900px){.pricing-grid{grid-template-columns:1fr;max-width:420px;}}
-@media(max-width:768px){.ct-head,.ct-row{grid-template-columns:1.5fr 1fr 1fr 1fr;font-size:12px;padding:12px 14px;}}
-</style>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"Preise – Call Lana KI-Telefonassistent","description":"Call Lana Preise: Solo ab 99€, Team ab 299€, Business individuell. 14 Tage kostenlos testen.","provider":{"@type":"Organization","name":"Call Lana","url":"https://call-lana.de"}}
-</script>
+    /* Counter animation */
+    .counter-value {
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .counter-value.bump {
+      transform: scale(1.08);
+    }
+  </style>
 </head>
-<body>
-<a href="#main-content" class="skip-link">Zum Inhalt springen</a>
+<body class="bg-white text-gray-900 antialiased overflow-x-hidden">
 
-<!-- Language Switcher -->
-<div class="lang-switcher">
-  <button class="lang-btn active" onclick="i18n.setLanguage('de'); updateLangButtons('de')">DE</button>
-  <button class="lang-btn" onclick="i18n.setLanguage('en'); updateLangButtons('en')">EN</button>
-</div>
+  <div id="nav-container"></div>
 
-<nav id="nav">
-  <a href="index.html" class="logo"><picture><source srcset="logo-nav.webp" type="image/webp"><img src="logo-nav.png" alt="Call Lana" height="40"></picture></a>
-  <ul class="nav-links">
-    <li><a href="funktionen.html" data-i18n="nav.features">Funktionen</a></li>
-    <li><a href="branchen.html" data-i18n="nav.industries">Branchen</a></li>
-    <li><a href="preise.html" class="active" data-i18n="nav.pricing">Preise</a></li>
-    <li><a href="kontakt.html" data-i18n="nav.contact">Kontakt</a></li>
-  </ul>
-  <div class="nav-right"><a href="login.html" class="nav-login">Login</a><a href="registrierung.html" class="nav-cta">Kostenlos starten</a></div>
-  <button class="mob-btn" id="mb" aria-label="Menu"><span></span><span></span><span></span></button>
-</nav>
-
-<div class="page-hero" id="main-content">
-  <div class="page-hero-content">
-    <span class="sec-badge" data-i18n="pricing.label">Preise</span>
-    <h1 data-i18n-html="pricing.title.html">Transparent. Fair. <span class="gradient">Skalierbar.</span></h1>
-    <p data-i18n="pricing.subtitle">Starte ab 99&#8202;€/Monat und wachse mit Call Lana. Kein Kleingedrucktes, keine versteckten Gebühren.</p>
-  </div>
-</div>
-
-<!-- PRICING SECTION -->
-<section class="section" style="padding-top:20px;">
-  <div class="toggle-wrap fi">
-    <span class="toggle-label active" id="tl-mo" data-i18n="pricing.monthly">Monatlich</span>
-    <div class="toggle" id="toggle"></div>
-    <span class="toggle-label" id="tl-yr" data-i18n="pricing.yearly">Jährlich</span>
-    <span class="save-badge" data-i18n="pricing.save">2 Monate gratis</span>
-  </div>
-  <div class="pricing-grid">
-    <div class="pc fi">
-      <div class="pc-tier" data-i18n="pricing.solo">Solo</div>
-      <div class="pc-price" id="p0"><sup>€</sup>99 <span id="p0-per" data-i18n="pricing.permonth">/ Monat</span></div>
-      <div class="pc-per" id="p0-note" data-i18n="pricing.monthly.note">monatlich kündbar</div>
-      <div class="pc-sep"></div>
-      <ul class="pc-list">
-        <li data-i18n="pricing.solo.f1">1.000 Inklusivminuten</li>
-        <li data-i18n="pricing.solo.f2">1 Benutzer</li>
-        <li data-i18n="pricing.solo.f3">1 KI-Stimme wählbar</li>
-        <li data-i18n="pricing.solo.f4">Eigene Telefonnummer</li>
-        <li data-i18n="pricing.solo.f5">Basis-Reporting</li>
-        <li data-i18n="pricing.solo.f6">E-Mail-Support</li>
-        <li class="dim" data-i18n="pricing.solo.f7">CRM-Integration</li>
-        <li class="dim" data-i18n="pricing.solo.f8">Kalenderanbindung</li>
-      </ul>
-      <a href="registrierung.html" class="pb pb-out" data-i18n="pricing.startnow">Jetzt starten</a>
+  <!-- ========== HERO ========== -->
+  <section class="bg-section-dark relative pt-28 pb-16" style="background: linear-gradient(135deg, #FFFFFF 0%, #FBF7FF 30%, #F5EEFF 60%, #EFE8FF 100%);">
+    <div class="warp-hero-bg" style="position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;"><canvas class="warp-bg-canvas" style="display:block;width:100%;height:100%;"></canvas></div>
+    <div class="hero-beam-bg"></div>
+    <div class="noise-overlay"></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+      <h1 class="font-display text-4xl md:text-6xl font-extrabold tracking-tight leading-tight mb-6 text-gray-900" style="letter-spacing:-0.03em;">
+        <span class="lang-de"><span class="text-brand-400">Einfache Preise.</span> Keine &Uuml;berraschungen.</span>
+        <span class="lang-en hidden"><span class="text-brand-400">Simple pricing.</span> No surprises.</span>
+      </h1>
+      <p class="font-body text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-4">
+        <span class="lang-de">Starte ab 99&thinsp;&euro;/Monat und wachse mit Call Lana. Monatlich k&uuml;ndbar &ndash; optional mit Jahresrabatt.</span>
+        <span class="lang-en hidden">Start from 99&thinsp;&euro;/month and grow with Call Lana. Cancel monthly &ndash; optional annual discount.</span>
+      </p>
+      <p class="font-body text-sm text-gray-500 mb-8">
+        <span class="lang-de">30 Tage Geld-zur&uuml;ck-Garantie &middot; Einrichtung in weniger als 15 Minuten</span>
+        <span class="lang-en hidden">30-day money-back guarantee &middot; Setup in under 15 minutes</span>
+      </p>
     </div>
-    <div class="pc featured fi">
-      <div class="pc-badge" data-i18n="pricing.popular">Beliebteste Wahl</div>
-      <div class="pc-tier" data-i18n="pricing.team">Team</div>
-      <div class="pc-price" id="p1"><sup>€</sup>299 <span id="p1-per" data-i18n="pricing.permonth">/ Monat</span></div>
-      <div class="pc-per" id="p1-note" data-i18n="pricing.monthly.note">monatlich kündbar</div>
-      <div class="pc-sep"></div>
-      <ul class="pc-list">
-        <li data-i18n="pricing.team.f1">3.000 Inklusivminuten</li>
-        <li data-i18n="pricing.team.f2">Unbegrenzte Benutzer</li>
-        <li data-i18n="pricing.team.f3">5 gleichzeitige Gespräche</li>
-        <li data-i18n="pricing.team.f4">Alle Stimmen verfügbar</li>
-        <li data-i18n="pricing.team.f5">Outbound-Anrufe</li>
-        <li data-i18n="pricing.team.f6">Echtzeit-Reporting & Analytics</li>
-        <li data-i18n="pricing.team.f7">CRM & Kalender-Integration</li>
-        <li data-i18n="pricing.team.f8">Priorisierter Support</li>
-      </ul>
-      <a href="registrierung.html" class="pb pb-prim" data-i18n="pricing.startnow">Jetzt starten</a>
+  </section>
+
+  <!-- ========== BILLING TOGGLE + PRICING CARDS ========== -->
+  <section class="bg-section-light relative py-20">
+    <div class="noise-overlay"></div>
+    <div class="relative z-10 max-w-6xl mx-auto px-6">
+
+      <!-- Billing toggle -->
+      <div class="flex items-center justify-center gap-4 mb-12">
+        <span id="labelMonthly" class="font-body text-sm font-semibold text-brand-400 transition-colors duration-200">
+          <span class="lang-de">Monatlich</span>
+          <span class="lang-en hidden">Monthly</span>
+        </span>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="billingToggle" class="sr-only peer" />
+          <div class="w-14 h-7 bg-dark-700 rounded-full peer peer-checked:bg-brand-400/30 peer-focus-visible:ring-2 peer-focus-visible:ring-brand-400 transition-colors duration-200 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-transform after:duration-200 peer-checked:after:translate-x-7" style="box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);"></div>
+        </label>
+        <span id="labelYearly" class="font-body text-sm font-medium text-gray-500 flex items-center gap-2 transition-colors duration-200">
+          <span class="lang-de">J&auml;hrlich</span>
+          <span class="lang-en hidden">Annually</span>
+          <span class="inline-block bg-brand-400/15 text-brand-400 text-xs font-bold px-2.5 py-0.5 rounded-full border border-brand-400/30">
+            &minus;20%
+          </span>
+        </span>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8 items-stretch">
+
+        <!-- CALL LANA LITE -->
+        <div id="cardLite" class="feature-card flex flex-col plan-recommended" style="background:#F9FAFB; border:1px solid rgba(0,0,0,0.06); border-radius:1.5rem; overflow:hidden;">
+          <div class="p-8 border-b border-gray-200">
+            <div class="inline-block bg-dark-800 rounded-full px-3 py-1 text-xs font-medium text-gray-500 mb-4 font-body">Starter</div>
+            <h3 class="font-display text-xl font-bold mb-2 text-gray-900">Call Lana Light</h3>
+            <p class="text-gray-500 text-sm font-body mb-6" style="line-height:1.7;">
+              <span class="lang-de">Perfekt f&uuml;r kleine Handwerksbetriebe, die mit KI-Anrufbearbeitung starten wollen.</span>
+              <span class="lang-en hidden">Perfect for small craft businesses starting with AI call handling.</span>
+            </p>
+            <div class="flex items-end gap-2">
+              <span class="font-display text-4xl font-bold text-gray-900 price-current" data-monthly="99" data-yearly="85">99 &euro;</span>
+              <span class="text-gray-500 font-body text-sm mb-1" data-period>/Monat</span>
+            </div>
+            <div class="price-old-wrapper mt-1 h-5">
+              <span class="price-old text-gray-400 font-body text-sm line-through opacity-0 transition-opacity duration-200"></span>
+            </div>
+          </div>
+          <div class="p-8 flex flex-col flex-1">
+            <ul class="space-y-3 font-body text-sm text-gray-600 mb-8 flex-1">
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">340 Inklusivminuten</span><span class="lang-en hidden">340 included minutes</span></li>
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">Terminbuchung</span><span class="lang-en hidden">Appointment booking</span></li>
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">Anrufzusammenfassung per E-Mail</span><span class="lang-en hidden">Call summary by email</span></li>
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">Eigene Telefonnummer</span><span class="lang-en hidden">Own phone number</span></li>
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">Weiterleitung nach Gesch&auml;ftszeiten</span><span class="lang-en hidden">After-hours routing</span></li>
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">E-Mail Support</span><span class="lang-en hidden">Email support</span></li>
+            </ul>
+            <a href="registrierung.html" class="btn-outline w-full text-center block py-3 px-6">
+              <span class="lang-de">Jetzt starten</span>
+              <span class="lang-en hidden">Get started</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- CALL LANA PRO (highlighted) -->
+        <div id="cardPro" class="feature-card pricing-highlight flex flex-col plan-recommended" style="border-radius:1.5rem; overflow:hidden;">
+          <div class="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-brand-400/30 via-brand-400 to-brand-400/30"></div>
+          <div class="p-8 border-b border-gray-200">
+            <div class="flex items-center justify-between mb-2">
+              <div class="inline-block bg-brand-400/15 rounded-full px-3 py-1 text-xs font-medium text-brand-400 font-body">
+                <span class="lang-de">Beliebteste Wahl</span>
+                <span class="lang-en hidden">Most popular</span>
+              </div>
+              <div id="recBadgePro" class="hidden items-center gap-1 bg-white text-brand-400 text-xs font-bold px-3 py-1 rounded-full font-body" style="box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                <span class="lang-de">Empfohlen</span>
+                <span class="lang-en hidden">Recommended</span>
+              </div>
+            </div>
+            <h3 class="font-display text-xl font-bold mb-2">Call Lana Pro</h3>
+            <p class="text-sm font-body mb-6 text-gray-500" style="line-height:1.7;">
+              <span class="lang-de">Volle KI-Rezeptionistin mit gro&szlig;z&uuml;gigem Minutenkontingent f&uuml;r wachsende Betriebe.</span>
+              <span class="lang-en hidden">Full AI receptionist with generous minutes for growing businesses.</span>
+            </p>
+            <div class="flex items-end gap-2">
+              <span class="font-display text-4xl font-bold text-gray-900 price-current" data-monthly="299" data-yearly="225">299 &euro;</span>
+              <span class="font-body text-sm mb-1 text-gray-500" data-period>/Monat</span>
+            </div>
+            <div class="price-old-wrapper mt-1 h-5">
+              <span class="price-old text-gray-400 font-body text-sm line-through opacity-0 transition-opacity duration-200"></span>
+            </div>
+          </div>
+          <div class="p-8 flex flex-col flex-1">
+            <ul class="space-y-3 font-body text-sm text-gray-600 mb-8 flex-1">
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">560 Inklusivminuten</span><span class="lang-en hidden">560 included minutes</span></li>
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">Terminbuchung + Kalender-Sync</span><span class="lang-en hidden">Booking + Calendar sync</span></li>
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">Echtzeit-Anrufweiterleitung</span><span class="lang-en hidden">Real-time call routing</span></li>
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">SMS + E-Mail-Zusammenfassungen</span><span class="lang-en hidden">SMS + Email summaries</span></li>
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">Individuelle Skripte</span><span class="lang-en hidden">Custom scripts</span></li>
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">CRM-Integration</span><span class="lang-en hidden">CRM integration</span></li>
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">Echtzeit Reporting</span><span class="lang-en hidden">Real-time reporting</span></li>
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">Priorit&auml;ts-Support</span><span class="lang-en hidden">Priority support</span></li>
+            </ul>
+            <a href="registrierung.html" class="btn-brand w-full text-center block py-3 px-6">
+              <span class="lang-de">Jetzt starten</span>
+              <span class="lang-en hidden">Get started</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- INDIVIDUELLE L&Ouml;SUNG -->
+        <div id="cardIndividual" class="feature-card flex flex-col plan-recommended" style="background:#F9FAFB; border:1px solid rgba(0,0,0,0.06); border-radius:1.5rem; overflow:hidden;">
+          <div class="p-8 border-b border-gray-200">
+            <div class="flex items-center justify-between mb-2">
+              <div class="inline-block bg-dark-800 rounded-full px-3 py-1 text-xs font-medium text-gray-500 font-body">
+                <span class="lang-de">Individuell</span>
+                <span class="lang-en hidden">Custom</span>
+              </div>
+              <div id="recBadgeIndiv" class="hidden items-center gap-1 bg-brand-400 text-white text-xs font-bold px-3 py-1 rounded-full font-body" style="box-shadow: 0 2px 8px rgba(124,58,237,0.3);">
+                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                <span class="lang-de">Empfohlen</span>
+                <span class="lang-en hidden">Recommended</span>
+              </div>
+            </div>
+            <h3 class="font-display text-xl font-bold mb-2 text-gray-900">
+              <span class="lang-de">Enterprise</span>
+              <span class="lang-en hidden">Enterprise</span>
+            </h3>
+            <p class="text-gray-500 text-sm font-body mb-6" style="line-height:1.7;">
+              <span class="lang-de">Ma&szlig;geschneidert f&uuml;r Betriebe mit hohem Anrufvolumen, mehreren Standorten oder speziellen Anforderungen.</span>
+              <span class="lang-en hidden">Tailored for businesses with high call volume, multiple locations, or special requirements.</span>
+            </p>
+            <div class="flex items-end gap-1.5">
+              <span class="font-display text-3xl font-bold text-gray-900 lang-de">Auf Anfrage</span>
+              <span class="font-display text-3xl font-bold text-gray-900 lang-en hidden">On request</span>
+            </div>
+            <div class="price-old-wrapper mt-1 h-5"></div>
+          </div>
+          <div class="p-8 flex flex-col flex-1">
+            <ul class="space-y-3 font-body text-sm text-gray-600 mb-8 flex-1">
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">Individuelles Minutenkontingent</span><span class="lang-en hidden">Custom minute allowance</span></li>
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">Alles aus Pro</span><span class="lang-en hidden">Everything from Pro</span></li>
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">Mehrere Standorte</span><span class="lang-en hidden">Multiple locations</span></li>
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">Pers&ouml;nlicher Ansprechpartner</span><span class="lang-en hidden">Dedicated account manager</span></li>
+              <li class="flex items-start gap-3"><svg class="w-4 h-4 text-brand-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="lang-de">API + White Label Option</span><span class="lang-en hidden">API + White label option</span></li>
+            </ul>
+            <a href="demo.html" class="btn-outline w-full text-center block py-3 px-6">
+              <span class="lang-de">Demo buchen</span>
+              <span class="lang-en hidden">Book a demo</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
     </div>
-    <div class="pc fi">
-      <div class="pc-tier" data-i18n="pricing.business">Business</div>
-      <div class="pc-price" style="font-size:1.9rem;padding-top:.6rem;letter-spacing:-.02em;" data-i18n="pricing.individual">Individuell</div>
-      <div class="pc-per" data-i18n="pricing.onrequest">Preis auf Anfrage</div>
-      <div class="pc-sep"></div>
-      <ul class="pc-list">
-        <li data-i18n="pricing.business.f1">Alles aus Team</li>
-        <li data-i18n="pricing.business.f2">Eigene KI-Stimme (Custom Voice)</li>
-        <li data-i18n="pricing.business.f3">SLA-Garantie (99,9 %)</li>
-        <li data-i18n="pricing.business.f4">Vollständiger API-Zugang</li>
-        <li data-i18n="pricing.business.f5">Dedizierter Account Manager</li>
-        <li data-i18n="pricing.business.f6">White-Label Option</li>
-        <li data-i18n="pricing.business.f7">Custom Integrationen</li>
-      </ul>
-      <a href="kontakt.html" class="pb pb-out" data-i18n="pricing.bookdemo">Demo buchen</a>
+  </section>
+
+  <!-- ========== SAVINGS CALCULATOR ========== -->
+  <section class="relative py-16 md:py-20" style="background: linear-gradient(180deg, #F9FAFB 0%, #F5F3FF 50%, #F9FAFB 100%);">
+    <div class="noise-overlay"></div>
+    <div class="relative z-10 max-w-5xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <div class="inline-flex items-center gap-2 bg-brand-400/10 border border-brand-400/20 rounded-full px-4 py-1.5 mb-5">
+          <svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+          <span class="text-brand-400 text-xs font-semibold tracking-wide uppercase font-body">
+            <span class="lang-de">Sparrechner</span>
+            <span class="lang-en hidden">Savings Calculator</span>
+          </span>
+        </div>
+        <h2 class="font-display text-3xl md:text-4xl font-extrabold mb-4 text-gray-900" style="letter-spacing:-0.025em;">
+          <span class="lang-de">Berechne dein monatliches Einsparpotenzial</span>
+          <span class="lang-en hidden">Calculate your monthly savings potential</span>
+        </h2>
+        <p class="text-gray-500 font-body max-w-xl mx-auto" style="line-height:1.7;">
+          <span class="lang-de">Finde heraus, wie viel du mit Call Lana im Vergleich zu einer angestellten Telefonkraft sparst.</span>
+          <span class="lang-en hidden">Find out how much you save with Call Lana compared to a hired receptionist.</span>
+        </p>
+      </div>
+
+      <div class="max-w-4xl mx-auto">
+        <!-- Sliders Card -->
+        <div class="bg-white rounded-2xl border border-gray-200 p-8 md:p-10 mb-8" style="box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 32px rgba(124, 58, 237, 0.06);">
+          <div class="grid md:grid-cols-2 gap-8 md:gap-12">
+            <!-- Slider 1: Calls per day -->
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <label class="font-body font-semibold text-gray-800 text-sm" for="callsPerDay">
+                  <span class="lang-de">Anrufe pro Tag</span>
+                  <span class="lang-en hidden">Calls per day</span>
+                </label>
+                <div class="bg-brand-400/10 rounded-lg px-3 py-1 min-w-[4rem] text-center">
+                  <span id="callsValue" class="font-display font-bold text-brand-400 text-lg counter-value inline-block">30</span>
+                </div>
+              </div>
+              <input type="range" id="callsPerDay" class="calc-slider" min="0" max="200" value="30" step="5" />
+              <div class="flex justify-between text-xs text-gray-400 font-body mt-1.5">
+                <span>0</span>
+                <span>100</span>
+                <span>200</span>
+              </div>
+            </div>
+
+            <!-- Slider 2: Average call duration -->
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <label class="font-body font-semibold text-gray-800 text-sm" for="callDuration">
+                  <span class="lang-de">Durchschn. Anrufdauer (Min.)</span>
+                  <span class="lang-en hidden">Avg. call duration (min.)</span>
+                </label>
+                <div class="bg-brand-400/10 rounded-lg px-3 py-1 min-w-[4rem] text-center">
+                  <span id="durationValue" class="font-display font-bold text-brand-400 text-lg counter-value inline-block">4</span>
+                </div>
+              </div>
+              <input type="range" id="callDuration" class="calc-slider" min="1" max="15" value="4" step="1" />
+              <div class="flex justify-between text-xs text-gray-400 font-body mt-1.5">
+                <span>1</span>
+                <span>8</span>
+                <span>15</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Row -->
+        <div class="grid md:grid-cols-3 gap-4 md:gap-6">
+          <!-- Employee Cost -->
+          <div class="bg-white rounded-2xl border border-gray-200 p-6 text-center" style="box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.03);">
+            <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center mx-auto mb-3">
+              <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            </div>
+            <p class="text-xs text-gray-400 font-body uppercase tracking-wider mb-1.5">
+              <span class="lang-de">Mitarbeiterkosten</span>
+              <span class="lang-en hidden">Employee cost</span>
+            </p>
+            <p id="employeeCost" class="font-display text-2xl md:text-3xl font-bold text-gray-900 counter-value inline-block">5.775 &euro;</p>
+            <p class="text-xs text-gray-400 font-body mt-1">
+              <span class="lang-de">pro Monat</span>
+              <span class="lang-en hidden">per month</span>
+            </p>
+          </div>
+
+          <!-- Colana Cost -->
+          <div class="bg-white rounded-2xl border border-brand-400/20 p-6 text-center" style="box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(124, 58, 237, 0.06);">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center mx-auto mb-3">
+              <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <p class="text-xs text-gray-400 font-body uppercase tracking-wider mb-1.5">Call Lana</p>
+            <p id="colanaCost" class="font-display text-2xl md:text-3xl font-bold text-brand-400 counter-value inline-block">145 &euro;</p>
+            <p class="text-xs text-gray-400 font-body mt-1">
+              <span class="lang-de">pro Monat</span>
+              <span class="lang-en hidden">per month</span>
+            </p>
+          </div>
+
+          <!-- Savings -->
+          <div class="rounded-2xl border-2 border-brand-400/30 p-6 text-center savings-highlight" style="background: linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%); box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(124, 58, 237, 0.10);">
+            <div class="w-10 h-10 rounded-xl bg-brand-400/15 flex items-center justify-center mx-auto mb-3">
+              <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <p class="text-xs text-brand-400 font-body uppercase tracking-wider font-semibold mb-1.5">
+              <span class="lang-de">Du sparst</span>
+              <span class="lang-en hidden">You save</span>
+            </p>
+            <p id="savingsAmount" class="font-display text-2xl md:text-3xl font-bold text-brand-400 counter-value inline-block">5.630 &euro;</p>
+            <p class="text-xs text-gray-500 font-body mt-1">
+              <span class="lang-de">pro Monat</span>
+              <span class="lang-en hidden">per month</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Recommendation Badge -->
+        <div id="recommendationBadge" class="mt-6 text-center">
+          <div class="inline-flex items-center gap-2 bg-brand-400/10 border border-brand-400/25 rounded-full px-5 py-2.5 font-body text-sm">
+            <svg class="w-4 h-4 text-brand-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span class="text-gray-700">
+              <span class="lang-de">Empfohlener Plan: </span>
+              <span class="lang-en hidden">Recommended plan: </span>
+            </span>
+            <span id="recommendedPlan" class="font-semibold text-brand-400">Call Lana Pro</span>
+          </div>
+        </div>
+
+        <p class="text-gray-400 text-xs text-center mt-4 font-body" style="line-height:1.6;">Berechnung basiert auf 22 Arbeitstagen pro Monat und durchschnittlichen Mitarbeiterkosten von 35&thinsp;€ pro Stunde.</p>
+
+        <!-- Trust / ROI Quote -->
+        <div class="mt-10 mb-10">
+          <div class="bg-white border border-brand-400/15 rounded-2xl p-8 text-center relative overflow-hidden" style="box-shadow: 0 0 40px rgba(124,58,237,0.05), 0 4px 16px rgba(124,58,237,0.04);">
+            <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.04) 0%, transparent 60%);"></div>
+            <div class="relative z-10">
+              <svg class="w-8 h-8 text-brand-400/30 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+              <p class="text-gray-700 text-base md:text-lg font-medium italic max-w-2xl mx-auto" style="line-height:1.7;">
+                <span class="lang-de">Ein verpasster Anruf kostet im Handwerk oft mehrere hundert Euro. Call Lana sorgt daf&uuml;r, dass kein Kunde mehr verloren geht.</span>
+                <span class="lang-en hidden">A missed call in trades often costs hundreds of euros. Call Lana ensures no customer is ever lost.</span>
+              </p>
+              <div class="flex items-center justify-center gap-4 mt-5">
+                <span class="inline-flex items-center gap-1.5 text-xs text-gray-500 font-medium">
+                  <svg class="w-4 h-4 text-brand-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                  <span class="lang-de">30 Tage Geld-zur&uuml;ck-Garantie</span><span class="lang-en hidden">30-day money-back guarantee</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 text-xs text-gray-500 font-medium">
+                  <svg class="w-4 h-4 text-brand-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                  <span class="lang-de">Monatlich k&uuml;ndbar</span><span class="lang-en hidden">Cancel monthly</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 text-xs text-gray-500 font-medium">
+                  <svg class="w-4 h-4 text-brand-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                  DSGVO-konform
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA after calculator -->
+        <div class="text-center">
+          <p class="text-gray-500 text-sm mb-4 lang-de">Noch Fragen? Sprich mit einem Call Lana Experten.</p>
+          <p class="text-gray-500 text-sm mb-4 lang-en hidden">Questions? Talk to a Call Lana expert.</p>
+          <a href="demo.html" class="btn-brand inline-block px-8 py-4 rounded-xl text-base font-bold">
+            <span class="lang-de">Jetzt Demo buchen</span>
+            <span class="lang-en hidden">Book a demo</span>
+          </a>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- COMPARISON TABLE -->
-<section class="section alt">
-  <div class="sec-header">
-    <span class="sec-badge" data-i18n="pricing.compare.label">Vergleich</span>
-    <h2 class="sec-title fi" data-i18n-html="pricing.compare.title.html">Alle Features <span class="gradient">auf einen Blick</span></h2>
-  </div>
-  <div class="comp-table fi">
-    <div class="ct-head"><span data-i18n="pricing.compare.feature">Feature</span><span data-i18n="pricing.solo">Solo</span><span data-i18n="pricing.team">Team</span><span data-i18n="pricing.business">Business</span></div>
-    <div class="ct-row"><span data-i18n="pricing.compare.minutes">Inklusivminuten</span><span>1.000</span><span>3.000</span><span data-i18n="pricing.compare.unlimited">Unbegrenzt</span></div>
-    <div class="ct-row"><span data-i18n="pricing.compare.users">Benutzer</span><span>1</span><span data-i18n="pricing.compare.unlimited">Unbegrenzt</span><span data-i18n="pricing.compare.unlimited">Unbegrenzt</span></div>
-    <div class="ct-row"><span data-i18n="pricing.compare.concurrent">Gleichzeitige Gespräche</span><span>1</span><span>5</span><span data-i18n="pricing.compare.unlimited">Unbegrenzt</span></div>
-    <div class="ct-row"><span data-i18n="pricing.compare.voices">KI-Stimmen</span><span>1</span><span data-i18n="pricing.compare.all">Alle</span><span data-i18n="pricing.compare.allcustom">Alle + Custom</span></div>
-    <div class="ct-row"><span data-i18n="pricing.compare.outbound">Outbound-Anrufe</span><span class="ct-no">–</span><span class="ct-yes">✓</span><span class="ct-yes">✓</span></div>
-    <div class="ct-row"><span data-i18n="pricing.compare.number">Eigene Rufnummer</span><span class="ct-yes">✓</span><span class="ct-yes">✓</span><span class="ct-yes">✓</span></div>
-    <div class="ct-row"><span data-i18n="pricing.compare.basicreport">Basis-Reporting</span><span class="ct-yes">✓</span><span class="ct-yes">✓</span><span class="ct-yes">✓</span></div>
-    <div class="ct-row"><span data-i18n="pricing.compare.dashboard">Echtzeit-Dashboard</span><span class="ct-no">–</span><span class="ct-yes">✓</span><span class="ct-yes">✓</span></div>
-    <div class="ct-row"><span data-i18n="pricing.compare.crm">CRM-Integration</span><span class="ct-no">–</span><span class="ct-yes">✓</span><span class="ct-yes">✓</span></div>
-    <div class="ct-row"><span data-i18n="pricing.compare.calendar">Kalenderanbindung</span><span class="ct-no">–</span><span class="ct-yes">✓</span><span class="ct-yes">✓</span></div>
-    <div class="ct-row"><span data-i18n="pricing.compare.api">API-Zugang</span><span class="ct-no">–</span><span class="ct-no">–</span><span class="ct-yes">✓</span></div>
-    <div class="ct-row"><span data-i18n="pricing.compare.whitelabel">White-Label</span><span class="ct-no">–</span><span class="ct-no">–</span><span class="ct-yes">✓</span></div>
-    <div class="ct-row"><span data-i18n="pricing.compare.sla">SLA-Garantie</span><span class="ct-no">–</span><span class="ct-no">–</span><span class="ct-yes">99,9 %</span></div>
-    <div class="ct-row"><span data-i18n="pricing.compare.support">Support</span><span data-i18n="pricing.compare.email">E-Mail</span><span data-i18n="pricing.compare.priority">Priorisiert</span><span data-i18n="pricing.compare.dedicated">Dediziert</span></div>
-  </div>
-</section>
+  <!-- ========== COMPARISON TABLE ========== -->
+  <section class="bg-section-dark relative py-20">
+    <div class="noise-overlay"></div>
+    <div class="relative z-10 max-w-5xl mx-auto px-6">
+      <h2 class="font-display text-3xl md:text-4xl font-extrabold text-center mb-4 text-gray-900" style="letter-spacing:-0.025em;">
+        <span class="lang-de">Alle Features auf einen Blick</span>
+        <span class="lang-en hidden">All features at a glance</span>
+      </h2>
+      <p class="text-gray-500 font-body text-center mb-12 max-w-xl mx-auto">
+        <span class="lang-de">Vergleiche die Pl&auml;ne und finde den perfekten f&uuml;r dein Unternehmen.</span>
+        <span class="lang-en hidden">Compare plans and find the perfect one for your business.</span>
+      </p>
 
-<!-- FAQ -->
-<section class="section">
-  <div class="sec-header">
-    <span class="sec-badge" data-i18n="pricing.faq.label">Fragen & Antworten</span>
-    <h2 class="sec-title fi" data-i18n-html="pricing.faq.title.html">Häufige <span class="gradient">Fragen</span></h2>
-    <p class="sec-sub fi"><span data-i18n="pricing.faq.sub">Nicht gefunden was du suchst?</span> <a href="kontakt.html" style="color:var(--pu);" data-i18n="pricing.faq.sublink">Schreib uns.</a></p>
-  </div>
-  <div class="faq-list">
-    <div class="faq-item fi"><button class="faq-q" aria-expanded="false"><span data-i18n="pricing.faq.q1">Wie schnell kann ich loslegen?</span><span class="faq-arrow">▼</span></button><div class="faq-a" data-i18n="pricing.faq.a1">Die KI kann innerhalb weniger Minuten eingestellt werden und ist danach sofort einsatzbereit. Abhängig vom Integrationsaufwand in bestehende Systeme kann es etwas länger dauern – aber in der Regel bist du in unter 30 Minuten live.</div></div>
-    <div class="faq-item fi"><button class="faq-q" aria-expanded="false"><span data-i18n="pricing.faq.q2">Werden meine Daten in der EU gespeichert?</span><span class="faq-arrow">▼</span></button><div class="faq-a" data-i18n="pricing.faq.a2">Ja, unsere Server stehen bei Hetzner in Nürnberg, Deutschland. Wir nutzen OpenAI ausschließlich über Microsoft Azure-Server in Europa – vollständig DSGVO- und EU AI Act-konform.</div></div>
-    <div class="faq-item fi"><button class="faq-q" aria-expanded="false"><span data-i18n="pricing.faq.q3">Kann Lana auch ausgehende Anrufe machen?</span><span class="faq-arrow">▼</span></button><div class="faq-a" data-i18n="pricing.faq.a3">Ja. Outbound-Anrufe sind im Team- und Business-Tarif enthalten. Über die API oder das Dashboard kann ein Anruf initiiert werden, sobald eine Telefonnummer übermittelt wird. Zusätzlich können Variablen wie Name oder Kontext übergeben werden, um das Gespräch persönlicher zu gestalten.</div></div>
-    <div class="faq-item fi"><button class="faq-q" aria-expanded="false"><span data-i18n="pricing.faq.q4">Was passiert nach den Inklusivminuten?</span><span class="faq-arrow">▼</span></button><div class="faq-a" data-i18n="pricing.faq.a4">Zusätzliche Minuten werden zu einem fairen Minutenpreis abgerechnet. Du wirst rechtzeitig benachrichtigt, bevor dein Kontingent aufgebraucht ist – so behältst du immer die volle Kostenkontrolle.</div></div>
-    <div class="faq-item fi"><button class="faq-q" aria-expanded="false"><span data-i18n="pricing.faq.q5">Kann ich meine bestehende Telefonnummer behalten?</span><span class="faq-arrow">▼</span></button><div class="faq-a" data-i18n="pricing.faq.a5">Ja. Du kannst entweder eine neue Rufnummer für die KI anlegen oder deine bestehende Nummer über eine Rufumleitung mit Call Lana verbinden – das ist in wenigen Minuten erledigt.</div></div>
-    <div class="faq-item fi"><button class="faq-q" aria-expanded="false"><span data-i18n="pricing.faq.q6">Gibt es eine Testphase?</span><span class="faq-arrow">▼</span></button><div class="faq-a" data-i18n="pricing.faq.a6">Ja! Du kannst Call Lana 14 Tage lang kostenlos testen – mit vollem Zugang zu allen Team-Features. Keine Kreditkarte erforderlich. Nach der Testphase wählst du einfach den Tarif, der zu dir passt.</div></div>
-  </div>
-</section>
+      <div class="overflow-x-auto">
+        <table class="w-full font-body text-sm">
+          <thead>
+            <tr class="border-b border-gray-200">
+              <th class="text-left py-4 px-4 text-gray-500 font-medium w-1/3">Feature</th>
+              <th class="text-center py-4 px-4 text-gray-900 font-semibold">Lite</th>
+              <th class="text-center py-4 px-4 text-brand-400 font-semibold relative">
+                <span class="absolute inset-0 bg-brand-400/5 rounded-t-lg"></span>
+                <span class="relative">Pro</span>
+              </th>
+              <th class="text-center py-4 px-4 text-gray-900 font-semibold">Enterprise</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5">
+            <tr>
+              <td class="py-3.5 px-4 text-gray-600"><span class="lang-de">Inklusivminuten</span><span class="lang-en hidden">Included minutes</span></td>
+              <td class="py-3.5 px-4 text-center text-gray-700">340</td>
+              <td class="py-3.5 px-4 text-center text-gray-700 bg-brand-400/5">560</td>
+              <td class="py-3.5 px-4 text-center text-gray-700"><span class="lang-de">Individuell</span><span class="lang-en hidden">Custom</span></td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-4 text-gray-600"><span class="lang-de">Benutzer</span><span class="lang-en hidden">Users</span></td>
+              <td class="py-3.5 px-4 text-center text-gray-700">1</td>
+              <td class="py-3.5 px-4 text-center text-gray-700 bg-brand-400/5"><span class="lang-de">Unbegrenzt</span><span class="lang-en hidden">Unlimited</span></td>
+              <td class="py-3.5 px-4 text-center text-gray-700"><span class="lang-de">Unbegrenzt</span><span class="lang-en hidden">Unlimited</span></td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-4 text-gray-600"><span class="lang-de">Gleichzeitige Gespr&auml;che</span><span class="lang-en hidden">Concurrent calls</span></td>
+              <td class="py-3.5 px-4 text-center text-gray-700">1</td>
+              <td class="py-3.5 px-4 text-center text-gray-700 bg-brand-400/5">3</td>
+              <td class="py-3.5 px-4 text-center text-gray-700"><span class="lang-de">Unbegrenzt</span><span class="lang-en hidden">Unlimited</span></td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-4 text-gray-600"><span class="lang-de">KI-Stimmen</span><span class="lang-en hidden">AI voices</span></td>
+              <td class="py-3.5 px-4 text-center text-gray-700">1</td>
+              <td class="py-3.5 px-4 text-center text-gray-700 bg-brand-400/5"><span class="lang-de">Alle</span><span class="lang-en hidden">All</span></td>
+              <td class="py-3.5 px-4 text-center text-gray-700"><span class="lang-de">Alle</span><span class="lang-en hidden">All</span></td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-4 text-gray-600"><span class="lang-de">Eigene Rufnummer</span><span class="lang-en hidden">Own phone number</span></td>
+              <td class="py-3.5 px-4 text-center text-brand-400">&#10003;</td>
+              <td class="py-3.5 px-4 text-center text-brand-400 bg-brand-400/5">&#10003;</td>
+              <td class="py-3.5 px-4 text-center text-brand-400">&#10003;</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-4 text-gray-600"><span class="lang-de">Echtzeit-Dashboard</span><span class="lang-en hidden">Real-time dashboard</span></td>
+              <td class="py-3.5 px-4 text-center text-red-400">&#10007;</td>
+              <td class="py-3.5 px-4 text-center text-brand-400 bg-brand-400/5">&#10003;</td>
+              <td class="py-3.5 px-4 text-center text-brand-400">&#10003;</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-4 text-gray-600"><span class="lang-de">CRM Integration</span><span class="lang-en hidden">CRM integration</span></td>
+              <td class="py-3.5 px-4 text-center text-red-400">&#10007;</td>
+              <td class="py-3.5 px-4 text-center text-brand-400 bg-brand-400/5">&#10003;</td>
+              <td class="py-3.5 px-4 text-center text-brand-400">&#10003;</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-4 text-gray-600"><span class="lang-de">Kundenauswertung</span><span class="lang-en hidden">Customer analytics</span></td>
+              <td class="py-3.5 px-4 text-center text-red-400">&#10007;</td>
+              <td class="py-3.5 px-4 text-center text-brand-400 bg-brand-400/5">&#10003;</td>
+              <td class="py-3.5 px-4 text-center text-brand-400">&#10003;</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-4 text-gray-600"><span class="lang-de">API-Zugang</span><span class="lang-en hidden">API access</span></td>
+              <td class="py-3.5 px-4 text-center text-red-400">&#10007;</td>
+              <td class="py-3.5 px-4 text-center text-red-400 bg-brand-400/5">&#10007;</td>
+              <td class="py-3.5 px-4 text-center text-brand-400">&#10003;</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-4 text-gray-600">White Label</td>
+              <td class="py-3.5 px-4 text-center text-red-400">&#10007;</td>
+              <td class="py-3.5 px-4 text-center text-red-400 bg-brand-400/5">&#10007;</td>
+              <td class="py-3.5 px-4 text-center text-brand-400">&#10003;</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-4 text-gray-600"><span class="lang-de">SLA Garantie</span><span class="lang-en hidden">SLA guarantee</span></td>
+              <td class="py-3.5 px-4 text-center text-red-400">&#10007;</td>
+              <td class="py-3.5 px-4 text-center text-red-400 bg-brand-400/5">&#10007;</td>
+              <td class="py-3.5 px-4 text-center text-gray-700">99.9%</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-4 text-gray-600">Support</td>
+              <td class="py-3.5 px-4 text-center text-gray-700">E-Mail</td>
+              <td class="py-3.5 px-4 text-center text-gray-700 bg-brand-400/5"><span class="lang-de">Priorit&auml;t</span><span class="lang-en hidden">Priority</span></td>
+              <td class="py-3.5 px-4 text-center text-gray-700"><span class="lang-de">Pers&ouml;nlich</span><span class="lang-en hidden">Dedicated</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 
-<!-- CTA -->
-<section class="cta-sec">
-  <h2 data-i18n-html="pricing.cta.title.html">Starte jetzt – <span class="gradient">ab 99&#8202;€/Monat</span></h2>
-  <p data-i18n="pricing.cta.subtitle">Keine Kreditkarte. Keine Vertragsbindung. Deine KI ist in 30 Minuten live.</p>
-  <div class="cta-btns"><a href="registrierung.html" class="btn-primary" data-i18n="pricing.cta.primary">Jetzt starten</a><a href="kontakt.html" class="btn-secondary" data-i18n="pricing.cta.secondary">Demo buchen</a></div>
-</section>
+  <!-- ========== FAQ ========== -->
+  <section class="bg-section-light relative py-20">
+    <div class="noise-overlay"></div>
+    <div class="relative z-10 max-w-3xl mx-auto px-6">
+      <h2 class="font-display text-3xl md:text-4xl font-extrabold text-center mb-4 text-gray-900" style="letter-spacing:-0.025em;">
+        <span class="lang-de">H&auml;ufig gestellte Fragen</span>
+        <span class="lang-en hidden">Frequently asked questions</span>
+      </h2>
+      <p class="text-gray-500 font-body text-center mb-12">
+        <span class="lang-de">Alles rund um Preise und Abrechnung.</span>
+        <span class="lang-en hidden">Everything about pricing and billing.</span>
+      </p>
 
-<footer>
-  <div class="footer-grid">
-    <div class="footer-brand"><a href="index.html" class="logo"><picture><source srcset="logo-footer.webp" type="image/webp"><img src="logo-footer.png" alt="Call Lana" height="28"></picture></a><p data-i18n="footer.tagline">Der KI-Telefonassistent auf Deutsch. DSGVO-konform, skalierbar, sofort einsatzbereit.</p></div>
-    <div class="footer-col"><h4 data-i18n="footer.product">Produkt</h4><ul><li><a href="funktionen.html" data-i18n="nav.features">Funktionen</a></li><li><a href="branchen.html" data-i18n="nav.industries">Branchen</a></li><li><a href="preise.html" data-i18n="nav.pricing">Preise</a></li></ul></div>
-    <div class="footer-col"><h4 data-i18n="footer.legal">Rechtliches</h4><ul><li><a href="impressum.html">Impressum</a></li><li><a href="datenschutz.html">Datenschutz</a></li><li><a href="agb.html">AGB</a></li></ul></div>
-    <div class="footer-col"><h4 data-i18n="footer.account">Konto</h4><ul><li><a href="registrierung.html">Registrieren</a></li><li><a href="login.html">Login</a></li><li><a href="dashboard.html">Dashboard</a></li></ul></div>
-  </div>
-  <div class="footer-bottom"><p class="footer-copy" data-i18n="footer.copyright">Copyright 2025 by Call Lana — Alle Rechte vorbehalten</p></div>
-</footer>
+      <div class="space-y-3">
+        <div class="faq-item">
+          <input type="checkbox" id="faq-p1" class="peer sr-only" />
+          <label for="faq-p1" class="faq-question font-body font-medium text-gray-900 cursor-pointer flex items-center justify-between p-5 rounded-xl bg-dark-800/50 border border-gray-200 hover:border-gray-300 transition-colors duration-200">
+            <span>
+              <span class="lang-de">Werden meine Daten in der EU gespeichert?</span>
+              <span class="lang-en hidden">Is my data stored in the EU?</span>
+            </span>
+            <svg class="w-5 h-5 text-gray-400 shrink-0 ml-4 transition-transform duration-200 peer-checked:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+          </label>
+          <div class="faq-answer max-h-0 overflow-hidden peer-checked:max-h-96 transition-all duration-300 ease-in-out">
+            <p class="p-5 pt-2 text-gray-500 font-body text-sm leading-relaxed">
+              <span class="lang-de">Ja, alle Daten werden ausschlie&szlig;lich auf Servern innerhalb der Europ&auml;ischen Union gespeichert und verarbeitet. Wir sind vollst&auml;ndig DSGVO-konform und arbeiten nur mit europ&auml;ischen Cloud-Anbietern zusammen.</span>
+              <span class="lang-en hidden">Yes, all data is stored and processed exclusively on servers within the European Union. We are fully GDPR compliant and only work with European cloud providers.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <input type="checkbox" id="faq-p2" class="peer sr-only" />
+          <label for="faq-p2" class="faq-question font-body font-medium text-gray-900 cursor-pointer flex items-center justify-between p-5 rounded-xl bg-dark-800/50 border border-gray-200 hover:border-gray-300 transition-colors duration-200">
+            <span>
+              <span class="lang-de">Kann Lana auch ausgehende Anrufe machen?</span>
+              <span class="lang-en hidden">Can Lana also make outbound calls?</span>
+            </span>
+            <svg class="w-5 h-5 text-gray-400 shrink-0 ml-4 transition-transform duration-200 peer-checked:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+          </label>
+          <div class="faq-answer max-h-0 overflow-hidden peer-checked:max-h-96 transition-all duration-300 ease-in-out">
+            <p class="p-5 pt-2 text-gray-500 font-body text-sm leading-relaxed">
+              <span class="lang-de">Aktuell ist Lana auf eingehende Anrufe spezialisiert. Ausgehende Anrufe (z.&thinsp;B. Terminbest&auml;tigungen oder Follow-ups) sind in der Roadmap und werden bald verf&uuml;gbar sein. Sprich uns gerne an, wenn du Interesse hast.</span>
+              <span class="lang-en hidden">Currently, Lana specializes in inbound calls. Outbound calls (e.g., appointment confirmations or follow-ups) are on our roadmap and will be available soon. Feel free to reach out if you're interested.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <input type="checkbox" id="faq-p3" class="peer sr-only" />
+          <label for="faq-p3" class="faq-question font-body font-medium text-gray-900 cursor-pointer flex items-center justify-between p-5 rounded-xl bg-dark-800/50 border border-gray-200 hover:border-gray-300 transition-colors duration-200">
+            <span>
+              <span class="lang-de">Was passiert nach den Inklusivminuten?</span>
+              <span class="lang-en hidden">What happens after the included minutes?</span>
+            </span>
+            <svg class="w-5 h-5 text-gray-400 shrink-0 ml-4 transition-transform duration-200 peer-checked:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+          </label>
+          <div class="faq-answer max-h-0 overflow-hidden peer-checked:max-h-96 transition-all duration-300 ease-in-out">
+            <p class="p-5 pt-2 text-gray-500 font-body text-sm leading-relaxed">
+              <span class="lang-de">Nach Verbrauch deiner Inklusivminuten werden weitere Minuten transparent zu 0,39&thinsp;&euro;/Minute abgerechnet. Du erh&auml;ltst rechtzeitig eine Benachrichtigung, wenn du 80% deines Kontingents erreicht hast. Du kannst jederzeit auf einen h&ouml;heren Plan upgraden.</span>
+              <span class="lang-en hidden">After your included minutes are used up, additional minutes are billed transparently at 0.39&thinsp;&euro;/minute. You'll receive a notification when you've reached 80% of your quota. You can upgrade to a higher plan at any time.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <input type="checkbox" id="faq-p4" class="peer sr-only" />
+          <label for="faq-p4" class="faq-question font-body font-medium text-gray-900 cursor-pointer flex items-center justify-between p-5 rounded-xl bg-dark-800/50 border border-gray-200 hover:border-gray-300 transition-colors duration-200">
+            <span>
+              <span class="lang-de">Kann ich meine bestehende Telefonnummer behalten?</span>
+              <span class="lang-en hidden">Can I keep my existing phone number?</span>
+            </span>
+            <svg class="w-5 h-5 text-gray-400 shrink-0 ml-4 transition-transform duration-200 peer-checked:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+          </label>
+          <div class="faq-answer max-h-0 overflow-hidden peer-checked:max-h-96 transition-all duration-300 ease-in-out">
+            <p class="p-5 pt-2 text-gray-500 font-body text-sm leading-relaxed">
+              <span class="lang-de">Ja, du kannst deine bestehende Nummer per Rufumleitung mit Call Lana verbinden. Alternativ stellen wir dir eine eigene Rufnummer bereit. Eine vollst&auml;ndige Portierung deiner Nummer ist ebenfalls m&ouml;glich.</span>
+              <span class="lang-en hidden">Yes, you can connect your existing number to Call Lana via call forwarding. Alternatively, we provide you with a dedicated phone number. A full number porting is also possible.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <input type="checkbox" id="faq-p5" class="peer sr-only" />
+          <label for="faq-p5" class="faq-question font-body font-medium text-gray-900 cursor-pointer flex items-center justify-between p-5 rounded-xl bg-dark-800/50 border border-gray-200 hover:border-gray-300 transition-colors duration-200">
+            <span>
+              <span class="lang-de">Gibt es eine Garantie?</span>
+              <span class="lang-en hidden">Is there a guarantee?</span>
+            </span>
+            <svg class="w-5 h-5 text-gray-400 shrink-0 ml-4 transition-transform duration-200 peer-checked:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+          </label>
+          <div class="faq-answer max-h-0 overflow-hidden peer-checked:max-h-96 transition-all duration-300 ease-in-out">
+            <p class="p-5 pt-2 text-gray-500 font-body text-sm leading-relaxed">
+              <span class="lang-de">Ja! Wir bieten eine 30-Tage-Geld-zur&uuml;ck-Garantie. Wenn du nicht zufrieden bist, erh&auml;ltst du dein Geld vollst&auml;ndig zur&uuml;ck &mdash; ohne Fragen. So kannst du Call Lana risikofrei testen.</span>
+              <span class="lang-en hidden">Yes! We offer a 30-day money-back guarantee. If you're not satisfied, you get a full refund &mdash; no questions asked. Try Call Lana risk-free.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CTA ========== -->
+  <section class="bg-section-dark relative py-20">
+    <div class="noise-overlay"></div>
+    <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
+      <h2 class="font-display text-3xl md:text-5xl font-extrabold mb-6 text-gray-900" style="letter-spacing:-0.03em;">
+        <span class="lang-de">Starte jetzt &mdash; ab 99&thinsp;&euro;/Monat</span>
+        <span class="lang-en hidden">Get started now &mdash; from 99&thinsp;&euro;/month</span>
+      </h2>
+      <p class="text-gray-500 font-body text-lg mb-10 max-w-xl mx-auto">
+        <span class="lang-de">30 Tage Geld-zur&uuml;ck-Garantie. Monatlich k&uuml;ndbar &ndash; optional mit Jahresrabatt. Einrichtung in weniger als 15 Minuten.</span>
+        <span class="lang-en hidden">30-day money-back guarantee. Cancel monthly &ndash; optional annual discount. Setup in under 15 minutes.</span>
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="demo.html" class="btn-brand inline-block text-lg px-10 py-4">
+          <span class="lang-de">Jetzt Demo buchen</span>
+          <span class="lang-en hidden">Book a demo</span>
+        </a>
+        <a href="registrierung.html" class="btn-outline inline-block text-lg px-10 py-4">
+          <span class="lang-de">Kostenlos starten</span>
+          <span class="lang-en hidden">Start free</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-container"></div>
+
+  <script src="js/components.js"></script>
+  <script>
+    // ── Savings Calculator ──
+    const callsSlider = document.getElementById('callsPerDay');
+    const durationSlider = document.getElementById('callDuration');
+    const callsValueEl = document.getElementById('callsValue');
+    const durationValueEl = document.getElementById('durationValue');
+    const employeeCostEl = document.getElementById('employeeCost');
+    const colanaCostEl = document.getElementById('colanaCost');
+    const savingsEl = document.getElementById('savingsAmount');
+    const recommendedPlanEl = document.getElementById('recommendedPlan');
+    const recBadgePro = document.getElementById('recBadgePro');
+    const recBadgeIndiv = document.getElementById('recBadgeIndiv');
+    const cardLite = document.getElementById('cardLite');
+    const cardPro = document.getElementById('cardPro');
+    const cardIndividual = document.getElementById('cardIndividual');
+
+    const WORK_DAYS = 22;
+    const HOURLY_RATE = 35; // EUR per hour for employee
+    const COLANA_RATE = 0.39; // EUR per minute for Colana
+    const LITE_BASE = 99;
+    const PRO_BASE = 299;
+    const LITE_MINUTES = 340;
+    const PRO_MINUTES = 560;
+
+    function formatEur(num) {
+      return num.toLocaleString('de-DE', { maximumFractionDigits: 0 }) + ' \u20AC';
+    }
+
+    function bump(el) {
+      el.classList.add('bump');
+      setTimeout(function() { el.classList.remove('bump'); }, 300);
+    }
+
+    function updateSliderTrack(slider) {
+      var pct = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+      slider.style.background = 'linear-gradient(to right, #7C3AED 0%, #8B5CF6 ' + pct + '%, #E5E7EB ' + pct + '%, #E5E7EB 100%)';
+    }
+
+    function calculate() {
+      var calls = parseInt(callsSlider.value);
+      var duration = parseInt(durationSlider.value);
+
+      callsValueEl.textContent = calls;
+      durationValueEl.textContent = duration;
+      bump(callsValueEl);
+      bump(durationValueEl);
+
+      updateSliderTrack(callsSlider);
+      updateSliderTrack(durationSlider);
+
+      // Total minutes per month
+      var totalMinutes = calls * duration * WORK_DAYS;
+
+      // Employee cost: total hours * hourly rate
+      var employeeHours = totalMinutes / 60;
+      var empCost = Math.round(employeeHours * HOURLY_RATE);
+
+      // Colana cost: base plan + overage
+      var colCost, recPlan;
+      if (totalMinutes <= LITE_MINUTES) {
+        colCost = LITE_BASE;
+        recPlan = 'lite';
+      } else if (totalMinutes <= PRO_MINUTES) {
+        colCost = PRO_BASE;
+        recPlan = 'pro';
+      } else if (totalMinutes <= PRO_MINUTES * 3) {
+        // Pro + overage
+        var overage = totalMinutes - PRO_MINUTES;
+        colCost = PRO_BASE + Math.round(overage * COLANA_RATE);
+        recPlan = 'pro';
+      } else {
+        // Very high volume → Individual
+        colCost = PRO_BASE + Math.round((totalMinutes - PRO_MINUTES) * COLANA_RATE);
+        recPlan = 'individual';
+      }
+
+      var savings = Math.max(0, empCost - colCost);
+
+      employeeCostEl.innerHTML = formatEur(empCost);
+      colanaCostEl.innerHTML = formatEur(colCost);
+      savingsEl.innerHTML = formatEur(savings);
+      bump(employeeCostEl);
+      bump(colanaCostEl);
+      bump(savingsEl);
+
+      // Update recommendation
+      var planLabels = { lite: 'Call Lana Light', pro: 'Call Lana Pro', individual: 'Enterprise' };
+      recommendedPlanEl.textContent = planLabels[recPlan];
+
+      // Show/hide recommendation badges on cards
+      recBadgePro.style.display = (recPlan === 'pro') ? 'inline-flex' : 'none';
+      recBadgeIndiv.style.display = (recPlan === 'individual') ? 'inline-flex' : 'none';
+
+      // Highlight recommended card border
+      cardLite.classList.toggle('is-recommended', recPlan === 'lite');
+      cardPro.classList.toggle('is-recommended', recPlan === 'pro');
+      cardIndividual.classList.toggle('is-recommended', recPlan === 'individual');
+    }
+
+    callsSlider.addEventListener('input', calculate);
+    durationSlider.addEventListener('input', calculate);
+    calculate(); // initial
+
+    // ── Billing Toggle ──
+    var toggle = document.getElementById('billingToggle');
+    var labelMonthly = document.getElementById('labelMonthly');
+    var labelYearly = document.getElementById('labelYearly');
+
+    if (toggle) {
+      toggle.addEventListener('change', function() {
+        var isAnnual = this.checked;
+
+        // Toggle label styling
+        if (isAnnual) {
+          labelMonthly.classList.remove('text-brand-400', 'font-semibold');
+          labelMonthly.classList.add('text-gray-500', 'font-medium');
+          labelYearly.classList.remove('text-gray-500', 'font-medium');
+          labelYearly.classList.add('text-brand-400', 'font-semibold');
+        } else {
+          labelMonthly.classList.add('text-brand-400', 'font-semibold');
+          labelMonthly.classList.remove('text-gray-500', 'font-medium');
+          labelYearly.classList.add('text-gray-500', 'font-medium');
+          labelYearly.classList.remove('text-brand-400', 'font-semibold');
+        }
+
+        // Update price displays
+        document.querySelectorAll('.price-current').forEach(function(el) {
+          var monthly = el.getAttribute('data-monthly');
+          var yearly = el.getAttribute('data-yearly');
+          if (!monthly) return;
+
+          if (isAnnual) {
+            el.innerHTML = yearly + ' \u20AC';
+            var oldEl = el.closest('.p-8').querySelector('.price-old');
+            if (oldEl) {
+              oldEl.innerHTML = '<span class="line-through text-gray-500 text-base font-medium mr-2">' + monthly + ' \u20AC</span>';
+              oldEl.classList.remove('opacity-0');
+              oldEl.classList.add('opacity-100');
+            }
+          } else {
+            el.innerHTML = monthly + ' \u20AC';
+            var oldEl = el.closest('.p-8').querySelector('.price-old');
+            if (oldEl) {
+              oldEl.innerHTML = '';
+              oldEl.classList.add('opacity-0');
+              oldEl.classList.remove('opacity-100');
+            }
+          }
+        });
+      });
+    }
+  </script>
+  <script src="warp-bg.js"></script>
+
+  <!-- ========== FLOATING BOOKING BUTTON ========== -->
+  <a href="demo.html" id="floating-cta" class="fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 bg-brand-400 text-white px-5 py-3.5 rounded-xl font-display text-sm font-bold no-underline" style="box-shadow: 0 4px 14px rgba(124,58,237,0.35), 0 1px 3px rgba(0,0,0,0.1); transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;" onmouseenter="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(124,58,237,0.4), 0 2px 6px rgba(0,0,0,0.1)';" onmouseleave="this.style.transform='';this.style.boxShadow='0 4px 14px rgba(124,58,237,0.35), 0 1px 3px rgba(0,0,0,0.1)';" onfocus="this.style.outline='2px solid rgba(124,58,237,0.5)';this.style.outlineOffset='2px';" onblur="this.style.outline='none';">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+    <span class="lang-de">Expertengespräch buchen</span>
+    <span class="lang-en hidden">Book expert call</span>
+  </a>
 <script src="i18n.js"></script>
 <script src="cookie-consent.js"></script>
-<script>
-function updateLangButtons(lang) {
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.classList.remove('active');
-    if (btn.textContent.toLowerCase() === lang) btn.classList.add('active');
-  });
-}
-
-// Billing toggle
-let yearly=false;
-const tog=document.getElementById('toggle');
-const p0=document.getElementById('p0'),p0n=document.getElementById('p0-note');
-const p1=document.getElementById('p1'),p1n=document.getElementById('p1-note');
-const tlM=document.getElementById('tl-mo'),tlY=document.getElementById('tl-yr');
-tog.addEventListener('click',()=>{
-  yearly=!yearly;tog.classList.toggle('on');
-  tlM.classList.toggle('active',!yearly);tlY.classList.toggle('active',yearly);
-  const perMonthText = typeof i18n !== 'undefined' ? i18n.t('pricing.permonth') : '/ Monat';
-  if(yearly){
-    p0.innerHTML='<sup>€</sup>83 <span id="p0-per" data-i18n="pricing.permonth">' + perMonthText + '</span>';p0n.textContent=typeof i18n !== 'undefined' ? i18n.t('pricing.yearly.note') : 'jährlich abgerechnet, 2 Monate gratis';
-    p1.innerHTML='<sup>€</sup>249 <span id="p1-per" data-i18n="pricing.permonth">' + perMonthText + '</span>';p1n.textContent=typeof i18n !== 'undefined' ? i18n.t('pricing.yearly.note') : 'jährlich abgerechnet, 2 Monate gratis';
-  } else {
-    p0.innerHTML='<sup>€</sup>99 <span id="p0-per" data-i18n="pricing.permonth">' + perMonthText + '</span>';p0n.textContent=typeof i18n !== 'undefined' ? i18n.t('pricing.monthly.note') : 'monatlich kündbar';
-    p1.innerHTML='<sup>€</sup>299 <span id="p1-per" data-i18n="pricing.permonth">' + perMonthText + '</span>';p1n.textContent=typeof i18n !== 'undefined' ? i18n.t('pricing.monthly.note') : 'monatlich kündbar';
-  }
-});
-// FAQ
-document.querySelectorAll('.faq-q').forEach(q=>{q.addEventListener('click',()=>{const item=q.parentElement;item.classList.toggle('open');q.setAttribute('aria-expanded',item.classList.contains('open'));});});
-// Scroll reveal
-const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');}),{threshold:.1});
-document.querySelectorAll('.fi').forEach((el,i)=>{el.style.transitionDelay=(Math.min(i*.05,.35))+'s';obs.observe(el);});
-// Mobile menu
-document.getElementById('mb').addEventListener('click',()=>document.getElementById('nav').classList.toggle('open'));
-// Nav scroll shadow
-window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>10);});
-// Init language
-document.addEventListener('DOMContentLoaded', () => {
-  const currentLang = localStorage.getItem('calllana_language') || 'de';
-  updateLangButtons(currentLang);
-});
-</script>
 </body>
 </html>

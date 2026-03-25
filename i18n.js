@@ -631,6 +631,15 @@ class I18n {
       const key = el.dataset.i18nPlaceholder;
       el.placeholder = this.t(key);
     });
+
+    // Toggle .lang-de / .lang-en visibility (used by design pages)
+    document.querySelectorAll('.lang-de').forEach(el => el.classList.toggle('hidden', this.currentLang !== 'de'));
+    document.querySelectorAll('.lang-en').forEach(el => el.classList.toggle('hidden', this.currentLang !== 'en'));
+
+    // Update language switcher buttons
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === this.currentLang);
+    });
   }
 }
 
