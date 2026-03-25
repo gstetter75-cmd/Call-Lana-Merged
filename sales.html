@@ -567,7 +567,7 @@ function renderLeadsTable() {
     return `
       <tr>
         <td><strong>${clanaUtils.sanitizeHtml(l.company_name)}</strong></td>
-        <td>${clanaUtils.sanitizeHtml(l.contact_name || '—')}<br>${l.email ? `<a href="mailto:${l.email}" style="font-size:11px;color:var(--cyan);text-decoration:none;">${clanaUtils.sanitizeHtml(l.email)}</a>` : ''}</td>
+        <td>${clanaUtils.sanitizeHtml(l.contact_name || '—')}<br>${l.email ? `<a href="${clanaUtils.safeMailHref(l.email)}" style="font-size:11px;color:var(--cyan);text-decoration:none;">${clanaUtils.sanitizeHtml(l.email)}</a>` : ''}</td>
         <td><span class="badge" style="background:${stageInfo.color}22;color:${stageInfo.color}">${stageInfo.label}</span></td>
         <td>${l.value ? Number(l.value).toLocaleString('de-DE') + ' €' : '—'}</td>
         <td>${l.profiles ? `${l.profiles.first_name || ''} ${l.profiles.last_name || ''}` : '—'}</td>
@@ -701,11 +701,11 @@ async function viewLead(id) {
       </div>
       <div class="lead-detail-meta-item">
         <div class="lead-detail-meta-label">E-Mail</div>
-        ${lead.email ? `<a href="mailto:${lead.email}" style="color:var(--cyan);text-decoration:none;">${clanaUtils.sanitizeHtml(lead.email)}</a>` : '—'}
+        ${lead.email ? `<a href="${clanaUtils.safeMailHref(lead.email)}" style="color:var(--cyan);text-decoration:none;">${clanaUtils.sanitizeHtml(lead.email)}</a>` : '—'}
       </div>
       <div class="lead-detail-meta-item">
         <div class="lead-detail-meta-label">Telefon</div>
-        ${lead.phone ? `<a href="tel:${lead.phone}" style="color:var(--cyan);text-decoration:none;">${clanaUtils.sanitizeHtml(lead.phone)}</a>` : '—'}
+        ${lead.phone ? `<a href="${clanaUtils.safeTelHref(lead.phone)}" style="color:var(--cyan);text-decoration:none;">${clanaUtils.sanitizeHtml(lead.phone)}</a>` : '—'}
       </div>
       <div class="lead-detail-meta-item">
         <div class="lead-detail-meta-label">Quelle</div>

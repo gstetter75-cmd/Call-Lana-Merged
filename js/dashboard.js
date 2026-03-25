@@ -1228,7 +1228,9 @@ function handleCsvFile(input) {
 
 function stripHtml(str) {
   if (!str) return str;
-  return str.replace(/<[^>]*>/g, '').trim();
+  const div = document.createElement('div');
+  div.innerHTML = str;
+  return (div.textContent || '').trim();
 }
 
 async function importCsvContacts() {

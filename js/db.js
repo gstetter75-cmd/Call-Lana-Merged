@@ -429,7 +429,7 @@ const db = {
 
       let query = supabaseClient
         .from('leads')
-        .select('*, profiles!leads_assigned_to_fkey(first_name, last_name)')
+        .select('*')
         .order('created_at', { ascending: false });
 
       if (filters.status) query = query.eq('status', filters.status);
@@ -452,7 +452,7 @@ const db = {
 
       const { data, error } = await supabaseClient
         .from('leads')
-        .select('*, profiles!leads_assigned_to_fkey(first_name, last_name, email), notes(*, profiles!notes_author_id_fkey(first_name, last_name))')
+        .select('*, notes(*)')
         .eq('id', id)
         .single();
 
@@ -530,7 +530,7 @@ const db = {
 
       let query = supabaseClient
         .from('tasks')
-        .select('*, profiles!tasks_assigned_to_fkey(first_name, last_name), leads(company_name)')
+        .select('*, leads(company_name)')
         .order('due_date', { ascending: true });
 
       if (filters.status) query = query.eq('status', filters.status);
@@ -898,6 +898,15 @@ const utils = {
 
   validatePhone(phone) {
     return /^[+]?[\d\s()-]{6,20}$/.test(phone);
+  },
+
+  safeTelHref(phone) {
+    const clean = (phone || '').replace(/[^+\d\s\-()]/g, '');
+    return clean ? 'tel:' + clean : '#';
+  },
+
+  safeMailHref(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? 'mailto:' + email : '#';
   }
 };
 
