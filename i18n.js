@@ -13,6 +13,7 @@ const translations = {
     'nav.contact': 'Kontakt',
     'nav.login': 'Login',
     'nav.cta': 'Kostenlos starten',
+    'nav.demo': 'Demo buchen',
     'nav.dashboard': 'Zum Dashboard',
 
     // Hero
@@ -307,6 +308,7 @@ const translations = {
     'nav.contact': 'Contact',
     'nav.login': 'Login',
     'nav.cta': 'Start for free',
+    'nav.demo': 'Book a demo',
     'nav.dashboard': 'To Dashboard',
 
     // Hero

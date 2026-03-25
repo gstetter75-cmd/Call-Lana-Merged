@@ -4,26 +4,22 @@
   const currentPage = location.pathname.split('/').pop().replace('.html','') || 'index';
 
   // ===== TRANSLATIONS =====
+  // Keys aligned with i18n.js so both systems work together
   const T = {
-    'nav.funktionen': { de: 'Funktionen', en: 'Features' },
-    'nav.branchen': { de: 'Branchen', en: 'Industries' },
-    'nav.preise': { de: 'Preise', en: 'Pricing' },
-    'nav.kontakt': { de: 'Kontakt', en: 'Contact' },
+    'nav.features': { de: 'Funktionen', en: 'Features' },
+    'nav.industries': { de: 'Branchen', en: 'Industries' },
+    'nav.pricing': { de: 'Preise', en: 'Pricing' },
+    'nav.contact': { de: 'Kontakt', en: 'Contact' },
     'nav.login': { de: 'Anmelden', en: 'Login' },
     'nav.demo': { de: 'Demo buchen', en: 'Book a demo' },
-    'nav.register': { de: 'Jetzt starten', en: 'Get started' },
+    'nav.cta': { de: 'Jetzt starten', en: 'Get started' },
     'footer.product': { de: 'Produkt', en: 'Product' },
-    'footer.company': { de: 'Unternehmen', en: 'Company' },
     'footer.legal': { de: 'Rechtliches', en: 'Legal' },
-    'footer.about': { de: 'Über uns', en: 'About us' },
-    'footer.blog': { de: 'Blog', en: 'Blog' },
-    'footer.careers': { de: 'Karriere', en: 'Careers' },
     'footer.privacy': { de: 'Datenschutzerklärung', en: 'Privacy Policy' },
     'footer.terms': { de: 'AGB', en: 'Terms' },
     'footer.imprint': { de: 'Impressum', en: 'Imprint' },
-    'footer.desc': { de: 'Die KI-Telefonassistentin für Handwerker, die keinen Anruf verpasst.', en: 'The AI phone assistant for craftsmen that never misses a call.' },
-    'footer.rights': { de: '© 2026 Call Lana. Alle Rechte vorbehalten.', en: '© 2026 Call Lana. All rights reserved.' },
-    'footer.howit': { de: "So funktioniert's", en: 'How it works' },
+    'footer.tagline': { de: 'Die KI-Telefonassistentin für Handwerker, die keinen Anruf verpasst.', en: 'The AI phone assistant for craftsmen that never misses a call.' },
+    'footer.copyright': { de: '© 2026 Call Lana. Alle Rechte vorbehalten.', en: '© 2026 Call Lana. All rights reserved.' },
     'footer.register': { de: 'Registrierung', en: 'Register' },
     'footer.login': { de: 'Login', en: 'Login' },
     'footer.dashboard': { de: 'Dashboard', en: 'Dashboard' },
@@ -53,6 +49,10 @@
     lang = l;
     localStorage.setItem('calllana_language', l);
     applyLang();
+    // Sync with i18n.js if loaded
+    if (window.i18n && typeof window.i18n.setLanguage === 'function') {
+      window.i18n.setLanguage(l);
+    }
   }
 
   // ===== NAV =====
@@ -68,10 +68,10 @@
           <img src="brand_assets/A_vector-style_digital_logo_for_the_brand_Clana_.png" alt="Call Lana Logo" class="h-[5.5rem] sm:h-[6.5rem] w-auto" style="filter: drop-shadow(0 2px 8px rgba(124,58,237,0.18)); margin-top: 0.25rem; margin-bottom: -0.5rem;" />
         </a>
         <div class="hidden lg:flex items-center gap-7">
-          <a href="funktionen.html" class="nav-link text-sm font-medium ${isActive('funktionen')}" data-i18n="nav.funktionen">${t('nav.funktionen')}</a>
-          <a href="branchen.html" class="nav-link text-sm font-medium ${isActive('branchen')}" data-i18n="nav.branchen">${t('nav.branchen')}</a>
-          <a href="preise.html" class="nav-link text-sm font-medium ${isActive('preise')}" data-i18n="nav.preise">${t('nav.preise')}</a>
-          <a href="kontakt.html" class="nav-link text-sm font-medium ${isActive('kontakt')}" data-i18n="nav.kontakt">${t('nav.kontakt')}</a>
+          <a href="funktionen.html" class="nav-link text-sm font-medium ${isActive('funktionen')}" data-i18n="nav.features">${t('nav.features')}</a>
+          <a href="branchen.html" class="nav-link text-sm font-medium ${isActive('branchen')}" data-i18n="nav.industries">${t('nav.industries')}</a>
+          <a href="preise.html" class="nav-link text-sm font-medium ${isActive('preise')}" data-i18n="nav.pricing">${t('nav.pricing')}</a>
+          <a href="kontakt.html" class="nav-link text-sm font-medium ${isActive('kontakt')}" data-i18n="nav.contact">${t('nav.contact')}</a>
         </div>
         <div class="flex items-center gap-3">
           <!-- Language Switcher -->
@@ -81,7 +81,7 @@
           </div>
           <a href="login.html" class="hidden md:inline-block nav-link text-sm font-medium ${isActive('login')}" data-i18n="nav.login">${t('nav.login')}</a>
           <a href="demo.html" class="btn-outline px-4 py-2 rounded-lg text-sm font-semibold hidden sm:inline-block" data-i18n="nav.demo">${t('nav.demo')}</a>
-          <a href="registrierung.html" class="btn-brand px-5 py-2 rounded-lg text-sm font-semibold hidden sm:inline-block" data-i18n="nav.register">${t('nav.register')}</a>
+          <a href="registrierung.html" class="btn-brand px-5 py-2 rounded-lg text-sm font-semibold hidden sm:inline-block" data-i18n="nav.cta">${t('nav.cta')}</a>
           <!-- Mobile hamburger -->
           <button id="menuToggle" class="lg:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-brand-400" aria-label="Menu">
             <span class="w-5 h-0.5 bg-gray-600 rounded"></span>
@@ -97,13 +97,13 @@
         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
       <div class="flex flex-col gap-6 text-lg font-semibold font-display">
-        <a href="funktionen.html" class="nav-link text-gray-700" data-i18n="nav.funktionen">${t('nav.funktionen')}</a>
-        <a href="branchen.html" class="nav-link text-gray-700" data-i18n="nav.branchen">${t('nav.branchen')}</a>
-        <a href="preise.html" class="nav-link text-gray-700" data-i18n="nav.preise">${t('nav.preise')}</a>
-        <a href="kontakt.html" class="nav-link text-gray-700" data-i18n="nav.kontakt">${t('nav.kontakt')}</a>
+        <a href="funktionen.html" class="nav-link text-gray-700" data-i18n="nav.features">${t('nav.features')}</a>
+        <a href="branchen.html" class="nav-link text-gray-700" data-i18n="nav.industries">${t('nav.industries')}</a>
+        <a href="preise.html" class="nav-link text-gray-700" data-i18n="nav.pricing">${t('nav.pricing')}</a>
+        <a href="kontakt.html" class="nav-link text-gray-700" data-i18n="nav.contact">${t('nav.contact')}</a>
         <a href="login.html" class="nav-link text-gray-700" data-i18n="nav.login">${t('nav.login')}</a>
         <a href="demo.html" class="btn-outline text-center px-6 py-3 rounded-xl font-bold mt-4" data-i18n="nav.demo">${t('nav.demo')}</a>
-        <a href="registrierung.html" class="btn-brand text-center px-6 py-3 rounded-xl font-bold mt-2" data-i18n="nav.register">${t('nav.register')}</a>
+        <a href="registrierung.html" class="btn-brand text-center px-6 py-3 rounded-xl font-bold mt-2" data-i18n="nav.cta">${t('nav.cta')}</a>
       </div>
       <div class="flex items-center gap-2 mt-8">
         <button class="lang-btn px-3 py-1.5 text-sm font-semibold rounded-lg ${lang==='de'?'active':'text-gray-500'}" data-lang="de" onclick="window.__setLang('de')">DE</button>
@@ -146,15 +146,15 @@
             <div class="flex items-center mb-4">
               <img src="brand_assets/A_vector-style_digital_logo_for_the_brand_Clana_.png" alt="Call Lana Logo" class="h-14 w-auto" style="filter: drop-shadow(0 2px 6px rgba(124,58,237,0.12));" />
             </div>
-            <p class="text-gray-500 text-sm" style="line-height:1.7;" data-i18n="footer.desc">${t('footer.desc')}</p>
+            <p class="text-gray-500 text-sm" style="line-height:1.7;" data-i18n="footer.tagline">${t('footer.tagline')}</p>
           </div>
           <div>
             <h4 class="font-display text-sm font-semibold text-gray-900 mb-4" data-i18n="footer.product">${t('footer.product')}</h4>
             <ul class="space-y-2">
-              <li><a href="funktionen.html" class="nav-link text-gray-500 text-sm" data-i18n="nav.funktionen">${t('nav.funktionen')}</a></li>
-              <li><a href="branchen.html" class="nav-link text-gray-500 text-sm" data-i18n="nav.branchen">${t('nav.branchen')}</a></li>
-              <li><a href="preise.html" class="nav-link text-gray-500 text-sm" data-i18n="nav.preise">${t('nav.preise')}</a></li>
-              <li><a href="kontakt.html" class="nav-link text-gray-500 text-sm" data-i18n="nav.kontakt">${t('nav.kontakt')}</a></li>
+              <li><a href="funktionen.html" class="nav-link text-gray-500 text-sm" data-i18n="nav.features">${t('nav.features')}</a></li>
+              <li><a href="branchen.html" class="nav-link text-gray-500 text-sm" data-i18n="nav.industries">${t('nav.industries')}</a></li>
+              <li><a href="preise.html" class="nav-link text-gray-500 text-sm" data-i18n="nav.pricing">${t('nav.pricing')}</a></li>
+              <li><a href="kontakt.html" class="nav-link text-gray-500 text-sm" data-i18n="nav.contact">${t('nav.contact')}</a></li>
             </ul>
           </div>
           <div>
@@ -175,7 +175,7 @@
           </div>
         </div>
         <div class="pt-8 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p class="text-gray-400 text-xs" data-i18n="footer.rights">${t('footer.rights')}</p>
+          <p class="text-gray-400 text-xs" data-i18n="footer.copyright">${t('footer.copyright')}</p>
           <div class="flex items-center gap-4">
             <a href="#" class="text-gray-400 hover:text-brand-400 focus-visible:outline-2 focus-visible:outline-brand-400 focus-visible:outline-offset-3 rounded transition-colors duration-200" aria-label="LinkedIn">
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
