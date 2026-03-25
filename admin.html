@@ -6,6 +6,9 @@
 <meta name="robots" content="noindex">
 <title>Admin – Call Lana</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#7c3aed">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -46,6 +49,7 @@
       <div class="tab-bar">
         <button class="tab-btn active" data-tab="overview">Übersicht</button>
         <button class="tab-btn" data-tab="analytics">Analytics</button>
+        <button class="tab-btn" data-tab="integrations">Integrationen</button>
         <button class="tab-btn" data-tab="customers">Kunden</button>
         <button class="tab-btn" data-tab="users">Benutzer</button>
         <button class="tab-btn" data-tab="orgs">Organisationen</button>
@@ -226,6 +230,19 @@
       </div>
 
       <!-- SYSTEM TAB -->
+      <!-- INTEGRATIONS -->
+      <div class="page-section" id="tab-integrations">
+        <h1>Integrationen</h1>
+        <p class="page-desc">Externe Dienste verbinden und konfigurieren</p>
+        <div style="display:grid;gap:20px;">
+          <div class="card" style="padding:20px;" id="int-stripe"></div>
+          <div class="card" style="padding:20px;" id="int-calendar"></div>
+          <div class="card" style="padding:20px;" id="int-email"></div>
+          <div class="card" style="padding:20px;" id="int-files"></div>
+          <div class="card" style="padding:20px;" id="int-phone"></div>
+        </div>
+      </div>
+
       <div class="page-section" id="tab-system">
         <h1>System-Statistiken</h1>
         <p class="page-desc">Globale Kennzahlen und System-Health</p>
@@ -402,6 +419,7 @@
 <script src="js/dashboard-components.js"></script>
 <script src="js/global-search.js"></script>
 <script src="js/admin-analytics.js"></script>
+<script src="js/integrations-hub.js"></script>
 <script src="js/keyboard-shortcuts.js"></script>
 <script>
 let currentProfile = null;
@@ -462,10 +480,17 @@ function switchTab(tab) {
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
   const section = document.getElementById('tab-' + tab);
   if (section) section.classList.add('active');
-  const tabLabels = { overview: 'Übersicht', analytics: 'Analytics', customers: 'Kunden', users: 'Benutzer', orgs: 'Organisationen', system: 'System' };
+  const tabLabels = { overview: 'Übersicht', analytics: 'Analytics', integrations: 'Integrationen', customers: 'Kunden', users: 'Benutzer', orgs: 'Organisationen', system: 'System' };
   document.getElementById('breadcrumb-page').textContent = tabLabels[tab] || tab;
   window.location.hash = tab;
 
+  if (tab === 'integrations' && typeof IntegrationsHub !== 'undefined') {
+    IntegrationsHub.renderStripeSettings(document.getElementById('int-stripe'));
+    IntegrationsHub.renderCalendarSync(document.getElementById('int-calendar'));
+    IntegrationsHub.renderEmailSettings(document.getElementById('int-email'));
+    IntegrationsHub.renderFileUpload(document.getElementById('int-files'));
+    IntegrationsHub.renderPhoneSettings(document.getElementById('int-phone'));
+  }
   if (tab === 'analytics' && typeof AdminAnalytics !== 'undefined') {
     AdminAnalytics.renderRevenueForecast(document.getElementById('admin-forecast'));
     AdminAnalytics.renderChurnWarnings(document.getElementById('admin-churn'));
@@ -1072,6 +1097,8 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
 
 init();
 </script>
+<script src="js/theme-toggle.js"></script>
+<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});</script>
 <script src="cookie-consent.js"></script>
 </body>
 </html>
