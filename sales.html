@@ -319,6 +319,12 @@
       <label class="form-label">Beschreibung</label>
       <textarea class="form-input" id="task-desc" rows="3" placeholder="Details..."></textarea>
     </div>
+    <div class="form-group">
+      <label class="form-label">Verknüpfter Lead</label>
+      <select class="form-input form-select" id="task-lead">
+        <option value="">Kein Lead</option>
+      </select>
+    </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
       <div class="form-group">
         <label class="form-label">Fällig am</label>
@@ -400,7 +406,8 @@
 <script src="js/auth.js"></script>
 <script src="js/db.js"></script>
 <script src="js/auth-guard.js"></script>
-<script src="js/components.js"></script>
+<script src="js/config.js"></script>
+<script src="js/dashboard-components.js"></script>
 <script>
 const PIPELINE_STAGES = [
   { key: 'new', label: 'Neu', color: 'var(--cyan)' },
@@ -436,7 +443,12 @@ async function init() {
   // Button listeners
   document.getElementById('btn-add-lead-pipeline')?.addEventListener('click', () => openModal('modal-add-lead'));
   document.getElementById('btn-add-lead')?.addEventListener('click', () => openModal('modal-add-lead'));
-  document.getElementById('btn-add-task')?.addEventListener('click', () => openModal('modal-add-task'));
+  document.getElementById('btn-add-task')?.addEventListener('click', () => {
+    // Populate lead dropdown
+    const sel = document.getElementById('task-lead');
+    sel.innerHTML = '<option value="">Kein Lead</option>' + allLeads.map(l => `<option value="${l.id}">${clanaUtils.sanitizeHtml(l.company_name)}</option>`).join('');
+    openModal('modal-add-task');
+  });
   document.getElementById('btn-set-avail')?.addEventListener('click', () => {
     document.getElementById('avail-date').value = new Date().toISOString().split('T')[0];
     openModal('modal-avail');
@@ -477,13 +489,13 @@ function renderPipeline() {
   board.innerHTML = PIPELINE_STAGES.map(stage => {
     const stageLeads = allLeads.filter(l => l.status === stage.key);
     return `
-      <div class="kanban-column">
+      <div class="kanban-column" data-stage="${stage.key}" ondragover="event.preventDefault();this.style.background='rgba(124,58,237,.08)'" ondragleave="this.style.background=''" ondrop="dropLead(event,'${stage.key}');this.style.background=''">
         <div class="kanban-header">
           <span class="kanban-title" style="color:${stage.color}">${stage.label}</span>
           <span class="kanban-count">${stageLeads.length}</span>
         </div>
         ${stageLeads.length ? stageLeads.map(lead => `
-          <div class="kanban-card" onclick="viewLead('${lead.id}')">
+          <div class="kanban-card" draggable="true" ondragstart="event.dataTransfer.setData('text/plain','${lead.id}')" onclick="viewLead('${lead.id}')">
             <div class="kanban-card-title">${clanaUtils.sanitizeHtml(lead.company_name)}</div>
             ${lead.value ? `<div class="lead-value">${Number(lead.value).toLocaleString('de-DE')} €</div>` : ''}
             ${lead.contact_name ? `<div class="lead-contact">${clanaUtils.sanitizeHtml(lead.contact_name)}</div>` : ''}
@@ -492,6 +504,25 @@ function renderPipeline() {
       </div>
     `;
   }).join('');
+}
+
+async function dropLead(event, newStage) {
+  event.preventDefault();
+  const leadId = event.dataTransfer.getData('text/plain');
+  if (!leadId) return;
+  const lead = allLeads.find(l => l.id === leadId);
+  if (!lead || lead.status === newStage) return;
+
+  const result = await clanaDB.updateLead(leadId, { status: newStage });
+  if (result.success) {
+    Components.toast('Lead verschoben: ' + PIPELINE_STAGES.find(s => s.key === newStage)?.label, 'success');
+    lead.status = newStage;
+    renderPipeline();
+    renderLeadsTable();
+    updateLeadStats();
+  } else {
+    Components.toast('Fehler: ' + result.error, 'error');
+  }
 }
 
 function renderLeadsTable() {
@@ -538,25 +569,41 @@ async function saveLead() {
     return;
   }
 
-  const result = await clanaDB.createLead({
+  const saveBtn = document.getElementById('btn-save-lead');
+  const editId = saveBtn.dataset.editId;
+  saveBtn.disabled = true;
+  const origText = saveBtn.textContent;
+  saveBtn.textContent = '…';
+
+  const payload = {
     company_name: company,
     contact_name: document.getElementById('lead-contact').value.trim(),
     email: email,
     phone: document.getElementById('lead-phone').value.trim(),
     value: Number(document.getElementById('lead-value').value) || 0,
     source: document.getElementById('lead-source').value,
-    notes: document.getElementById('lead-notes').value.trim(),
-    assigned_to: currentProfile.id
-  });
+  };
+
+  let result;
+  if (editId) {
+    result = await clanaDB.updateLead(editId, payload);
+  } else {
+    payload.notes = document.getElementById('lead-notes').value.trim();
+    payload.assigned_to = currentProfile.id;
+    result = await clanaDB.createLead(payload);
+  }
 
   if (result.success) {
-    Components.toast('Lead erstellt', 'success');
+    Components.toast(editId ? 'Lead aktualisiert' : 'Lead erstellt', 'success');
     closeModal('modal-add-lead');
     clearLeadForm();
     loadLeads();
   } else {
     Components.toast('Fehler: ' + result.error, 'error');
   }
+  saveBtn.disabled = false;
+  saveBtn.textContent = origText;
+  delete saveBtn.dataset.editId;
 }
 
 function clearLeadForm() {
@@ -652,6 +699,7 @@ async function viewLead(id) {
 
     <div class="lead-detail-actions">
       <button class="btn btn-sm btn-danger" id="btn-delete-lead">Lead löschen</button>
+      <button class="btn btn-sm" id="btn-edit-lead">Bearbeiten</button>
     </div>
   `;
 
@@ -704,6 +752,23 @@ async function viewLead(id) {
     } else {
       Components.toast('Fehler: ' + deleteResult.error, 'error');
     }
+  });
+
+  // Edit lead handler
+  document.getElementById('btn-edit-lead').addEventListener('click', () => {
+    closeModal('modal-lead-detail');
+    document.getElementById('lead-company').value = lead.company_name || '';
+    document.getElementById('lead-contact').value = lead.contact_name || '';
+    document.getElementById('lead-email').value = lead.email || '';
+    document.getElementById('lead-phone').value = lead.phone || '';
+    document.getElementById('lead-value').value = lead.value || '';
+    document.getElementById('lead-source').value = lead.source || '';
+    document.getElementById('lead-notes').value = '';
+    // Set save button to update mode
+    const saveBtn = document.getElementById('btn-save-lead');
+    saveBtn.textContent = 'Lead aktualisieren';
+    saveBtn.dataset.editId = lead.id;
+    openModal('modal-add-lead');
   });
 }
 
@@ -765,7 +830,8 @@ async function saveTask() {
     description: document.getElementById('task-desc').value.trim(),
     due_date: document.getElementById('task-due').value || null,
     priority: document.getElementById('task-priority').value,
-    assigned_to: currentProfile.id
+    assigned_to: currentProfile.id,
+    lead_id: document.getElementById('task-lead').value || null
   });
 
   if (result.success) {
@@ -844,12 +910,8 @@ async function saveAvailability() {
 
 // ---- COMMISSIONS ----
 
-const PLAN_PRICES = {
-  starter: 149,
-  professional: 299,
-  business: 599
-};
-const COMMISSION_RATE = 0.05;
+const PLAN_PRICES = CONFIG.PLANS;
+const COMMISSION_RATE = CONFIG.COMMISSION_RATE;
 
 async function loadCommissions() {
   const tbody = document.getElementById('comm-tbody');
@@ -895,7 +957,7 @@ async function loadCommissions() {
   const rows = customers.map(c => {
     const plan = c.organizations?.plan || 'starter';
     const planKey = plan.toLowerCase();
-    const monthlyNetto = PLAN_PRICES[planKey] || estimateFromLeadValue(c.lead?.value);
+    const monthlyNetto = CONFIG.getPlanPrice(planKey) || estimateFromLeadValue(c.lead?.value);
     const commission = Math.round(monthlyNetto * COMMISSION_RATE * 100) / 100;
     const isActive = c.is_active !== false;
 
@@ -941,10 +1003,10 @@ function guessPlanFromValue(value) {
 }
 
 function estimateFromLeadValue(value) {
-  if (!value) return PLAN_PRICES.starter;
-  if (value >= 500) return PLAN_PRICES.business;
-  if (value >= 250) return PLAN_PRICES.professional;
-  return PLAN_PRICES.starter;
+  if (!value) return CONFIG.getPlanPrice('starter');
+  if (value >= 500) return CONFIG.getPlanPrice('business');
+  if (value >= 250) return CONFIG.getPlanPrice('professional');
+  return CONFIG.getPlanPrice('starter');
 }
 
 function openModal(id) { document.getElementById(id)?.classList.add('active'); }

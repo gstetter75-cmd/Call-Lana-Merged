@@ -110,7 +110,10 @@
       <div class="page-section" id="tab-customers">
         <div class="admin-header">
           <h1>Alle Kunden</h1>
-          <input type="text" class="search-input" id="customer-search" placeholder="Kunden suchen...">
+          <div style="display:flex;gap:12px;align-items:center;">
+            <input type="text" class="search-input" id="customer-search" placeholder="Kunden suchen...">
+            <button class="btn btn-sm btn-outline" onclick="exportCustomersCSV()">CSV Export</button>
+          </div>
         </div>
         <div class="card" style="padding:0;overflow:hidden;">
           <table class="data-table">
@@ -362,7 +365,8 @@
 <script src="js/auth.js"></script>
 <script src="js/db.js"></script>
 <script src="js/auth-guard.js"></script>
-<script src="js/components.js"></script>
+<script src="js/config.js"></script>
+<script src="js/dashboard-components.js"></script>
 <script>
 let currentProfile = null;
 let editingUserId = null;
@@ -566,7 +570,7 @@ async function loadSystemStats() {
 
 // ---- OVERVIEW (Vogelperspektive) ----
 
-const PLAN_PRICES = { starter: 149, professional: 299, business: 599, solo: 149, team: 299 };
+const PLAN_PRICES = CONFIG.PLANS;
 
 async function loadOverview() {
   const [usersResult, orgsResult, leadsResult] = await Promise.all([
@@ -586,7 +590,7 @@ async function loadOverview() {
 
   allOrgs.filter(o => o.is_active !== false).forEach(o => {
     const plan = (o.plan || 'solo').toLowerCase();
-    const price = PLAN_PRICES[plan] || 149;
+    const price = CONFIG.getPlanPrice(plan);
     mrr += price;
     const normalized = plan === 'solo' ? 'starter' : plan === 'team' ? 'professional' : plan;
     if (planCounts[normalized] !== undefined) planCounts[normalized]++;
@@ -659,7 +663,7 @@ async function loadOverview() {
   if (recentCustomers.length) {
     recentTbody.innerHTML = recentCustomers.map(c => {
       const plan = c.organizations?.plan || 'starter';
-      const price = PLAN_PRICES[plan.toLowerCase()] || 149;
+      const price = CONFIG.getPlanPrice(plan);
       // Find assigned sales person via leads
       const matchingLead = allLeads.find(l => l.email === c.email && l.status === 'won');
       const salesName = matchingLead?.profiles ? `${matchingLead.profiles.first_name || ''} ${matchingLead.profiles.last_name || ''}`.trim() : '—';
@@ -697,7 +701,7 @@ async function loadCustomers() {
 
   tbody.innerHTML = customers.map(c => {
     const plan = c.organizations?.plan || 'starter';
-    const price = PLAN_PRICES[plan.toLowerCase()] || 149;
+    const price = CONFIG.getPlanPrice(plan);
 
     return `
       <tr>
@@ -732,7 +736,7 @@ async function viewCustomer(customerId) {
   }
 
   const plan = customer.organizations?.plan || 'starter';
-  const price = PLAN_PRICES[plan.toLowerCase()] || 149;
+  const price = CONFIG.getPlanPrice(plan);
 
   container.innerHTML = `
     <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
@@ -779,6 +783,31 @@ async function viewCustomer(customerId) {
       </button>
     </div>
   `;
+}
+
+// ---- CSV EXPORT ----
+
+function exportCustomersCSV() {
+  const rows = document.querySelectorAll('#customers-tbody tr');
+  if (!rows.length) { Components.toast('Keine Daten zum Exportieren', 'error'); return; }
+
+  let csv = 'Name,E-Mail,Unternehmen,Plan,Monatl. Netto,Branche,Status,Registriert\n';
+  rows.forEach(row => {
+    if (row.style.display === 'none') return;
+    const cells = row.querySelectorAll('td');
+    if (cells.length < 8) return;
+    const values = Array.from(cells).slice(0, 8).map(td => '"' + td.textContent.trim().replace(/"/g, '""') + '"');
+    csv += values.join(',') + '\n';
+  });
+
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'call-lana-kunden-' + new Date().toISOString().split('T')[0] + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+  Components.toast('CSV exportiert', 'success');
 }
 
 function editUserRole(userId, email, currentRole, currentOrgId) {
