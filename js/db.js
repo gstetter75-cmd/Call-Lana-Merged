@@ -530,7 +530,7 @@ const db = {
 
       let query = supabaseClient
         .from('tasks')
-        .select('*, leads(company_name)')
+        .select('*')
         .order('due_date', { ascending: true });
 
       if (filters.status) query = query.eq('status', filters.status);
