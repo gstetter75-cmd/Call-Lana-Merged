@@ -660,6 +660,17 @@ tr:hover td{background:rgba(124,58,237,.03);}
           <h2>Anrufverlauf</h2>
           <span class="badge" id="allCallsCount">0 Anrufe</span>
         </div>
+        <!-- Filter Bar -->
+        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+          <input type="text" id="callSearchInput" class="form-input" placeholder="Telefonnummer suchen…" style="flex:1;min-width:160px;padding:8px 12px;font-size:12px;">
+          <select id="callStatusFilter" class="form-input form-select" style="width:auto;padding:8px 32px 8px 12px;font-size:12px;">
+            <option value="">Alle Status</option>
+            <option value="completed">Abgeschlossen</option>
+            <option value="missed">Verpasst</option>
+            <option value="voicemail">Mailbox</option>
+            <option value="active">Aktiv</option>
+          </select>
+        </div>
         <div id="allCallsBody">
           <div class="loading-state"><div class="spinner"></div><p>Anrufe werden geladen…</p></div>
         </div>

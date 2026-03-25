@@ -125,7 +125,13 @@
       <div class="page-section" id="tab-leads">
         <div class="pipeline-header">
           <h1>Alle Leads</h1>
-          <button class="btn btn-sm" id="btn-add-lead">+ Neuer Lead</button>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <input type="text" id="lead-search" class="form-input" placeholder="Lead suchen…" style="width:200px;padding:8px 12px;font-size:12px;">
+            <select id="lead-status-filter" class="form-input form-select" style="width:auto;padding:8px 32px 8px 12px;font-size:12px;">
+              <option value="">Alle Status</option>
+            </select>
+            <button class="btn btn-sm" id="btn-add-lead">+ Neuer Lead</button>
+          </div>
         </div>
         <div class="card" style="padding:0;overflow:hidden;">
           <table class="data-table">
@@ -530,11 +536,33 @@ async function dropLead(event, newStage) {
 
 function renderLeadsTable() {
   const tbody = document.getElementById('leads-tbody');
-  if (!allLeads.length) {
-    tbody.innerHTML = '<tr><td colspan="7" class="empty-state">Keine Leads vorhanden. Erstelle deinen ersten Lead!</td></tr>';
+  const search = (document.getElementById('lead-search')?.value || '').toLowerCase();
+  const statusFilter = document.getElementById('lead-status-filter')?.value || '';
+
+  // Populate status filter options
+  const statusSel = document.getElementById('lead-status-filter');
+  if (statusSel && statusSel.options.length <= 1) {
+    PIPELINE_STAGES.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.key;
+      opt.textContent = s.label;
+      statusSel.appendChild(opt);
+    });
+    statusSel.addEventListener('change', renderLeadsTable);
+    document.getElementById('lead-search')?.addEventListener('input', renderLeadsTable);
+  }
+
+  const filtered = allLeads.filter(l => {
+    if (search && !(l.company_name || '').toLowerCase().includes(search) && !(l.contact_name || '').toLowerCase().includes(search) && !(l.email || '').toLowerCase().includes(search)) return false;
+    if (statusFilter && l.status !== statusFilter) return false;
+    return true;
+  });
+
+  if (!filtered.length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty-state">' + (allLeads.length ? 'Keine Ergebnisse für diesen Filter.' : 'Keine Leads vorhanden. Erstelle deinen ersten Lead!') + '</td></tr>';
     return;
   }
-  tbody.innerHTML = allLeads.map(l => {
+  tbody.innerHTML = filtered.map(l => {
     const stageInfo = PIPELINE_STAGES.find(s => s.key === l.status) || PIPELINE_STAGES[0];
     return `
       <tr>

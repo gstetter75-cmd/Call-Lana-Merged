@@ -24,15 +24,10 @@ let currentConversationId = null;
 
   initMonthSelect();
 
+  // Load only essential data upfront, rest is lazy-loaded on navigation
   await Promise.all([
     loadHomeData(),
-    loadAllCalls(),
-    loadBilling(),
-    loadPlan(),
-    loadAssistants(),
-    loadTeam(),
-    loadConversations(),
-    loadInvoices()
+    loadAssistants()
   ]);
 
   // Team management
@@ -378,15 +373,38 @@ document.querySelectorAll('.editor-tab').forEach(tab => {
 // ALL CALLS (TRANSACTIONS)
 // ==========================================
 async function loadAllCalls() {
-  const result = await clanaDB.getCalls(50);
+  const result = await clanaDB.getCalls(200);
   if (result.success && result.data.length > 0) {
     allCalls = result.data;
-    document.getElementById('allCallsCount').textContent = result.data.length + ' Anrufe';
-    document.getElementById('allCallsBody').innerHTML = buildCallTable(result.data);
+    renderFilteredCalls();
+    initCallFilters();
   } else {
     allCalls = [];
     document.getElementById('allCallsBody').innerHTML = emptyCallsHTML();
   }
+}
+
+function renderFilteredCalls() {
+  const search = (document.getElementById('callSearchInput')?.value || '').toLowerCase();
+  const statusFilter = document.getElementById('callStatusFilter')?.value || '';
+
+  const filtered = allCalls.filter(c => {
+    if (search && !(c.phone_number || '').toLowerCase().includes(search)) return false;
+    if (statusFilter && c.status !== statusFilter) return false;
+    return true;
+  });
+
+  document.getElementById('allCallsCount').textContent = filtered.length + ' Anrufe';
+  if (filtered.length > 0) {
+    document.getElementById('allCallsBody').innerHTML = buildCallTable(filtered);
+  } else {
+    document.getElementById('allCallsBody').innerHTML = '<div class="empty-state"><h3>Keine Ergebnisse</h3><p>Versuche andere Filterkriterien.</p></div>';
+  }
+}
+
+function initCallFilters() {
+  document.getElementById('callSearchInput')?.addEventListener('input', renderFilteredCalls);
+  document.getElementById('callStatusFilter')?.addEventListener('change', renderFilteredCalls);
 }
 
 // ==========================================
@@ -1503,12 +1521,23 @@ function detectCardBrand(number) {
 }
 
 // Load data when navigating to billing/payment pages
+// Lazy loading: load data only when page is visited
+const _loadedPages = new Set(['home']);
 const origNavigate = navigateToPage;
 navigateToPage = function(page, updateHash) {
   origNavigate(page, updateHash);
-  if (page === 'payment') loadPaymentMethods();
-  if (page === 'billing') loadBillingData();
-  if (page === 'integrations') loadIntegrations();
+  if (_loadedPages.has(page)) return;
+  _loadedPages.add(page);
+  switch (page) {
+    case 'calls': loadAllCalls(); break;
+    case 'billing': loadBilling(); loadBillingData(); break;
+    case 'plan': loadPlan(); break;
+    case 'team': loadTeam(); break;
+    case 'messages': loadConversations(); break;
+    case 'payment': loadPaymentMethods(); break;
+    case 'integrations': loadIntegrations(); break;
+    case 'invoices': loadInvoices(); break;
+  }
 };
 // Also load on initial hash
 if (window.location.hash === '#payment') loadPaymentMethods();
