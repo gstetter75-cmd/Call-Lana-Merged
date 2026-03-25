@@ -13,17 +13,26 @@ let customersLoaded = false;
 // ==========================================
 
 async function loadCustomers() {
-  const result = await clanaDB.getCustomers({ assigned_to: currentProfile.id });
-  if (!result.success) { Components.toast('Fehler beim Laden der Kunden', 'error'); return; }
-  allCustomers = result.data;
+  try {
+    const result = await clanaDB.getCustomers({ assigned_to: currentProfile.id });
+    if (!result.success) throw new Error(result.error);
+    allCustomers = result.data || [];
+  } catch (e) {
+    allCustomers = [];
+    // Silently fail if table doesn't exist yet (404)
+  }
   renderCustomersTable();
   updateCustomerStats();
   customersLoaded = true;
 }
 
 async function loadCustomerTags() {
-  const result = await clanaDB.getCustomerTags();
-  if (result.success) allCustomerTags = result.data;
+  try {
+    const result = await clanaDB.getCustomerTags();
+    if (result.success) allCustomerTags = result.data || [];
+  } catch (e) {
+    allCustomerTags = [];
+  }
 }
 
 function updateCustomerStats() {

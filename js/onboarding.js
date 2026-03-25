@@ -16,6 +16,7 @@ const Onboarding = {
   completedSteps: new Set(),
 
   async init(userId) {
+    this.userId = userId;
     this.container = document.getElementById('onboarding-section');
     if (!this.container) return;
 
@@ -42,7 +43,7 @@ const Onboarding = {
       const result = await clanaDB.getAssistants();
       if (result.data?.length > 0) {
         this.completedSteps.add('create_assistant');
-        clanaDB.completeOnboardingStep(currentUser?.id, 'create_assistant');
+        clanaDB.completeOnboardingStep(this.userId, 'create_assistant');
       }
     }
   },

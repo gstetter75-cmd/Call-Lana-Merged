@@ -971,14 +971,14 @@ async function saveLead() {
     return;
   }
 
+  const industry = document.getElementById('lead-industry').value;
+  if (!industry) { Components.toast('Branche ist erforderlich', 'error'); return; }
+
   const saveBtn = document.getElementById('btn-save-lead');
   const editId = saveBtn.dataset.editId;
   saveBtn.disabled = true;
   const origText = saveBtn.textContent;
   saveBtn.textContent = '…';
-
-  const industry = document.getElementById('lead-industry').value;
-  if (!industry) { Components.toast('Branche ist erforderlich', 'error'); return; }
 
   const payload = { company_name: company, industry: industry };
 
