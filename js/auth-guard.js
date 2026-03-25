@@ -63,7 +63,7 @@ const AuthGuard = {
       }
       return data;
     } catch (err) {
-      console.error('Profile fetch error:', err);
+      Logger.error('AuthGuard.getProfile', err);
       return null;
     }
   },

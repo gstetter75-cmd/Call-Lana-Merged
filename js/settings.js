@@ -13,11 +13,15 @@ let userSettings = {};
   if (!currentProfile) return;
 
   currentUser = await clanaAuth.getUser();
-  const name = AuthGuard.getDisplayName(currentProfile);
 
-  // Sidebar user info
-  document.getElementById('userName').textContent = name;
-  document.getElementById('userAvatar').textContent = AuthGuard.getInitials(currentProfile);
+  // Load shared sidebar
+  await Components.loadSidebar('sidebar-container', currentProfile);
+
+  // Logout handler
+  document.getElementById('sidebar-logout')?.addEventListener('click', async () => {
+    await clanaAuth.signOut();
+    window.location.href = 'login.html';
+  });
 
   // Profile form — use profiles table data first, fall back to auth metadata
   document.getElementById('firstName').value = currentProfile.first_name || '';
@@ -89,8 +93,11 @@ async function saveProfile() {
   btn.textContent = 'Änderungen speichern';
 
   if (authResult.success) {
-    document.getElementById('userName').textContent = fn + ' ' + ln;
-    document.getElementById('userAvatar').textContent = fn.charAt(0).toUpperCase();
+    // Update sidebar user info if present
+    const nameEl = document.querySelector('.sb-user-name');
+    const avatarEl = document.querySelector('.sb-avatar');
+    if (nameEl) nameEl.textContent = fn + ' ' + ln;
+    if (avatarEl) avatarEl.textContent = fn.charAt(0).toUpperCase();
     showToast('Profil erfolgreich aktualisiert!');
   } else {
     errEl.textContent = 'Fehler: ' + authResult.error;
@@ -657,18 +664,7 @@ document.querySelectorAll('.sn-item').forEach(item => {
   }
 })();
 
-// ==========================================
-// LOGOUT (Supabase)
-// ==========================================
-document.getElementById('logoutBtn').addEventListener('click', async () => {
-  if (!confirm('Möchtest du dich wirklich abmelden?')) return;
-  const result = await clanaAuth.signOut();
-  if (result.success) {
-    window.location.href = 'login.html';
-  } else {
-    showToast('Logout fehlgeschlagen: ' + result.error, true);
-  }
-});
+// Logout is handled via sidebar-logout in init()
 
 // ==========================================
 // MOBILE SIDEBAR

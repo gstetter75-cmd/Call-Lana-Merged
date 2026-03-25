@@ -265,90 +265,7 @@ tr:hover td{background:rgba(124,58,237,.03);}
 
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<aside class="sidebar" id="sidebar">
-  <div class="sb-top">
-    <a href="dashboard.html" class="sb-logo"><picture><source srcset="logo-nav.webp" type="image/webp"><img src="logo-nav.png" alt="Call Lana"></picture></a>
-    <button class="sb-close" id="sidebarClose" aria-label="Menü schließen">✕</button>
-  </div>
-  <nav class="sb-nav">
-    <!-- Übersicht -->
-    <div class="sb-section">
-      <div class="sb-section-label">Übersicht</div>
-      <a href="#home" class="sb-item active" data-page="home">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        Home
-      </a>
-    </div>
-    <!-- Inhalte -->
-    <div class="sb-section">
-      <div class="sb-section-label">Inhalte</div>
-      <a href="#assistants" class="sb-item" data-page="assistants">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Assistenten
-      </a>
-      <a href="#knowledge" class="sb-item" data-page="knowledge">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        Wissensdatenbank
-      </a>
-      <a href="#phones" class="sb-item" data-page="phones">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        Telefonnummern
-      </a>
-      <a href="#transactions" class="sb-item" data-page="transactions">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        Anrufverlauf
-      </a>
-    </div>
-    <!-- Kommunikation -->
-    <div class="sb-section">
-      <div class="sb-section-label">Kommunikation</div>
-      <a href="#messages" class="sb-item" data-page="messages">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        Nachrichten
-      </a>
-      <a href="#integrations" class="sb-item" data-page="integrations">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3"/><rect x="11" y="3" width="10" height="10" rx="2"/></svg>
-        Integrationen
-      </a>
-    </div>
-    <!-- Konto -->
-    <div class="sb-section">
-      <div class="sb-section-label">Konto</div>
-      <a href="#team" class="sb-item" data-page="team">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        Team
-      </a>
-      <a href="#billing" class="sb-item" data-page="billing">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-        Guthaben
-      </a>
-      <a href="#payment" class="sb-item" data-page="payment">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><path d="M1 10h22"/><path d="M6 16h4"/></svg>
-        Zahlungsmethoden
-      </a>
-      <a href="#plans" class="sb-item" data-page="plans">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        Paket
-      </a>
-      <a href="settings.html" class="sb-item">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        Einstellungen
-      </a>
-    </div>
-  </nav>
-  <div class="sb-bottom">
-    <div class="sb-user">
-      <div class="sb-avatar" id="userAvatar">?</div>
-      <div class="sb-user-info">
-        <div class="sb-user-name" id="userName">Lädt…</div>
-        <div class="sb-user-email" id="userEmail">…</div>
-      </div>
-      <button class="sb-logout" id="logoutBtn" title="Abmelden">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      </button>
-    </div>
-  </div>
-</aside>
+<div id="sidebar-container"></div>
 
 <div class="main" id="main">
   <div class="topbar">
@@ -1251,6 +1168,8 @@ tr:hover td{background:rgba(124,58,237,.03);}
 <script src="js/auth.js"></script>
 <script src="js/db.js"></script>
 <script src="js/auth-guard.js"></script>
+<script src="js/config.js"></script>
+<script src="js/dashboard-components.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>

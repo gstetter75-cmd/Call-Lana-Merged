@@ -16,11 +16,15 @@ let currentConversationId = null;
   if (!currentProfile) return;
 
   currentUser = await clanaAuth.getUser();
-  const name = AuthGuard.getDisplayName(currentProfile);
 
-  document.getElementById('userName').textContent = name;
-  document.getElementById('userEmail').textContent = currentProfile.email || currentUser?.email || '';
-  document.getElementById('userAvatar').textContent = AuthGuard.getInitials(currentProfile);
+  // Load shared sidebar
+  await Components.loadSidebar('sidebar-container', currentProfile);
+
+  // Logout handler
+  document.getElementById('sidebar-logout')?.addEventListener('click', async () => {
+    await clanaAuth.signOut();
+    window.location.href = 'login.html';
+  });
 
   initMonthSelect();
 
@@ -709,7 +713,7 @@ async function createNewConversation() {
     return;
   }
 
-  const convResult = await clanaDB.createConversation(subject || 'Neue Konversation', []);
+  const convResult = await clanaDB.createConversation([], subject || 'Neue Konversation');
   if (!convResult.success) {
     showToast('Fehler beim Erstellen: ' + convResult.error, true);
     return;
@@ -793,18 +797,7 @@ document.getElementById('sidebarOverlay').addEventListener('click', () => {
   document.getElementById('sidebarOverlay').classList.remove('open');
 });
 
-// ==========================================
-// LOGOUT
-// ==========================================
-document.getElementById('logoutBtn').addEventListener('click', async () => {
-  if (!confirm('Möchtest du dich wirklich abmelden?')) return;
-  const result = await clanaAuth.signOut();
-  if (result.success) {
-    window.location.href = 'login.html';
-  } else {
-    showToast('Logout fehlgeschlagen: ' + result.error, true);
-  }
-});
+// Logout is handled via sidebar-logout in init()
 
 // ==========================================
 // BILLING & BALANCE
