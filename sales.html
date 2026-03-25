@@ -229,13 +229,14 @@
         </div>
       </div>
 
-      <!-- AVAILABILITY -->
+      <!-- AVAILABILITY (enhanced with sub-tabs) -->
       <div class="page-section" id="tab-availability">
         <div class="pipeline-header">
           <h1>Verfügbarkeit</h1>
           <button class="btn btn-sm" id="btn-set-avail">+ Eintrag</button>
         </div>
-        <div class="availability-grid" id="avail-grid"></div>
+        <div id="avail-subtabs"></div>
+        <div class="availability-grid" id="avail-grid" style="display:none;"></div>
       </div>
 
       <!-- COMMISSION / PROVISIONEN -->
@@ -600,6 +601,37 @@
   </div>
 </div>
 
+<!-- Time Off Request Modal -->
+<div class="modal-overlay" id="modal-time-off">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Abwesenheit beantragen</h3>
+      <button class="modal-close" onclick="closeModal('modal-time-off')">&times;</button>
+    </div>
+    <div class="form-group"><label class="form-label">Typ</label>
+      <select class="form-input form-select" id="to-type">
+        <option value="vacation">Urlaub</option>
+        <option value="sick">Krankheit</option>
+        <option value="training">Fortbildung</option>
+        <option value="other">Sonstiges</option>
+      </select>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-group"><label class="form-label">Von</label><input type="date" class="form-input" id="to-start"></div>
+      <div class="form-group"><label class="form-label">Bis</label><input type="date" class="form-input" id="to-end"></div>
+    </div>
+    <div style="display:flex;gap:16px;margin-bottom:12px;">
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="to-half-start"> Halber Tag (Start)</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="to-half-end"> Halber Tag (Ende)</label>
+    </div>
+    <div class="form-group"><label class="form-label">Notiz</label><textarea class="form-input" id="to-note" rows="2" placeholder="Optional..."></textarea></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-time-off')">Abbrechen</button>
+      <button class="btn" onclick="AvailabilityModule.saveTimeOffRequest()">Beantragen</button>
+    </div>
+  </div>
+</div>
+
 <script src="js/logger.js"></script>
 <script src="js/supabase-init.js"></script>
 <script src="js/auth.js"></script>
@@ -608,6 +640,7 @@
 <script src="js/config.js"></script>
 <script src="js/dashboard-components.js"></script>
 <script src="js/sales-customers.js"></script>
+<script src="js/availability.js"></script>
 <script src="js/global-search.js"></script>
 <script src="js/keyboard-shortcuts.js"></script>
 <script>
@@ -696,6 +729,7 @@ function switchTab(tab) {
   window.location.hash = tab;
   if (tab === 'commission') loadCommissions();
   if (tab === 'customers' && !customersLoaded) { loadCustomers(); loadCustomerTags(); }
+  if (tab === 'availability' && typeof AvailabilityModule !== 'undefined') AvailabilityModule.init();
 }
 
 async function loadAllData() {
