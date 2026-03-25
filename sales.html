@@ -63,6 +63,7 @@
   .note-form { display: flex; gap: 8px; margin-top: 12px; }
   .note-form .form-input { flex: 1; }
   .lead-detail-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .tag-chip { display:inline-block; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; margin:1px; }
 </style>
 </head>
 <body>
@@ -81,6 +82,7 @@
         <button class="tab-btn active" data-tab="pipeline">Pipeline</button>
         <button class="tab-btn" data-tab="leads">Leads</button>
         <button class="tab-btn" data-tab="tasks">Aufgaben</button>
+        <button class="tab-btn" data-tab="customers">Kunden</button>
         <button class="tab-btn" data-tab="availability">Verfügbarkeit</button>
         <button class="tab-btn" data-tab="commission">Provisionen</button>
       </div>
@@ -176,6 +178,42 @@
         </div>
 
         <div class="card" style="padding:0;" id="tasks-list"></div>
+      </div>
+
+      <!-- CUSTOMERS -->
+      <div class="page-section" id="tab-customers">
+        <div class="pipeline-header">
+          <h1>Kunden</h1>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-outline btn-sm" onclick="openCSVImportModal()">📁 CSV Import</button>
+            <button class="btn btn-outline btn-sm" onclick="exportCustomersCSV()">📥 CSV Export</button>
+            <button class="btn btn-sm" onclick="openNewCustomerModal()">+ Neuer Kunde</button>
+          </div>
+        </div>
+
+        <div class="stats-grid" style="margin-bottom:20px;">
+          <div class="stat-card"><div class="stat-label">KUNDEN GESAMT</div><div class="stat-value" id="cust-stat-total">0</div></div>
+          <div class="stat-card"><div class="stat-label">AKTIV</div><div class="stat-value" id="cust-stat-active">0</div></div>
+          <div class="stat-card"><div class="stat-label">Ø HEALTH SCORE</div><div class="stat-value" id="cust-stat-health">0%</div></div>
+          <div class="stat-card"><div class="stat-label">MONATL. UMSATZ</div><div class="stat-value" id="cust-stat-revenue">0 €</div></div>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+          <input type="text" class="form-input" id="cust-search" placeholder="Suche nach Firma, Kontakt, E-Mail..." style="flex:1;min-width:200px;" oninput="renderCustomersTable()">
+          <select class="form-input form-select" id="cust-status-filter" style="width:150px;" onchange="renderCustomersTable()">
+            <option value="">Alle Status</option>
+            <option value="active">Aktiv</option>
+            <option value="inactive">Inaktiv</option>
+            <option value="churned">Abgewandert</option>
+          </select>
+        </div>
+
+        <div class="card" style="padding:0;">
+          <table class="data-table">
+            <thead><tr><th>Firma</th><th>E-Mail</th><th>Plan</th><th>Status</th><th>Health</th><th>Letzter Kontakt</th><th>Tags</th><th></th></tr></thead>
+            <tbody id="customers-tbody"><tr><td colspan="8" style="text-align:center;color:var(--tx3);padding:40px;">Laden...</td></tr></tbody>
+          </table>
+        </div>
       </div>
 
       <!-- AVAILABILITY -->
@@ -426,6 +464,128 @@
   </div>
 </div>
 
+<!-- Customer Detail Modal -->
+<div class="modal-overlay" id="modal-customer-detail">
+  <div class="modal" style="max-width:700px;">
+    <div class="modal-header">
+      <h3 class="modal-title">Kundendetails</h3>
+      <button class="modal-close" onclick="closeModal('modal-customer-detail')">&times;</button>
+    </div>
+    <div id="cust-detail-content"></div>
+  </div>
+</div>
+
+<!-- Add/Edit Customer Modal -->
+<div class="modal-overlay" id="modal-add-customer">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="cust-modal-title">Neuer Kunde</h3>
+      <button class="modal-close" onclick="closeModal('modal-add-customer')">&times;</button>
+    </div>
+    <div class="form-group"><label class="form-label">Firma *</label><input type="text" class="form-input" id="cust-company" placeholder="Firmenname"></div>
+    <div class="form-group"><label class="form-label">Kontaktperson</label><input type="text" class="form-input" id="cust-contact" placeholder="Vor- und Nachname"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-group"><label class="form-label">E-Mail</label><input type="email" class="form-input" id="cust-email" placeholder="email@firma.de"></div>
+      <div class="form-group"><label class="form-label">Telefon</label><input type="tel" class="form-input" id="cust-phone" placeholder="+49 ..."></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-group"><label class="form-label">Branche</label>
+        <select class="form-input form-select" id="cust-industry">
+          <option value="">Auswählen...</option>
+          <option value="handwerk">Handwerk</option>
+          <option value="immobilien">Immobilien</option>
+          <option value="gesundheit">Gesundheit & Praxis</option>
+          <option value="recht">Rechtsanwälte & Kanzleien</option>
+          <option value="auto">Autohandel & Werkstatt</option>
+          <option value="gastronomie">Gastronomie & Hotel</option>
+          <option value="ecommerce">E-Commerce</option>
+          <option value="dienstleistung">Dienstleistung</option>
+          <option value="it">IT & Software</option>
+          <option value="sonstige">Sonstige</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Plan</label>
+        <select class="form-input form-select" id="cust-plan">
+          <option value="starter">Starter (149 €)</option>
+          <option value="professional">Professional (299 €)</option>
+          <option value="business">Business (599 €)</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Website</label><input type="url" class="form-input" id="cust-website" placeholder="https://..."></div>
+    <div class="form-group"><label class="form-label">Adresse</label><input type="text" class="form-input" id="cust-address" placeholder="Straße, PLZ Ort"></div>
+    <div class="form-group"><label class="form-label">Notizen</label><textarea class="form-input" id="cust-notes-field" rows="2" placeholder="Notizen..."></textarea></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-add-customer')">Abbrechen</button>
+      <button class="btn" id="btn-save-customer" onclick="saveCustomer()">Kunde erstellen</button>
+    </div>
+  </div>
+</div>
+
+<!-- Call Protocol Modal -->
+<div class="modal-overlay" id="modal-call-protocol">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Anruf protokollieren</h3>
+      <button class="modal-close" onclick="closeModal('modal-call-protocol')">&times;</button>
+    </div>
+    <input type="hidden" id="cp-customer-id">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-group"><label class="form-label">Richtung</label>
+        <select class="form-input form-select" id="cp-direction">
+          <option value="outbound">↗ Ausgehend</option>
+          <option value="inbound">↙ Eingehend</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Ergebnis</label>
+        <select class="form-input form-select" id="cp-outcome">
+          <option value="reached">Erreicht</option>
+          <option value="voicemail">Mailbox</option>
+          <option value="no_answer">Nicht erreicht</option>
+          <option value="busy">Besetzt</option>
+          <option value="callback">Rückruf</option>
+          <option value="follow_up">Follow-up</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-group"><label class="form-label">Datum & Uhrzeit</label><input type="datetime-local" class="form-input" id="cp-called-at"></div>
+      <div class="form-group"><label class="form-label">Dauer (Minuten)</label><input type="number" class="form-input" id="cp-duration" placeholder="0" min="0"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Betreff</label><input type="text" class="form-input" id="cp-subject" placeholder="Worum ging es?"></div>
+    <div class="form-group"><label class="form-label">Notizen</label><textarea class="form-input" id="cp-notes" rows="3" placeholder="Gesprächsnotizen..."></textarea></div>
+    <div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end;">
+      <div class="form-group"><label class="form-label">Follow-up Datum</label><input type="date" class="form-input" id="cp-followup-date"></div>
+      <div class="form-group" style="padding-bottom:2px;"><label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="cp-create-task" checked> Task erstellen</label></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-call-protocol')">Abbrechen</button>
+      <button class="btn" onclick="saveCallProtocol()">Protokoll speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- CSV Import Modal -->
+<div class="modal-overlay" id="modal-csv-import">
+  <div class="modal" style="max-width:600px;">
+    <div class="modal-header">
+      <h3 class="modal-title">Kunden aus CSV importieren</h3>
+      <button class="modal-close" onclick="closeModal('modal-csv-import')">&times;</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">CSV-Datei auswählen</label>
+      <input type="file" class="form-input" id="csv-file-input" accept=".csv,.txt" onchange="handleCSVFile(this)">
+      <p style="font-size:11px;color:var(--tx3);margin-top:6px;">Erwartete Spalten: Firma, Kontakt, E-Mail, Telefon, Branche, Plan, Website, Adresse, Notizen<br>Trennzeichen: Komma oder Semikolon. Encoding: UTF-8.</p>
+    </div>
+    <div style="font-weight:600;font-size:13px;margin-bottom:8px;" id="csv-import-count"></div>
+    <div id="csv-preview-content" style="max-height:250px;overflow:auto;"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-csv-import')">Abbrechen</button>
+      <button class="btn" id="btn-csv-import" onclick="importCSVCustomers()">Importieren</button>
+    </div>
+  </div>
+</div>
+
 <script src="js/logger.js"></script>
 <script src="js/supabase-init.js"></script>
 <script src="js/auth.js"></script>
@@ -433,6 +593,7 @@
 <script src="js/auth-guard.js"></script>
 <script src="js/config.js"></script>
 <script src="js/dashboard-components.js"></script>
+<script src="js/sales-customers.js"></script>
 <script>
 const PIPELINE_STAGES = [
   { key: 'new', label: 'Neu', color: 'var(--cyan)' },
@@ -490,10 +651,11 @@ function switchTab(tab) {
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
   const section = document.getElementById('tab-' + tab);
   if (section) section.classList.add('active');
-  const labels = { pipeline: 'Pipeline', leads: 'Leads', tasks: 'Aufgaben', availability: 'Verfügbarkeit', commission: 'Provisionen' };
+  const labels = { pipeline: 'Pipeline', leads: 'Leads', tasks: 'Aufgaben', customers: 'Kunden', availability: 'Verfügbarkeit', commission: 'Provisionen' };
   document.getElementById('breadcrumb-page').textContent = labels[tab] || tab;
   window.location.hash = tab;
   if (tab === 'commission') loadCommissions();
+  if (tab === 'customers' && !customersLoaded) { loadCustomers(); loadCustomerTags(); }
 }
 
 async function loadAllData() {
@@ -545,6 +707,10 @@ async function dropLead(event, newStage) {
     renderPipeline();
     renderLeadsTable();
     updateLeadStats();
+    // Offer lead-to-customer conversion when moved to "won"
+    if (newStage === 'won') {
+      setTimeout(() => convertCurrentLeadToCustomer(leadId), 500);
+    }
   } else {
     Components.toast('Fehler: ' + result.error, 'error');
   }

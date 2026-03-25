@@ -11,6 +11,41 @@ const CONFIG = {
 
   COMMISSION_RATE: 0.05,
 
+  CUSTOMER_STATUSES: {
+    active:   { label: 'Aktiv',        color: '#10b981' },
+    inactive: { label: 'Inaktiv',      color: '#f59e0b' },
+    churned:  { label: 'Abgewandert',  color: '#ef4444' }
+  },
+
+  CALL_DIRECTIONS: {
+    inbound:  { label: 'Eingehend', icon: '↙' },
+    outbound: { label: 'Ausgehend', icon: '↗' }
+  },
+
+  CALL_OUTCOMES: {
+    reached:   { label: 'Erreicht' },
+    voicemail: { label: 'Mailbox' },
+    no_answer: { label: 'Nicht erreicht' },
+    busy:      { label: 'Besetzt' },
+    callback:  { label: 'Rückruf' },
+    follow_up: { label: 'Follow-up' }
+  },
+
+  INDUSTRIES: {
+    handwerk:       'Handwerk',
+    immobilien:     'Immobilien',
+    gesundheit:     'Gesundheit & Praxis',
+    recht:          'Rechtsanwälte & Kanzleien',
+    auto:           'Autohandel & Werkstatt',
+    gastronomie:    'Gastronomie & Hotel',
+    ecommerce:      'E-Commerce',
+    dienstleistung: 'Dienstleistung',
+    it:             'IT & Software',
+    sonstige:       'Sonstige'
+  },
+
+  HEALTH_THRESHOLDS: { good: 70, warning: 40 },
+
   getPlanPrice(plan) {
     const key = (plan || 'starter').toLowerCase();
     return (this.PLANS[key] || this.PLANS.starter).price;
@@ -19,6 +54,16 @@ const CONFIG = {
   getPlanLabel(plan) {
     const key = (plan || 'starter').toLowerCase();
     return (this.PLANS[key] || this.PLANS.starter).label;
+  },
+
+  getHealthColor(score) {
+    if (score >= this.HEALTH_THRESHOLDS.good) return '#10b981';
+    if (score >= this.HEALTH_THRESHOLDS.warning) return '#f59e0b';
+    return '#ef4444';
+  },
+
+  getIndustryLabel(key) {
+    return this.INDUSTRIES[key] || key || '—';
   }
 };
 
