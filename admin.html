@@ -92,6 +92,18 @@
           </div>
         </div>
 
+        <!-- Churn & MRR Trend -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+          <div class="card">
+            <h2 style="margin-bottom:16px;">Kunden-Health</h2>
+            <div id="ov-churn-stats" style="display:flex;flex-direction:column;gap:12px;"></div>
+          </div>
+          <div class="card">
+            <h2 style="margin-bottom:16px;">MRR-Entwicklung (6 Monate)</h2>
+            <svg id="ov-mrr-chart" viewBox="0 0 400 120" style="width:100%;height:120px;"></svg>
+          </div>
+        </div>
+
         <!-- Recent Customers -->
         <h2 style="margin-bottom:16px;">Neueste Kunden</h2>
         <div class="card" style="padding:0;overflow:hidden;">
@@ -683,6 +695,100 @@ async function loadOverview() {
   } else {
     recentTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--tx3);padding:20px;">Noch keine Kunden</td></tr>';
   }
+
+  // Churn Stats
+  const activeCustomers = allUsers.filter(u => u.role === 'customer' && u.is_active !== false);
+  const inactiveCustomers = allUsers.filter(u => u.role === 'customer' && u.is_active === false);
+  const totalCustomers = activeCustomers.length + inactiveCustomers.length;
+  const churnRate = totalCustomers > 0 ? Math.round((inactiveCustomers.length / totalCustomers) * 100) : 0;
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+  const newThisMonth = activeCustomers.filter(c => new Date(c.created_at) >= thirtyDaysAgo).length;
+
+  const churnEl = document.getElementById('ov-churn-stats');
+  churnEl.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="background:var(--bg2);border-radius:10px;padding:14px;">
+        <div style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;margin-bottom:4px;">Churn-Rate</div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:${churnRate > 10 ? 'var(--red)' : churnRate > 5 ? 'var(--orange)' : 'var(--green)'};">${churnRate}%</div>
+      </div>
+      <div style="background:var(--bg2);border-radius:10px;padding:14px;">
+        <div style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;margin-bottom:4px;">Neu (30 Tage)</div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:var(--green);">+${newThisMonth}</div>
+      </div>
+    </div>
+    ${inactiveCustomers.length > 0 ? `
+    <div style="margin-top:8px;">
+      <div style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;margin-bottom:6px;">Inaktive Kunden (${inactiveCustomers.length})</div>
+      ${inactiveCustomers.slice(0, 5).map(c => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:12px;">
+          <span style="color:var(--tx2);">${clanaUtils.sanitizeHtml((c.first_name || '') + ' ' + (c.last_name || ''))}</span>
+          <button class="btn btn-sm btn-outline" style="font-size:10px;padding:2px 8px;" onclick="toggleUserActive('${c.id}',false)">Aktivieren</button>
+        </div>
+      `).join('')}
+    </div>` : '<div style="text-align:center;color:var(--green);font-size:12px;padding:12px;">Keine inaktiven Kunden</div>'}
+  `;
+
+  // MRR Chart (estimated from customer registration dates)
+  renderMrrChart(allUsers, allOrgs);
+}
+
+function renderMrrChart(allUsers, allOrgs) {
+  const svg = document.getElementById('ov-mrr-chart');
+  if (!svg) return;
+
+  const now = new Date();
+  const months = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    months.push(d);
+  }
+  const monthNames = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+
+  // Calculate cumulative MRR per month
+  const customers = allUsers.filter(u => u.role === 'customer');
+  const mrrPerMonth = months.map(m => {
+    const endOfMonth = new Date(m.getFullYear(), m.getMonth() + 1, 0, 23, 59, 59);
+    const activeAtMonth = customers.filter(c => new Date(c.created_at) <= endOfMonth && c.is_active !== false);
+    let mrr = 0;
+    activeAtMonth.forEach(c => {
+      const org = allOrgs.find(o => o.id === c.organization_id);
+      mrr += CONFIG.getPlanPrice(org?.plan || 'starter');
+    });
+    if (mrr === 0 && activeAtMonth.length > 0) mrr = activeAtMonth.length * CONFIG.getPlanPrice('starter');
+    return mrr;
+  });
+
+  const maxMrr = Math.max(...mrrPerMonth, 1);
+  const w = 400, h = 120, padT = 15, padB = 22, padL = 40, padR = 10;
+  const chartW = w - padL - padR;
+  const chartH = h - padT - padB;
+
+  const points = mrrPerMonth.map((v, i) => ({
+    x: padL + (i / Math.max(mrrPerMonth.length - 1, 1)) * chartW,
+    y: padT + chartH - (v / maxMrr) * chartH
+  }));
+
+  const pathD = points.map((p, i) => (i === 0 ? 'M' : 'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ');
+  const areaD = pathD + ` L${points[points.length-1].x.toFixed(1)},${padT+chartH} L${points[0].x.toFixed(1)},${padT+chartH} Z`;
+
+  let labels = months.map((m, i) => {
+    const x = padL + (i / Math.max(months.length - 1, 1)) * chartW;
+    return `<text x="${x.toFixed(1)}" y="${h - 4}" fill="var(--tx3)" font-size="9" text-anchor="middle" font-family="Manrope">${monthNames[m.getMonth()]}</text>`;
+  }).join('');
+
+  // Y-axis labels
+  labels += `<text x="${padL - 4}" y="${padT + 4}" fill="var(--tx3)" font-size="8" text-anchor="end" font-family="Manrope">${(maxMrr/1000).toFixed(1)}k</text>`;
+  labels += `<text x="${padL - 4}" y="${padT + chartH}" fill="var(--tx3)" font-size="8" text-anchor="end" font-family="Manrope">0</text>`;
+
+  // Value dots
+  const dots = points.map((p, i) => `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3" fill="var(--green)" stroke="var(--card)" stroke-width="2"/>`).join('');
+
+  svg.innerHTML = `
+    <defs><linearGradient id="mrrGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--green)" stop-opacity="0.25"/><stop offset="100%" stop-color="var(--green)" stop-opacity="0.02"/></linearGradient></defs>
+    <path d="${areaD}" fill="url(#mrrGrad)"/>
+    <path d="${pathD}" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    ${dots}${labels}
+  `;
 }
 
 // ---- CUSTOMERS ----
@@ -738,6 +844,19 @@ async function viewCustomer(customerId) {
   const plan = customer.organizations?.plan || 'starter';
   const price = CONFIG.getPlanPrice(plan);
 
+  // Load usage data
+  const [callsRes, assistantsRes] = await Promise.all([
+    supabaseClient.from('calls').select('id,duration,status,created_at').eq('user_id', customerId).order('created_at', { ascending: false }).limit(100),
+    supabaseClient.from('assistants').select('id,name,status').eq('user_id', customerId)
+  ]);
+  const calls = callsRes.data || [];
+  const assistants = assistantsRes.data || [];
+  const totalCalls = calls.length;
+  const totalMinutes = Math.round(calls.reduce((s, c) => s + (c.duration || 0), 0) / 60);
+  const completedCalls = calls.filter(c => c.status === 'completed').length;
+  const successRate = totalCalls > 0 ? Math.round((completedCalls / totalCalls) * 100) : 0;
+  const liveAssistants = assistants.filter(a => a.status === 'live').length;
+
   container.innerHTML = `
     <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
       <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--pu),var(--pu3));display:flex;align-items:center;justify-content:center;font-size:16px;color:white;font-weight:700;">
@@ -773,6 +892,26 @@ async function viewCustomer(customerId) {
       <div>
         <div style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;">Registriert</div>
         <div style="font-size:13px;">${clanaUtils.formatDate(customer.created_at)}</div>
+      </div>
+    </div>
+
+    <!-- Usage Stats -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;">
+      <div style="background:var(--bg2);border-radius:10px;padding:12px;text-align:center;">
+        <div style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;margin-bottom:4px;">Anrufe</div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;">${totalCalls}</div>
+      </div>
+      <div style="background:var(--bg2);border-radius:10px;padding:12px;text-align:center;">
+        <div style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;margin-bottom:4px;">Minuten</div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;">${totalMinutes}</div>
+      </div>
+      <div style="background:var(--bg2);border-radius:10px;padding:12px;text-align:center;">
+        <div style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;margin-bottom:4px;">Erfolgsrate</div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:${successRate >= 80 ? 'var(--green)' : successRate >= 50 ? 'var(--orange)' : 'var(--red)'};">${successRate}%</div>
+      </div>
+      <div style="background:var(--bg2);border-radius:10px;padding:12px;text-align:center;">
+        <div style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;margin-bottom:4px;">Assistenten</div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;">${liveAssistants}/${assistants.length}</div>
       </div>
     </div>
 

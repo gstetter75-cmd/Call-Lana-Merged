@@ -105,38 +105,52 @@ async function loadHomeData() {
 async function drawCallChart(start, end) {
   const svg = document.getElementById('callChart');
   const daysInMonth = new Date(start.getFullYear(), start.getMonth() + 1, 0).getDate();
-  const callsResult = await clanaDB.getCalls(500);
+  const callsResult = await clanaDB.getCalls(1000);
   const calls = callsResult.success ? callsResult.data : [];
 
-  // Count calls per day
+  // Previous month range
+  const prevStart = new Date(start.getFullYear(), start.getMonth() - 1, 1);
+  const prevEnd = new Date(start.getFullYear(), start.getMonth(), 0, 23, 59, 59);
+  const prevDays = new Date(prevStart.getFullYear(), prevStart.getMonth() + 1, 0).getDate();
+
+  // Count calls per day (current + previous month)
   const dayCounts = new Array(daysInMonth).fill(0);
+  const prevCounts = new Array(prevDays).fill(0);
   calls.forEach(c => {
     const d = new Date(c.created_at);
     if (d >= start && d <= end) {
       dayCounts[d.getDate() - 1]++;
+    } else if (d >= prevStart && d <= prevEnd) {
+      prevCounts[d.getDate() - 1]++;
     }
   });
 
-  const maxVal = Math.max(...dayCounts, 1);
+  const maxVal = Math.max(...dayCounts, ...prevCounts, 1);
   const w = 600;
   const h = 140;
   const padT = 10, padB = 25, padL = 5, padR = 5;
   const chartW = w - padL - padR;
   const chartH = h - padT - padB;
 
-  // Build points
-  const points = dayCounts.map((v, i) => {
-    const x = padL + (i / (daysInMonth - 1)) * chartW;
-    const y = padT + chartH - (v / maxVal) * chartH;
-    return { x, y };
-  });
+  function buildPath(counts, numDays) {
+    return counts.slice(0, numDays).map((v, i) => {
+      const x = padL + (i / (numDays - 1)) * chartW;
+      const y = padT + chartH - (v / maxVal) * chartH;
+      return (i === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1);
+    }).join(' ');
+  }
 
-  const pathD = points.map((p, i) => (i === 0 ? 'M' : 'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ');
+  const pathD = buildPath(dayCounts, daysInMonth);
+  const prevPathD = buildPath(prevCounts, Math.min(prevDays, daysInMonth));
 
-  // Area fill
+  // Area fill for current month
+  const points = dayCounts.map((v, i) => ({
+    x: padL + (i / (daysInMonth - 1)) * chartW,
+    y: padT + chartH - (v / maxVal) * chartH
+  }));
   const areaD = pathD + ' L' + points[points.length - 1].x.toFixed(1) + ',' + (padT + chartH) + ' L' + points[0].x.toFixed(1) + ',' + (padT + chartH) + ' Z';
 
-  // X-axis labels (every 5 days)
+  // X-axis labels
   let labels = '';
   for (let i = 0; i < daysInMonth; i += 5) {
     const x = padL + (i / (daysInMonth - 1)) * chartW;
@@ -146,7 +160,10 @@ async function drawCallChart(start, end) {
   svg.innerHTML =
     '<defs><linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--pu)" stop-opacity="0.3"/><stop offset="100%" stop-color="var(--pu)" stop-opacity="0.02"/></linearGradient></defs>' +
     '<path d="' + areaD + '" fill="url(#chartGrad)"/>' +
+    '<path d="' + prevPathD + '" fill="none" stroke="var(--tx3)" stroke-width="1.5" stroke-dasharray="4 3" stroke-linecap="round" opacity="0.4"/>' +
     '<path d="' + pathD + '" fill="none" stroke="var(--pu3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<text x="' + (w - padR) + '" y="' + (padT + 10) + '" fill="var(--pu3)" font-size="8" text-anchor="end" font-family="Manrope">● Aktuell</text>' +
+    '<text x="' + (w - padR) + '" y="' + (padT + 22) + '" fill="var(--tx3)" font-size="8" text-anchor="end" font-family="Manrope" opacity="0.5">┄ Vormonat</text>' +
     labels;
 }
 
