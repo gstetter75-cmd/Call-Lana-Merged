@@ -37,6 +37,15 @@ let currentConversationId = null;
   // Onboarding checklist
   if (typeof Onboarding !== 'undefined') Onboarding.init(currentUser?.id);
 
+  // Notification center
+  if (typeof NotificationCenter !== 'undefined') NotificationCenter.init(currentProfile);
+
+  // Help tooltips + activity log
+  if (typeof DashboardExtras !== 'undefined') {
+    DashboardExtras.initHelpTooltips();
+    DashboardExtras.loadRecentActions();
+  }
+
   // Analytics: usage alerts, assistant performance, call heatmap
   if (typeof DashboardAnalytics !== 'undefined') {
     DashboardAnalytics.checkUsageAlerts();
@@ -1530,7 +1539,10 @@ navigateToPage = function(page, updateHash) {
   if (_loadedPages.has(page)) return;
   _loadedPages.add(page);
   switch (page) {
-    case 'transactions': loadAllCalls(); break;
+    case 'transactions':
+      loadAllCalls();
+      if (typeof DashboardExtras !== 'undefined') DashboardExtras.renderTranscriptSearch(document.getElementById('transcript-search-section'));
+      break;
     case 'billing': loadBilling(); loadBillingData(); break;
     case 'plan': loadPlan(); break;
     case 'team': loadTeam(); break;

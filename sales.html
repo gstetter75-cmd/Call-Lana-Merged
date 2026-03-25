@@ -92,6 +92,9 @@
 
       <!-- PIPELINE -->
       <div class="page-section active" id="tab-pipeline">
+        <!-- Follow-up Reminders -->
+        <div id="followup-banner"></div>
+
         <div class="pipeline-header">
           <h1>Sales Pipeline</h1>
           <button class="btn btn-sm" id="btn-add-lead-pipeline">+ Neuer Lead</button>
@@ -125,8 +128,9 @@
 
         <div class="kanban-board" id="pipeline-board"></div>
 
-        <!-- Won vs Lost Chart -->
-        <div class="card" style="margin-top:24px;padding:16px 20px;">
+        <!-- Won vs Lost Chart + Deal Forecast -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px;">
+        <div class="card" style="padding:16px 20px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
             <h3 style="margin:0;font-size:14px;">Gewonnen vs. Verloren</h3>
             <select class="form-input form-select" id="pipeline-period" style="width:140px;font-size:12px;" onchange="renderWonLostChart()">
@@ -136,6 +140,8 @@
             </select>
           </div>
           <div id="won-lost-chart" style="display:flex;align-items:end;gap:4px;height:120px;"></div>
+        </div>
+        <div class="card" style="padding:16px 20px;" id="deal-forecast-widget"></div>
         </div>
       </div>
 
@@ -644,6 +650,8 @@
 <script src="js/dashboard-components.js"></script>
 <script src="js/sales-customers.js"></script>
 <script src="js/availability.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/crm-enhancements.js"></script>
 <script src="js/global-search.js"></script>
 <script src="js/keyboard-shortcuts.js"></script>
 <script>
@@ -719,6 +727,9 @@ async function init() {
   // Realtime: auto-refresh leads when changed by others
   clanaDB.subscribeTable('leads', () => { loadLeads(); });
 
+  // Notification center
+  if (typeof NotificationCenter !== 'undefined') NotificationCenter.init(currentProfile);
+
   loadAllData();
 }
 
@@ -753,6 +764,12 @@ async function loadLeads() {
   renderPipeline();
   renderLeadsTable();
   updateLeadStats();
+
+  // CRM enhancements
+  if (typeof CRMEnhancements !== 'undefined') {
+    CRMEnhancements.renderFollowUpBanner(document.getElementById('followup-banner'), allLeads);
+    CRMEnhancements.renderForecastWidget(document.getElementById('deal-forecast-widget'), allLeads);
+  }
 }
 
 function renderPipeline() {
