@@ -61,6 +61,9 @@
         <h1>Vogelperspektive</h1>
         <p class="page-desc">Alle Kennzahlen auf einen Blick</p>
 
+        <!-- Quick Actions -->
+        <div id="admin-quick-actions"></div>
+
         <!-- Revenue KPIs -->
         <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px;">
           <div class="stat-card" style="border-color:var(--green);border-width:1.5px;">
@@ -121,6 +124,13 @@
             </tbody>
           </table>
         </div>
+
+        <!-- Enhanced Widgets -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px;">
+          <div class="card" style="padding:16px;" id="admin-health-overview"></div>
+          <div class="card" style="padding:16px;" id="admin-leaderboard"></div>
+        </div>
+        <div class="card" style="padding:16px;margin-top:16px;" id="admin-journey-funnel"></div>
       </div>
 
       <!-- ANALYTICS -->
@@ -180,6 +190,7 @@
           <h1>Benutzer verwalten</h1>
           <div style="display:flex;gap:12px;align-items:center;">
             <input type="text" class="search-input" id="user-search" placeholder="Benutzer suchen...">
+            <button class="btn btn-sm btn-outline" onclick="AdminOverview.exportUsersCSV()">📥 CSV</button>
             <button class="btn btn-sm" id="btn-add-user">+ Benutzer</button>
           </div>
         </div>
@@ -207,6 +218,7 @@
       <div class="page-section" id="tab-orgs">
         <div class="admin-header">
           <h1>Organisationen</h1>
+          <button class="btn btn-sm btn-outline" onclick="AdminOverview.exportOrgsCSV()">📥 CSV</button>
           <button class="btn btn-sm" id="btn-add-org">+ Organisation</button>
         </div>
         <div class="card" style="padding:0;overflow:hidden;">
@@ -419,6 +431,7 @@
 <script src="js/dashboard-components.js"></script>
 <script src="js/global-search.js"></script>
 <script src="js/admin-analytics.js"></script>
+<script src="js/admin-overview.js"></script>
 <script src="js/integrations-hub.js"></script>
 <script src="js/keyboard-shortcuts.js"></script>
 <script>
@@ -791,6 +804,29 @@ async function loadOverview() {
 
   // MRR Chart (estimated from customer registration dates)
   renderMrrChart(allUsers, allOrgs);
+
+  // Enhanced widgets
+  if (typeof AdminOverview !== 'undefined') {
+    AdminOverview.renderQuickActions(document.getElementById('admin-quick-actions'));
+    AdminOverview.renderKpiComparison(mrr, customers, allUsers);
+    AdminOverview.renderLeaderboard(document.getElementById('admin-leaderboard'), allUsers, allLeads);
+
+    // Customer health (needs calls data)
+    try {
+      const callsRes = await clanaDB.getCalls(5000);
+      AdminOverview.renderHealthOverview(document.getElementById('admin-health-overview'), customers, callsRes.data || []);
+    } catch (e) {
+      AdminOverview.renderHealthOverview(document.getElementById('admin-health-overview'), customers, []);
+    }
+
+    // Customer journey funnel (needs customers from DB)
+    let dbCustomers = [];
+    try {
+      const custRes = await clanaDB.getCustomers({});
+      dbCustomers = custRes.data || [];
+    } catch (e) {}
+    AdminOverview.renderCustomerFunnel(document.getElementById('admin-journey-funnel'), allLeads, dbCustomers);
+  }
 }
 
 function renderMrrChart(allUsers, allOrgs) {
@@ -1068,21 +1104,39 @@ async function createOrg() {
   const plan = document.getElementById('org-plan').value;
   if (!name) { Components.toast('Name ist erforderlich', 'error'); return; }
 
-  const maxUsers = plan === 'solo' ? 1 : plan === 'team' ? 5 : 999;
-  const result = await clanaDB.createOrganization({ name, plan, max_users: maxUsers, owner_id: currentProfile.id });
-  if (result.success) {
-    Components.toast('Organisation erstellt', 'success');
-    closeModal('modal-add-org');
-    document.getElementById('org-name').value = '';
-    loadOrgs();
-    loadSystemStats();
+  const btn = document.getElementById('btn-save-org');
+  const editId = btn?.dataset.editId;
+
+  if (editId) {
+    // Update existing org
+    const { error } = await supabaseClient.from('organizations').update({ name, plan }).eq('id', editId);
+    if (error) { Components.toast('Fehler: ' + error.message, 'error'); return; }
+    Components.toast('Organisation aktualisiert', 'success');
+    delete btn.dataset.editId;
+    btn.textContent = 'Erstellen';
   } else {
-    Components.toast('Fehler: ' + result.error, 'error');
+    // Create new org
+    const maxUsers = plan === 'solo' ? 1 : plan === 'team' ? 5 : 999;
+    const result = await clanaDB.createOrganization({ name, plan, max_users: maxUsers, owner_id: currentProfile.id });
+    if (!result.success) { Components.toast('Fehler: ' + result.error, 'error'); return; }
+    Components.toast('Organisation erstellt', 'success');
   }
+
+  closeModal('modal-add-org');
+  document.getElementById('org-name').value = '';
+  loadOrgs();
+  loadSystemStats();
 }
 
-function editOrg(orgId) {
-  Components.toast('Org-Bearbeitung wird implementiert', 'info');
+async function editOrg(orgId) {
+  const { data: org } = await supabaseClient.from('organizations').select('*').eq('id', orgId).single();
+  if (!org) { Components.toast('Organisation nicht gefunden', 'error'); return; }
+
+  document.getElementById('org-name').value = org.name || '';
+  document.getElementById('org-plan').value = org.plan || 'starter';
+  document.getElementById('btn-save-org').dataset.editId = orgId;
+  document.getElementById('btn-save-org').textContent = 'Speichern';
+  openModal('modal-add-org');
 }
 
 function openModal(id) { document.getElementById(id)?.classList.add('active'); }
