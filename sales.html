@@ -285,6 +285,22 @@
         <input type="tel" class="form-input" id="lead-phone" placeholder="+49 ...">
       </div>
     </div>
+    <div class="form-group">
+      <label class="form-label">Branche *</label>
+      <select class="form-input form-select" id="lead-industry">
+        <option value="">Auswählen...</option>
+        <option value="handwerk">Handwerk</option>
+        <option value="immobilien">Immobilien</option>
+        <option value="gesundheit">Gesundheit & Praxis</option>
+        <option value="recht">Rechtsanwälte & Kanzleien</option>
+        <option value="auto">Autohandel & Werkstatt</option>
+        <option value="gastronomie">Gastronomie & Hotel</option>
+        <option value="ecommerce">E-Commerce</option>
+        <option value="dienstleistung">Dienstleistung</option>
+        <option value="it">IT & Software</option>
+        <option value="sonstige">Sonstige</option>
+      </select>
+    </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
       <div class="form-group">
         <label class="form-label">Wert (EUR)</label>
@@ -629,21 +645,30 @@ async function saveLead() {
   const origText = saveBtn.textContent;
   saveBtn.textContent = '…';
 
-  const payload = {
-    company_name: company,
-    contact_name: document.getElementById('lead-contact').value.trim(),
-    email: email,
-    phone: document.getElementById('lead-phone').value.trim(),
-    value: Number(document.getElementById('lead-value').value) || 0,
-    source: document.getElementById('lead-source').value,
-  };
+  const industry = document.getElementById('lead-industry').value;
+  if (!industry) { Components.toast('Branche ist erforderlich', 'error'); return; }
+
+  const payload = { company_name: company, industry: industry };
+
+  const contact = document.getElementById('lead-contact').value.trim();
+  const phone = document.getElementById('lead-phone').value.trim();
+  const value = Number(document.getElementById('lead-value').value);
+  const source = document.getElementById('lead-source').value;
+
+  if (contact) payload.contact_name = contact;
+  if (email) payload.email = email;
+  if (phone) payload.phone = phone;
+  if (value > 0) payload.value = value;
+  if (source) payload.source = source;
 
   let result;
   if (editId) {
     result = await clanaDB.updateLead(editId, payload);
   } else {
-    payload.notes = document.getElementById('lead-notes').value.trim();
+    const notes = document.getElementById('lead-notes').value.trim();
+    if (notes) payload.notes = notes;
     payload.assigned_to = currentProfile.id;
+    payload.status = 'new';
     result = await clanaDB.createLead(payload);
   }
 
@@ -661,7 +686,7 @@ async function saveLead() {
 }
 
 function clearLeadForm() {
-  ['lead-company', 'lead-contact', 'lead-email', 'lead-phone', 'lead-value', 'lead-notes'].forEach(id => {
+  ['lead-company', 'lead-contact', 'lead-email', 'lead-phone', 'lead-value', 'lead-industry', 'lead-notes'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
