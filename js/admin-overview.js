@@ -73,6 +73,7 @@ const AdminOverview = {
         <button class="btn btn-sm btn-outline" onclick="AdminOverview.exportAllData()">📥 Daten exportieren</button>
         <button class="btn btn-sm btn-outline" onclick="AdminAnalytics.generateMonthlyInvoices()">🧾 Rechnungen generieren</button>
         <button class="btn btn-sm btn-outline" onclick="switchTab('analytics')">📊 Analytics öffnen</button>
+        <button class="btn btn-sm btn-outline" onclick="AdminPdfExport.generateMonthlyReport()">📄 PDF-Report</button>
       </div>
     `;
   },
