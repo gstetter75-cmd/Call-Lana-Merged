@@ -78,6 +78,31 @@ const Components = {
       toast.classList.remove('show');
       setTimeout(() => toast.remove(), 300);
     }, 3000);
+  },
+
+  async loadAnnouncements(role) {
+    try {
+      const { data } = await supabaseClient.from('announcements').select('*').eq('is_active', true).order('created_at', { ascending: false }).limit(3);
+      if (!data?.length) return;
+
+      const filtered = data.filter(a => !a.target_role || a.target_role === role);
+      if (!filtered.length) return;
+
+      const container = document.createElement('div');
+      container.id = 'announcements-bar';
+      container.style.cssText = 'position:fixed;top:0;left:var(--sidebar-w,240px);right:0;z-index:200;';
+
+      filtered.forEach(a => {
+        const colors = { info: '#3b82f6', warning: '#f59e0b', success: '#10b981', urgent: '#ef4444' };
+        const bg = colors[a.type] || colors.info;
+        const div = document.createElement('div');
+        div.style.cssText = `background:${bg};color:white;text-align:center;padding:8px 16px;font-size:12px;font-weight:600;font-family:Manrope,sans-serif;`;
+        div.innerHTML = `${a.title}: ${a.message} <button onclick="this.parentElement.remove()" style="background:rgba(255,255,255,.2);border:none;color:white;padding:2px 8px;border-radius:4px;cursor:pointer;margin-left:8px;font-size:11px;">×</button>`;
+        container.appendChild(div);
+      });
+
+      document.body.appendChild(container);
+    } catch (e) { /* table may not exist */ }
   }
 };
 

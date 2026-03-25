@@ -125,8 +125,14 @@
           </table>
         </div>
 
-        <!-- Enhanced Widgets -->
+        <!-- KPI Goals + Announcements -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px;">
+          <div class="card" style="padding:16px;" id="admin-goals"></div>
+          <div class="card" style="padding:16px;" id="admin-announcements"></div>
+        </div>
+
+        <!-- Health + Leaderboard -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
           <div class="card" style="padding:16px;" id="admin-health-overview"></div>
           <div class="card" style="padding:16px;" id="admin-leaderboard"></div>
         </div>
@@ -347,6 +353,12 @@
         </div>
       </div>
 
+      <!-- Activity Feed + Audit Log -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px;">
+        <div class="card" style="padding:16px;" id="admin-activity-feed"></div>
+        <div class="card" style="padding:16px;" id="admin-audit-log"></div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -432,6 +444,7 @@
 <script src="js/global-search.js"></script>
 <script src="js/admin-analytics.js"></script>
 <script src="js/admin-overview.js"></script>
+<script src="js/admin-audit.js"></script>
 <script src="js/integrations-hub.js"></script>
 <script src="js/keyboard-shortcuts.js"></script>
 <script>
@@ -497,6 +510,10 @@ function switchTab(tab) {
   document.getElementById('breadcrumb-page').textContent = tabLabels[tab] || tab;
   window.location.hash = tab;
 
+  if (tab === 'system' && typeof AdminAudit !== 'undefined') {
+    AdminAudit.initActivityFeed(document.getElementById('admin-activity-feed'));
+    AdminAudit.renderAuditLog(document.getElementById('admin-audit-log'));
+  }
   if (tab === 'integrations' && typeof IntegrationsHub !== 'undefined') {
     IntegrationsHub.renderStripeSettings(document.getElementById('int-stripe'));
     IntegrationsHub.renderCalendarSync(document.getElementById('int-calendar'));
@@ -827,6 +844,12 @@ async function loadOverview() {
     } catch (e) {}
     AdminOverview.renderCustomerFunnel(document.getElementById('admin-journey-funnel'), allLeads, dbCustomers);
   }
+
+  // Audit module: goals + announcements
+  if (typeof AdminAudit !== 'undefined') {
+    AdminAudit.renderGoals(document.getElementById('admin-goals'), mrr, customers.length);
+    AdminAudit.renderAnnouncements(document.getElementById('admin-announcements'));
+  }
 }
 
 function renderMrrChart(allUsers, allOrgs) {
@@ -1082,6 +1105,7 @@ async function saveUserRole() {
   const result = await clanaDB.updateProfile(editingUserId, { role, organization_id: orgId });
   if (result.success) {
     Components.toast('Rolle aktualisiert', 'success');
+    if (typeof AdminAudit !== 'undefined') AdminAudit.logAction('role_change', 'profile', editingUserId, null, { role });
     closeModal('modal-edit-role');
     loadUsers();
   } else {
@@ -1120,6 +1144,7 @@ async function createOrg() {
     const result = await clanaDB.createOrganization({ name, plan, max_users: maxUsers, owner_id: currentProfile.id });
     if (!result.success) { Components.toast('Fehler: ' + result.error, 'error'); return; }
     Components.toast('Organisation erstellt', 'success');
+    if (typeof AdminAudit !== 'undefined') AdminAudit.logAction('org_create', 'organization', null, null, { name, plan });
   }
 
   closeModal('modal-add-org');
