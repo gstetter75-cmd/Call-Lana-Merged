@@ -719,7 +719,7 @@ document.getElementById('logoutBtn').addEventListener('click', async () => {
   if (!confirm('Möchtest du dich wirklich abmelden?')) return;
   const result = await clanaAuth.signOut();
   if (result.success) {
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
   } else {
     showToast('Logout fehlgeschlagen: ' + result.error, true);
   }
