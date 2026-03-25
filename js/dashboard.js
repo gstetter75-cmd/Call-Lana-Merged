@@ -34,6 +34,16 @@ let currentConversationId = null;
     loadAssistants()
   ]);
 
+  // Onboarding checklist
+  if (typeof Onboarding !== 'undefined') Onboarding.init(currentUser?.id);
+
+  // Analytics: usage alerts, assistant performance, call heatmap
+  if (typeof DashboardAnalytics !== 'undefined') {
+    DashboardAnalytics.checkUsageAlerts();
+    DashboardAnalytics.loadAssistantPerformance();
+    DashboardAnalytics.loadCallHeatmap();
+  }
+
   // Team management
   document.getElementById('btnInviteMember')?.addEventListener('click', inviteTeamMember);
   document.getElementById('btnNewConversation')?.addEventListener('click', startNewConversation);

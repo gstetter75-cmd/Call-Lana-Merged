@@ -280,6 +280,9 @@ tr:hover td{background:rgba(124,58,237,.03);}
   <div class="content">
     <!-- ===================== HOME ===================== -->
     <div id="page-home" class="page-section active">
+      <!-- Usage Alert -->
+      <div id="usage-alert"></div>
+
       <!-- Onboarding Checklist -->
       <div id="onboarding-section" style="display:none;"></div>
 
@@ -339,6 +342,12 @@ tr:hover td{background:rgba(124,58,237,.03);}
         <h2>Assistenten</h2>
         <div class="assistants-grid" id="homeAssistants">
           <div class="loading-state"><div class="spinner"></div><p>Lade Assistenten…</p></div>
+        </div>
+
+        <!-- Assistant Performance + Call Heatmap -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px;">
+          <div class="card" id="assistant-performance" style="padding:16px;"></div>
+          <div class="card" id="call-heatmap" style="padding:16px;"></div>
         </div>
       </div>
     </div>
@@ -1175,6 +1184,7 @@ tr:hover td{background:rgba(124,58,237,.03);}
 <script src="js/dashboard-components.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/onboarding.js"></script>
+<script src="js/dashboard-analytics.js"></script>
 <script src="js/global-search.js"></script>
 <script src="js/keyboard-shortcuts.js"></script>
 <script>KeyboardShortcuts.init({});</script>
