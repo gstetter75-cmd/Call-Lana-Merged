@@ -139,11 +139,10 @@ const CRMEnhancements = {
     const status = document.getElementById('mass-status-select')?.value;
     if (!status) { Components.toast('Bitte Status wählen', 'error'); return; }
 
-    let updated = 0;
-    for (const id of this.selectedLeadIds) {
-      const result = await clanaDB.updateLead(id, { status });
-      if (result.success) updated++;
-    }
+    const results = await Promise.all(
+      [...this.selectedLeadIds].map(id => clanaDB.updateLead(id, { status }))
+    );
+    const updated = results.filter(r => r.success).length;
 
     Components.toast(`${updated} Lead(s) auf "${status}" gesetzt`, 'success');
     this.clearSelection();

@@ -770,6 +770,11 @@ async function loadLeads() {
     CRMEnhancements.renderFollowUpBanner(document.getElementById('followup-banner'), allLeads);
     CRMEnhancements.renderForecastWidget(document.getElementById('deal-forecast-widget'), allLeads);
   }
+
+  // Feed follow-up reminders with already-loaded leads (no extra DB call)
+  if (typeof NotificationCenter !== 'undefined') {
+    NotificationCenter.checkFollowUpReminders(allLeads);
+  }
 }
 
 function renderPipeline() {

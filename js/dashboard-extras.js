@@ -51,13 +51,15 @@ const DashboardExtras = {
       return;
     }
 
+    const sanitize = typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeHtml : (s => s);
+
     container.innerHTML = results.map(r => {
       const excerpt = this.highlightMatch(r.transcript || '', query);
       return `
         <div style="padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;cursor:pointer;transition:background .15s;" onmouseenter="this.style.background='var(--bg3)'" onmouseleave="this.style.background=''">
           <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;">
-            <span style="color:var(--tx3);">${r.phone_number || '—'}</span>
-            <span style="color:var(--tx3);">${new Date(r.created_at).toLocaleDateString('de-DE')}</span>
+            <span style="color:var(--tx3);">${sanitize(r.phone_number || '—')}</span>
+            <span style="color:var(--tx3);">${typeof clanaUtils !== 'undefined' ? clanaUtils.formatDate(r.created_at) : new Date(r.created_at).toLocaleDateString('de-DE')}</span>
           </div>
           <div style="font-size:12px;line-height:1.4;">${excerpt}</div>
         </div>
@@ -66,36 +68,45 @@ const DashboardExtras = {
   },
 
   highlightMatch(text, query) {
+    const sanitize = typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeHtml : (s => s);
     const maxLen = 200;
     const lower = text.toLowerCase();
     const idx = lower.indexOf(query.toLowerCase());
-    if (idx === -1) return text.slice(0, maxLen);
+    if (idx === -1) return sanitize(text.slice(0, maxLen));
 
     const start = Math.max(0, idx - 60);
     const end = Math.min(text.length, idx + query.length + 60);
-    let excerpt = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
 
-    // Highlight
-    const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-    excerpt = excerpt.replace(re, '<mark style="background:#7c3aed33;color:var(--pu);border-radius:2px;padding:0 2px;">$1</mark>');
-    return excerpt;
+    // Sanitize first, then highlight
+    const before = sanitize(text.slice(start, idx));
+    const match = sanitize(text.slice(idx, idx + query.length));
+    const after = sanitize(text.slice(idx + query.length, end));
+
+    return (start > 0 ? '…' : '') + before +
+      '<mark style="background:#7c3aed33;color:var(--pu);border-radius:2px;padding:0 2px;">' + match + '</mark>' +
+      after + (end < text.length ? '…' : '');
   },
 
   // ==========================================
-  // ASSISTANT FAVORITES / PINNING
+  // ASSISTANT FAVORITES (with in-memory cache)
   // ==========================================
 
+  _favorites: null,
+
   getFavorites() {
-    try { return JSON.parse(localStorage.getItem('calllana_fav_assistants') || '[]'); }
-    catch { return []; }
+    if (this._favorites) return this._favorites;
+    try { this._favorites = JSON.parse(localStorage.getItem('calllana_fav_assistants') || '[]'); }
+    catch { this._favorites = []; }
+    return this._favorites;
   },
 
   toggleFavorite(assistantId) {
     const favs = this.getFavorites();
     const idx = favs.indexOf(assistantId);
-    if (idx >= 0) favs.splice(idx, 1);
-    else favs.unshift(assistantId);
-    localStorage.setItem('calllana_fav_assistants', JSON.stringify(favs));
+    this._favorites = idx >= 0
+      ? favs.filter((_, i) => i !== idx)
+      : [assistantId, ...favs];
+    localStorage.setItem('calllana_fav_assistants', JSON.stringify(this._favorites));
     return idx < 0;
   },
 
@@ -107,26 +118,16 @@ const DashboardExtras = {
   // HELP TOOLTIPS
   // ==========================================
 
-  tooltips: {
-    'page-home': 'Übersicht über alle deine Anrufe, Guthaben und Assistenten.',
-    'page-assistants': 'Erstelle und verwalte deine KI-Telefon-Assistenten.',
-    'page-transactions': 'Alle ein- und ausgehenden Anrufe mit Details.',
-    'page-billing': 'Dein Guthaben und Rechnungen verwalten.',
-    'page-knowledge': 'Lade Dokumente hoch als Wissensbasis für deine Assistenten.'
-  },
-
   initHelpTooltips() {
-    // Show tooltip on first visit
-    const seen = localStorage.getItem('calllana_tooltips_seen');
-    if (seen) return;
+    if (localStorage.getItem('calllana_tooltips_seen')) return;
 
     setTimeout(() => {
       const tip = document.createElement('div');
       tip.id = 'help-tooltip';
       tip.style.cssText = 'position:fixed;bottom:20px;right:20px;background:var(--pu);color:white;padding:14px 18px;border-radius:12px;font-size:12px;max-width:280px;z-index:250;box-shadow:0 8px 24px rgba(124,58,237,.4);';
       tip.innerHTML = `
-        <div style="font-weight:700;margin-bottom:6px;">💡 Tipp</div>
-        <div>Drücke <kbd style="background:rgba(255,255,255,.2);border-radius:3px;padding:1px 6px;">/</kbd> für die Suche oder <kbd style="background:rgba(255,255,255,.2);border-radius:3px;padding:1px 6px;">?</kbd> für Keyboard Shortcuts.</div>
+        <div style="font-weight:700;margin-bottom:6px;">Tipp</div>
+        <div>Drücke <kbd style="background:rgba(255,255,255,.2);border-radius:3px;padding:1px 6px;">/</kbd> für die Suche oder <kbd style="background:rgba(255,255,255,.2);border-radius:3px;padding:1px 6px;">?</kbd> für Shortcuts.</div>
         <button onclick="this.parentElement.remove();localStorage.setItem('calllana_tooltips_seen','1')" style="background:rgba(255,255,255,.2);border:none;color:white;padding:4px 12px;border-radius:6px;cursor:pointer;margin-top:8px;font-size:11px;">Verstanden</button>
       `;
       document.body.appendChild(tip);
@@ -134,17 +135,19 @@ const DashboardExtras = {
   },
 
   // ==========================================
-  // USER ACTIVITY LOG (recent actions)
+  // USER ACTIVITY LOG (debounced localStorage)
   // ==========================================
 
   actions: [],
+  _saveTimer: null,
 
   logAction(action) {
-    this.actions.unshift({ text: action, time: new Date() });
-    if (this.actions.length > 20) this.actions.pop();
-    try {
-      localStorage.setItem('calllana_recent_actions', JSON.stringify(this.actions.slice(0, 10)));
-    } catch (e) {}
+    this.actions = [{ text: action, time: new Date() }, ...this.actions].slice(0, 20);
+    clearTimeout(this._saveTimer);
+    this._saveTimer = setTimeout(() => {
+      try { localStorage.setItem('calllana_recent_actions', JSON.stringify(this.actions.slice(0, 10))); }
+      catch (e) {}
+    }, 500);
   },
 
   loadRecentActions() {
@@ -162,7 +165,7 @@ const DashboardExtras = {
       <div style="font-size:13px;font-weight:600;margin-bottom:8px;">Deine letzten Aktionen</div>
       ${this.actions.length ? this.actions.slice(0, 8).map(a => `
         <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:11px;border-bottom:1px solid var(--border);">
-          <span>${a.text}</span>
+          <span>${typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeHtml(a.text) : a.text}</span>
           <span style="color:var(--tx3);">${new Date(a.time).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</span>
         </div>
       `).join('') : '<div style="color:var(--tx3);font-size:11px;">Noch keine Aktionen.</div>'}

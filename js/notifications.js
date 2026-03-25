@@ -1,21 +1,22 @@
 // ==========================================
 // In-App Notification Center
-// Bell icon in topbar with dropdown, unread count
 // ==========================================
 
 const NotificationCenter = {
   notifications: [],
-  unreadCount: 0,
   isOpen: false,
+  _clickHandler: null,
 
   init(profile) {
     this.profile = profile;
     this.injectBell();
     this.loadNotifications();
-    this.checkFollowUpReminders();
   },
 
   injectBell() {
+    // Clean up previous listener
+    if (this._clickHandler) document.removeEventListener('click', this._clickHandler);
+
     const topbar = document.querySelector('.topbar');
     if (!topbar || document.getElementById('notif-bell')) return;
 
@@ -40,10 +41,10 @@ const NotificationCenter = {
     if (breadcrumb) breadcrumb.parentElement.insertBefore(wrapper, breadcrumb.nextSibling);
     else topbar.appendChild(wrapper);
 
-    // Close on outside click
-    document.addEventListener('click', (e) => {
+    this._clickHandler = (e) => {
       if (this.isOpen && !wrapper.contains(e.target)) this.close();
-    });
+    };
+    document.addEventListener('click', this._clickHandler);
   },
 
   toggle() {
@@ -64,13 +65,13 @@ const NotificationCenter = {
   updateBadge() {
     const badge = document.getElementById('notif-badge');
     if (!badge) return;
-    this.unreadCount = this.notifications.filter(n => !n.read).length;
-    badge.textContent = this.unreadCount;
-    badge.style.display = this.unreadCount > 0 ? 'block' : 'none';
+    const count = this.notifications.filter(n => !n.read).length;
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'block' : 'none';
   },
 
   addNotification(title, message, type = 'info', action = null) {
-    this.notifications.unshift({
+    this.notifications = [{
       id: Date.now(),
       title,
       message,
@@ -78,14 +79,13 @@ const NotificationCenter = {
       action,
       read: false,
       time: new Date()
-    });
-    if (this.notifications.length > 50) this.notifications.pop();
+    }, ...this.notifications].slice(0, 50);
     this.updateBadge();
     if (this.isOpen) this.renderList();
   },
 
   markAllRead() {
-    this.notifications.forEach(n => n.read = true);
+    this.notifications = this.notifications.map(n => ({ ...n, read: true }));
     this.updateBadge();
     this.renderList();
   },
@@ -100,14 +100,15 @@ const NotificationCenter = {
     }
 
     const typeIcons = { info: 'ℹ️', success: '✅', warning: '⚠️', error: '🚨', lead: '🎯', call: '📞', task: '✅', reminder: '⏰' };
+    const sanitize = typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeHtml : (s => s);
 
     list.innerHTML = this.notifications.slice(0, 20).map(n => `
       <div style="padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer;background:${n.read ? 'transparent' : 'var(--bg3)'};transition:background .15s;" onmouseenter="this.style.background='var(--bg3)'" onmouseleave="this.style.background='${n.read ? 'transparent' : 'var(--bg3)'}';" onclick="NotificationCenter.handleClick(${n.id})">
         <div style="display:flex;gap:8px;align-items:flex-start;">
           <span style="font-size:16px;margin-top:1px;">${typeIcons[n.type] || 'ℹ️'}</span>
           <div style="flex:1;min-width:0;">
-            <div style="font-size:12px;font-weight:${n.read ? '400' : '700'};">${n.title}</div>
-            <div style="font-size:11px;color:var(--tx3);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${n.message}</div>
+            <div style="font-size:12px;font-weight:${n.read ? '400' : '700'};">${sanitize(n.title)}</div>
+            <div style="font-size:11px;color:var(--tx3);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${sanitize(n.message)}</div>
           </div>
           <span style="font-size:10px;color:var(--tx3);white-space:nowrap;">${this.timeAgo(n.time)}</span>
         </div>
@@ -118,7 +119,7 @@ const NotificationCenter = {
   handleClick(id) {
     const n = this.notifications.find(x => x.id === id);
     if (!n) return;
-    n.read = true;
+    this.notifications = this.notifications.map(x => x.id === id ? { ...x, read: true } : x);
     this.updateBadge();
     if (n.action && typeof n.action === 'function') n.action();
     this.renderList();
@@ -132,48 +133,32 @@ const NotificationCenter = {
     return Math.floor(secs / 86400) + ' Tage';
   },
 
-  // ==========================================
-  // FOLLOW-UP REMINDERS
-  // ==========================================
+  // Accept leads from caller instead of making own DB call
+  checkFollowUpReminders(leads) {
+    if (!leads) return;
+    const now = Date.now();
 
-  async checkFollowUpReminders() {
-    try {
-      const result = await clanaDB.getLeads();
-      if (!result.success) return;
-      const leads = result.data || [];
-      const now = Date.now();
-      const sevenDays = 7 * 86400000;
+    leads.forEach(l => {
+      if (['won', 'lost'].includes(l.status)) return;
+      const lastUpdate = new Date(l.updated_at || l.created_at).getTime();
+      const daysSince = Math.floor((now - lastUpdate) / 86400000);
 
-      leads.forEach(l => {
-        if (['won', 'lost'].includes(l.status)) return;
-        const lastUpdate = new Date(l.updated_at || l.created_at).getTime();
-        const daysSince = Math.floor((now - lastUpdate) / 86400000);
-
-        if (daysSince >= 14) {
-          this.addNotification(
-            'Lead vergessen?',
-            `${l.company_name} — seit ${daysSince} Tagen kein Kontakt`,
-            'warning'
-          );
-        } else if (daysSince >= 7) {
-          this.addNotification(
-            'Follow-up fällig',
-            `${l.company_name} — seit ${daysSince} Tagen kein Update`,
-            'reminder'
-          );
-        }
-      });
-    } catch (e) { /* silently fail */ }
+      if (daysSince >= 14) {
+        this.addNotification('Lead vergessen?', `${l.company_name} — seit ${daysSince} Tagen kein Kontakt`, 'warning');
+      } else if (daysSince >= 7) {
+        this.addNotification('Follow-up fällig', `${l.company_name} — seit ${daysSince} Tagen kein Update`, 'reminder');
+      }
+    });
   },
 
   async loadNotifications() {
-    // Load announcements as notifications
     try {
       const { data } = await supabaseClient.from('announcements').select('*').eq('is_active', true).order('created_at', { ascending: false }).limit(5);
+      const sanitize = typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeHtml : (s => s);
       (data || []).forEach(a => {
         const role = this.profile?.role;
         if (!a.target_role || a.target_role === role) {
-          this.addNotification(a.title, a.message, a.type || 'info');
+          this.addNotification(sanitize(a.title), sanitize(a.message), a.type || 'info');
         }
       });
     } catch (e) { /* table may not exist */ }
