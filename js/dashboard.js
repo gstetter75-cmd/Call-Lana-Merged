@@ -457,7 +457,7 @@ async function loadPlan() {
   document.getElementById('planBadge').textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
   document.getElementById('planName').textContent = p.name;
   document.getElementById('planDesc').textContent = p.desc;
-  document.getElementById('planFeatures').innerHTML = p.features.map(f => '<li>' + f + '</li>').join('');
+  document.getElementById('planFeatures').innerHTML = p.features.map(f => '<li>' + escHtml(f) + '</li>').join('');
 }
 
 // ==========================================

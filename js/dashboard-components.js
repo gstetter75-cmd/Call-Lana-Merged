@@ -89,7 +89,13 @@ const Components = {
     if (banner) return;
     banner = document.createElement('div');
     banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:300;background:var(--red,#dc2626);color:white;text-align:center;padding:10px 16px;font-size:13px;font-weight:600;font-family:Manrope,sans-serif;';
-    banner.innerHTML = msg + ' <button onclick="this.parentElement.remove();window.__errorBanner=null;" style="background:rgba(255,255,255,.2);border:none;color:white;padding:4px 12px;border-radius:6px;cursor:pointer;margin-left:12px;font-family:inherit;">Schließen</button>';
+    const textNode = document.createTextNode(msg + ' ');
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'Schließen';
+    closeBtn.style.cssText = 'background:rgba(255,255,255,.2);border:none;color:white;padding:4px 12px;border-radius:6px;cursor:pointer;margin-left:12px;font-family:inherit;';
+    closeBtn.onclick = () => { banner.remove(); banner = null; window.__errorBanner = null; };
+    banner.appendChild(textNode);
+    banner.appendChild(closeBtn);
     document.body.prepend(banner);
     window.__errorBanner = banner;
   }
