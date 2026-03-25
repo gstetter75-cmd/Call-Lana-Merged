@@ -82,6 +82,7 @@
         <button class="tab-btn" data-tab="leads">Leads</button>
         <button class="tab-btn" data-tab="tasks">Aufgaben</button>
         <button class="tab-btn" data-tab="availability">Verfügbarkeit</button>
+        <button class="tab-btn" data-tab="commission">Provisionen</button>
       </div>
 
       <!-- PIPELINE -->
@@ -175,6 +176,75 @@
           <button class="btn btn-sm" id="btn-set-avail">+ Eintrag</button>
         </div>
         <div class="availability-grid" id="avail-grid"></div>
+      </div>
+
+      <!-- COMMISSION / PROVISIONEN -->
+      <div class="page-section" id="tab-commission">
+        <div class="pipeline-header">
+          <h1>Meine Provisionen</h1>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:12px;color:var(--tx3);">5% vom Netto-Monatsumsatz aktiver Kunden</span>
+          </div>
+        </div>
+
+        <!-- Commission Stats -->
+        <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px;">
+          <div class="stat-card" style="border-color:var(--green);border-width:1.5px;">
+            <div class="stat-icon green"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 18L10 4l8 14"/></svg></div>
+            <div class="stat-label">Provision diesen Monat</div>
+            <div class="stat-value" id="comm-monthly" style="color:var(--green);">0 €</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="8"/><path d="M7 10h6M10 7v6"/></svg></div>
+            <div class="stat-label">Aktive Kunden</div>
+            <div class="stat-value" id="comm-customers">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon cyan"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M7 10h6"/></svg></div>
+            <div class="stat-label">Kunden-Umsatz (netto)</div>
+            <div class="stat-value" id="comm-revenue">0 €</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v16M6 6l4-4 4 4M6 14l4 4 4-4"/></svg></div>
+            <div class="stat-label">Provision Vormonat</div>
+            <div class="stat-value" id="comm-last-month">0 €</div>
+          </div>
+        </div>
+
+        <!-- Commission Breakdown -->
+        <h2 style="margin-bottom:16px;">Kunden-Übersicht</h2>
+        <div class="card" style="padding:0;overflow:hidden;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Kunde</th>
+                <th>Plan</th>
+                <th>Monatl. Netto</th>
+                <th>Meine Provision (5%)</th>
+                <th>Status</th>
+                <th>Kunde seit</th>
+              </tr>
+            </thead>
+            <tbody id="comm-tbody">
+              <tr><td colspan="6" style="text-align:center;color:var(--tx3);padding:40px;">Laden...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Info Box -->
+        <div class="card" style="margin-top:24px;background:rgba(74,222,128,.05);border-color:rgba(74,222,128,.2);">
+          <div style="display:flex;align-items:flex-start;gap:12px;">
+            <svg width="20" height="20" fill="none" stroke="var(--green)" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><circle cx="10" cy="10" r="8"/><path d="M10 7v3M10 13h.01"/></svg>
+            <div>
+              <strong style="font-size:13px;">So funktioniert die Provision</strong>
+              <p style="font-size:12px;color:var(--tx2);margin-top:4px;line-height:1.6;">
+                Du erhältst 5% des Netto-Monatsumsatzes jedes Kunden, den du vermittelt hast.
+                Die Provision wird monatlich ausbezahlt, solange der Kunde einen aktiven Plan bei Call Lana hat.
+                Bei Plan-Wechsel wird die neue Rate ab dem Folgemonat berechnet.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -383,9 +453,10 @@ function switchTab(tab) {
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
   const section = document.getElementById('tab-' + tab);
   if (section) section.classList.add('active');
-  const labels = { pipeline: 'Pipeline', leads: 'Leads', tasks: 'Aufgaben', availability: 'Verfügbarkeit' };
+  const labels = { pipeline: 'Pipeline', leads: 'Leads', tasks: 'Aufgaben', availability: 'Verfügbarkeit', commission: 'Provisionen' };
   document.getElementById('breadcrumb-page').textContent = labels[tab] || tab;
   window.location.hash = tab;
+  if (tab === 'commission') loadCommissions();
 }
 
 async function loadAllData() {
@@ -769,6 +840,111 @@ async function saveAvailability() {
   } else {
     Components.toast('Fehler: ' + result.error, 'error');
   }
+}
+
+// ---- COMMISSIONS ----
+
+const PLAN_PRICES = {
+  starter: 149,
+  professional: 299,
+  business: 599
+};
+const COMMISSION_RATE = 0.05;
+
+async function loadCommissions() {
+  const tbody = document.getElementById('comm-tbody');
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--tx3);padding:40px;">Laden...</td></tr>';
+
+  // Get won leads (customers acquired by this sales person)
+  const wonLeads = allLeads.filter(l => l.status === 'won');
+
+  // Try to load customer profiles for these leads
+  let customers = [];
+  for (const lead of wonLeads) {
+    // Match lead to a customer profile by email
+    if (lead.email) {
+      const { data } = await supabaseClient
+        .from('profiles')
+        .select('*, organizations(name, plan)')
+        .eq('email', lead.email)
+        .eq('role', 'customer')
+        .maybeSingle();
+      if (data) {
+        customers.push({ ...data, lead });
+      } else {
+        // No profile yet — show lead as pending customer
+        customers.push({
+          email: lead.email,
+          first_name: lead.contact_name?.split(' ')[0] || lead.company_name,
+          last_name: lead.contact_name?.split(' ').slice(1).join(' ') || '',
+          company: lead.company_name,
+          organizations: { name: lead.company_name, plan: guessPlanFromValue(lead.value) },
+          is_active: true,
+          created_at: lead.created_at,
+          lead
+        });
+      }
+    }
+  }
+
+  // Calculate commissions
+  let totalRevenue = 0;
+  let totalCommission = 0;
+  let activeCount = 0;
+
+  const rows = customers.map(c => {
+    const plan = c.organizations?.plan || 'starter';
+    const planKey = plan.toLowerCase();
+    const monthlyNetto = PLAN_PRICES[planKey] || estimateFromLeadValue(c.lead?.value);
+    const commission = Math.round(monthlyNetto * COMMISSION_RATE * 100) / 100;
+    const isActive = c.is_active !== false;
+
+    if (isActive) {
+      totalRevenue += monthlyNetto;
+      totalCommission += commission;
+      activeCount++;
+    }
+
+    const name = `${c.first_name || ''} ${c.last_name || ''}`.trim() || c.email || '—';
+    const planLabel = planKey.charAt(0).toUpperCase() + planKey.slice(1);
+
+    return `
+      <tr>
+        <td><strong>${clanaUtils.sanitizeHtml(name)}</strong><br><span style="font-size:11px;color:var(--tx3);">${clanaUtils.sanitizeHtml(c.company || c.organizations?.name || '')}</span></td>
+        <td><span class="badge badge-purple">${planLabel}</span></td>
+        <td>${monthlyNetto.toLocaleString('de-DE')} €</td>
+        <td style="color:var(--green);font-weight:700;">${commission.toLocaleString('de-DE', {minimumFractionDigits: 2})} €</td>
+        <td><span class="badge ${isActive ? 'badge-green' : 'badge-red'}">${isActive ? 'Aktiv' : 'Inaktiv'}</span></td>
+        <td>${clanaUtils.formatDate(c.created_at)}</td>
+      </tr>
+    `;
+  });
+
+  // Update stats
+  document.getElementById('comm-monthly').textContent = totalCommission.toLocaleString('de-DE', {minimumFractionDigits: 2}) + ' €';
+  document.getElementById('comm-customers').textContent = activeCount;
+  document.getElementById('comm-revenue').textContent = totalRevenue.toLocaleString('de-DE') + ' €';
+  document.getElementById('comm-last-month').textContent = totalCommission.toLocaleString('de-DE', {minimumFractionDigits: 2}) + ' €';
+
+  if (rows.length) {
+    tbody.innerHTML = rows.join('');
+  } else {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--tx3);padding:40px;">Noch keine gewonnenen Kunden. Gewinne Leads um Provisionen zu verdienen!</td></tr>';
+  }
+}
+
+function guessPlanFromValue(value) {
+  if (!value) return 'starter';
+  if (value >= 500) return 'business';
+  if (value >= 250) return 'professional';
+  return 'starter';
+}
+
+function estimateFromLeadValue(value) {
+  if (!value) return PLAN_PRICES.starter;
+  if (value >= 500) return PLAN_PRICES.business;
+  if (value >= 250) return PLAN_PRICES.professional;
+  return PLAN_PRICES.starter;
 }
 
 function openModal(id) { document.getElementById(id)?.classList.add('active'); }

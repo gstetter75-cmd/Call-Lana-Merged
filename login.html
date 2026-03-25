@@ -195,12 +195,17 @@
   <script src="js/logger.js"></script>
   <script src="js/supabase-init.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/auth-guard.js"></script>
   <script src="js/components.js"></script>
   <script>
-    // Redirect if already logged in (server-validated)
-    clanaAuth.getUser().then(user => {
-      if (user) window.location.href = 'dashboard.html';
-    });
+    // Redirect if already logged in (server-validated, role-based)
+    (async () => {
+      const user = await clanaAuth.getUser();
+      if (user) {
+        const profile = await AuthGuard.getProfile();
+        window.location.href = AuthGuard.getHomeUrl(profile);
+      }
+    })();
 
     // Error message mapping
     const loginErrors = {
@@ -229,7 +234,9 @@
         btn.disabled = false;
         btn.innerHTML = '<span class="lang-de">Zum Dashboard &rarr;</span><span class="lang-en hidden">Go to Dashboard &rarr;</span>';
       } else {
-        window.location.href = 'dashboard.html';
+        // Role-based redirect after login
+        const profile = await AuthGuard.getProfile();
+        window.location.href = AuthGuard.getHomeUrl(profile);
       }
     }
 

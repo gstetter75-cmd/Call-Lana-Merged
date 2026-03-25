@@ -44,13 +44,98 @@
 
       <!-- TAB BAR -->
       <div class="tab-bar">
-        <button class="tab-btn active" data-tab="users">Benutzer</button>
+        <button class="tab-btn active" data-tab="overview">Übersicht</button>
+        <button class="tab-btn" data-tab="customers">Kunden</button>
+        <button class="tab-btn" data-tab="users">Benutzer</button>
         <button class="tab-btn" data-tab="orgs">Organisationen</button>
         <button class="tab-btn" data-tab="system">System</button>
       </div>
 
+      <!-- OVERVIEW TAB (Vogelperspektive) -->
+      <div class="page-section active" id="tab-overview">
+        <h1>Vogelperspektive</h1>
+        <p class="page-desc">Alle Kennzahlen auf einen Blick</p>
+
+        <!-- Revenue KPIs -->
+        <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px;">
+          <div class="stat-card" style="border-color:var(--green);border-width:1.5px;">
+            <div class="stat-icon green"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 18L10 4l8 14"/></svg></div>
+            <div class="stat-label">MRR (Monatsumsatz)</div>
+            <div class="stat-value" id="ov-mrr" style="color:var(--green);">0 €</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="8"/></svg></div>
+            <div class="stat-label">Aktive Kunden</div>
+            <div class="stat-value" id="ov-active-customers">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon cyan"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10l4 4 8-8"/></svg></div>
+            <div class="stat-label">ARR (Jahresumsatz)</div>
+            <div class="stat-value" id="ov-arr">0 €</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="3"/><path d="M10 2v3M10 15v3M2 10h3M15 10h3"/></svg></div>
+            <div class="stat-label">Ø Umsatz/Kunde</div>
+            <div class="stat-value" id="ov-arpu">0 €</div>
+          </div>
+        </div>
+
+        <!-- Plan Distribution & Sales Performance -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+          <div class="card">
+            <h2 style="margin-bottom:16px;">Umsatz nach Plan</h2>
+            <div id="ov-plan-breakdown" style="display:flex;flex-direction:column;gap:12px;"></div>
+          </div>
+          <div class="card">
+            <h2 style="margin-bottom:16px;">Top Vertriebler</h2>
+            <div id="ov-top-sales" style="display:flex;flex-direction:column;gap:12px;"></div>
+          </div>
+        </div>
+
+        <!-- Recent Customers -->
+        <h2 style="margin-bottom:16px;">Neueste Kunden</h2>
+        <div class="card" style="padding:0;overflow:hidden;">
+          <table class="data-table">
+            <thead>
+              <tr><th>Kunde</th><th>E-Mail</th><th>Plan</th><th>Monatl. Umsatz</th><th>Vertriebler</th><th>Seit</th><th>Aktionen</th></tr>
+            </thead>
+            <tbody id="ov-recent-tbody">
+              <tr><td colspan="7" style="text-align:center;color:var(--tx3);padding:40px;">Laden...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CUSTOMERS TAB (Einzelkunden-Zugriff) -->
+      <div class="page-section" id="tab-customers">
+        <div class="admin-header">
+          <h1>Alle Kunden</h1>
+          <input type="text" class="search-input" id="customer-search" placeholder="Kunden suchen...">
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>E-Mail</th>
+                <th>Unternehmen</th>
+                <th>Plan</th>
+                <th>Monatl. Netto</th>
+                <th>Branche</th>
+                <th>Status</th>
+                <th>Registriert</th>
+                <th>Aktionen</th>
+              </tr>
+            </thead>
+            <tbody id="customers-tbody">
+              <tr><td colspan="9" style="text-align:center;color:var(--tx3);padding:40px;">Laden...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <!-- USERS TAB -->
-      <div class="page-section active" id="tab-users">
+      <div class="page-section" id="tab-users">
         <div class="admin-header">
           <h1>Benutzer verwalten</h1>
           <div style="display:flex;gap:12px;align-items:center;">
@@ -233,6 +318,19 @@
   </div>
 </div>
 
+<!-- Customer Detail Modal -->
+<div class="modal-overlay" id="modal-customer-detail">
+  <div class="modal" style="max-width:600px;">
+    <div class="modal-header">
+      <h3 class="modal-title">Kundendetails</h3>
+      <button class="modal-close" onclick="closeModal('modal-customer-detail')">&times;</button>
+    </div>
+    <div id="customer-detail-content">
+      <div style="text-align:center;color:var(--tx3);padding:40px;">Laden...</div>
+    </div>
+  </div>
+</div>
+
 <!-- Add Org Modal -->
 <div class="modal-overlay" id="modal-add-org">
   <div class="modal">
@@ -287,12 +385,14 @@ async function init() {
   });
 
   // Handle hash navigation
-  const hash = window.location.hash.replace('#', '') || 'users';
+  const hash = window.location.hash.replace('#', '') || 'overview';
   switchTab(hash);
 
+  loadOverview();
   loadUsers();
   loadOrgs();
   loadSystemStats();
+  loadCustomers();
 
   // Search
   document.getElementById('user-search')?.addEventListener('input', (e) => {
@@ -314,8 +414,8 @@ function switchTab(tab) {
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
   const section = document.getElementById('tab-' + tab);
   if (section) section.classList.add('active');
-  document.getElementById('breadcrumb-page').textContent =
-    tab === 'users' ? 'Benutzer' : tab === 'orgs' ? 'Organisationen' : 'System';
+  const tabLabels = { overview: 'Übersicht', customers: 'Kunden', users: 'Benutzer', orgs: 'Organisationen', system: 'System' };
+  document.getElementById('breadcrumb-page').textContent = tabLabels[tab] || tab;
   window.location.hash = tab;
 }
 
@@ -454,6 +554,231 @@ async function loadSystemStats() {
   } else {
     tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--tx3);padding:20px;">Keine Aktivität in den letzten 7 Tagen</td></tr>';
   }
+}
+
+// ---- OVERVIEW (Vogelperspektive) ----
+
+const PLAN_PRICES = { starter: 149, professional: 299, business: 599, solo: 149, team: 299 };
+
+async function loadOverview() {
+  const [usersResult, orgsResult, leadsResult] = await Promise.all([
+    clanaDB.getAllProfiles(),
+    clanaDB.getOrganizations(),
+    clanaDB.getLeads()
+  ]);
+
+  const allUsers = usersResult.data || [];
+  const allOrgs = orgsResult.data || [];
+  const allLeads = leadsResult.data || [];
+  const customers = allUsers.filter(u => u.role === 'customer' && u.is_active !== false);
+
+  // Calculate MRR from organizations
+  let mrr = 0;
+  const planCounts = { starter: 0, professional: 0, business: 0 };
+
+  allOrgs.filter(o => o.is_active !== false).forEach(o => {
+    const plan = (o.plan || 'solo').toLowerCase();
+    const price = PLAN_PRICES[plan] || 149;
+    mrr += price;
+    const normalized = plan === 'solo' ? 'starter' : plan === 'team' ? 'professional' : plan;
+    if (planCounts[normalized] !== undefined) planCounts[normalized]++;
+  });
+
+  // If no orgs, estimate from customer count
+  if (mrr === 0 && customers.length > 0) {
+    mrr = customers.length * PLAN_PRICES.starter;
+    planCounts.starter = customers.length;
+  }
+
+  const arr = mrr * 12;
+  const arpu = customers.length ? Math.round(mrr / customers.length) : 0;
+
+  document.getElementById('ov-mrr').textContent = mrr.toLocaleString('de-DE') + ' €';
+  document.getElementById('ov-active-customers').textContent = customers.length;
+  document.getElementById('ov-arr').textContent = arr.toLocaleString('de-DE') + ' €';
+  document.getElementById('ov-arpu').textContent = arpu.toLocaleString('de-DE') + ' €';
+
+  // Plan breakdown
+  const planBreakdown = document.getElementById('ov-plan-breakdown');
+  const totalPlanCustomers = Object.values(planCounts).reduce((a, b) => a + b, 0) || 1;
+  planBreakdown.innerHTML = [
+    { label: 'Starter (149 €)', count: planCounts.starter, color: 'var(--cyan)', revenue: planCounts.starter * 149 },
+    { label: 'Professional (299 €)', count: planCounts.professional, color: 'var(--pu3)', revenue: planCounts.professional * 299 },
+    { label: 'Business (599 €)', count: planCounts.business, color: 'var(--green)', revenue: planCounts.business * 599 },
+  ].map(p => `
+    <div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+        <span style="color:var(--tx2);">${p.label}</span>
+        <span style="font-weight:700;">${p.count} Kunden · ${p.revenue.toLocaleString('de-DE')} €/M</span>
+      </div>
+      <div style="height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;">
+        <div style="height:100%;width:${Math.round((p.count / totalPlanCustomers) * 100)}%;background:${p.color};border-radius:3px;transition:width .3s;"></div>
+      </div>
+    </div>
+  `).join('');
+
+  // Top sales
+  const salesUsers = allUsers.filter(u => u.role === 'sales');
+  const topSalesEl = document.getElementById('ov-top-sales');
+  if (salesUsers.length) {
+    const salesWithLeads = salesUsers.map(s => {
+      const wonLeads = allLeads.filter(l => l.assigned_to === s.id && l.status === 'won');
+      const pipelineValue = allLeads.filter(l => l.assigned_to === s.id && !['won', 'lost'].includes(l.status))
+        .reduce((sum, l) => sum + (Number(l.value) || 0), 0);
+      return { ...s, wonCount: wonLeads.length, pipelineValue };
+    }).sort((a, b) => b.wonCount - a.wonCount);
+
+    topSalesEl.innerHTML = salesWithLeads.map((s, i) => `
+      <div style="display:flex;align-items:center;gap:12px;padding:8px 0;${i < salesWithLeads.length - 1 ? 'border-bottom:1px solid var(--border);' : ''}">
+        <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--pu),var(--pu3));display:flex;align-items:center;justify-content:center;font-size:11px;color:white;font-weight:700;">${(s.first_name?.[0] || '') + (s.last_name?.[0] || '')}</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:600;">${clanaUtils.sanitizeHtml(s.first_name || '')} ${clanaUtils.sanitizeHtml(s.last_name || '')}</div>
+          <div style="font-size:11px;color:var(--tx3);">${s.wonCount} gewonnen · ${s.pipelineValue.toLocaleString('de-DE')} € Pipeline</div>
+        </div>
+        <span class="badge badge-green">${s.wonCount} Deals</span>
+      </div>
+    `).join('');
+  } else {
+    topSalesEl.innerHTML = '<div style="text-align:center;color:var(--tx3);font-size:12px;padding:20px;">Keine Vertriebler vorhanden</div>';
+  }
+
+  // Recent customers
+  const recentCustomers = customers
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    .slice(0, 10);
+
+  const recentTbody = document.getElementById('ov-recent-tbody');
+  if (recentCustomers.length) {
+    recentTbody.innerHTML = recentCustomers.map(c => {
+      const plan = c.organizations?.plan || 'starter';
+      const price = PLAN_PRICES[plan.toLowerCase()] || 149;
+      // Find assigned sales person via leads
+      const matchingLead = allLeads.find(l => l.email === c.email && l.status === 'won');
+      const salesName = matchingLead?.profiles ? `${matchingLead.profiles.first_name || ''} ${matchingLead.profiles.last_name || ''}`.trim() : '—';
+
+      return `
+        <tr>
+          <td><strong>${clanaUtils.sanitizeHtml(c.first_name || '')} ${clanaUtils.sanitizeHtml(c.last_name || '')}</strong></td>
+          <td>${clanaUtils.sanitizeHtml(c.email || '')}</td>
+          <td><span class="badge badge-purple">${plan}</span></td>
+          <td>${price.toLocaleString('de-DE')} €</td>
+          <td>${clanaUtils.sanitizeHtml(salesName)}</td>
+          <td>${clanaUtils.formatDate(c.created_at)}</td>
+          <td><button class="btn btn-sm btn-outline" onclick="viewCustomer('${c.id}')">Details</button></td>
+        </tr>
+      `;
+    }).join('');
+  } else {
+    recentTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--tx3);padding:20px;">Noch keine Kunden</td></tr>';
+  }
+}
+
+// ---- CUSTOMERS ----
+
+async function loadCustomers() {
+  const result = await clanaDB.getAllProfiles();
+  if (!result.success) return;
+
+  const customers = (result.data || []).filter(u => u.role === 'customer');
+  const tbody = document.getElementById('customers-tbody');
+
+  if (!customers.length) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--tx3);padding:40px;">Keine Kunden gefunden</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = customers.map(c => {
+    const plan = c.organizations?.plan || 'starter';
+    const price = PLAN_PRICES[plan.toLowerCase()] || 149;
+
+    return `
+      <tr>
+        <td><strong>${clanaUtils.sanitizeHtml(c.first_name || '')} ${clanaUtils.sanitizeHtml(c.last_name || '')}</strong></td>
+        <td>${clanaUtils.sanitizeHtml(c.email || '')}</td>
+        <td>${clanaUtils.sanitizeHtml(c.company || c.organizations?.name || '—')}</td>
+        <td><span class="badge badge-purple">${plan}</span></td>
+        <td>${price.toLocaleString('de-DE')} €</td>
+        <td>${clanaUtils.sanitizeHtml(c.industry || '—')}</td>
+        <td><span class="badge ${c.is_active !== false ? 'badge-green' : 'badge-red'}">${c.is_active !== false ? 'Aktiv' : 'Inaktiv'}</span></td>
+        <td>${clanaUtils.formatDate(c.created_at)}</td>
+        <td><button class="btn btn-sm btn-outline" onclick="viewCustomer('${c.id}')">Details</button></td>
+      </tr>
+    `;
+  }).join('');
+
+  // Customer search
+  document.getElementById('customer-search')?.addEventListener('input', (e) => {
+    const q = e.target.value.toLowerCase();
+    document.querySelectorAll('#customers-tbody tr').forEach(row => {
+      row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+  });
+}
+
+async function viewCustomer(customerId) {
+  openModal('modal-customer-detail');
+  const container = document.getElementById('customer-detail-content');
+  container.innerHTML = '<div style="text-align:center;color:var(--tx3);padding:40px;">Laden...</div>';
+
+  const { data: customer, error } = await supabaseClient
+    .from('profiles')
+    .select('*, organizations(name, plan)')
+    .eq('id', customerId)
+    .single();
+
+  if (error || !customer) {
+    container.innerHTML = '<div style="text-align:center;color:var(--red);padding:40px;">Fehler beim Laden.</div>';
+    return;
+  }
+
+  const plan = customer.organizations?.plan || 'starter';
+  const price = PLAN_PRICES[plan.toLowerCase()] || 149;
+
+  container.innerHTML = `
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+      <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--pu),var(--pu3));display:flex;align-items:center;justify-content:center;font-size:16px;color:white;font-weight:700;">
+        ${((customer.first_name?.[0] || '') + (customer.last_name?.[0] || '')).toUpperCase() || '?'}
+      </div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;">${clanaUtils.sanitizeHtml(customer.first_name || '')} ${clanaUtils.sanitizeHtml(customer.last_name || '')}</div>
+        <div style="font-size:12px;color:var(--tx3);">${clanaUtils.sanitizeHtml(customer.email || '')}</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;background:var(--bg2);border-radius:12px;margin-bottom:20px;">
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;">Unternehmen</div>
+        <div style="font-size:13px;">${clanaUtils.sanitizeHtml(customer.company || customer.organizations?.name || '—')}</div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;">Branche</div>
+        <div style="font-size:13px;">${clanaUtils.sanitizeHtml(customer.industry || '—')}</div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;">Plan</div>
+        <div style="font-size:13px;"><span class="badge badge-purple">${plan}</span></div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;">Monatl. Umsatz</div>
+        <div style="font-size:13px;font-weight:700;color:var(--green);">${price.toLocaleString('de-DE')} €</div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;">Status</div>
+        <div><span class="badge ${customer.is_active !== false ? 'badge-green' : 'badge-red'}">${customer.is_active !== false ? 'Aktiv' : 'Inaktiv'}</span></div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;">Registriert</div>
+        <div style="font-size:13px;">${clanaUtils.formatDate(customer.created_at)}</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button class="btn btn-sm btn-outline" onclick="editUserRole('${customer.id}', '${clanaUtils.sanitizeHtml(customer.email || '')}', '${customer.role}', '${customer.organization_id || ''}'); closeModal('modal-customer-detail');">Rolle ändern</button>
+      <button class="btn btn-sm ${customer.is_active !== false ? 'btn-danger' : ''}" onclick="toggleUserActive('${customer.id}', ${customer.is_active !== false}); closeModal('modal-customer-detail');">
+        ${customer.is_active !== false ? 'Sperren' : 'Aktivieren'}
+      </button>
+    </div>
+  `;
 }
 
 function editUserRole(userId, email, currentRole, currentOrgId) {

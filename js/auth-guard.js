@@ -117,6 +117,11 @@ const AuthGuard = {
     const first = (profile.first_name || '')[0] || '';
     const last = (profile.last_name || '')[0] || '';
     return (first + last).toUpperCase() || '?';
+  },
+
+  getHomeUrl(profileOrRole) {
+    const role = typeof profileOrRole === 'string' ? profileOrRole : (profileOrRole?.role || 'customer');
+    return this.ROLE_HOME[role] || 'dashboard.html';
   }
 };
 
