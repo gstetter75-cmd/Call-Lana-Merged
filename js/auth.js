@@ -31,6 +31,7 @@ const auth = {
   },
 
   async signOut() {
+    this._userPromise = null;
     try {
       const { error } = await supabaseClient.auth.signOut();
       if (error) throw error;
@@ -41,15 +42,21 @@ const auth = {
     }
   },
 
+  _userPromise: null,
+
   async getUser() {
-    try {
-      const { data: { user }, error } = await supabaseClient.auth.getUser();
-      if (error) throw error;
-      return user;
-    } catch (error) {
-      Logger.error('auth.getUser', error);
-      return null;
-    }
+    if (this._userPromise) return this._userPromise;
+    this._userPromise = supabaseClient.auth.getUser()
+      .then(({ data: { user }, error }) => {
+        if (error) throw error;
+        return user;
+      })
+      .catch(err => {
+        this._userPromise = null;
+        Logger.error('auth.getUser', err);
+        return null;
+      });
+    return this._userPromise;
   },
 
   async getSession() {

@@ -93,15 +93,14 @@ const Components = {
     const closeBtn = document.createElement('button');
     closeBtn.textContent = 'Schließen';
     closeBtn.style.cssText = 'background:rgba(255,255,255,.2);border:none;color:white;padding:4px 12px;border-radius:6px;cursor:pointer;margin-left:12px;font-family:inherit;';
-    closeBtn.onclick = () => { banner.remove(); banner = null; window.__errorBanner = null; };
+    closeBtn.onclick = () => { banner.remove(); banner = null;  };
     banner.appendChild(textNode);
     banner.appendChild(closeBtn);
     document.body.prepend(banner);
-    window.__errorBanner = banner;
   }
 
   function hideBanner() {
-    if (banner) { banner.remove(); banner = null; window.__errorBanner = null; }
+    if (banner) { banner.remove(); banner = null;  }
   }
 
   window.addEventListener('offline', () => showBanner('Keine Internetverbindung. Bitte prüfe deine Verbindung.'));

@@ -667,17 +667,13 @@ document.querySelectorAll('.sn-item').forEach(item => {
 // Logout is handled via sidebar-logout in init()
 
 // ==========================================
-// MOBILE SIDEBAR
+// MOBILE SIDEBAR (hamburger extra, sidebar close handled by Components)
 // ==========================================
-document.getElementById('hamburgerBtn').addEventListener('click', () => {
-  document.getElementById('sidebar').classList.add('open');
-  document.getElementById('sidebarOverlay').classList.add('open');
+document.getElementById('hamburgerBtn')?.addEventListener('click', () => {
+  document.querySelector('.sidebar')?.classList.add('open');
+  document.getElementById('sidebarOverlay')?.classList.add('open');
 });
-document.getElementById('sidebarClose').addEventListener('click', () => {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebarOverlay').classList.remove('open');
-});
-document.getElementById('sidebarOverlay').addEventListener('click', () => {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebarOverlay').classList.remove('open');
+document.getElementById('sidebarOverlay')?.addEventListener('click', () => {
+  document.querySelector('.sidebar')?.classList.remove('open');
+  document.getElementById('sidebarOverlay')?.classList.remove('open');
 });

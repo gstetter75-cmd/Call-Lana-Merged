@@ -1022,7 +1022,7 @@ async function loadCommissions() {
     }
 
     const name = `${c.first_name || ''} ${c.last_name || ''}`.trim() || c.email || '—';
-    const planLabel = planKey.charAt(0).toUpperCase() + planKey.slice(1);
+    const planLabel = CONFIG.getPlanLabel(planKey);
 
     return `
       <tr>
