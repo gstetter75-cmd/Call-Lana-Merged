@@ -21,14 +21,17 @@ const Components = {
     const role = profile?.role || 'customer';
     sidebar.querySelectorAll('[data-role]').forEach(el => {
       const allowedRoles = el.dataset.role.split(',').map(r => r.trim());
-      if (!allowedRoles.includes(role) && !allowedRoles.includes('superadmin') && role !== 'superadmin') {
+      if (role === 'superadmin') {
+        // Superadmin sees everything
+        el.style.display = '';
+      } else if (!allowedRoles.includes(role)) {
         el.style.display = 'none';
       }
-      // Superadmin sees everything
-      if (role === 'superadmin') {
-        el.style.display = '';
-      }
     });
+
+    // Set logo link to role-based home
+    const logoLink = sidebar.querySelector('.sb-logo');
+    if (logoLink) logoLink.href = AuthGuard.getHomeUrl(profile);
 
     // Set user info
     const nameEl = sidebar.querySelector('.sb-user-name');
