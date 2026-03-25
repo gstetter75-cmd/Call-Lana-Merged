@@ -74,20 +74,21 @@ async function loadHomeData() {
   if (result.success) {
     const s = result.stats;
     document.getElementById('csAnrufe').textContent = s.totalCalls.toLocaleString('de-DE');
-    document.getElementById('csSms').textContent = '0';
-    const cost = (s.totalDuration / 60) * 0.15;
-    document.getElementById('csKosten').textContent = formatCurrency(cost);
+    document.getElementById('csSms').textContent = formatMinutes(s.avgDuration);
+    const completedCalls = s.statuses?.completed || 0;
+    const successRate = s.totalCalls > 0 ? Math.round((completedCalls / s.totalCalls) * 100) : 0;
+    document.getElementById('csKosten').textContent = successRate + '%';
   } else {
     document.getElementById('csAnrufe').textContent = '0';
-    document.getElementById('csSms').textContent = '0';
-    document.getElementById('csKosten').textContent = '0,00 €';
+    document.getElementById('csSms').textContent = '0 min';
+    document.getElementById('csKosten').textContent = '0%';
   }
 
   // Balance donut
   const settingsResult = await clanaDB.getSettings();
   const settings = settingsResult.success ? settingsResult.data : {};
   const balance = settings.balance || 0;
-  const maxBalance = 100;
+  const maxBalance = Math.max(balance * 1.5, 100);
   const pct = Math.min(balance / maxBalance, 1);
   const circumference = 2 * Math.PI * 40;
   const offset = circumference - (pct * circumference);
@@ -187,16 +188,17 @@ function renderAssistantsList() {
     container.innerHTML = '<div class="empty-state"><div class="icon">🤖</div><h3>Keine Assistenten</h3><p>Erstelle deinen ersten KI-Assistenten.</p></div>';
     return;
   }
-  let html = '<div class="table-wrap"><table><thead><tr><th>Name</th><th>Status</th><th>Telefonnummer</th><th>Stimme</th><th>Erstellt</th></tr></thead><tbody>';
+  let html = '<div class="table-wrap"><table><thead><tr><th>Name</th><th>Status</th><th>Telefonnummer</th><th>Stimme</th><th>Erstellt</th><th>Aktionen</th></tr></thead><tbody>';
   assistantsList.forEach(a => {
     const statusCls = a.status === 'live' ? 'completed' : 'voicemail';
     const statusLabel = a.status === 'live' ? 'LIVE' : 'Offline';
-    html += '<tr style="cursor:pointer;" onclick="editAssistant(\'' + a.id + '\')">' +
-      '<td style="font-weight:600;color:var(--tx);">' + escHtml(a.name) + '</td>' +
+    html += '<tr>' +
+      '<td style="font-weight:600;color:var(--tx);cursor:pointer;" onclick="editAssistant(\'' + a.id + '\')">' + escHtml(a.name) + '</td>' +
       '<td><span class="status-badge ' + statusCls + '">' + statusLabel + '</span></td>' +
       '<td>' + (a.phone_number || '–') + '</td>' +
       '<td>' + escHtml(a.voice || 'Marie') + '</td>' +
       '<td>' + clanaUtils.formatDate(a.created_at) + '</td>' +
+      '<td><button onclick="event.stopPropagation();deleteAssistant(\'' + a.id + '\',\'' + escHtml(a.name) + '\')" style="background:none;border:1px solid rgba(248,113,113,.3);border-radius:6px;padding:4px 10px;color:var(--red);font-size:11px;cursor:pointer;font-family:inherit;">Löschen</button></td>' +
     '</tr>';
   });
   html += '</tbody></table></div>';
@@ -295,6 +297,11 @@ document.getElementById('btnSaveAssistant').addEventListener('click', async () =
   const name = document.getElementById('edName').value.trim();
   if (!name) { showToast('Bitte einen Namen eingeben.', true); return; }
 
+  const saveBtn = document.getElementById('btnSaveAssistant');
+  const origText = saveBtn.textContent;
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Speichern…';
+
   const payload = {
     name,
     voice: document.getElementById('edVoice').value,
@@ -336,6 +343,8 @@ document.getElementById('btnSaveAssistant').addEventListener('click', async () =
   } else {
     showToast('Fehler: ' + result.error, true);
   }
+  saveBtn.disabled = false;
+  saveBtn.textContent = origText;
 });
 
 // EDITOR TABS
@@ -427,8 +436,8 @@ document.getElementById('kbSearch').addEventListener('input', (e) => {
 // HELPERS
 // ==========================================
 function buildCallTable(calls) {
-  let html = '<div class="table-wrap"><table><thead><tr><th>Datum</th><th>Telefonnummer</th><th>Dauer</th><th>Status</th></tr></thead><tbody>';
-  calls.forEach(c => {
+  let html = '<div class="table-wrap"><table><thead><tr><th>Datum</th><th>Telefonnummer</th><th>Dauer</th><th>Status</th><th>Transkript</th></tr></thead><tbody>';
+  calls.forEach((c, i) => {
     const date = clanaUtils.formatDate(c.created_at);
     const phone = c.phone_number || '–';
     const dur = c.duration ? clanaUtils.formatDuration(c.duration) : '–';
@@ -439,10 +448,36 @@ function buildCallTable(calls) {
       active: { label: 'Aktiv', cls: 'active' }
     };
     const st = statusMap[c.status] || { label: c.status || '–', cls: 'completed' };
-    html += '<tr><td>' + date + '</td><td>' + escHtml(phone) + '</td><td>' + dur + '</td><td><span class="status-badge ' + st.cls + '">' + st.label + '</span></td></tr>';
+    const hasTranscript = c.transcript && c.transcript.trim().length > 0;
+    html += '<tr><td>' + date + '</td><td>' + escHtml(phone) + '</td><td>' + dur + '</td><td><span class="status-badge ' + st.cls + '">' + st.label + '</span></td>' +
+      '<td>' + (hasTranscript ? '<button onclick="showTranscript(' + i + ')" style="background:none;border:1px solid var(--border2);border-radius:6px;padding:4px 10px;color:var(--pu3);font-size:11px;cursor:pointer;font-family:inherit;">Ansehen</button>' : '<span style="color:var(--tx3);font-size:11px;">—</span>') + '</td></tr>';
   });
   html += '</tbody></table></div>';
   return html;
+}
+
+function showTranscript(callIndex) {
+  const call = allCalls[callIndex];
+  if (!call || !call.transcript) return;
+
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;';
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+
+  const phone = call.phone_number || 'Unbekannt';
+  const date = clanaUtils.formatDate(call.created_at);
+  const dur = call.duration ? clanaUtils.formatDuration(call.duration) : '–';
+
+  overlay.innerHTML = '<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;width:100%;max-width:600px;max-height:80vh;overflow-y:auto;margin:16px;">' +
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">' +
+      '<div><h3 style="font-family:Syne,sans-serif;font-size:1.1rem;font-weight:700;">Anruf-Transkript</h3>' +
+      '<div style="font-size:12px;color:var(--tx3);margin-top:4px;">' + escHtml(phone) + ' · ' + date + ' · ' + dur + '</div></div>' +
+      '<button onclick="this.closest(\'div[style*=fixed]\').remove()" style="background:none;border:none;color:var(--tx3);font-size:1.4rem;cursor:pointer;">✕</button>' +
+    '</div>' +
+    '<div style="background:var(--bg2);border-radius:12px;padding:20px;font-size:13px;line-height:1.8;color:var(--tx2);white-space:pre-wrap;">' + escHtml(call.transcript) + '</div>' +
+  '</div>';
+
+  document.body.appendChild(overlay);
 }
 
 function emptyCallsHTML() {
@@ -459,6 +494,17 @@ function formatMinutes(seconds) {
 
 function formatCurrency(amount) {
   return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount);
+}
+
+async function deleteAssistant(id, name) {
+  if (!confirm('Assistent "' + name + '" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.')) return;
+  const result = await clanaDB.deleteAssistant(id);
+  if (result.success) {
+    showToast('Assistent gelöscht.');
+    await loadAssistants();
+  } else {
+    showToast('Fehler: ' + result.error, true);
+  }
 }
 
 function escHtml(str) {

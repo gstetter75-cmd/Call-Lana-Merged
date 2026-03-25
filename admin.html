@@ -403,6 +403,14 @@ async function init() {
     });
   });
 
+  // Customer search
+  document.getElementById('customer-search')?.addEventListener('input', (e) => {
+    const q = e.target.value.toLowerCase();
+    document.querySelectorAll('#customers-tbody tr').forEach(row => {
+      row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+  });
+
   // Add org
   document.getElementById('btn-add-org')?.addEventListener('click', () => openModal('modal-add-org'));
   document.getElementById('btn-create-org')?.addEventListener('click', createOrg);
@@ -705,14 +713,6 @@ async function loadCustomers() {
       </tr>
     `;
   }).join('');
-
-  // Customer search
-  document.getElementById('customer-search')?.addEventListener('input', (e) => {
-    const q = e.target.value.toLowerCase();
-    document.querySelectorAll('#customers-tbody tr').forEach(row => {
-      row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
-    });
-  });
 }
 
 async function viewCustomer(customerId) {
