@@ -317,6 +317,7 @@
       <div class="form-group">
         <label class="form-label">E-Mail</label>
         <input type="email" class="form-input" id="lead-email" placeholder="email@firma.de">
+        <div id="lead-dup-warning" style="display:none;color:#f59e0b;font-size:11px;margin-top:4px;font-weight:600;"></div>
       </div>
       <div class="form-group">
         <label class="form-label">Telefon</label>
@@ -594,6 +595,8 @@
 <script src="js/config.js"></script>
 <script src="js/dashboard-components.js"></script>
 <script src="js/sales-customers.js"></script>
+<script src="js/global-search.js"></script>
+<script src="js/keyboard-shortcuts.js"></script>
 <script>
 const PIPELINE_STAGES = [
   { key: 'new', label: 'Neu', color: 'var(--cyan)' },
@@ -642,6 +645,30 @@ async function init() {
   document.getElementById('btn-save-lead')?.addEventListener('click', saveLead);
   document.getElementById('btn-save-task')?.addEventListener('click', saveTask);
   document.getElementById('btn-save-avail')?.addEventListener('click', saveAvailability);
+
+  // Duplicate detection on lead email
+  document.getElementById('lead-email')?.addEventListener('blur', async function() {
+    const email = this.value.trim();
+    if (!email) return;
+    const result = await clanaDB.checkDuplicate(email);
+    const warn = document.getElementById('lead-dup-warning');
+    if (warn && result.duplicates?.length) {
+      const labels = result.duplicates.map(d => `${d.type === 'lead' ? 'Lead' : 'Kunde'}: ${d.company_name}`).join(', ');
+      warn.textContent = '⚠️ Duplikat gefunden: ' + labels;
+      warn.style.display = 'block';
+    } else if (warn) {
+      warn.style.display = 'none';
+    }
+  });
+
+  // Keyboard shortcuts
+  const n = () => { openModal('modal-add-lead'); }; n._description = 'Neuer Lead';
+  const k = () => { switchTab('customers'); }; k._description = 'Kunden';
+  const p = () => { switchTab('pipeline'); }; p._description = 'Pipeline';
+  KeyboardShortcuts.init({ n, k, p });
+
+  // Realtime: auto-refresh leads when changed by others
+  clanaDB.subscribeTable('leads', () => { loadLeads(); });
 
   loadAllData();
 }

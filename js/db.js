@@ -1221,6 +1221,43 @@ const db = {
 
   // ====== CRM: Bulk Import ======
 
+  // ====== Duplicate Detection ======
+
+  async checkDuplicate(email) {
+    try {
+      if (!email) return { success: true, duplicates: [] };
+      const user = await auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const [leads, customers] = await Promise.all([
+        supabaseClient.from('leads').select('id, company_name, status').eq('email', email).limit(3),
+        supabaseClient.from('customers').select('id, company_name, status').eq('email', email).limit(3)
+      ]);
+
+      const duplicates = [];
+      (leads.data || []).forEach(l => duplicates.push({ type: 'lead', ...l }));
+      (customers.data || []).forEach(c => duplicates.push({ type: 'customer', ...c }));
+
+      return { success: true, duplicates };
+    } catch (error) {
+      Logger.error('db.checkDuplicate', error);
+      return { success: true, duplicates: [] };
+    }
+  },
+
+  // ====== Realtime Subscriptions ======
+
+  subscribeTable(table, callback) {
+    return supabaseClient
+      .channel(`${table}-changes`)
+      .on('postgres_changes', { event: '*', schema: 'public', table }, (payload) => {
+        callback(payload);
+      })
+      .subscribe();
+  },
+
+  // ====== CRM: Bulk Import ======
+
   async bulkCreateCustomers(customers) {
     try {
       const user = await auth.getUser();
