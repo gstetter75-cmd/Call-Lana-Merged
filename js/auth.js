@@ -12,7 +12,7 @@ const auth = {
       return { success: true, data };
     } catch (error) {
       Logger.error('auth.signUp', error);
-      return { success: false, error: 'Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.' };
     }
   },
 
@@ -26,7 +26,7 @@ const auth = {
       return { success: true, data };
     } catch (error) {
       Logger.error('auth.signIn', error);
-      return { success: false, error: 'Anmeldung fehlgeschlagen. Bitte pruefen Sie Ihre Zugangsdaten.' };
+      return { success: false, error: error.message || 'Anmeldung fehlgeschlagen. Bitte prüfen Sie Ihre Zugangsdaten.' };
     }
   },
 
@@ -37,7 +37,7 @@ const auth = {
       return { success: true };
     } catch (error) {
       Logger.error('auth.signOut', error);
-      return { success: false, error: 'Abmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Abmeldung fehlgeschlagen.' };
     }
   },
 
@@ -72,7 +72,7 @@ const auth = {
       return { success: true, data };
     } catch (error) {
       Logger.error('auth.updateProfile', error);
-      return { success: false, error: 'Profil konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Profil konnte nicht aktualisiert werden.' };
     }
   },
 
@@ -85,7 +85,7 @@ const auth = {
       return { success: true };
     } catch (error) {
       Logger.error('auth.resetPassword', error);
-      return { success: false, error: 'Passwort-Zuruecksetzung fehlgeschlagen. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Passwort-Zurücksetzung fehlgeschlagen.' };
     }
   }
 };
