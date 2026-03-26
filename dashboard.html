@@ -382,7 +382,10 @@ body{display:flex;overflow:hidden;}
     <!-- ===================== TRANSACTIONS / ANRUFVERLAUF ===================== -->
     <div id="page-transactions" class="page-section">
       <div id="transcript-search-section"></div>
-      <h1>Anrufverlauf</h1>
+      <div class="page-title-row">
+        <h1>Anrufverlauf</h1>
+        <button class="btn-secondary" style="font-size:12px;padding:8px 16px;" onclick="CallsPage.exportCSV()">📥 CSV Export</button>
+      </div>
       <p class="page-desc">Alle Anrufe auf einen Blick.</p>
 
       <div class="data-section">
@@ -391,8 +394,8 @@ body{display:flex;overflow:hidden;}
           <span class="badge" id="allCallsCount">0 Anrufe</span>
         </div>
         <!-- Filter Bar -->
-        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
-          <input type="text" id="callSearchInput" class="form-input" placeholder="Telefonnummer suchen…" style="flex:1;min-width:160px;padding:8px 12px;font-size:12px;">
+        <div class="calls-filter-bar">
+          <input type="text" id="callSearchInput" class="form-input" placeholder="Name oder Nummer suchen…" style="flex:1;min-width:160px;padding:8px 12px;font-size:12px;">
           <select id="callStatusFilter" class="form-input form-select" style="width:auto;padding:8px 32px 8px 12px;font-size:12px;">
             <option value="">Alle Status</option>
             <option value="completed">Abgeschlossen</option>
@@ -400,6 +403,15 @@ body{display:flex;overflow:hidden;}
             <option value="voicemail">Mailbox</option>
             <option value="active">Aktiv</option>
           </select>
+          <select id="callOutcomeFilter" class="form-input form-select" style="width:auto;padding:8px 32px 8px 12px;font-size:12px;">
+            <option value="">Alle Ergebnisse</option>
+            <option value="termin">Termin</option>
+            <option value="notfall">Notfall</option>
+            <option value="frage">Frage</option>
+            <option value="abbruch">Abbruch</option>
+          </select>
+          <input type="date" id="callDateFrom" class="form-input" style="width:auto;padding:8px 12px;font-size:12px;" title="Von Datum">
+          <input type="date" id="callDateTo" class="form-input" style="width:auto;padding:8px 12px;font-size:12px;" title="Bis Datum">
         </div>
         <div id="allCallsBody">
           <div class="loading-state"><div class="spinner"></div><p>Anrufe werden geladen…</p></div>
