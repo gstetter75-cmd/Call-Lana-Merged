@@ -41,6 +41,14 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* Impersonation banner */
+#impersonation-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:linear-gradient(135deg,#f59e0b,#d97706);color:white;padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:16px;font-size:13px;font-weight:600;font-family:'Manrope',sans-serif;box-shadow:0 2px 12px rgba(217,119,6,.4);}
+#impersonation-banner button{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:white;border-radius:6px;padding:4px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;}
+#impersonation-banner button:hover{background:rgba(255,255,255,.35);}
+body:has(#impersonation-banner) .topbar{top:36px;}
+body:has(#impersonation-banner) .sidebar{top:36px;height:calc(100vh - 36px);}
+body:has(#impersonation-banner) .content{margin-top:36px;}
+
 /* Auth pending: hide content until auth check completes */
 .auth-pending .content { visibility: hidden; }
 .auth-pending .sidebar { visibility: hidden; }

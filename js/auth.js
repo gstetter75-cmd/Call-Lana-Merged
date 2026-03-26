@@ -99,6 +99,15 @@ const auth = {
     }
   },
 
+  // Returns the effective user ID — impersonated customer ID or own ID
+  async getEffectiveUserId() {
+    if (typeof ImpersonationManager !== 'undefined' && ImpersonationManager.isActive()) {
+      return ImpersonationManager.getTargetUserId();
+    }
+    const user = await this.getUser();
+    return user?.id || null;
+  },
+
   async resetPassword(email) {
     try {
       const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {

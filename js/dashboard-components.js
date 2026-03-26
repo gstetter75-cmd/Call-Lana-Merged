@@ -61,6 +61,20 @@ const Components = {
     document.querySelector('.topbar-hamburger')?.addEventListener('click', () => {
       sidebar.classList.toggle('open');
     });
+
+    // Impersonation banner
+    if (typeof ImpersonationManager !== 'undefined' && ImpersonationManager.isActive()) {
+      const target = ImpersonationManager.getTargetProfile();
+      const sanitize = typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeHtml : (s) => s;
+      const name = target ? sanitize((target.first_name || '') + ' ' + (target.last_name || '')).trim() || sanitize(target.email) : 'Kunde';
+      const banner = document.createElement('div');
+      banner.id = 'impersonation-banner';
+      banner.innerHTML =
+        '<span>👁 Sie sehen das Dashboard von <strong>' + name + '</strong></span>' +
+        '<button onclick="ImpersonationManager.stop()">Zurück zum Admin</button>';
+      document.body.prepend(banner);
+      ImpersonationManager.checkTimeout();
+    }
   },
 
   toast(message, type) {

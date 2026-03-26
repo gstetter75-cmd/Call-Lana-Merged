@@ -9,7 +9,7 @@ const dbAssistants = {
       const { data, error } = await supabaseClient
         .from('assistants')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('user_id', await auth.getEffectiveUserId())
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -47,7 +47,7 @@ const dbAssistants = {
         .from('assistants')
         .select('*')
         .eq('id', id)
-        .eq('user_id', user.id)
+        .eq('user_id', await auth.getEffectiveUserId())
         .single();
 
       if (error) throw error;
@@ -65,7 +65,7 @@ const dbAssistants = {
 
       const { data, error } = await supabaseClient
         .from('assistants')
-        .insert([{ user_id: user.id, ...assistantData }])
+        .insert([{ user_id: await auth.getEffectiveUserId(), ...assistantData }])
         .select()
         .single();
 
@@ -86,7 +86,7 @@ const dbAssistants = {
         .from('assistants')
         .update(updates)
         .eq('id', id)
-        .eq('user_id', user.id)
+        .eq('user_id', await auth.getEffectiveUserId())
         .select()
         .single();
 
@@ -107,7 +107,7 @@ const dbAssistants = {
         .from('assistants')
         .delete()
         .eq('id', id)
-        .eq('user_id', user.id);
+        .eq('user_id', await auth.getEffectiveUserId());
 
       if (error) throw error;
       return { success: true };

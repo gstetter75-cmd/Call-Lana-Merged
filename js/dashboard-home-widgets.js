@@ -31,13 +31,13 @@ const HomeWidgets = {
         supabaseClient
           .from('calls')
           .select('duration,outcome,status,sentiment_score,created_at')
-          .eq('user_id', user.id)
+          .eq('user_id', await auth.getEffectiveUserId())
           .gte('created_at', startOfDay)
           .lte('created_at', endOfDay),
         supabaseClient
           .from('calls')
           .select('id')
-          .eq('user_id', user.id)
+          .eq('user_id', await auth.getEffectiveUserId())
           .gte('created_at', startOfYesterday)
           .lte('created_at', endOfYesterday)
       ]);

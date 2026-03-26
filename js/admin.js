@@ -609,6 +609,7 @@ async function viewCustomer(customerId) {
     </div>
 
     <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button class="btn btn-sm" style="background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 0 12px rgba(245,158,11,.3);" onclick="closeModal('modal-customer-detail'); ImpersonationManager.start('${customer.id}');">👁 Als Kunde anmelden</button>
       <button class="btn btn-sm btn-outline" onclick="editUserRole('${customer.id}', '${clanaUtils.sanitizeHtml(customer.email || '')}', '${customer.role}', '${customer.organization_id || ''}'); closeModal('modal-customer-detail');">Rolle ändern</button>
       <button class="btn btn-sm ${customer.is_active !== false ? 'btn-danger' : ''}" onclick="toggleUserActive('${customer.id}', ${customer.is_active !== false}); closeModal('modal-customer-detail');">
         ${customer.is_active !== false ? 'Sperren' : 'Aktivieren'}

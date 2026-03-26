@@ -38,7 +38,7 @@ const AppointmentsPage = {
       const { data, error } = await supabaseClient
         .from('appointments')
         .select('id,appointment_date,customer_name,name,phone,duration_minutes,note,status')
-        .eq('user_id', user.id)
+        .eq('user_id', await auth.getEffectiveUserId())
         .gte('appointment_date', this._currentWeekStart.toISOString())
         .lt('appointment_date', weekEnd.toISOString())
         .order('appointment_date', { ascending: true });

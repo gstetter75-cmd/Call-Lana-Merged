@@ -5,11 +5,12 @@ const dbCalls = {
     try {
       const user = await auth.getUser();
       if (!user) throw new Error('Not authenticated');
+      const effectiveId = await auth.getEffectiveUserId();
 
       const { data, error } = await supabaseClient
         .from('calls')
         .insert([{
-          user_id: user.id,
+          user_id: effectiveId,
           phone_number: callData.phoneNumber,
           duration: callData.duration,
           status: callData.status,
@@ -29,11 +30,12 @@ const dbCalls = {
     try {
       const user = await auth.getUser();
       if (!user) throw new Error('Not authenticated');
+      const effectiveId = await auth.getEffectiveUserId();
 
       const { data, error } = await supabaseClient
         .from('calls')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('user_id', effectiveId)
         .order('created_at', { ascending: false })
         .limit(limit);
 
@@ -49,11 +51,12 @@ const dbCalls = {
     try {
       const user = await auth.getUser();
       if (!user) throw new Error('Not authenticated');
+      const effectiveId = await auth.getEffectiveUserId();
 
       const { data, error } = await supabaseClient
         .from('calls')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('user_id', effectiveId)
         .gte('created_at', startDate)
         .lte('created_at', endDate);
 
@@ -81,11 +84,12 @@ const dbCalls = {
     try {
       const user = await auth.getUser();
       if (!user) throw new Error('Not authenticated');
+      const effectiveId = await auth.getEffectiveUserId();
 
       const { data, error } = await supabaseClient
         .from('user_settings')
         .upsert([{
-          user_id: user.id,
+          user_id: effectiveId,
           settings: settings,
           updated_at: new Date().toISOString()
         }]);
@@ -102,11 +106,12 @@ const dbCalls = {
     try {
       const user = await auth.getUser();
       if (!user) throw new Error('Not authenticated');
+      const effectiveId = await auth.getEffectiveUserId();
 
       const { data, error } = await supabaseClient
         .from('user_settings')
         .select('settings')
-        .eq('user_id', user.id)
+        .eq('user_id', effectiveId)
         .single();
 
       if (error && error.code !== 'PGRST116') throw error; // PGRST116 = no rows

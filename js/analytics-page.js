@@ -19,7 +19,7 @@ const AnalyticsPage = {
       const { data, error } = await supabaseClient
         .from('calls')
         .select('created_at,duration,status,outcome,sentiment_score')
-        .eq('user_id', user.id)
+        .eq('user_id', await auth.getEffectiveUserId())
         .gte('created_at', since.toISOString())
         .order('created_at', { ascending: true })
         .limit(5000);

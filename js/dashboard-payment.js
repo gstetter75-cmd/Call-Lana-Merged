@@ -158,7 +158,7 @@ async function removePaymentMethod(priority) {
   if (!user) return;
 
   try {
-    const { error } = await supabaseClient.from('payment_methods').delete().eq('user_id', user.id).eq('priority', priority);
+    const { error } = await supabaseClient.from('payment_methods').delete().eq('user_id', await auth.getEffectiveUserId()).eq('priority', priority);
     if (error) throw error;
     showToast('Zahlungsmethode entfernt.');
     await loadPaymentMethods();
@@ -173,7 +173,7 @@ async function loadPaymentMethods() {
   if (!user) return;
 
   try {
-    const { data, error } = await supabaseClient.from('payment_methods').select('*').eq('user_id', user.id).order('priority');
+    const { data, error } = await supabaseClient.from('payment_methods').select('*').eq('user_id', await auth.getEffectiveUserId()).order('priority');
     if (error) throw error;
 
     [1, 2].forEach(p => {

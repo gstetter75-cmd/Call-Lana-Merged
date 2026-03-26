@@ -89,7 +89,7 @@ async function saveAutoReloadSettings() {
       auto_reload_enabled: enabled,
       auto_reload_threshold_cents: threshold,
       auto_reload_amount_cents: amount
-    }).eq('user_id', user.id);
+    }).eq('user_id', await auth.getEffectiveUserId());
     showToast(enabled ? 'Auto-Aufladung aktiviert' : 'Auto-Aufladung deaktiviert');
   } catch (err) {
     Logger.error('saveAutoReloadSettings', err);
@@ -108,7 +108,7 @@ async function saveHardCapSettings() {
     await supabaseClient.from('subscriptions').update({
       hard_cap_enabled: enabled,
       hard_cap_cents: amount
-    }).eq('user_id', user.id);
+    }).eq('user_id', await auth.getEffectiveUserId());
     showToast(enabled ? 'Ausgabenlimit auf ' + formatCents(amount) + ' gesetzt' : 'Ausgabenlimit deaktiviert');
     await loadBillingData();
   } catch (err) {
@@ -124,7 +124,7 @@ async function loadBillingData() {
   try {
     // Load billing account
     const { data: account } = await supabaseClient
-      .from('subscriptions').select('*').eq('user_id', user.id).single();
+      .from('subscriptions').select('*').eq('user_id', await auth.getEffectiveUserId()).single();
 
     if (!account) return;
 
@@ -205,7 +205,7 @@ async function loadTransactions() {
     const { data, error } = await supabaseClient
       .from('billing_transactions')
       .select('*')
-      .eq('user_id', user.id)
+      .eq('user_id', await auth.getEffectiveUserId())
       .order('created_at', { ascending: false })
       .limit(20);
 
