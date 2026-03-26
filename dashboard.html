@@ -419,6 +419,45 @@ body{display:flex;overflow:hidden;}
       </div>
     </div>
 
+    <!-- ===================== APPOINTMENTS ===================== -->
+    <div id="page-appointments" class="page-section">
+      <div class="page-title-row">
+        <h1>Termine</h1>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <div class="editor-tabs" style="margin-bottom:0;">
+            <button class="editor-tab active" onclick="AppointmentsPage.setView('week')">Woche</button>
+            <button class="editor-tab" onclick="AppointmentsPage.setView('list')">Liste</button>
+          </div>
+        </div>
+      </div>
+      <p class="page-desc">Deine gebuchten Termine im Überblick.</p>
+
+      <!-- Week Navigation -->
+      <div id="appt-week-nav" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <button class="btn-secondary" style="padding:6px 12px;font-size:12px;" onclick="AppointmentsPage.prevWeek()">← Vorherige</button>
+        <span style="font-size:14px;font-weight:700;" id="appt-week-label">Woche</span>
+        <button class="btn-secondary" style="padding:6px 12px;font-size:12px;" onclick="AppointmentsPage.nextWeek()">Nächste →</button>
+      </div>
+
+      <!-- Week View -->
+      <div id="appt-week-view" class="card" style="padding:0;overflow:hidden;">
+        <div class="loading-state"><div class="spinner"></div><p>Termine werden geladen…</p></div>
+      </div>
+
+      <!-- List View (hidden by default) -->
+      <div id="appt-list-view" style="display:none;">
+        <div class="data-section">
+          <div class="data-header">
+            <h2>Alle Termine</h2>
+            <span class="badge" id="apptListCount">0 Termine</span>
+          </div>
+          <div id="appt-list-body">
+            <div class="loading-state"><div class="spinner"></div><p>Termine werden geladen…</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ===================== BILLING ===================== -->
     <div id="page-billing" class="page-section">
       <h1>Guthaben & Verbrauch</h1>
@@ -1009,6 +1048,7 @@ body{display:flex;overflow:hidden;}
 <script src="js/dashboard-extras.js"></script>
 <script src="js/dashboard-analytics.js"></script>
 <script src="js/dashboard-home-widgets.js"></script>
+<script src="js/appointments.js"></script>
 <script src="js/global-search.js"></script>
 <script src="js/keyboard-shortcuts.js"></script>
 <script>KeyboardShortcuts.init({});</script>
