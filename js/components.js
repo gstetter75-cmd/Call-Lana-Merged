@@ -80,7 +80,7 @@
             <button class="lang-btn px-2.5 py-1 text-xs font-semibold rounded-lg ${lang==='en'?'active':'text-gray-500'}" data-lang="en" onclick="window.__setLang('en')">EN</button>
           </div>
           <a href="login.html" class="hidden md:inline-block nav-link text-sm font-medium ${isActive('login')}" data-i18n="nav.login">${t('nav.login')}</a>
-          <a href="demo.html" class="btn-outline px-4 py-2 rounded-lg text-sm font-semibold hidden sm:inline-block" data-i18n="nav.demo">${t('nav.demo')}</a>
+          <a href="kontakt.html" class="btn-outline px-4 py-2 rounded-lg text-sm font-semibold hidden sm:inline-block" data-i18n="nav.demo">${t('nav.demo')}</a>
           <a href="registrierung.html" class="btn-brand px-5 py-2 rounded-lg text-sm font-semibold hidden sm:inline-block" data-i18n="nav.cta">${t('nav.cta')}</a>
           <!-- Mobile hamburger -->
           <button id="menuToggle" class="lg:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-brand-400" aria-label="Menu">
@@ -102,7 +102,7 @@
         <a href="preise.html" class="nav-link text-gray-700" data-i18n="nav.pricing">${t('nav.pricing')}</a>
         <a href="kontakt.html" class="nav-link text-gray-700" data-i18n="nav.contact">${t('nav.contact')}</a>
         <a href="login.html" class="nav-link text-gray-700" data-i18n="nav.login">${t('nav.login')}</a>
-        <a href="demo.html" class="btn-outline text-center px-6 py-3 rounded-xl font-bold mt-4" data-i18n="nav.demo">${t('nav.demo')}</a>
+        <a href="kontakt.html" class="btn-outline text-center px-6 py-3 rounded-xl font-bold mt-4" data-i18n="nav.demo">${t('nav.demo')}</a>
         <a href="registrierung.html" class="btn-brand text-center px-6 py-3 rounded-xl font-bold mt-2" data-i18n="nav.cta">${t('nav.cta')}</a>
       </div>
       <div class="flex items-center gap-2 mt-8">

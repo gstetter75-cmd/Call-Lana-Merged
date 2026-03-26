@@ -249,7 +249,7 @@ const AvailabilityModule = {
           <tbody>${requests.length ? requests.map(r => `
             <tr>
               <td style="font-size:12px;">${new Date(r.start_date).toLocaleDateString('de-DE')} – ${new Date(r.end_date).toLocaleDateString('de-DE')}</td>
-              <td>${typeLabels[r.type] || r.type}</td>
+              <td>${typeLabels[r.type] || clanaUtils.sanitizeHtml(r.type)}</td>
               <td>${r.days_count}</td>
               <td><span class="badge" style="background:${statusColors[r.status]}22;color:${statusColors[r.status]}">${statusLabels[r.status]}</span></td>
               <td style="font-size:12px;color:var(--tx3);">${clanaUtils.sanitizeHtml(r.note || '—')}</td>
@@ -348,7 +348,7 @@ const AvailabilityModule = {
                   const types = { vacation: '🏖️', sick: '🤒', training: '📚', other: '⛔' };
                   bg = 'rgba(6,182,212,0.12)'; label = types[off.type] || '⛔'; color = '#06b6d4';
                 } else if (wh) {
-                  bg = 'rgba(16,185,129,0.1)'; label = `${wh.start_time?.slice(0,5)}–${wh.end_time?.slice(0,5)}`; color = '#10b981';
+                  bg = 'rgba(16,185,129,0.1)'; label = `${clanaUtils.sanitizeHtml(wh.start_time?.slice(0,5) || '')}–${clanaUtils.sanitizeHtml(wh.end_time?.slice(0,5) || '')}`; color = '#10b981';
                 }
                 return `<td style="text-align:center;background:${bg};font-size:11px;color:${color};">${label}</td>`;
               }).join('')}

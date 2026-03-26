@@ -5,23 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <title>Kontakt — Call Lana</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/tailwind.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/design.css" />
-  <script>
-    tailwind.config = {
-      theme: { extend: {
-        colors: {
-          brand: { 50:'#FAF5FF', 100:'#F3E8FF', 200:'#E9D5FF', 300:'#D8B4FE', 400:'#7C3AED', 500:'#6D28D9', 600:'#5B21B6', 700:'#4C1D95', 800:'#3B0764', 900:'#2E1065' },
-          dark: { 950:'#FFFFFF', 900:'#F9FAFB', 850:'#F5F3FF', 800:'#F3F4F6', 700:'#E5E7EB', 600:'#D1D5DB', 500:'#9CA3AF' },
-          surface: { dark:'#FFFFFF', mid:'#F9FAFB' },
-        },
-        fontFamily: { display: ['"Space Grotesk"', 'system-ui', 'sans-serif'], body: ['"Inter"', 'system-ui', 'sans-serif'] },
-      }}
-    }
-  </script>
 </head>
 <body class="bg-white text-gray-900 antialiased overflow-x-hidden">
 
@@ -135,7 +123,7 @@
               <span class="lang-en hidden">Send us a message</span>
             </h2>
 
-            <form class="space-y-5" onsubmit="event.preventDefault();">
+            <form id="contactForm" class="space-y-5" onsubmit="handleContactSubmit(event)">
 
               <!-- Name -->
               <div>
@@ -143,7 +131,7 @@
                   <span class="lang-de">Name *</span>
                   <span class="lang-en hidden">Name *</span>
                 </label>
-                <input type="text" required class="form-input" placeholder="Max Mustermann" />
+                <input type="text" id="cf-name" required class="form-input" placeholder="Max Mustermann" />
               </div>
 
               <!-- E-Mail -->
@@ -152,7 +140,7 @@
                   <span class="lang-de">E-Mail *</span>
                   <span class="lang-en hidden">Email *</span>
                 </label>
-                <input type="email" required class="form-input" placeholder="max@unternehmen.de" />
+                <input type="email" id="cf-email" required class="form-input" placeholder="max@unternehmen.de" />
               </div>
 
               <!-- Branche -->
@@ -161,7 +149,7 @@
                   <span class="lang-de">Branche</span>
                   <span class="lang-en hidden">Industry</span>
                 </label>
-                <select class="form-input">
+                <select id="cf-branche" class="form-input">
                   <option value="" disabled selected>
                     Bitte wählen...
                   </option>
@@ -181,7 +169,7 @@
                   <span class="lang-de">Nachricht *</span>
                   <span class="lang-en hidden">Message *</span>
                 </label>
-                <textarea required rows="5" class="form-input" placeholder="Wie können wir dir helfen?"></textarea>
+                <textarea id="cf-message" required rows="5" class="form-input" placeholder="Wie können wir dir helfen?"></textarea>
               </div>
 
               <!-- Datenschutz -->
@@ -194,11 +182,12 @@
               </div>
 
               <!-- Submit -->
-              <button type="submit" class="btn-brand w-full">
+              <button type="submit" id="cf-submit" class="btn-brand w-full">
                 <span class="lang-de">Nachricht senden</span>
                 <span class="lang-en hidden">Send message</span>
                 <svg class="w-5 h-5 ml-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
               </button>
+              <p id="cf-status" class="text-sm text-center hidden"></p>
             </form>
           </div>
         </div>
@@ -236,8 +225,7 @@
         <div class="flex items-center gap-3">
           <svg class="w-6 h-6 text-brand-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           <div>
-            <span class="font-display font-bold text-gray-900">Trustpilot 4.8</span>
-            <span class="text-gray-500 text-sm ml-1">/5</span>
+            <span class="font-display font-bold text-gray-900">Made in Germany</span>
           </div>
         </div>
 
@@ -264,6 +252,53 @@
   <div id="footer-container"></div>
 
   <script src="js/components.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-init.js"></script>
+<script>
+async function handleContactSubmit(e) {
+  e.preventDefault();
+  var btn = document.getElementById('cf-submit');
+  var status = document.getElementById('cf-status');
+  var name = document.getElementById('cf-name').value.trim();
+  var email = document.getElementById('cf-email').value.trim();
+  var branche = document.getElementById('cf-branche').value;
+  var message = document.getElementById('cf-message').value.trim();
+
+  if (!name || name.length < 2) { showStatus('Bitte gib deinen Namen ein.', 'error'); return; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showStatus('Bitte gib eine gültige E-Mail ein.', 'error'); return; }
+  if (!message || message.length < 10) { showStatus('Bitte schreibe eine Nachricht (mind. 10 Zeichen).', 'error'); return; }
+
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+  showStatus('Wird gesendet…', 'info');
+
+  try {
+    var { error } = await supabaseClient.from('leads').insert({
+      contact_name: name,
+      email: email,
+      company_name: branche || 'Kontaktformular',
+      source: 'website',
+      status: 'new',
+      notes: 'Branche: ' + (branche || 'k.A.') + '\n\nNachricht:\n' + message
+    });
+    if (error) throw error;
+    document.getElementById('contactForm').reset();
+    showStatus('Nachricht gesendet! Wir melden uns in Kürze.', 'success');
+  } catch (err) {
+    showStatus('Fehler beim Senden. Bitte versuche es erneut oder schreib an info@call-lana.de', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+  }
+}
+function showStatus(msg, type) {
+  var el = document.getElementById('cf-status');
+  el.textContent = msg;
+  el.className = 'text-sm text-center mt-2';
+  el.classList.add(type === 'success' ? 'text-green-600' : type === 'error' ? 'text-red-500' : 'text-gray-500');
+  el.classList.remove('hidden');
+}
+</script>
 <script src="i18n.js"></script>
 <script src="cookie-consent.js"></script>
 </body>

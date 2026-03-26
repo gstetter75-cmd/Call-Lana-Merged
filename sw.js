@@ -3,20 +3,25 @@
 //   HTML + JS → Network-first (always get latest code, fallback to cache offline)
 //   CSS + Images + Fonts → Cache-first (static assets, fast loading)
 //   Supabase API → Skip (let browser handle)
-const CACHE_VERSION = 2;
+const CACHE_VERSION = 3;
 const CACHE_NAME = 'calllana-v' + CACHE_VERSION;
+
+// Derive base path from SW scope (works on any deployment URL)
+const BASE = new URL('./', self.location).pathname;
 
 // Only cache truly static assets (images, fonts, CSS)
 // JS is NOT cached to ensure users always get the latest code after deploys
 const STATIC_ASSETS = [
-  '/Call-Lana-Merged/css/common.css',
-  '/Call-Lana-Merged/css/dashboard.css',
-  '/Call-Lana-Merged/logo-nav.png',
-  '/Call-Lana-Merged/logo-nav.webp',
-  '/Call-Lana-Merged/logo-footer.png',
-  '/Call-Lana-Merged/logo-footer.webp',
-  '/Call-Lana-Merged/favicon.svg'
-];
+  'css/common.css',
+  'css/tailwind.css',
+  'css/design.css',
+  'logo-nav.png',
+  'logo-nav.webp',
+  'logo-footer.png',
+  'logo-footer.webp',
+  'brand_assets/clana-icon-64.png',
+  'favicon.svg'
+].map(p => BASE + p);
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

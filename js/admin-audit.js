@@ -51,8 +51,8 @@ const AdminAudit = {
         ${logs.map(l => `
           <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;">
             <span style="white-space:nowrap;color:var(--tx3);">${new Date(l.created_at).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</span>
-            <span style="flex:1;">${actionLabels[l.action] || l.action}</span>
-            ${l.target_type ? `<span class="badge badge-purple" style="font-size:10px;">${l.target_type}</span>` : ''}
+            <span style="flex:1;">${actionLabels[l.action] || clanaUtils.sanitizeHtml(l.action)}</span>
+            ${l.target_type ? `<span class="badge badge-purple" style="font-size:10px;">${clanaUtils.sanitizeHtml(l.target_type)}</span>` : ''}
           </div>
         `).join('')}
       </div>` : '<div style="color:var(--tx3);text-align:center;padding:20px;font-size:13px;">Noch keine Audit-Einträge.</div>'}

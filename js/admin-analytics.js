@@ -226,7 +226,7 @@ const AdminAnalytics = {
       ${webhooks.length ? `<table class="data-table" style="margin:0;">
         <thead><tr><th>Event</th><th>URL</th><th>Aktiv</th><th></th></tr></thead>
         <tbody>${webhooks.map(w => `<tr>
-          <td>${(eventTypes.find(e => e.key === w.event_type) || {}).label || w.event_type}</td>
+          <td>${(eventTypes.find(e => e.key === w.event_type) || {}).label || clanaUtils.sanitizeHtml(w.event_type)}</td>
           <td style="font-size:11px;max-width:250px;overflow:hidden;text-overflow:ellipsis;">${clanaUtils.sanitizeHtml(w.url)}</td>
           <td><span class="badge ${w.is_active ? 'badge-green' : 'badge-red'}">${w.is_active ? 'Aktiv' : 'Inaktiv'}</span></td>
           <td><button class="btn btn-sm btn-danger" onclick="AdminAnalytics.deleteWebhook('${w.id}')">×</button></td>

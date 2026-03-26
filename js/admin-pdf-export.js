@@ -5,9 +5,20 @@
 
 const AdminPdfExport = {
 
+  async _ensureJsPdf() {
+    if (typeof window.jspdf !== 'undefined') return true;
+    return new Promise((resolve) => {
+      const s1 = document.createElement('script');
+      s1.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js';
+      s1.onload = () => resolve(true);
+      s1.onerror = () => resolve(false);
+      document.head.appendChild(s1);
+    });
+  },
+
   async generateMonthlyReport() {
-    if (typeof jspdf === 'undefined' && typeof window.jspdf === 'undefined') {
-      Components.toast('PDF-Bibliothek wird geladen…', 'info');
+    if (!await this._ensureJsPdf()) {
+      Components.toast('PDF-Bibliothek konnte nicht geladen werden', 'error');
       return;
     }
 
