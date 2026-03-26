@@ -1,4 +1,18 @@
 /* Dashboard-specific styles (base styles in common.css) */
+body{display:flex;overflow:hidden;}
+
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;transition:border-color .2s;}
+.stat-card:hover{border-color:var(--border2);}
+.stat-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;margin-bottom:12px;}
+.stat-icon.purple{background:rgba(124,58,237,.15);}
+.stat-icon.cyan{background:rgba(34,211,238,.15);}
+.stat-icon.green{background:rgba(74,222,128,.15);}
+.stat-icon.orange{background:rgba(251,146,60,.15);}
+.stat-label{font-size:12px;color:var(--tx3);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.stat-value{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--tx);}
+.stat-sub{font-size:11px;color:var(--tx3);margin-top:4px;}
 
 /* HOME TOP ROW — 3 columns, responsive */
 .home-top{display:grid;grid-template-columns:1fr 280px 200px;gap:16px;margin-bottom:24px;}
@@ -69,9 +83,16 @@ tr:hover td{background:rgba(124,58,237,.03);}
 .status-badge.voicemail{background:rgba(251,146,60,.1);color:var(--orange);}
 .status-badge.active{background:rgba(34,211,238,.1);color:var(--cyan);}
 
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:60px 20px;}
+.empty-state .icon{font-size:2.5rem;margin-bottom:12px;}
+.empty-state h3{font-size:1.1rem;font-weight:700;margin-bottom:6px;color:var(--tx);}
+.empty-state p{color:var(--tx3);font-size:.88rem;max-width:340px;margin:0 auto;}
+
 /* LOADING */
 .loading-state{text-align:center;padding:40px;}
 .spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--pu);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg);}}
 .loading-state p{font-size:13px;color:var(--tx3);}
 
 /* BUTTONS — dashboard-specific variants */
@@ -104,6 +125,20 @@ tr:hover td{background:rgba(124,58,237,.03);}
 .plan-features{list-style:none;text-align:left;max-width:300px;margin:0 auto 24px;display:flex;flex-direction:column;gap:8px;}
 .plan-features li{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--tx2);}
 .plan-features li::before{content:'✓';color:var(--pu3);font-weight:700;}
+
+/* FORM STYLES — dashboard-specific (different values than common.css) */
+.form-group{margin-bottom:20px;}
+.form-label{display:block;font-size:12px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+.form-input,.form-select,.form-textarea{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--tx);font-family:'Manrope',sans-serif;transition:border-color .2s;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{outline:none;border-color:var(--border2);}
+.form-select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236b5f8a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:34px;cursor:pointer;}
+.form-select option{background:var(--bg3);color:var(--tx2);}
+.form-textarea{resize:vertical;min-height:100px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-hint{font-size:11px;color:var(--tx3);margin-top:4px;}
+.search-input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:14px;color:var(--tx);font-family:'Manrope',sans-serif;}
+.search-input:focus{outline:none;border-color:var(--border2);}
+.search-input::placeholder{color:var(--tx3);}
 
 /* ASSISTANT EDITOR */
 .editor-tabs{display:flex;gap:2px;background:var(--bg3);border-radius:10px;padding:3px;margin-bottom:24px;overflow-x:auto;}
@@ -147,6 +182,9 @@ tr:hover td{background:rgba(124,58,237,.03);}
 }
 @media(max-width:900px){
   .home-top{grid-template-columns:1fr 1fr;}.home-top .balance-donut-card{grid-column:span 2;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .content{padding:24px 20px;}
+  .form-row{grid-template-columns:1fr;}
   .billing-top-row{grid-template-columns:1fr;}
   .billing-settings-row{grid-template-columns:1fr;}
   .usage-stats-row{grid-template-columns:repeat(2,1fr);}
@@ -158,9 +196,14 @@ tr:hover td{background:rgba(124,58,237,.03);}
   .sb-close{display:block;}
   .topbar-hamburger{display:block;}
   .topbar{padding:0 16px;}
+  .content{padding:16px 12px;}
+  h1{font-size:1.3rem;}
+  .page-desc{font-size:.85rem;margin-bottom:20px;}
   .data-header{padding:14px 16px;flex-wrap:wrap;gap:8px;}
   .data-header h2{font-size:.9rem;}
   td,th{padding:10px 12px;font-size:12px;}
+  .modal{margin:12px;padding:20px;max-height:95vh;}
+  .modal-title{font-size:1rem;}
   .balance-card{padding:20px;}
   .balance-value-big{font-size:2rem;}
   .editor-tabs{-webkit-overflow-scrolling:touch;scrollbar-width:none;}
