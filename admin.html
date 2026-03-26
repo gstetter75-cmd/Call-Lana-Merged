@@ -50,6 +50,9 @@
       <div class="tab-bar">
         <button class="tab-btn active" data-tab="overview">Übersicht</button>
         <button class="tab-btn" data-tab="analytics">Analytics</button>
+        <button class="tab-btn" data-tab="onboarding">Onboarding</button>
+        <button class="tab-btn" data-tab="minutes-alert">Minuten-Alert</button>
+        <button class="tab-btn" data-tab="error-log">Fehler-Log</button>
         <button class="tab-btn" data-tab="integrations">Integrationen</button>
         <button class="tab-btn" data-tab="customers">Kunden</button>
         <button class="tab-btn" data-tab="users">Benutzer</button>
@@ -158,6 +161,117 @@
             </div>
             <button class="btn btn-sm" onclick="AdminAnalytics.generateMonthlyInvoices()">Rechnungen generieren</button>
           </div>
+        </div>
+      </div>
+
+      <!-- ONBOARDING QUEUE (Spec §7) -->
+      <div class="page-section" id="tab-onboarding">
+        <h1>Onboarding-Queue</h1>
+        <p class="page-desc">Neue Kunden die noch nicht live geschaltet sind.</p>
+        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px;">
+          <div class="stat-card">
+            <div class="stat-icon orange">🔄</div>
+            <div class="stat-label">Warten auf Setup</div>
+            <div class="stat-value" id="onb-pending">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon cyan">🔧</div>
+            <div class="stat-label">In Einrichtung</div>
+            <div class="stat-value" id="onb-setup">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">✅</div>
+            <div class="stat-label">Diese Woche live</div>
+            <div class="stat-value" id="onb-live">0</div>
+          </div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;">
+          <div class="data-header" style="padding:16px 20px;border-bottom:1px solid var(--border);">
+            <h2 style="font-size:14px;">Onboarding-Pipeline</h2>
+            <span class="badge" id="onb-total-badge">0 Kunden</span>
+          </div>
+          <table class="data-table">
+            <thead><tr><th>Kunde</th><th>E-Mail</th><th>Plan</th><th>Registriert</th><th>Status</th><th>Nächster Schritt</th><th>Aktionen</th></tr></thead>
+            <tbody id="onb-tbody">
+              <tr><td colspan="7" style="text-align:center;color:var(--tx3);padding:40px;">Laden...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MINUTES ALERT (Spec §7) -->
+      <div class="page-section" id="tab-minutes-alert">
+        <h1>Minuten-Alert</h1>
+        <p class="page-desc">Kunden deren Kontingent fast aufgebraucht ist.</p>
+        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px;">
+          <div class="stat-card" style="border-color:var(--red);border-width:1.5px;">
+            <div class="stat-icon" style="background:rgba(248,113,113,.15);color:var(--red);">🔴</div>
+            <div class="stat-label">Kritisch (90%+)</div>
+            <div class="stat-value" id="min-critical" style="color:var(--red);">0</div>
+          </div>
+          <div class="stat-card" style="border-color:var(--orange);border-width:1.5px;">
+            <div class="stat-icon" style="background:rgba(251,146,60,.15);color:var(--orange);">🟠</div>
+            <div class="stat-label">Warnung (80%+)</div>
+            <div class="stat-value" id="min-warning" style="color:var(--orange);">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">🟢</div>
+            <div class="stat-label">Normal (&lt;80%)</div>
+            <div class="stat-value" id="min-normal">0</div>
+          </div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;">
+          <table class="data-table">
+            <thead><tr><th>Kunde</th><th>Plan</th><th>Verbraucht</th><th>Kontingent</th><th>Nutzung</th><th>Status</th></tr></thead>
+            <tbody id="min-tbody">
+              <tr><td colspan="6" style="text-align:center;color:var(--tx3);padding:40px;">Laden...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ERROR LOG (Spec §7) -->
+      <div class="page-section" id="tab-error-log">
+        <h1>Fehler-Log</h1>
+        <p class="page-desc">n8n Error Monitoring — letzte Fehler und Stack Traces.</p>
+        <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px;">
+          <div class="stat-card" style="border-color:var(--red);border-width:1.5px;">
+            <div class="stat-icon" style="background:rgba(248,113,113,.15);color:var(--red);">❌</div>
+            <div class="stat-label">Fehler heute</div>
+            <div class="stat-value" id="err-today" style="color:var(--red);">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange">⚠️</div>
+            <div class="stat-label">Warnungen</div>
+            <div class="stat-value" id="err-warnings">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">✅</div>
+            <div class="stat-label">Gelöst</div>
+            <div class="stat-value" id="err-resolved">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple">📊</div>
+            <div class="stat-label">Uptime</div>
+            <div class="stat-value" id="err-uptime">99.9%</div>
+          </div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;">
+          <div class="data-header" style="padding:16px 20px;border-bottom:1px solid var(--border);">
+            <h2 style="font-size:14px;">Letzte Fehler</h2>
+            <select class="form-input form-select" id="errSeverityFilter" style="width:auto;padding:6px 28px 6px 10px;font-size:12px;">
+              <option value="">Alle</option>
+              <option value="error">Fehler</option>
+              <option value="warning">Warnung</option>
+              <option value="info">Info</option>
+            </select>
+          </div>
+          <table class="data-table">
+            <thead><tr><th>Zeitpunkt</th><th>Service</th><th>Severity</th><th>Nachricht</th><th>Details</th></tr></thead>
+            <tbody id="err-tbody">
+              <tr><td colspan="5" style="text-align:center;color:var(--tx3);padding:40px;">Laden...</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -459,6 +573,7 @@
 <script src="js/admin-audit.js"></script>
 <script src="js/admin-pdf-export.js"></script>
 <script src="js/admin-health.js"></script>
+<script src="js/admin-extra.js"></script>
 <script src="js/integrations-hub.js"></script>
 <script src="js/global-search.js"></script>
 <script src="js/keyboard-shortcuts.js"></script>
@@ -521,7 +636,7 @@ function switchTab(tab) {
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
   const section = document.getElementById('tab-' + tab);
   if (section) section.classList.add('active');
-  const tabLabels = { overview: 'Übersicht', analytics: 'Analytics', integrations: 'Integrationen', customers: 'Kunden', users: 'Benutzer', orgs: 'Organisationen', system: 'System' };
+  const tabLabels = { overview: 'Übersicht', analytics: 'Analytics', onboarding: 'Onboarding', 'minutes-alert': 'Minuten-Alert', 'error-log': 'Fehler-Log', integrations: 'Integrationen', customers: 'Kunden', users: 'Benutzer', orgs: 'Organisationen', system: 'System' };
   document.getElementById('breadcrumb-page').textContent = tabLabels[tab] || tab;
   window.location.hash = tab;
 
@@ -546,6 +661,9 @@ function switchTab(tab) {
     AdminAnalytics.renderChurnWarnings(document.getElementById('admin-churn'));
     AdminAnalytics.renderCohortAnalysis(document.getElementById('admin-cohorts'));
     AdminAnalytics.renderWebhookConfig(document.getElementById('admin-webhooks'));
+  }
+  if (typeof AdminExtra !== 'undefined') {
+    AdminExtra.initTab(tab);
   }
 }
 
