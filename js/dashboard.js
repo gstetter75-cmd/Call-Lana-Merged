@@ -917,7 +917,14 @@ const breadcrumbNames = {
   integrations: 'Integrationen'
 };
 
+// Valid dashboard pages whitelist
+const VALID_PAGES = Object.keys(breadcrumbNames);
+
 function navigateToPage(page, updateHash = true) {
+  // Validate page against whitelist — fallback to 'home' for unknown routes
+  if (!VALID_PAGES.includes(page) && page !== 'assistant-edit') {
+    page = 'home';
+  }
   document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
   const el = document.getElementById('page-' + page);
   if (el) el.classList.add('active');

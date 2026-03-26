@@ -97,4 +97,21 @@ const auth = {
   }
 };
 
+// Auth state change listener — handles cross-tab logout, session expiry
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_OUT') {
+    // Invalidate cache immediately
+    auth._userPromise = null;
+    // Only redirect if on a protected page (not login/register/public)
+    const protectedPages = ['dashboard.html', 'admin.html', 'sales.html', 'settings.html'];
+    const currentPage = window.location.pathname.split('/').pop();
+    if (protectedPages.includes(currentPage)) {
+      window.location.href = 'login.html';
+    }
+  } else if (event === 'TOKEN_REFRESHED' || event === 'SIGNED_IN') {
+    // Invalidate stale cache so next getUser() fetches fresh data
+    auth._userPromise = null;
+  }
+});
+
 window.clanaAuth = auth;

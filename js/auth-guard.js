@@ -25,16 +25,20 @@ const AuthGuard = {
     }
     const profile = await this.getProfile();
     if (!profile) {
-      // Session valid but profile fetch failed — build a minimal fallback
+      // Session valid but profile fetch failed — SECURITY: never trust user_metadata for role
+      // Always default to 'customer' (least privilege) to prevent privilege escalation
+      Logger.warn('AuthGuard.init', 'Profile fetch failed, using least-privilege fallback');
+      this._revealContent();
       return {
         id: user.id,
         email: user.email,
-        role: user.user_metadata?.role || 'customer',
-        first_name: user.user_metadata?.firstName || '',
-        last_name: user.user_metadata?.lastName || '',
+        role: 'customer',
+        first_name: '',
+        last_name: '',
         organizations: null
       };
     }
+    this._revealContent();
     return profile;
   },
 
@@ -68,6 +72,10 @@ const AuthGuard = {
     }
   },
 
+  _revealContent() {
+    document.body.classList.remove('auth-pending');
+  },
+
   async requireRole(allowedRoles) {
     const profile = await this.init();
     if (!profile) return null;
@@ -77,6 +85,7 @@ const AuthGuard = {
       window.location.href = home;
       return null;
     }
+    this._revealContent();
     return profile;
   },
 

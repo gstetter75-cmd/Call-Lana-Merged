@@ -322,22 +322,18 @@
         // Check if a session was created (email confirmation disabled) or if confirmation is needed
         const user = await clanaAuth.getUser();
         if (user) {
-          // Insert profile row with error handling
+          // Profile is created server-side by handle_new_user() trigger.
+          // Verify it exists; update with registration form data if needed.
           try {
-            const { error: profileError } = await supabaseClient.from('profiles').insert({
-              id: user.id,
-              email: user.email,
-              role: 'customer',
+            const { error: updateError } = await supabaseClient.from('profiles').update({
               first_name: firstName || null,
               last_name: lastName  || null,
               company:    company  || null,
               industry:   industry || null,
-            });
-            if (profileError) {
-              Logger.error('register.profile', profileError);
-            }
+            }).eq('id', user.id);
+            if (updateError) Logger.warn('register.profileUpdate', updateError);
           } catch (err) {
-            Logger.error('register.profile', err);
+            Logger.warn('register.profileUpdate', err);
           }
           window.location.href = 'dashboard.html';
         } else {

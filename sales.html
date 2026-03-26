@@ -69,7 +69,7 @@
   .tag-chip { display:inline-block; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; margin:1px; }
 </style>
 </head>
-<body>
+<body class="auth-pending">
 <div class="app-layout">
   <div id="sidebar-container"></div>
   <div class="main">
@@ -749,7 +749,10 @@ async function init() {
   loadAllData();
 }
 
+const VALID_SALES_TABS = ['pipeline', 'leads', 'tasks', 'customers', 'availability', 'commission'];
+
 function switchTab(tab) {
+  if (!VALID_SALES_TABS.includes(tab)) tab = 'pipeline';
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
   const section = document.getElementById('tab-' + tab);

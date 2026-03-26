@@ -34,7 +34,7 @@
   @media (max-width: 900px) { .system-stats { grid-template-columns: 1fr; } .search-input { width: 100%; } }
 </style>
 </head>
-<body>
+<body class="auth-pending">
 <div class="app-layout">
   <div id="sidebar-container"></div>
   <div class="main">
@@ -631,7 +631,11 @@ async function init() {
   document.getElementById('btn-save-role')?.addEventListener('click', saveUserRole);
 }
 
+const VALID_ADMIN_TABS = ['overview', 'analytics', 'onboarding', 'minutes-alert', 'error-log', 'integrations', 'customers', 'users', 'orgs', 'system'];
+
 function switchTab(tab) {
+  // Validate tab against whitelist
+  if (!VALID_ADMIN_TABS.includes(tab)) tab = 'overview';
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
   const section = document.getElementById('tab-' + tab);
