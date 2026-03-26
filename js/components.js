@@ -65,7 +65,7 @@
     <nav class="fixed top-0 left-0 right-0 z-50 bg-white/92 backdrop-blur-md" style="border-bottom: 1px solid rgba(124,58,237,0.08); box-shadow: 0 1px 12px rgba(124,58,237,0.04);">
       <div class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-20">
         <a href="index.html" class="flex items-center focus-visible:outline-2 focus-visible:outline-brand-400 focus-visible:outline-offset-4 rounded group">
-          <img src="brand_assets/A_vector-style_digital_logo_for_the_brand_Clana_.png" alt="Call Lana Logo" style="height:36px; width:auto; max-width:160px; filter: drop-shadow(0 2px 8px rgba(124,58,237,0.18));" />
+          <picture><source srcset="logo-nav.webp" type="image/webp"><img src="logo-nav.png" alt="Call Lana" style="height:36px; width:auto;" /></picture>
         </a>
         <div class="hidden md:flex items-center gap-7">
           <a href="funktionen.html" class="nav-link text-sm font-medium ${isActive('funktionen')}" data-i18n="nav.features">${t('nav.features')}</a>
