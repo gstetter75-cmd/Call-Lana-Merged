@@ -212,7 +212,6 @@
           if (!canvas) return;
         }
         canvas.style.pointerEvents = 'auto';
-        var rect = canvas.getBoundingClientRect();
         var synthetic = new PointerEvent('pointermove', {
           clientX: e.clientX,
           clientY: e.clientY,
@@ -255,9 +254,13 @@
       var TORSO_SHIFT_RANGE = 8;  // pixels lateral shift
       var CHEST_OFFSET_Z = 30;    // badge sits 30px in front of rotation axis (chest depth)
 
+      var cachedRect = null;
       function updateBadgeOnMouseMove(e) {
         if (!robotContainer) return;
-        var rect = robotContainer.getBoundingClientRect();
+        if (!cachedRect) cachedRect = robotContainer.getBoundingClientRect();
+        var rect = cachedRect;
+        // Restart animation loop if it stopped due to convergence
+        if (!badgeRaf) badgeRaf = requestAnimationFrame(animateBadge);
         // Normalized -1 to 1 from container center
         var nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
         var ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
@@ -271,24 +274,26 @@
         targetOffY = ny * (TORSO_SHIFT_RANGE * 0.3);
       }
 
-      // Smooth interpolation loop
       var badgeRaf;
+      var EPSILON = 0.01;
       function animateBadge() {
         badgeRotY += (targetRotY - badgeRotY) * 0.08;
         badgeRotX += (targetRotX - badgeRotX) * 0.08;
         badgeOffX += (targetOffX - badgeOffX) * 0.08;
         badgeOffY += (targetOffY - badgeOffY) * 0.08;
-        // Apply full 3D transform: the badge is physically on the chest surface.
-        // First we position the anchor point, then rotate the whole badge as a unit
-        // around the torso center axis. translateZ pushes badge forward (chest depth)
-        // so rotation causes proper perspective foreshortening.
         logo.style.transform = 'translate3d(' + badgeOffX.toFixed(2) + 'px,' + badgeOffY.toFixed(2) + 'px,' + CHEST_OFFSET_Z + 'px) rotateY(' + badgeRotY.toFixed(2) + 'deg) rotateX(' + badgeRotX.toFixed(2) + 'deg)';
+        // Stop loop when values converge to save CPU
+        if (Math.abs(targetRotY - badgeRotY) < EPSILON && Math.abs(targetRotX - badgeRotX) < EPSILON && Math.abs(targetOffX - badgeOffX) < EPSILON && Math.abs(targetOffY - badgeOffY) < EPSILON) {
+          badgeRaf = null;
+          return;
+        }
         badgeRaf = requestAnimationFrame(animateBadge);
       }
 
+      window.addEventListener('resize', function() { cachedRect = null; }, { passive: true });
+
       setTimeout(function() {
         logo.style.opacity = '0.9';
-        // Start tracking torso rotation
         if (heroSection) {
           heroSection.addEventListener('mousemove', updateBadgeOnMouseMove, { passive: true });
         }

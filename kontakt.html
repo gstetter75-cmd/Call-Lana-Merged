@@ -253,43 +253,40 @@
 
   <script src="js/components.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/logger.js"></script>
 <script src="js/supabase-init.js"></script>
+<script src="js/db/messaging.js"></script>
 <script>
 async function handleContactSubmit(e) {
   e.preventDefault();
   var btn = document.getElementById('cf-submit');
-  var status = document.getElementById('cf-status');
   var name = document.getElementById('cf-name').value.trim();
   var email = document.getElementById('cf-email').value.trim();
   var branche = document.getElementById('cf-branche').value;
   var message = document.getElementById('cf-message').value.trim();
 
   if (!name || name.length < 2) { showStatus('Bitte gib deinen Namen ein.', 'error'); return; }
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showStatus('Bitte gib eine gültige E-Mail ein.', 'error'); return; }
   if (!message || message.length < 10) { showStatus('Bitte schreibe eine Nachricht (mind. 10 Zeichen).', 'error'); return; }
 
   btn.disabled = true;
   btn.style.opacity = '0.6';
   showStatus('Wird gesendet…', 'info');
 
-  try {
-    var { error } = await supabaseClient.from('leads').insert({
-      contact_name: name,
-      email: email,
-      company_name: branche || 'Kontaktformular',
-      source: 'website',
-      status: 'new',
-      notes: 'Branche: ' + (branche || 'k.A.') + '\n\nNachricht:\n' + message
-    });
-    if (error) throw error;
+  var result = await dbMessaging.submitContactForm({
+    name: name,
+    email: email,
+    company: branche || 'Kontaktformular',
+    message: 'Branche: ' + (branche || 'k.A.') + '\n\nNachricht:\n' + message
+  });
+
+  if (result.success) {
     document.getElementById('contactForm').reset();
     showStatus('Nachricht gesendet! Wir melden uns in Kürze.', 'success');
-  } catch (err) {
+  } else {
     showStatus('Fehler beim Senden. Bitte versuche es erneut oder schreib an info@call-lana.de', 'error');
-  } finally {
-    btn.disabled = false;
-    btn.style.opacity = '1';
   }
+  btn.disabled = false;
+  btn.style.opacity = '1';
 }
 function showStatus(msg, type) {
   var el = document.getElementById('cf-status');

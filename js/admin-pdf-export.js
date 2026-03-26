@@ -5,15 +5,19 @@
 
 const AdminPdfExport = {
 
+  _jsPdfPromise: null,
+
   async _ensureJsPdf() {
     if (typeof window.jspdf !== 'undefined') return true;
-    return new Promise((resolve) => {
+    if (this._jsPdfPromise) return this._jsPdfPromise;
+    this._jsPdfPromise = new Promise((resolve) => {
       const s1 = document.createElement('script');
       s1.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js';
       s1.onload = () => resolve(true);
-      s1.onerror = () => resolve(false);
+      s1.onerror = () => { this._jsPdfPromise = null; resolve(false); };
       document.head.appendChild(s1);
     });
+    return this._jsPdfPromise;
   },
 
   async generateMonthlyReport() {
