@@ -687,6 +687,7 @@ document.querySelectorAll('.sn-item').forEach(item => {
     document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
     document.getElementById('tab-' + tab).style.display = 'block';
     if (tab === 'connectors') initConnectorTab();
+    if (typeof SettingsExtra !== 'undefined') SettingsExtra.initTab(tab);
     window.location.hash = tab;
   });
 });
@@ -703,6 +704,7 @@ document.querySelectorAll('.sn-item').forEach(item => {
       document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
       tabEl.style.display = 'block';
       if (hash === 'connectors') initConnectorTab();
+      if (typeof SettingsExtra !== 'undefined') SettingsExtra.initTab(hash);
     }
   }
 })();
