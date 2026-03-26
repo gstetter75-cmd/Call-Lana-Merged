@@ -1704,6 +1704,10 @@ const _loadedPages = new Set(['home']);
 const origNavigate = navigateToPage;
 navigateToPage = function(page, updateHash) {
   origNavigate(page, updateHash);
+  // Sync mobile bottom nav active state
+  document.querySelectorAll('.mob-nav-item').forEach(item => {
+    item.classList.toggle('active', item.dataset.page === page);
+  });
   if (_loadedPages.has(page)) return;
   _loadedPages.add(page);
   switch (page) {

@@ -224,6 +224,13 @@ tr:hover td{background:rgba(124,58,237,.03);}
 .appt-block.status-completed{background:rgba(124,58,237,.06);border-left-color:var(--pu3);}
 .appt-block.status-pending{background:rgba(251,146,60,.08);border-left-color:var(--orange);}
 
+/* MOBILE BOTTOM NAV (Spec §6) */
+.mobile-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);z-index:50;padding:4px 0;padding-bottom:env(safe-area-inset-bottom,4px);}
+.mobile-bottom-nav a{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;}
+.mob-nav-item{color:var(--tx3);font-size:10px;font-weight:600;padding:6px 0;transition:color .2s;cursor:pointer;}
+.mob-nav-item.active{color:var(--pu);}
+.mob-nav-item svg{stroke:currentColor;}
+
 /* EMERGENCY BANNER */
 .emergency-banner{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;margin-bottom:16px;animation:emergencyPulse 2s ease-in-out infinite;}
 @keyframes emergencyPulse{0%,100%{border-color:rgba(239,68,68,.3);}50%{border-color:rgba(239,68,68,.6);}}
@@ -253,11 +260,18 @@ tr:hover td{background:rgba(124,58,237,.03);}
   .sidebar.open{transform:translateX(0);}
   .sidebar-overlay.open{display:block;}
   .sb-close{display:block;}
-  .topbar-hamburger{display:block;}
+  .topbar-hamburger{display:none;} /* Hidden: bottom nav replaces hamburger */
   .topbar{padding:0 16px;}
-  .content{padding:16px 12px;}
+  .content{padding:16px 12px;padding-bottom:80px;} /* Space for bottom nav */
   h1{font-size:1.3rem;}
   .page-desc{font-size:.85rem;margin-bottom:20px;}
+  /* Show bottom nav */
+  .mobile-bottom-nav{display:flex;justify-content:space-around;align-items:center;}
+  /* 2x2 metric grid on mobile */
+  .stats-grid{grid-template-columns:repeat(2,1fr) !important;gap:10px;}
+  .stat-card{padding:14px;}
+  .stat-value{font-size:1.3rem;}
+  .stat-icon{width:32px;height:32px;font-size:.85rem;margin-bottom:8px;}
   .data-header{padding:14px 16px;flex-wrap:wrap;gap:8px;}
   .data-header h2{font-size:.9rem;}
   td,th{padding:10px 12px;font-size:12px;}
