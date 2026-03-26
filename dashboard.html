@@ -48,7 +48,38 @@ body{display:flex;overflow:hidden;}
       <h1>Dashboard</h1>
       <p class="page-desc">Willkommen zurück! Hier ist deine Übersicht.</p>
 
-      <!-- TOP ROW: Chart + Stats + Donut -->
+      <!-- EMERGENCY BANNER (realtime) -->
+      <div id="emergency-banner"></div>
+
+      <!-- METRIC CARDS ROW -->
+      <div class="stats-grid" id="metric-cards">
+        <div class="stat-card">
+          <div class="stat-icon purple">📞</div>
+          <div class="stat-label">Anrufe heute</div>
+          <div class="stat-value" id="metricCallsToday">0</div>
+          <div class="stat-sub" id="metricCallsTrend"></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon cyan">📅</div>
+          <div class="stat-label">Buchungsrate</div>
+          <div class="stat-value" id="metricBookingRate">0%</div>
+          <div class="stat-sub" id="metricBookingTrend"></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon orange">⏱</div>
+          <div class="stat-label">Minuten heute</div>
+          <div class="stat-value" id="metricMinutes">0</div>
+          <div class="stat-sub" id="metricMinutesTrend"></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">😊</div>
+          <div class="stat-label">Sentiment Score</div>
+          <div class="stat-value" id="metricSentiment">–</div>
+          <div class="stat-sub" id="metricSentimentTrend"></div>
+        </div>
+      </div>
+
+      <!-- TOP ROW: Chart + Donut -->
       <div class="home-top">
         <!-- Line Chart -->
         <div class="home-chart-card">
@@ -57,30 +88,6 @@ body{display:flex;overflow:hidden;}
             <select class="month-select" id="monthSelect"></select>
           </div>
           <svg class="chart-svg" id="callChart" viewBox="0 0 600 140" preserveAspectRatio="none"></svg>
-        </div>
-        <!-- Compact Stats -->
-        <div class="compact-stats">
-          <div class="cs-item">
-            <div class="cs-icon purple">📞</div>
-            <div class="cs-info">
-              <div class="cs-label">Anrufe</div>
-              <div class="cs-value" id="csAnrufe">0</div>
-            </div>
-          </div>
-          <div class="cs-item">
-            <div class="cs-icon cyan">⏱</div>
-            <div class="cs-info">
-              <div class="cs-label">Ø Dauer</div>
-              <div class="cs-value" id="csSms">0 min</div>
-            </div>
-          </div>
-          <div class="cs-item">
-            <div class="cs-icon orange">✅</div>
-            <div class="cs-info">
-              <div class="cs-label">Erfolgsrate</div>
-              <div class="cs-value" id="csKosten">0%</div>
-            </div>
-          </div>
         </div>
         <!-- Balance Donut -->
         <div class="balance-donut-card">
@@ -96,8 +103,42 @@ body{display:flex;overflow:hidden;}
         </div>
       </div>
 
-      <!-- BOTTOM ROW: Assistants Overview -->
-      <div class="home-bottom">
+      <!-- MIDDLE ROW: Last 5 Calls + Today's Appointments + Top Leads -->
+      <div class="home-widgets-grid">
+        <!-- Last 5 Calls -->
+        <div class="card" style="padding:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <h3 style="margin:0;font-size:14px;">Letzte Anrufe</h3>
+            <a href="#transactions" onclick="navigateToPage('transactions')" style="font-size:11px;color:var(--pu);text-decoration:none;font-weight:600;">Alle →</a>
+          </div>
+          <div id="widget-recent-calls">
+            <div style="color:var(--tx3);font-size:13px;text-align:center;padding:20px;">Lade…</div>
+          </div>
+        </div>
+        <!-- Today's Appointments -->
+        <div class="card" style="padding:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <h3 style="margin:0;font-size:14px;">Termine heute</h3>
+            <span style="font-size:11px;color:var(--tx3);font-weight:600;" id="widget-appointments-count">0</span>
+          </div>
+          <div id="widget-appointments">
+            <div style="color:var(--tx3);font-size:13px;text-align:center;padding:20px;">Keine Termine heute</div>
+          </div>
+        </div>
+        <!-- Top Leads -->
+        <div class="card" style="padding:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <h3 style="margin:0;font-size:14px;">Top Leads</h3>
+            <span class="badge badge-purple" style="font-size:10px;">Lead Score</span>
+          </div>
+          <div id="widget-top-leads">
+            <div style="color:var(--tx3);font-size:13px;text-align:center;padding:20px;">Lade…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTTOM ROW: Assistants + Performance + Heatmap -->
+      <div class="home-bottom" style="margin-top:20px;">
         <h2>Assistenten</h2>
         <div class="assistants-grid" id="homeAssistants">
           <div class="loading-state"><div class="spinner"></div><p>Lade Assistenten…</p></div>
@@ -955,6 +996,7 @@ body{display:flex;overflow:hidden;}
 <script src="js/notifications.js"></script>
 <script src="js/dashboard-extras.js"></script>
 <script src="js/dashboard-analytics.js"></script>
+<script src="js/dashboard-home-widgets.js"></script>
 <script src="js/global-search.js"></script>
 <script src="js/keyboard-shortcuts.js"></script>
 <script>KeyboardShortcuts.init({});</script>

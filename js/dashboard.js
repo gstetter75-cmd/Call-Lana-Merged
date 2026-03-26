@@ -53,6 +53,11 @@ let currentConversationId = null;
     DashboardAnalytics.loadCallHeatmap();
   }
 
+  // Home widgets: metric cards, emergency banner, recent calls, appointments, top leads
+  if (typeof HomeWidgets !== 'undefined') {
+    HomeWidgets.init();
+  }
+
   // Team management
   document.getElementById('btnInviteMember')?.addEventListener('click', inviteTeamMember);
   document.getElementById('btnNewConversation')?.addEventListener('click', startNewConversation);
