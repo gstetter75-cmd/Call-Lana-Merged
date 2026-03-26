@@ -240,6 +240,7 @@ tr:hover td{background:rgba(124,58,237,.03);}
 @media(max-width:900px){
   .home-top{grid-template-columns:1fr;}.home-top .balance-donut-card{grid-column:span 1;}
   .home-widgets-grid{grid-template-columns:1fr 1fr;}
+  .analytics-row-1,.analytics-row-2,.analytics-row-3{grid-template-columns:1fr !important;}
   .stats-grid{grid-template-columns:repeat(2,1fr);}
   .content{padding:24px 20px;}
   .form-row{grid-template-columns:1fr;}

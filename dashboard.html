@@ -458,6 +458,48 @@ body{display:flex;overflow:hidden;}
       </div>
     </div>
 
+    <!-- ===================== ANALYTICS ===================== -->
+    <div id="page-analytics" class="page-section">
+      <h1>Analytics</h1>
+      <p class="page-desc">Datenbasierte Einblicke in deine Anruf-Performance.</p>
+
+      <!-- Row 1: Calls/Day + Outcome Mix -->
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px;" class="analytics-row-1">
+        <div class="card" style="padding:20px;">
+          <h3 style="font-size:14px;margin-bottom:12px;">Anrufe pro Tag</h3>
+          <div id="chart-calls-per-day" style="height:180px;"></div>
+        </div>
+        <div class="card" style="padding:20px;">
+          <h3 style="font-size:14px;margin-bottom:12px;">Ergebnis-Mix</h3>
+          <div id="chart-outcome-mix" style="height:180px;display:flex;align-items:center;justify-content:center;"></div>
+        </div>
+      </div>
+
+      <!-- Row 2: Booking Rate Trend + Top Call Hours -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;" class="analytics-row-2">
+        <div class="card" style="padding:20px;">
+          <h3 style="font-size:14px;margin-bottom:12px;">Buchungsrate Trend</h3>
+          <div id="chart-booking-trend" style="height:180px;"></div>
+        </div>
+        <div class="card" style="padding:20px;">
+          <h3 style="font-size:14px;margin-bottom:12px;">Top Anrufzeiten</h3>
+          <div id="chart-call-hours" style="height:180px;"></div>
+        </div>
+      </div>
+
+      <!-- Row 3: Sentiment Trend + Minutes Gauge -->
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px;" class="analytics-row-3">
+        <div class="card" style="padding:20px;">
+          <h3 style="font-size:14px;margin-bottom:12px;">Sentiment Trend</h3>
+          <div id="chart-sentiment-trend" style="height:180px;"></div>
+        </div>
+        <div class="card" style="padding:20px;">
+          <h3 style="font-size:14px;margin-bottom:12px;">Minutenverbrauch</h3>
+          <div id="chart-minutes-gauge" style="height:180px;display:flex;align-items:center;justify-content:center;"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- ===================== BILLING ===================== -->
     <div id="page-billing" class="page-section">
       <h1>Guthaben & Verbrauch</h1>
@@ -1049,6 +1091,7 @@ body{display:flex;overflow:hidden;}
 <script src="js/dashboard-analytics.js"></script>
 <script src="js/dashboard-home-widgets.js"></script>
 <script src="js/appointments.js"></script>
+<script src="js/analytics-page.js"></script>
 <script src="js/global-search.js"></script>
 <script src="js/keyboard-shortcuts.js"></script>
 <script>KeyboardShortcuts.init({});</script>

@@ -903,6 +903,7 @@ const breadcrumbNames = {
   phones: 'Telefonnummern',
   transactions: 'Anrufverlauf',
   appointments: 'Termine',
+  analytics: 'Analytics',
   billing: 'Guthaben',
   payment: 'Zahlungsmethoden',
   plans: 'Paket',
@@ -1706,6 +1707,7 @@ navigateToPage = function(page, updateHash) {
       if (typeof DashboardExtras !== 'undefined') DashboardExtras.renderTranscriptSearch(document.getElementById('transcript-search-section'));
       break;
     case 'appointments': if (typeof AppointmentsPage !== 'undefined') AppointmentsPage.init(); break;
+    case 'analytics': if (typeof AnalyticsPage !== 'undefined') AnalyticsPage.init(); break;
     case 'billing': loadBilling(); loadBillingData(); break;
     case 'plan': loadPlan(); break;
     case 'team': loadTeam(); break;
