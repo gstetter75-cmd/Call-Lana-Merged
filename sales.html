@@ -126,6 +126,12 @@
         <!-- Conversion Funnel -->
         <div class="card" style="margin-bottom:24px;padding:16px 20px;" id="conversion-funnel"></div>
 
+        <!-- Pipeline Stage Values -->
+        <div class="card" style="margin-bottom:24px;padding:16px 20px;" id="pipeline-stage-values">
+          <h3 style="font-size:14px;margin-bottom:12px;">Deal-Wert pro Stage</h3>
+          <div id="stage-value-bars"></div>
+        </div>
+
         <div class="kanban-board" id="pipeline-board"></div>
 
         <!-- Won vs Lost Chart + Deal Forecast -->
@@ -732,8 +738,10 @@ async function init() {
   const p = () => { switchTab('pipeline'); }; p._description = 'Pipeline';
   KeyboardShortcuts.init({ n, k, p });
 
-  // Realtime: auto-refresh leads when changed by others
+  // Realtime: auto-refresh when data changes
   clanaDB.subscribeTable('leads', () => { loadLeads(); });
+  clanaDB.subscribeTable('tasks', () => { loadTasks(); });
+  clanaDB.subscribeTable('customers', () => { if (typeof customersLoaded !== 'undefined' && customersLoaded) loadCustomers(); });
 
   // Notification center
   if (typeof NotificationCenter !== 'undefined') NotificationCenter.init(currentProfile);
@@ -808,6 +816,27 @@ function renderPipeline() {
       </div>
     `;
   }).join('');
+
+  // Render stage value bars
+  const stageValuesEl = document.getElementById('stage-value-bars');
+  if (stageValuesEl) {
+    const stageValues = PIPELINE_STAGES.filter(s => s.key !== 'lost').map(stage => {
+      const leads = allLeads.filter(l => l.status === stage.key);
+      const total = leads.reduce((sum, l) => sum + (parseFloat(l.value) || 0), 0);
+      return { label: stage.label, color: stage.color, value: total, count: leads.length };
+    });
+    const maxVal = Math.max(...stageValues.map(s => s.value), 1);
+    stageValuesEl.innerHTML = stageValues.map(s => {
+      const pct = Math.round((s.value / maxVal) * 100);
+      return '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">' +
+        '<span style="font-size:12px;font-weight:600;color:var(--tx2);min-width:90px;">' + s.label + ' (' + s.count + ')</span>' +
+        '<div style="flex:1;height:10px;background:var(--bg3);border-radius:5px;overflow:hidden;">' +
+          '<div style="width:' + pct + '%;height:100%;background:' + s.color + ';border-radius:5px;transition:width .3s;"></div>' +
+        '</div>' +
+        '<span style="font-size:12px;font-weight:700;color:var(--tx);min-width:70px;text-align:right;">' + s.value.toLocaleString('de-DE') + ' €</span>' +
+      '</div>';
+    }).join('');
+  }
 }
 
 async function dropLead(event, newStage) {
