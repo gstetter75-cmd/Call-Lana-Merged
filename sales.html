@@ -644,8 +644,16 @@
 <script src="js/logger.js"></script>
 <script src="js/supabase-init.js"></script>
 <script src="js/auth.js"></script>
+<script src="js/db/calls.js"></script>
+<script src="js/db/assistants.js"></script>
+<script src="js/db/profiles.js"></script>
+<script src="js/db/leads.js"></script>
+<script src="js/db/messaging.js"></script>
+<script src="js/db/customers.js"></script>
+<script src="js/db/tools.js"></script>
 <script src="js/db.js"></script>
 <script src="js/auth-guard.js"></script>
+<script src="js/pricing-data.js"></script>
 <script src="js/config.js"></script>
 <script src="js/dashboard-components.js"></script>
 <script src="js/sales-customers.js"></script>
@@ -993,8 +1001,7 @@ async function saveLead() {
     return;
   }
 
-  const industry = document.getElementById('lead-industry').value;
-  if (!industry) { Components.toast('Branche ist erforderlich', 'error'); return; }
+  const industry = document.getElementById('lead-industry')?.value || '';
 
   const saveBtn = document.getElementById('btn-save-lead');
   const editId = saveBtn.dataset.editId;
@@ -1002,7 +1009,8 @@ async function saveLead() {
   const origText = saveBtn.textContent;
   saveBtn.textContent = '…';
 
-  const payload = { company_name: company, industry: industry };
+  const payload = { company_name: company };
+  if (industry) payload.industry = industry;
 
   const contact = document.getElementById('lead-contact').value.trim();
   const phone = document.getElementById('lead-phone').value.trim();

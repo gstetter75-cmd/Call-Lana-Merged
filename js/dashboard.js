@@ -122,6 +122,7 @@ async function loadHomeData() {
 // ==========================================
 async function drawCallChart(start, end) {
   const svg = document.getElementById('callChart');
+  if (!svg) return;
   const daysInMonth = new Date(start.getFullYear(), start.getMonth() + 1, 0).getDate();
   const callsResult = await clanaDB.getCalls(1000);
   const calls = callsResult.success ? callsResult.data : [];
@@ -1391,24 +1392,26 @@ async function savePaymentMethod() {
   const user = await clanaAuth.getUser();
   if (!user) { showToast('Nicht angemeldet.', true); return; }
 
-  let paymentData = { user_id: user.id, type: currentPmType, priority: currentPmPriority, status: 'active' };
+  // SECURITY: Raw financial data (IBAN, card numbers, CVC) is NEVER stored in our database.
+  // All payment data is tokenized via Stripe. Only masked display data is kept.
+  const displayData = { user_id: user.id, type: currentPmType, priority: currentPmPriority, status: 'pending' };
+  let stripePayload = {};
 
   if (currentPmType === 'sepa') {
     const holder = document.getElementById('sepaHolder').value.trim();
     const iban = document.getElementById('sepaIban').value.replace(/\s/g, '').toUpperCase();
-    const bic = document.getElementById('sepaBic').value.trim().toUpperCase();
     const consent = document.getElementById('sepaConsent').checked;
 
     if (!holder) { showToast('Bitte Kontoinhaber eingeben.', true); return; }
     if (!validateIban(iban)) { showToast('Ungültige IBAN. Bitte prüfe die Eingabe.', true); return; }
     if (!consent) { showToast('Bitte bestätige das SEPA-Lastschriftmandat.', true); return; }
 
-    paymentData.account_holder = holder;
-    paymentData.iban = iban;
-    paymentData.bic = bic || null;
-    paymentData.mandate_reference = 'CLANA-' + Date.now().toString(36).toUpperCase();
-    paymentData.mandate_date = new Date().toISOString();
-    paymentData.mandate_confirmed = true;
+    displayData.account_holder = holder;
+    displayData.iban_last4 = iban.slice(-4);
+    displayData.mandate_reference = 'CLANA-' + Date.now().toString(36).toUpperCase();
+    displayData.mandate_date = new Date().toISOString();
+    displayData.mandate_confirmed = true;
+    stripePayload = { type: 'sepa_debit', iban, holder };
 
   } else if (currentPmType === 'credit_card') {
     const holder = document.getElementById('cardHolder').value.trim();
@@ -1421,26 +1424,34 @@ async function savePaymentMethod() {
     if (!/^\d{2}\/\d{2}$/.test(expiry)) { showToast('Ungültiges Ablaufdatum (MM/YY).', true); return; }
     if (cvc.length < 3) { showToast('Ungültiger CVC.', true); return; }
 
-    paymentData.account_holder = holder;
-    paymentData.card_last4 = number.slice(-4);
-    paymentData.card_brand = detectCardBrand(number);
-    paymentData.card_expiry = expiry;
+    displayData.account_holder = holder;
+    displayData.card_last4 = number.slice(-4);
+    displayData.card_brand = detectCardBrand(number);
+    stripePayload = { type: 'card', number, expiry, cvc, holder };
 
   } else if (currentPmType === 'paypal') {
-    const email = document.getElementById('paypalEmail').value.trim();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Ungültige PayPal E-Mail.', true); return; }
-    paymentData.paypal_email = email;
-    paymentData.account_holder = email;
+    stripePayload = { type: 'paypal' };
+    displayData.account_holder = 'PayPal';
   }
 
   btn.disabled = true;
   btn.textContent = 'Wird gespeichert...';
 
   try {
-    // Delete existing method at this priority first
-    await supabaseClient.from('payment_methods').delete().eq('user_id', user.id).eq('priority', currentPmPriority);
+    // Step 1: Tokenize via Stripe Edge Function (raw card/IBAN data never touches our DB)
+    const { data: stripeResult, error: stripeError } = await supabaseClient.functions.invoke('create-payment-method', {
+      body: stripePayload
+    });
 
-    const { error } = await supabaseClient.from('payment_methods').insert([paymentData]);
+    if (stripeError) throw new Error('Stripe-Verbindung fehlgeschlagen: ' + (stripeError.message || 'Bitte später erneut versuchen.'));
+
+    displayData.stripe_customer_id = stripeResult?.customer_id || null;
+    displayData.stripe_payment_method_id = stripeResult?.payment_method_id || null;
+    displayData.status = stripeResult?.payment_method_id ? 'active' : 'pending';
+
+    // Step 2: Save ONLY masked display data + Stripe references to DB
+    // UPSERT avoids the race condition where DELETE succeeds but INSERT fails
+    const { error } = await supabaseClient.from('payment_methods').upsert([displayData], { onConflict: 'user_id,priority' });
     if (error) throw error;
 
     showToast('Zahlungsmethode gespeichert!');
@@ -1448,7 +1459,7 @@ async function savePaymentMethod() {
     await loadPaymentMethods();
   } catch (err) {
     Logger.error('savePaymentMethod', err);
-    showToast('Zahlungsmethode konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.', true);
+    showToast(err.message || 'Zahlungsmethode konnte nicht gespeichert werden.', true);
   } finally {
     btn.disabled = false;
     btn.textContent = 'Zahlungsmethode speichern';
@@ -1497,15 +1508,16 @@ async function loadPaymentMethods() {
         statusEl.textContent = pm.status === 'active' ? 'Aktiv' : pm.status === 'pending' ? 'Ausstehend' : pm.status;
         statusEl.className = 'status-badge ' + (pm.status === 'active' ? 'active' : pm.status === 'pending' ? 'voicemail' : 'missed');
 
+        // Display uses only masked/non-sensitive data (Stripe tokenization, no raw IBAN/card data stored)
         if (pm.type === 'sepa') {
-          document.getElementById('pm' + p + 'Info').textContent = maskIban(pm.iban);
-          document.getElementById('pm' + p + 'Detail').textContent = pm.account_holder + (pm.mandate_reference ? ' · Mandat: ' + pm.mandate_reference : '');
+          document.getElementById('pm' + p + 'Info').textContent = pm.iban_last4 ? 'SEPA •••• ' + pm.iban_last4 : 'SEPA-Lastschrift';
+          document.getElementById('pm' + p + 'Detail').textContent = (pm.account_holder || '') + (pm.mandate_reference ? ' · Mandat: ' + pm.mandate_reference : '');
         } else if (pm.type === 'credit_card') {
-          document.getElementById('pm' + p + 'Info').textContent = (pm.card_brand || 'Karte') + ' •••• ' + pm.card_last4;
-          document.getElementById('pm' + p + 'Detail').textContent = pm.account_holder + ' · Gültig bis ' + pm.card_expiry;
+          document.getElementById('pm' + p + 'Info').textContent = (pm.card_brand || 'Karte') + ' •••• ' + (pm.card_last4 || '****');
+          document.getElementById('pm' + p + 'Detail').textContent = pm.account_holder || 'Kreditkarte';
         } else if (pm.type === 'paypal') {
-          document.getElementById('pm' + p + 'Info').textContent = pm.paypal_email;
-          document.getElementById('pm' + p + 'Detail').textContent = 'PayPal-Konto';
+          document.getElementById('pm' + p + 'Info').textContent = 'PayPal verbunden';
+          document.getElementById('pm' + p + 'Detail').textContent = 'Über Stripe verknüpft';
         }
       } else {
         empty.style.display = '';
@@ -1518,9 +1530,12 @@ async function loadPaymentMethods() {
   }
 }
 
-function maskIban(iban) {
-  if (!iban || iban.length < 8) return iban;
-  return iban.substring(0, 4) + ' •••• •••• ' + iban.slice(-4);
+function maskIban(ibanOrLast4) {
+  if (!ibanOrLast4) return '–';
+  // If only last4 digits provided (from secure storage), show masked format
+  if (ibanOrLast4.length <= 4) return 'SEPA •••• ' + ibanOrLast4;
+  // Legacy: if full IBAN somehow passed, mask it
+  return ibanOrLast4.substring(0, 4) + ' •••• •••• ' + ibanOrLast4.slice(-4);
 }
 
 function detectCardBrand(number) {

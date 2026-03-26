@@ -6,9 +6,11 @@ CREATE TABLE IF NOT EXISTS integrations (
   provider_label text NOT NULL,
   category text NOT NULL,
   status text NOT NULL DEFAULT 'disconnected' CHECK (status IN ('connected', 'disconnected', 'error', 'syncing')),
-  -- OAuth tokens (encrypted in production)
-  access_token text,
-  refresh_token text,
+  -- OAuth tokens: stored encrypted at application layer (AES-256-GCM)
+  -- NEVER store plaintext tokens. Use encryption_key_id to reference the decryption key.
+  access_token_encrypted bytea,
+  refresh_token_encrypted bytea,
+  encryption_key_id text,
   token_expires_at timestamptz,
   -- Sync settings
   sync_enabled boolean DEFAULT true,

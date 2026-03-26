@@ -15,9 +15,9 @@
 CREATE TABLE IF NOT EXISTS invoice_settings (
   id                   uuid        PRIMARY KEY DEFAULT gen_random_uuid(),
   company_name         text        NOT NULL DEFAULT 'Call Lana GmbH',
-  street               text        DEFAULT 'Grabenstraße 19',
-  zip                  text        DEFAULT '31020',
-  city                 text        DEFAULT 'Salzhemmendorf',
+  street               text        DEFAULT 'Wetzellplatz 2',
+  zip                  text        DEFAULT '31137',
+  city                 text        DEFAULT 'Hildesheim',
   country              text        DEFAULT 'Deutschland',
   -- Steuernummer: to be added once known
   tax_number           text,
@@ -26,12 +26,13 @@ CREATE TABLE IF NOT EXISTS invoice_settings (
   registry_court       text        DEFAULT 'Amtsgericht Hildesheim',
   -- HRB number: to be added after registration
   registry_number      text,
-  managing_directors   text        DEFAULT 'Ahmet Asad & Gero Stetter',
-  email                text        DEFAULT 'hallo@call-lana.de',
+  managing_directors   text        DEFAULT 'Gero Stetter',
+  email                text        DEFAULT 'info@call-lana.de',
   phone                text,
-  bank_name            text        DEFAULT 'N26',
-  iban                 text        DEFAULT 'DE94100110012577455738',
-  bic                  text        DEFAULT 'NTSBDEB1XXX',
+  bank_name            text,
+  -- IBAN/BIC must be set via admin UI or environment variable, never hardcoded in SQL
+  iban                 text,
+  bic                  text,
   logo_url             text,
   payment_terms_days   integer     DEFAULT 14,
   default_notes        text        DEFAULT 'Vielen Dank für Ihr Vertrauen.',

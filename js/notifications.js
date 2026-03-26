@@ -28,7 +28,7 @@ const NotificationCenter = {
         <svg width="20" height="20" fill="none" stroke="var(--tx2)" stroke-width="2"><path d="M10 18c1.1 0 2-.9 2-2H8c0 1.1.9 2 2 2zm6-5V9c0-3.07-1.63-5.64-4.5-6.32V2c0-.83-.67-1.5-1.5-1.5S8.5 1.17 8.5 2v.68C5.64 3.36 4 5.92 4 9v4l-1 1v1h14v-1l-1-1z"/></svg>
         <span id="notif-badge" style="display:none;position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:#ef4444;color:white;font-size:9px;font-weight:700;line-height:16px;text-align:center;">0</span>
       </button>
-      <div id="notif-dropdown" style="display:none;position:absolute;right:0;top:36px;width:340px;max-height:400px;overflow-y:auto;background:var(--bg2);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.3);z-index:200;">
+      <div id="notif-dropdown" style="display:none;position:fixed;right:16px;top:52px;width:340px;max-height:400px;overflow-y:auto;background:var(--bg2);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.3);z-index:300;">
         <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
           <span style="font-weight:700;font-size:13px;">Benachrichtigungen</span>
           <button onclick="NotificationCenter.markAllRead()" style="background:none;border:none;color:var(--pu);cursor:pointer;font-size:11px;">Alle gelesen</button>

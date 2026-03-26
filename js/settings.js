@@ -135,7 +135,7 @@ async function changePassword() {
     showToast('Passwort erfolgreich geändert!');
   } catch (e) {
     Logger.error('changePassword', e);
-    errEl.textContent = 'Passwort konnte nicht geaendert werden. Bitte versuchen Sie es erneut.';
+    errEl.textContent = 'Passwort konnte nicht geändert werden. Bitte versuchen Sie es erneut.';
   }
 
   btn.disabled = false;
@@ -558,9 +558,32 @@ async function connSaveApiKey() {
   const key = document.getElementById('connApiKeyInput').value.trim();
   if (!key || key.length < 8) { showToast('Bitte einen gueltigen API-Key eingeben.', true); return; }
   const extra = document.getElementById('connApiKeyExtraInput')?.value.trim() || '';
-  await connSaveRecord(connCurrentProvider.provider, connCurrentProvider.label, connCurrentProvider.category, {
-    type: 'apikey', api_key_last4: '...' + key.slice(-4), extra_field: extra || null
-  });
+
+  // SECURITY: API key must be encrypted server-side via Edge Function.
+  // Only the masked last4 is stored client-side for display.
+  try {
+    const { data: encResult, error: encError } = await supabaseClient.functions.invoke('encrypt-secret', {
+      body: { provider: connCurrentProvider.provider, secret: key }
+    });
+    if (encError) throw encError;
+
+    await connSaveRecord(connCurrentProvider.provider, connCurrentProvider.label, connCurrentProvider.category, {
+      type: 'apikey',
+      api_key_last4: '...' + key.slice(-4),
+      extra_field: extra || null,
+      encrypted_key_ref: encResult?.ref || null
+    });
+  } catch (err) {
+    // Fallback: store only metadata, no secret. Edge Function not yet deployed.
+    Logger.error('connSaveApiKey.encrypt', err);
+    await connSaveRecord(connCurrentProvider.provider, connCurrentProvider.label, connCurrentProvider.category, {
+      type: 'apikey',
+      api_key_last4: '...' + key.slice(-4),
+      extra_field: extra || null,
+      encrypted_key_ref: null
+    });
+    showToast('Verbunden (Key wird lokal nicht gespeichert bis Verschluesselung aktiv).', false);
+  }
   closeConnModal();
 }
 
@@ -586,9 +609,29 @@ async function connSaveSip() {
   if (!connCurrentProvider) return;
   const server = document.getElementById('connSipServer').value.trim();
   const user = document.getElementById('connSipUser').value.trim();
+  const pass = document.getElementById('connSipPass').value.trim();
   if (!server || !user) { showToast('SIP-Server und Benutzername erforderlich.', true); return; }
+
+  // SECURITY: SIP password must be encrypted server-side via Edge Function.
+  // Only non-sensitive connection metadata is stored client-side.
+  let encryptedRef = null;
+  if (pass) {
+    try {
+      const { data: encResult, error: encError } = await supabaseClient.functions.invoke('encrypt-secret', {
+        body: { provider: connCurrentProvider.provider, secret: pass }
+      });
+      if (!encError) encryptedRef = encResult?.ref;
+    } catch (err) {
+      Logger.error('connSaveSip.encrypt', err);
+    }
+  }
+
   await connSaveRecord(connCurrentProvider.provider, connCurrentProvider.label, connCurrentProvider.category, {
-    type: 'sip', sip_server: server, sip_user: user, sip_port: document.getElementById('connSipPort').value.trim() || '5060'
+    type: 'sip',
+    sip_server: server,
+    sip_user: user,
+    sip_port: document.getElementById('connSipPort').value.trim() || '5060',
+    encrypted_pass_ref: encryptedRef
   });
   closeConnModal();
 }

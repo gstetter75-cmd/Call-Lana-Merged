@@ -1,24 +1,26 @@
 -- Payment methods table with SEPA mandate support
 -- Supports primary + fallback payment method per user
 
+-- IMPORTANT: No raw financial data (IBAN, card numbers, PayPal emails) is stored.
+-- All payment processing uses Stripe tokenization.
+-- Only masked display data (last4, brand) and Stripe references are kept.
 CREATE TABLE IF NOT EXISTS payment_methods (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   type text NOT NULL CHECK (type IN ('sepa', 'credit_card', 'paypal')),
   priority smallint NOT NULL DEFAULT 1 CHECK (priority IN (1, 2)),
-  -- SEPA fields
-  iban text,
-  bic text,
+  -- Stripe tokenization (the ONLY way payment data is handled)
+  stripe_customer_id text,
+  stripe_payment_method_id text,
+  -- SEPA display-only fields (masked)
+  iban_last4 text,
   account_holder text,
   mandate_reference text UNIQUE,
   mandate_date timestamptz,
   mandate_confirmed boolean DEFAULT false,
-  -- Credit card fields
+  -- Credit card display-only fields (masked)
   card_last4 text,
   card_brand text,
-  card_expiry text,
-  -- PayPal fields
-  paypal_email text,
   -- Status
   status text NOT NULL DEFAULT 'pending' CHECK (status IN ('active', 'pending', 'revoked', 'failed')),
   created_at timestamptz DEFAULT now(),

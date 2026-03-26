@@ -1,10 +1,16 @@
 // Shared configuration for all dashboards
 const CONFIG = {
-  PLANS: {
+  // Reads from shared PRICING object if available, otherwise fallback values
+  PLANS: typeof PRICING !== 'undefined' ? {
+    starter:      { label: 'Starter',      price: PRICING.plans.starter.monthly },
+    professional: { label: 'Professional', price: PRICING.plans.professional.monthly },
+    business:     { label: 'Business',     price: PRICING.plans.business.monthly || 599 },
+    solo:         { label: 'Starter',      price: PRICING.plans.starter.monthly },
+    team:         { label: 'Professional', price: PRICING.plans.professional.monthly },
+  } : {
     starter:      { label: 'Starter',      price: 149 },
     professional: { label: 'Professional', price: 299 },
     business:     { label: 'Business',     price: 599 },
-    // Legacy plan names (mapped to current)
     solo:         { label: 'Starter',      price: 149 },
     team:         { label: 'Professional', price: 299 },
   },
