@@ -1,6 +1,17 @@
 // Auth Helper Functions
 // Depends on: supabase-init.js (supabaseClient), logger.js (Logger)
 const auth = {
+  // Fire-and-forget audit log for auth events
+  _logAuthEvent(action, userId) {
+    try {
+      supabaseClient.from('audit_logs').insert({
+        user_id: userId || null,
+        action: action,
+        target_type: 'auth',
+        created_at: new Date().toISOString()
+      }).then(() => {}).catch(() => {});
+    } catch (e) { /* never block auth for audit */ }
+  },
   async signUp(email, password, userData) {
     try {
       const { data, error } = await supabaseClient.auth.signUp({
@@ -9,6 +20,7 @@ const auth = {
         options: { data: userData }
       });
       if (error) throw error;
+      this._logAuthEvent('signup', data?.user?.id);
       return { success: true, data };
     } catch (error) {
       Logger.error('auth.signUp', error);
@@ -23,18 +35,22 @@ const auth = {
         password
       });
       if (error) throw error;
+      this._logAuthEvent('login', data?.user?.id);
       return { success: true, data };
     } catch (error) {
       Logger.error('auth.signIn', error);
+      this._logAuthEvent('login_failed');
       return { success: false, error: error.message || 'Anmeldung fehlgeschlagen. Bitte prüfen Sie Ihre Zugangsdaten.' };
     }
   },
 
   async signOut() {
+    const userId = this._userPromise ? (await this._userPromise)?.id : null;
     this._userPromise = null;
     try {
       const { error } = await supabaseClient.auth.signOut();
       if (error) throw error;
+      this._logAuthEvent('logout', userId);
       return { success: true };
     } catch (error) {
       Logger.error('auth.signOut', error);

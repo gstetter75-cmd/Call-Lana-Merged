@@ -553,6 +553,9 @@
   </div>
 </div>
 
+<script src="js/modal.js"></script>
+<script src="js/error-handler.js"></script>
+<script>ErrorHandler.init();</script>
 <script src="js/logger.js"></script>
 <script src="js/supabase-init.js"></script>
 <script src="js/auth.js"></script>
@@ -1316,8 +1319,7 @@ async function editOrg(orgId) {
   openModal('modal-add-org');
 }
 
-function openModal(id) { document.getElementById(id)?.classList.add('active'); }
-function closeModal(id) { document.getElementById(id)?.classList.remove('active'); }
+// openModal/closeModal provided by js/modal.js
 
 // Close modals on overlay click
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
