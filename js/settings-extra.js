@@ -64,9 +64,10 @@ const SettingsExtra = {
       const el = (id) => document.getElementById(id);
 
       if (s.calendar_id) {
+        const sanitize = typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeHtml : (x) => x;
         if (el('calendarStatus')) {
           el('calendarStatus').className = 'info-box';
-          el('calendarStatus').innerHTML = '✅ Verbunden mit <strong>' + (s.calendar_id || 'Google Kalender') + '</strong>';
+          el('calendarStatus').innerHTML = '✅ Verbunden mit <strong>' + sanitize(s.calendar_id || 'Google Kalender') + '</strong>';
         }
         if (el('btnConnectCalendar')) el('btnConnectCalendar').textContent = 'Kalender trennen';
       }
@@ -90,9 +91,11 @@ const SettingsExtra = {
     try {
       const res = await clanaDB.getSettings();
       const current = res.success ? res.data : {};
+      const slotDur = parseInt(el('slotDuration')?.value || '30') || 30;
+      const bookingWin = parseInt(el('bookingWindow')?.value || '14') || 14;
       const updated = Object.assign({}, current, {
-        slot_durations: parseInt(el('slotDuration')?.value || '30'),
-        booking_window_days: parseInt(el('bookingWindow')?.value || '14'),
+        slot_durations: Math.max(5, Math.min(120, slotDur)),
+        booking_window_days: Math.max(1, Math.min(90, bookingWin)),
         booking_start: el('bookingStart')?.value || '08:00',
         booking_end: el('bookingEnd')?.value || '18:00'
       });

@@ -8,6 +8,10 @@ const RealtimeManager = {
   _channels: [],
   _userId: null,
 
+  _sanitize(str) {
+    return typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeHtml(str) : str;
+  },
+
   // ==========================================
   // INIT — Subscribe to all relevant tables
   // ==========================================
@@ -55,8 +59,8 @@ const RealtimeManager = {
       HomeWidgets.loadRecentCalls();
     }
 
-    // Show toast notification
-    const phone = call.phone_number || 'Unbekannt';
+    // Show toast notification (sanitized)
+    const phone = this._sanitize(call.phone_number || 'Unbekannt');
     const status = call.status || '';
     if (typeof showToast !== 'undefined') {
       showToast('Neuer Anruf: ' + phone + (status === 'missed' ? ' (verpasst)' : ''));
@@ -82,6 +86,8 @@ const RealtimeManager = {
         schema: 'public',
         table: 'appointments'
       }, (payload) => {
+        // Only react to own appointments
+        if (payload.new && payload.new.user_id && payload.new.user_id !== this._userId) return;
         this._onAppointmentChange(payload);
       })
       .subscribe();
@@ -101,9 +107,9 @@ const RealtimeManager = {
       AppointmentsPage.loadAppointments();
     }
 
-    // Toast for new appointments
+    // Toast for new appointments (sanitized)
     if (payload.eventType === 'INSERT' && payload.new) {
-      const name = payload.new.customer_name || payload.new.name || 'Neuer Termin';
+      const name = this._sanitize(payload.new.customer_name || payload.new.name || 'Neuer Termin');
       if (typeof showToast !== 'undefined') {
         showToast('Neuer Termin: ' + name);
       }

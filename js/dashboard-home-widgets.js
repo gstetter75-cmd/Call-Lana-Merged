@@ -96,7 +96,11 @@ const HomeWidgets = {
           table: 'outbound_log'
         }, (payload) => {
           if (payload.new && payload.new.reason === 'notfall') {
-            this._showEmergencyBanner(container, payload.new);
+            // Only show for own user's emergencies
+            const user = typeof auth !== 'undefined' ? auth._cachedUser : null;
+            if (!user || !payload.new.user_id || payload.new.user_id === user.id) {
+              this._showEmergencyBanner(container, payload.new);
+            }
           }
         })
         .subscribe();
@@ -147,7 +151,7 @@ const HomeWidgets = {
         const phone = sanitize(c.phone_number || c.caller_number || 'Unbekannt');
         const dur = c.duration ? (c.duration > 60 ? Math.round(c.duration / 60) + ' min' : c.duration + ' sek') : '–';
         let statusColor = 'var(--tx3)';
-        let statusLabel = c.status || 'unbekannt';
+        let statusLabel = '·';
         if (c.status === 'completed') { statusColor = 'var(--green)'; statusLabel = '✓'; }
         else if (c.status === 'missed') { statusColor = 'var(--red)'; statusLabel = '✗'; }
         else if (c.status === 'voicemail') { statusColor = 'var(--orange)'; statusLabel = '📧'; }

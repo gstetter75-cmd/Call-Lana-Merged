@@ -21,7 +21,8 @@ const AnalyticsPage = {
         .select('created_at,duration,status,outcome,sentiment_score')
         .eq('user_id', user.id)
         .gte('created_at', since.toISOString())
-        .order('created_at', { ascending: true });
+        .order('created_at', { ascending: true })
+        .limit(5000);
 
       if (error) throw error;
       this._calls = data || [];

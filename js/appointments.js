@@ -38,6 +38,7 @@ const AppointmentsPage = {
       const { data, error } = await supabaseClient
         .from('appointments')
         .select('id,appointment_date,customer_name,name,phone,duration_minutes,note,status')
+        .eq('user_id', user.id)
         .gte('appointment_date', this._currentWeekStart.toISOString())
         .lt('appointment_date', weekEnd.toISOString())
         .order('appointment_date', { ascending: true });
@@ -62,12 +63,16 @@ const AppointmentsPage = {
   // ==========================================
 
   prevWeek() {
-    this._currentWeekStart.setDate(this._currentWeekStart.getDate() - 7);
+    const d = new Date(this._currentWeekStart);
+    d.setDate(d.getDate() - 7);
+    this._currentWeekStart = d;
     this.loadAppointments();
   },
 
   nextWeek() {
-    this._currentWeekStart.setDate(this._currentWeekStart.getDate() + 7);
+    const d = new Date(this._currentWeekStart);
+    d.setDate(d.getDate() + 7);
+    this._currentWeekStart = d;
     this.loadAppointments();
   },
 
@@ -152,7 +157,7 @@ const AppointmentsPage = {
           const time = new Date(a.appointment_date).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
           const name = sanitize(a.customer_name || a.name || 'Unbekannt');
           const statusCls = this._getStatusClass(a.status);
-          html += '<div class="appt-block ' + statusCls + '" onclick="AppointmentsPage.showDetail(\'' + a.id + '\')">' +
+          html += '<div class="appt-block ' + statusCls + '" data-id="' + sanitize(a.id) + '" onclick="AppointmentsPage.showDetail(this.dataset.id)">' +
             '<div style="font-size:11px;font-weight:700;">' + time + '</div>' +
             '<div style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + name + '</div>' +
           '</div>';
@@ -197,9 +202,9 @@ const AppointmentsPage = {
         completed: { label: 'Erledigt', cls: 'badge-purple' },
         pending: { label: 'Ausstehend', cls: 'badge-orange' }
       };
-      const st = statusMap[a.status] || { label: a.status || 'Bestätigt', cls: 'badge-green' };
+      const st = statusMap[a.status] || { label: sanitize(a.status || 'Bestätigt'), cls: 'badge-green' };
 
-      html += '<tr style="cursor:pointer;" onclick="AppointmentsPage.showDetail(\'' + a.id + '\')">' +
+      html += '<tr style="cursor:pointer;" data-id="' + sanitize(a.id) + '" onclick="AppointmentsPage.showDetail(this.dataset.id)">' +
         '<td>' + date + '</td>' +
         '<td style="font-weight:700;color:var(--pu);">' + time + '</td>' +
         '<td>' + name + '</td>' +

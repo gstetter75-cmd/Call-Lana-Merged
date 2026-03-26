@@ -63,17 +63,19 @@ const AdminExtra = {
         const email = sanitize(c.email || '–');
         const plan = c.plan || 'free';
         const date = c.created_at ? new Date(c.created_at).toLocaleDateString('de-DE') : '–';
-        const st = statusMap[c.onboarding_status] || { label: c.onboarding_status, cls: 'badge-purple' };
+        const st = statusMap[c.onboarding_status] || { label: sanitize(c.onboarding_status || '–'), cls: 'badge-purple' };
         const next = nextStepMap[c.onboarding_status] || '–';
+        const safeId = sanitize(c.id || '');
+        const safeStatus = sanitize(c.onboarding_status || '');
 
         return '<tr>' +
           '<td><strong>' + name + '</strong></td>' +
           '<td>' + email + '</td>' +
-          '<td><span class="badge badge-purple">' + plan + '</span></td>' +
+          '<td><span class="badge badge-purple">' + sanitize(plan) + '</span></td>' +
           '<td>' + date + '</td>' +
           '<td><span class="badge ' + st.cls + '">' + st.label + '</span></td>' +
           '<td style="font-size:12px;color:var(--tx3);">' + next + '</td>' +
-          '<td><button class="btn btn-sm btn-outline" onclick="AdminExtra.advanceOnboarding(\'' + c.id + '\',\'' + c.onboarding_status + '\')">Weiter</button></td>' +
+          '<td><button class="btn btn-sm btn-outline" data-id="' + safeId + '" data-status="' + safeStatus + '" onclick="AdminExtra.advanceOnboarding(this.dataset.id,this.dataset.status)">Weiter</button></td>' +
         '</tr>';
       }).join('');
     } catch (e) {
@@ -102,7 +104,8 @@ const AdminExtra = {
       const { data: customers, error } = await supabaseClient
         .from('profiles')
         .select('id,email,first_name,last_name,plan,monthly_minutes_limit,minutes_used')
-        .order('minutes_used', { ascending: false });
+        .order('minutes_used', { ascending: false })
+        .limit(500);
 
       if (error) throw error;
       const all = (customers || []).map(c => {
@@ -257,7 +260,10 @@ const AdminExtra = {
         '<pre style="background:var(--bg3);border-radius:10px;padding:16px;font-size:11px;color:var(--tx2);overflow-x:auto;white-space:pre-wrap;font-family:monospace;max-height:400px;overflow-y:auto;">' + sanitize(data.stack_trace || 'Kein Stack Trace') + '</pre>' +
       '</div>';
       document.body.appendChild(overlay);
-    } catch (e) { /* ignore */ }
+    } catch (e) {
+      if (typeof Logger !== 'undefined') Logger.warn('AdminExtra.showStackTrace', e);
+      if (typeof showToast !== 'undefined') showToast('Stack Trace konnte nicht geladen werden.', true);
+    }
   },
 
   // ==========================================
