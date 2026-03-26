@@ -65,9 +65,9 @@
     <nav class="fixed top-0 left-0 right-0 z-50 bg-white/92 backdrop-blur-md" style="border-bottom: 1px solid rgba(124,58,237,0.08); box-shadow: 0 1px 12px rgba(124,58,237,0.04);">
       <div class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-20">
         <a href="index.html" class="flex items-center focus-visible:outline-2 focus-visible:outline-brand-400 focus-visible:outline-offset-4 rounded group">
-          <img src="brand_assets/A_vector-style_digital_logo_for_the_brand_Clana_.png" alt="Call Lana Logo" class="w-auto" style="max-height:48px; filter: drop-shadow(0 2px 8px rgba(124,58,237,0.18));" />
+          <img src="brand_assets/A_vector-style_digital_logo_for_the_brand_Clana_.png" alt="Call Lana Logo" style="height:36px; width:auto; max-width:160px; filter: drop-shadow(0 2px 8px rgba(124,58,237,0.18));" />
         </a>
-        <div class="hidden lg:flex items-center gap-7">
+        <div class="hidden md:flex items-center gap-7">
           <a href="funktionen.html" class="nav-link text-sm font-medium ${isActive('funktionen')}" data-i18n="nav.features">${t('nav.features')}</a>
           <a href="branchen.html" class="nav-link text-sm font-medium ${isActive('branchen')}" data-i18n="nav.industries">${t('nav.industries')}</a>
           <a href="preise.html" class="nav-link text-sm font-medium ${isActive('preise')}" data-i18n="nav.pricing">${t('nav.pricing')}</a>
@@ -83,7 +83,7 @@
           <a href="kontakt.html" class="btn-outline px-4 py-2 rounded-lg text-sm font-semibold hidden sm:inline-block" data-i18n="nav.demo">${t('nav.demo')}</a>
           <a href="registrierung.html" class="btn-brand px-5 py-2 rounded-lg text-sm font-semibold hidden sm:inline-block" data-i18n="nav.cta">${t('nav.cta')}</a>
           <!-- Mobile hamburger -->
-          <button id="menuToggle" class="lg:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-brand-400" aria-label="Menu">
+          <button id="menuToggle" class="md:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-brand-400" aria-label="Menu">
             <span class="w-5 h-0.5 bg-gray-600 rounded"></span>
             <span class="w-5 h-0.5 bg-gray-600 rounded"></span>
             <span class="w-5 h-0.5 bg-gray-600 rounded"></span>
