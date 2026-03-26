@@ -58,6 +58,11 @@ let currentConversationId = null;
     HomeWidgets.init();
   }
 
+  // Realtime subscriptions for live updates
+  if (typeof RealtimeManager !== 'undefined') {
+    RealtimeManager.init();
+  }
+
   // Team management
   document.getElementById('btnInviteMember')?.addEventListener('click', inviteTeamMember);
   document.getElementById('btnNewConversation')?.addEventListener('click', startNewConversation);
