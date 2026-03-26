@@ -952,11 +952,13 @@ function navigateToPage(page, updateHash = true) {
   }
 }
 
-document.querySelectorAll('.sb-item[data-page]').forEach(item => {
-  item.addEventListener('click', (e) => {
+// Sidebar click handlers — use event delegation since sidebar is loaded async
+document.addEventListener('click', (e) => {
+  const item = e.target.closest('.sb-item[data-page]');
+  if (item) {
     e.preventDefault();
     navigateToPage(item.dataset.page);
-  });
+  }
 });
 
 window.addEventListener('hashchange', () => {
