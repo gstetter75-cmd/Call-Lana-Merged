@@ -1,0 +1,26 @@
+{
+  "name": "call-lana-merged",
+  "version": "1.0.0",
+  "description": "Dieses Package enthält die **komplette Call Lana Website** mit allen Updates und Korrekturen.",
+  "main": "cookie-consent.js",
+  "scripts": {
+    "build": "node build.js",
+    "watch": "node build.js --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gstetter75-cmd/Call-Lana-Merged.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/gstetter75-cmd/Call-Lana-Merged/issues"
+  },
+  "homepage": "https://github.com/gstetter75-cmd/Call-Lana-Merged#readme",
+  "devDependencies": {
+    "esbuild": "^0.27.4"
+  }
+}
