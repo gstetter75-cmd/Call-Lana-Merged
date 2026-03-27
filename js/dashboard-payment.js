@@ -80,7 +80,7 @@ async function savePaymentMethod() {
 
   // SECURITY: Raw financial data (IBAN, card numbers, CVC) is NEVER stored in our database.
   // All payment data is tokenized via Stripe. Only masked display data is kept.
-  const displayData = { user_id: user.id, type: currentPmType, priority: currentPmPriority, status: 'pending' };
+  const displayData = { user_id: await auth.getEffectiveUserId(), type: currentPmType, priority: currentPmPriority, status: 'pending' };
   let stripePayload = {};
 
   if (currentPmType === 'sepa') {

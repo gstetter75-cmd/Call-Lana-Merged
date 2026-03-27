@@ -14,6 +14,7 @@ const isWatch = process.argv.includes('--watch');
 // Each bundle concatenates its page's JS files in load order
 const bundles = {
   'dist/dashboard.bundle.js': [
+    'js/impersonation.js',
     'js/modal.js',
     'js/error-handler.js',
     'js/logger.js',
@@ -32,6 +33,8 @@ const bundles = {
     'js/config.js',
     'js/dashboard-components.js',
     'js/dashboard.js',
+    'js/dashboard-home-data.js',
+    'js/dashboard-team.js',
     'js/dashboard-billing.js',
     'js/dashboard-integrations.js',
     'js/dashboard-payment.js',
@@ -50,6 +53,7 @@ const bundles = {
     'js/idle-timeout.js',
   ],
   'dist/admin.bundle.js': [
+    'js/impersonation.js',
     'js/modal.js',
     'js/error-handler.js',
     'js/logger.js',
@@ -80,6 +84,7 @@ const bundles = {
     'js/idle-timeout.js',
   ],
   'dist/sales.bundle.js': [
+    'js/impersonation.js',
     'js/modal.js',
     'js/error-handler.js',
     'js/logger.js',
@@ -105,6 +110,7 @@ const bundles = {
     'js/idle-timeout.js',
   ],
   'dist/settings.bundle.js': [
+    'js/impersonation.js',
     'js/modal.js',
     'js/error-handler.js',
     'js/logger.js',

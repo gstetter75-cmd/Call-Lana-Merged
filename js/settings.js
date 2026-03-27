@@ -108,6 +108,10 @@ async function saveProfile() {
 // CHANGE PASSWORD (Supabase)
 // ==========================================
 async function changePassword() {
+  if (typeof ImpersonationManager !== 'undefined' && ImpersonationManager.isActionBlocked('change_password')) {
+    showToast('Passwort-Änderung ist während Impersonation nicht erlaubt.', true);
+    return;
+  }
   const btn = document.getElementById('savePwBtn');
   const errEl = document.getElementById('pw-err');
   errEl.textContent = '';
@@ -251,6 +255,10 @@ async function saveBillingAddress() {
 // DELETE ACCOUNT
 // ==========================================
 async function deleteAccount() {
+  if (typeof ImpersonationManager !== 'undefined' && ImpersonationManager.isActionBlocked('delete_account')) {
+    showToast('Account-Löschung ist während Impersonation nicht erlaubt.', true);
+    return;
+  }
   const confirmed = prompt('Gib "LÖSCHEN" ein, um dein Konto unwiderruflich zu löschen:');
   if (confirmed !== 'LÖSCHEN') return;
 

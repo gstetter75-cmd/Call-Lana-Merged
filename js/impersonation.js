@@ -76,8 +76,9 @@ const ImpersonationManager = {
       };
       sessionStorage.setItem(this.STORAGE_KEY, JSON.stringify(state));
 
-      // Audit log
+      // Audit log + start timeout
       this._logAction('start', customerId);
+      this.checkTimeout();
 
       // Redirect to customer dashboard
       window.location.href = 'dashboard.html';
