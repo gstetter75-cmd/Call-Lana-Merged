@@ -680,3 +680,11 @@ nav {
   border-radius: 2px;
   margin: 0 auto 1.5rem;
 }
+
+/* Nav responsive: show links on desktop (900px+), hamburger on mobile */
+#desktopNavLinks{display:none !important;}
+#menuToggle{display:flex !important;}
+@media(min-width:900px){
+  #desktopNavLinks{display:flex !important;}
+  #menuToggle{display:none !important;}
+}

@@ -67,7 +67,7 @@
         <a href="index.html" class="flex items-center focus-visible:outline-2 focus-visible:outline-brand-400 focus-visible:outline-offset-4 rounded group">
           <picture><source srcset="logo-nav.webp" type="image/webp"><img src="logo-nav.png" alt="Call Lana" style="height:36px; width:auto;" /></picture>
         </a>
-        <div class="hidden md:flex items-center gap-7">
+        <div id="desktopNavLinks" class="items-center gap-7" style="display:none;">
           <a href="funktionen.html" class="nav-link text-sm font-medium ${isActive('funktionen')}" data-i18n="nav.features">${t('nav.features')}</a>
           <a href="branchen.html" class="nav-link text-sm font-medium ${isActive('branchen')}" data-i18n="nav.industries">${t('nav.industries')}</a>
           <a href="preise.html" class="nav-link text-sm font-medium ${isActive('preise')}" data-i18n="nav.pricing">${t('nav.pricing')}</a>
@@ -83,7 +83,7 @@
           <a href="kontakt.html" class="btn-outline px-4 py-2 rounded-lg text-sm font-semibold hidden sm:inline-block" data-i18n="nav.demo">${t('nav.demo')}</a>
           <a href="registrierung.html" class="btn-brand px-5 py-2 rounded-lg text-sm font-semibold hidden sm:inline-block" data-i18n="nav.cta">${t('nav.cta')}</a>
           <!-- Mobile hamburger -->
-          <button id="menuToggle" class="md:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-brand-400" aria-label="Menu">
+          <button id="menuToggle" class="flex flex-col gap-1.5 p-2 rounded-lg hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-brand-400" aria-label="Menu" style="display:flex;">
             <span class="w-5 h-0.5 bg-gray-600 rounded"></span>
             <span class="w-5 h-0.5 bg-gray-600 rounded"></span>
             <span class="w-5 h-0.5 bg-gray-600 rounded"></span>
