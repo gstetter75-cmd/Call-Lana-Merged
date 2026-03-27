@@ -21,8 +21,8 @@ test.describe('Admin Dashboard', () => {
   });
 
   test('overview shows MRR and active customers KPIs', async ({ adminPage: page }) => {
-    await expect(page.locator('text=MRR')).toBeVisible();
-    await expect(page.locator('text=AKTIVE KUNDEN')).toBeVisible();
+    await expect(page.locator('text=MRR (Monatsumsatz)')).toBeVisible();
+    await expect(page.locator('text=Aktive Kunden')).toBeVisible();
   });
 
   test('customers tab loads table', async ({ adminPage: page }) => {

@@ -91,17 +91,17 @@ test.describe('Authentication', () => {
     await page.fill('#login-password', ADMIN_PASSWORD);
     await page.click('button[type="submit"]');
     await page.waitForURL(/\/(admin|dashboard|sales)\.html/, { timeout: 15_000 });
-    await page.waitForTimeout(2000);
-    // Find logout button (sidebar or inline)
-    const logoutBtn = page.locator('#sidebar-logout, [onclick*="signOut"], .sb-user button, .logout-btn');
-    if (await logoutBtn.count() > 0) {
-      await logoutBtn.first().click();
-      await page.waitForURL('**/login.html*', { timeout: 10_000 });
-      expect(page.url()).toContain('login.html');
-    } else {
-      // Logout via JS if no button found
-      await page.evaluate(() => { if (typeof clanaAuth !== "undefined") clanaAuth.signOut(); });
-      await page.waitForTimeout(3000);
-    }
+    // Wait for sidebar to load (dynamically injected)
+    await page.waitForSelector('#sidebar-logout, .sb-logout, [title="Abmelden"]', { state: 'attached', timeout: 10_000 }).catch(() => {});
+    await page.waitForTimeout(1000);
+    // Dismiss cookie banner if present (it can block the logout button)
+    const cookieBtn = page.locator('button:has-text("Alle akzeptieren")');
+    if (await cookieBtn.count() > 0) await cookieBtn.click().catch(() => {});
+    // Logout via JS to avoid scroll/visibility issues with sidebar button
+    await page.evaluate(async () => {
+      if (typeof clanaAuth !== 'undefined') await clanaAuth.signOut();
+    });
+    await page.waitForURL('**/login.html*', { timeout: 10_000 });
+    expect(page.url()).toContain('login.html');
   });
 });

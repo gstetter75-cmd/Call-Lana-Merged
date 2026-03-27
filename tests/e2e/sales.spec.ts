@@ -42,7 +42,7 @@ test.describe('Sales CRM', () => {
     await page.waitForFunction(() => !document.body.classList.contains('auth-pending'), { timeout: 10_000 });
     await page.locator('.tab-btn[data-tab="leads"]').click();
     await page.waitForTimeout(500);
-    const addBtn = page.locator('text=Neuer Lead');
+    const addBtn = page.locator('#tab-leads button:has-text("Neuer Lead")');
     await expect(addBtn).toBeVisible();
   });
 
@@ -51,7 +51,7 @@ test.describe('Sales CRM', () => {
     await page.waitForFunction(() => !document.body.classList.contains('auth-pending'), { timeout: 10_000 });
     await page.locator('.tab-btn[data-tab="tasks"]').click();
     await page.waitForTimeout(500);
-    const addBtn = page.locator('text=Neue Aufgabe');
+    const addBtn = page.locator('button:has-text("Neue Aufgabe")');
     await expect(addBtn).toBeVisible();
   });
 
