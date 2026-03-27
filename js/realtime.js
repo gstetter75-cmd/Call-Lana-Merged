@@ -29,6 +29,9 @@ const RealtimeManager = {
 
     this._subscribeCalls();
     this._subscribeAppointments();
+    this._subscribeLeads();
+    this._subscribeMessages();
+    this._subscribeTasks();
   },
 
   // ==========================================
@@ -114,6 +117,64 @@ const RealtimeManager = {
         showToast('Neuer Termin: ' + name);
       }
     }
+  },
+
+  // ==========================================
+  // LEADS — Live new lead updates
+  // ==========================================
+
+  _subscribeLeads() {
+    const channel = supabaseClient
+      .channel('realtime-leads')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'leads' }, (payload) => {
+        if (!payload.new) return;
+        const name = this._sanitize(payload.new.company_name || 'Neuer Lead');
+        if (typeof showToast !== 'undefined') showToast('Neuer Lead: ' + name);
+      })
+      .subscribe();
+    this._channels.push(channel);
+  },
+
+  // ==========================================
+  // MESSAGES — Live message updates
+  // ==========================================
+
+  _subscribeMessages() {
+    const channel = supabaseClient
+      .channel('realtime-messages')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
+        if (!payload.new || payload.new.sender_id === this._userId) return;
+        if (typeof showToast !== 'undefined') showToast('Neue Nachricht eingegangen');
+        // Update unread badge if exists
+        const badge = document.getElementById('msg-unread-badge');
+        if (badge) {
+          const count = parseInt(badge.textContent) || 0;
+          badge.textContent = count + 1;
+          badge.style.display = 'inline-flex';
+        }
+      })
+      .subscribe();
+    this._channels.push(channel);
+  },
+
+  // ==========================================
+  // TASKS — Live task updates
+  // ==========================================
+
+  _subscribeTasks() {
+    const channel = supabaseClient
+      .channel('realtime-tasks')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, (payload) => {
+        if (!payload.new) return;
+        // Only react to tasks assigned to me or created by me
+        if (payload.new.assigned_to !== this._userId && payload.new.created_by !== this._userId) return;
+        if (payload.eventType === 'INSERT') {
+          const title = this._sanitize(payload.new.title || 'Neue Aufgabe');
+          if (typeof showToast !== 'undefined') showToast('Neue Aufgabe: ' + title);
+        }
+      })
+      .subscribe();
+    this._channels.push(channel);
   },
 
   // ==========================================

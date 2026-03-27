@@ -28,8 +28,12 @@ const Onboarding = {
     // Auto-detect completed steps
     await this.autoDetect();
 
-    // Don't show if all steps done
+    // All steps done — celebrate and hide
     if (this.completedSteps.size >= this.steps.length) {
+      if (!sessionStorage.getItem('onboarding_celebrated')) {
+        sessionStorage.setItem('onboarding_celebrated', '1');
+        this.celebrate();
+      }
       this.container.style.display = 'none';
       return;
     }
@@ -38,13 +42,47 @@ const Onboarding = {
   },
 
   async autoDetect() {
-    // Check if assistant exists → step 1 done
-    if (!this.completedSteps.has('create_assistant')) {
+    try {
       const result = await clanaDB.getAssistants();
-      if (result.data?.length > 0) {
+      const assistants = result.data || [];
+
+      // Step 1: Assistant exists
+      if (!this.completedSteps.has('create_assistant') && assistants.length > 0) {
         this.completedSteps.add('create_assistant');
         clanaDB.completeOnboardingStep(this.userId, 'create_assistant');
       }
+
+      // Step 2: Assistant has phone number
+      if (!this.completedSteps.has('assign_number') && assistants.some(a => a.phone_number)) {
+        this.completedSteps.add('assign_number');
+        clanaDB.completeOnboardingStep(this.userId, 'assign_number');
+      }
+
+      // Step 3: Assistant has greeting configured
+      if (!this.completedSteps.has('configure_greeting') && assistants.some(a => a.greeting && a.greeting.trim().length > 0)) {
+        this.completedSteps.add('configure_greeting');
+        clanaDB.completeOnboardingStep(this.userId, 'configure_greeting');
+      }
+
+      // Step 4: At least one call exists
+      if (!this.completedSteps.has('first_test_call')) {
+        const calls = await supabaseClient
+          .from('calls')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', await auth.getEffectiveUserId());
+        if (calls.count > 0) {
+          this.completedSteps.add('first_test_call');
+          clanaDB.completeOnboardingStep(this.userId, 'first_test_call');
+        }
+      }
+
+      // Step 5: Assistant is live (status = active/online)
+      if (!this.completedSteps.has('go_live') && assistants.some(a => a.status === 'active' || a.status === 'online')) {
+        this.completedSteps.add('go_live');
+        clanaDB.completeOnboardingStep(this.userId, 'go_live');
+      }
+    } catch (err) {
+      Logger.error('Onboarding.autoDetect', err);
     }
   },
 
@@ -82,6 +120,13 @@ const Onboarding = {
       </div>
     `;
     this.container.style.display = 'block';
+  },
+
+  celebrate() {
+    if (typeof Confetti !== 'undefined') Confetti.fire();
+    if (typeof Toast !== 'undefined') {
+      Toast.success('Geschafft! Dein KI-Assistent ist einsatzbereit. 🎉');
+    }
   }
 };
 
