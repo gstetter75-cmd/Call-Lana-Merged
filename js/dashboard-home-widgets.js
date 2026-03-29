@@ -243,8 +243,8 @@ const HomeWidgets = {
 
       const { data, error } = await supabaseClient
         .from('leads')
-        .select('id,name,company,lead_score,status')
-        .order('lead_score', { ascending: false })
+        .select('id,contact_name,company_name,score,status')
+        .order('score', { ascending: false })
         .limit(5);
 
       if (error) throw error;
@@ -256,13 +256,13 @@ const HomeWidgets = {
         return;
       }
 
-      let maxScore = Math.max(...leads.map(l => l.lead_score || 0));
+      let maxScore = Math.max(...leads.map(l => l.score || 0));
       if (maxScore === 0) maxScore = 100;
 
       container.innerHTML = leads.map(function(l) {
-        const name = sanitize(l.name || 'Unbekannt');
-        const company = sanitize(l.company || '');
-        const score = l.lead_score || 0;
+        const name = sanitize(l.contact_name || l.company_name || 'Unbekannt');
+        const company = sanitize(l.company_name || '');
+        const score = l.score || 0;
         const pct = Math.round((score / maxScore) * 100);
         const barColor = score >= 70 ? 'var(--green)' : score >= 40 ? 'var(--orange)' : 'var(--red)';
 
