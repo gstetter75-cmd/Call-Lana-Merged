@@ -40,7 +40,7 @@
   <div class="main">
     <div class="topbar">
       <div class="topbar-left">
-        <button class="topbar-hamburger"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button>
+        <button class="topbar-hamburger" aria-label="Navigation öffnen"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button>
         <div class="topbar-breadcrumb">Administration <span>/ <span id="breadcrumb-page">Benutzer</span></span></div>
       </div>
     </div>
@@ -487,7 +487,7 @@
   <div class="modal">
     <div class="modal-header">
       <h3 class="modal-title">Rolle bearbeiten</h3>
-      <button class="modal-close" onclick="closeModal('modal-edit-role')">&times;</button>
+      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-edit-role')">&times;</button>
     </div>
     <div class="form-group">
       <label class="form-label">Benutzer</label>
@@ -519,7 +519,7 @@
   <div class="modal" style="max-width:600px;">
     <div class="modal-header">
       <h3 class="modal-title">Kundendetails</h3>
-      <button class="modal-close" onclick="closeModal('modal-customer-detail')">&times;</button>
+      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-customer-detail')">&times;</button>
     </div>
     <div id="customer-detail-content">
       <div style="text-align:center;color:var(--tx3);padding:40px;">Laden...</div>
@@ -532,7 +532,7 @@
   <div class="modal">
     <div class="modal-header">
       <h3 class="modal-title">Organisation erstellen</h3>
-      <button class="modal-close" onclick="closeModal('modal-add-org')">&times;</button>
+      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-add-org')">&times;</button>
     </div>
     <div class="form-group">
       <label class="form-label">Name</label>

@@ -332,7 +332,7 @@
   <div class="modal">
     <div class="modal-header">
       <h3 class="modal-title">Neuer Lead</h3>
-      <button class="modal-close" onclick="closeModal('modal-add-lead')">&times;</button>
+      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-add-lead')">&times;</button>
     </div>
     <div class="form-group">
       <label class="form-label">Firma *</label>
@@ -402,7 +402,7 @@
   <div class="modal">
     <div class="modal-header">
       <h3 class="modal-title">Neue Aufgabe</h3>
-      <button class="modal-close" onclick="closeModal('modal-add-task')">&times;</button>
+      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-add-task')">&times;</button>
     </div>
     <div class="form-group">
       <label class="form-label">Titel *</label>
@@ -445,7 +445,7 @@
   <div class="modal">
     <div class="modal-header">
       <h3 class="modal-title">Verfügbarkeit eintragen</h3>
-      <button class="modal-close" onclick="closeModal('modal-avail')">&times;</button>
+      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-avail')">&times;</button>
     </div>
     <div class="form-group">
       <label class="form-label">Datum</label>
@@ -486,7 +486,7 @@
   <div class="modal" style="max-width:600px;">
     <div class="modal-header">
       <h3 class="modal-title">Lead Details</h3>
-      <button class="modal-close" onclick="closeModal('modal-lead-detail')">&times;</button>
+      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-lead-detail')">&times;</button>
     </div>
     <div id="lead-detail-content">
       <div style="text-align:center;color:var(--tx3);padding:40px;">Laden...</div>
@@ -499,7 +499,7 @@
   <div class="modal" style="max-width:700px;">
     <div class="modal-header">
       <h3 class="modal-title">Kundendetails</h3>
-      <button class="modal-close" onclick="closeModal('modal-customer-detail')">&times;</button>
+      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-customer-detail')">&times;</button>
     </div>
     <div id="cust-detail-content"></div>
   </div>
@@ -510,7 +510,7 @@
   <div class="modal">
     <div class="modal-header">
       <h3 class="modal-title" id="cust-modal-title">Neuer Kunde</h3>
-      <button class="modal-close" onclick="closeModal('modal-add-customer')">&times;</button>
+      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-add-customer')">&times;</button>
     </div>
     <div class="form-group"><label class="form-label">Firma *</label><input type="text" class="form-input" id="cust-company" placeholder="Firmenname"></div>
     <div class="form-group"><label class="form-label">Kontaktperson</label><input type="text" class="form-input" id="cust-contact" placeholder="Vor- und Nachname"></div>
@@ -557,7 +557,7 @@
   <div class="modal">
     <div class="modal-header">
       <h3 class="modal-title">Anruf protokollieren</h3>
-      <button class="modal-close" onclick="closeModal('modal-call-protocol')">&times;</button>
+      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-call-protocol')">&times;</button>
     </div>
     <input type="hidden" id="cp-customer-id">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
@@ -600,7 +600,7 @@
   <div class="modal" style="max-width:600px;">
     <div class="modal-header">
       <h3 class="modal-title">Kunden aus CSV importieren</h3>
-      <button class="modal-close" onclick="closeModal('modal-csv-import')">&times;</button>
+      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-csv-import')">&times;</button>
     </div>
     <div class="form-group">
       <label class="form-label">CSV-Datei auswählen</label>
@@ -621,7 +621,7 @@
   <div class="modal">
     <div class="modal-header">
       <h3 class="modal-title">Abwesenheit beantragen</h3>
-      <button class="modal-close" onclick="closeModal('modal-time-off')">&times;</button>
+      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-time-off')">&times;</button>
     </div>
     <div class="form-group"><label class="form-label">Typ</label>
       <select class="form-input form-select" id="to-type">

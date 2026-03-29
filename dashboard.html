@@ -677,7 +677,7 @@ body{display:flex;overflow:hidden;}
       <div class="modal" style="max-width:440px;">
         <div class="modal-header">
           <h2>Guthaben aufladen</h2>
-          <button class="modal-close" onclick="closeTopupModal()">&times;</button>
+          <button class="modal-close" aria-label="Schließen" onclick="closeTopupModal()">&times;</button>
         </div>
         <div class="modal-body">
           <p style="font-size:13px;color:var(--tx2);margin-bottom:20px;">Wähle einen Betrag. Die Abbuchung erfolgt über deine hinterlegte Zahlungsmethode.</p>
@@ -780,7 +780,7 @@ body{display:flex;overflow:hidden;}
       <div class="modal" style="max-width:520px;">
         <div class="modal-header">
           <h2 id="pmModalTitle">Zahlungsmethode hinzufügen</h2>
-          <button class="modal-close" onclick="closePaymentModal()">&times;</button>
+          <button class="modal-close" aria-label="Schließen" onclick="closePaymentModal()">&times;</button>
         </div>
         <div class="modal-body">
           <!-- Payment Type Selector -->
@@ -996,7 +996,7 @@ body{display:flex;overflow:hidden;}
       <div class="modal" style="max-width:520px;">
         <div class="modal-header">
           <h2>Kontakte importieren</h2>
-          <button class="modal-close" onclick="closeCsvImportModal()">&times;</button>
+          <button class="modal-close" aria-label="Schließen" onclick="closeCsvImportModal()">&times;</button>
         </div>
         <div class="modal-body">
           <p style="font-size:13px;color:var(--tx2);margin-bottom:16px;">Lade eine CSV-Datei mit Kontaktdaten hoch. Erwartete Spalten: <code>Vorname, Nachname, Firma, Telefon, E-Mail</code></p>
@@ -1027,7 +1027,7 @@ body{display:flex;overflow:hidden;}
   <div class="modal">
     <div class="modal-header">
       <h2 class="modal-title">Neue Konversation</h2>
-      <button class="modal-close" onclick="closeNewConvModal()">&times;</button>
+      <button class="modal-close" aria-label="Schließen" onclick="closeNewConvModal()">&times;</button>
     </div>
     <div class="form-group">
       <label class="form-label" for="convSubject">Betreff</label>
@@ -1049,7 +1049,7 @@ body{display:flex;overflow:hidden;}
   <div class="modal">
     <div class="modal-header">
       <h2 class="modal-title">Teammitglied einladen</h2>
-      <button class="modal-close" onclick="closeInviteModal()">&times;</button>
+      <button class="modal-close" aria-label="Schließen" onclick="closeInviteModal()">&times;</button>
     </div>
     <div class="form-group">
       <label class="form-label" for="inviteEmail">E-Mail-Adresse</label>
