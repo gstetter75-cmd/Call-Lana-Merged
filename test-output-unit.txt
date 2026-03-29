@@ -1,0 +1,11 @@
+
+ RUN  v4.1.2 /Users/gero/Documents/GitHub/Call-Lana-Merged
+
+(node:74878) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+ Test Files  5 passed (5)
+      Tests  21 passed (21)
+   Start at  18:19:41
+   Duration  1.70s (transform 257ms, setup 0ms, import 439ms, tests 143ms, environment 6.40s)
+

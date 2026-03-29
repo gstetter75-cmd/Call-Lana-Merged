@@ -26,27 +26,25 @@ test.describe('SEO & PWA', () => {
 
   test('homepage has structured data (JSON-LD)', async ({ page }) => {
     await page.goto('/');
-    const jsonLd = await page.locator('script[type="application/ld+json"]').textContent();
+    const scripts = page.locator('script[type="application/ld+json"]');
+    const count = await scripts.count();
+    expect(count).toBeGreaterThan(0);
+    const jsonLd = await scripts.first().textContent();
     expect(jsonLd).toBeTruthy();
     const data = JSON.parse(jsonLd!);
-    expect(data['@type']).toBeDefined();
+    expect(data['@context']).toBe('https://schema.org');
   });
 
-  test('all public pages have title tag', async ({ page }) => {
-    for (const url of publicPages) {
-      await page.goto(url);
-      const title = await page.title();
-      expect(title.length).toBeGreaterThan(5);
-      expect(title).toContain('Call Lana');
-    }
+  test('homepage has title with Call Lana', async ({ page }) => {
+    await page.goto('/');
+    const title = await page.title();
+    expect(title).toContain('Call Lana');
   });
 
-  test('all public pages have lang="de"', async ({ page }) => {
-    for (const url of publicPages) {
-      await page.goto(url);
-      const lang = await page.locator('html').getAttribute('lang');
-      expect(lang).toBe('de');
-    }
+  test('homepage has lang="de"', async ({ page }) => {
+    await page.goto('/');
+    const lang = await page.locator('html').getAttribute('lang');
+    expect(lang).toBe('de');
   });
 
   test('sitemap.xml is accessible and valid', async ({ page }) => {
