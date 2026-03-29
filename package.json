@@ -9,6 +9,7 @@
     "test": "npx playwright test",
     "test:unit": "npx vitest run",
     "test:all": "npx vitest run && npx playwright test",
+    "test:full": "npx vitest run 2>&1 | tee test-output-unit.txt && npx playwright test 2>&1 | tee test-output-e2e.txt && node scripts/generate-report.js",
     "test:headed": "npx playwright test --headed",
     "test:debug": "npx playwright test --debug",
     "test:report": "npx playwright show-report",
