@@ -114,6 +114,79 @@
       transform: scale(1.08);
     }
   </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://call-lana.de/"},{"@type":"ListItem","position":2,"name":"Preise","item":"https://call-lana.de/preise.html"}]}
+  </script>
+  <!-- Product structured data for pricing tiers -->
+  <script type="application/ld+json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "Call Lana Starter",
+      "description": "KI-Telefonassistent für kleine Handwerksbetriebe. 340 Inklusivminuten, Terminbuchung, Anrufzusammenfassung per E-Mail, eigene Telefonnummer und E-Mail-Support.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Call Lana"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "149",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "url": "https://call-lana.de/preise.html"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "Call Lana Professional",
+      "description": "Volle KI-Rezeptionistin für wachsende Betriebe. 560 Inklusivminuten, Terminbuchung mit Kalender-Sync, Echtzeit-Anrufweiterleitung, SMS- und E-Mail-Zusammenfassungen, CRM-Integration und Prioritäts-Support.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Call Lana"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "299",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "url": "https://call-lana.de/preise.html"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "Call Lana Business",
+      "description": "Maßgeschneiderte KI-Telefonlösung für Betriebe mit hohem Anrufvolumen. Individuelles Minutenkontingent, mehrere Standorte, persönlicher Ansprechpartner und API- sowie White-Label-Option.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Call Lana"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "599",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "url": "https://call-lana.de/preise.html"
+      }
+    }
+  ]
+  </script>
+  <!-- FAQ structured data for SEO -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"Werden meine Daten in der EU gespeichert?","acceptedAnswer":{"@type":"Answer","text":"Ja, alle Daten werden ausschließlich auf Servern innerhalb der Europäischen Union gespeichert und verarbeitet. Wir sind vollständig DSGVO-konform und arbeiten nur mit europäischen Cloud-Anbietern zusammen."}},
+    {"@type":"Question","name":"Kann Lana auch ausgehende Anrufe machen?","acceptedAnswer":{"@type":"Answer","text":"Aktuell ist Lana auf eingehende Anrufe spezialisiert. Ausgehende Anrufe (z. B. Terminbestätigungen oder Follow-ups) sind in der Roadmap und werden bald verfügbar sein. Sprich uns gerne an, wenn du Interesse hast."}},
+    {"@type":"Question","name":"Was passiert nach den Inklusivminuten?","acceptedAnswer":{"@type":"Answer","text":"Nach Verbrauch deiner Inklusivminuten werden weitere Minuten transparent zu 0,39 €/Minute abgerechnet. Du erhältst rechtzeitig eine Benachrichtigung, wenn du 80% deines Kontingents erreicht hast. Du kannst jederzeit auf einen höheren Plan upgraden."}},
+    {"@type":"Question","name":"Kann ich meine bestehende Telefonnummer behalten?","acceptedAnswer":{"@type":"Answer","text":"Ja, du kannst deine bestehende Nummer per Rufumleitung mit Call Lana verbinden. Alternativ stellen wir dir eine eigene Rufnummer bereit. Eine vollständige Portierung deiner Nummer ist ebenfalls möglich."}},
+    {"@type":"Question","name":"Gibt es eine Garantie?","acceptedAnswer":{"@type":"Answer","text":"Ja! Wir bieten eine 30-Tage-Geld-zurück-Garantie. Wenn du nicht zufrieden bist, erhältst du dein Geld vollständig zurück — ohne Fragen. So kannst du Call Lana risikofrei testen."}},
+    {"@type":"Question","name":"Kann ich jederzeit kündigen?","acceptedAnswer":{"@type":"Answer","text":"Ja. Monatliche Abonnements können mit 14 Tagen Frist zum Monatsende gekündigt werden. Jährliche Abonnements können mit einem Monat Frist zum Laufzeitende gekündigt werden. Die Kündigung ist per E-Mail an info@call-lana.de oder direkt im Dashboard möglich."}},
+    {"@type":"Question","name":"Was passiert mit meinen Daten nach Kündigung?","acceptedAnswer":{"@type":"Answer","text":"Nach Vertragsende hast du 30 Tage Zeit, deine Daten zu exportieren. Danach werden alle personenbezogenen Daten, Transkripte und Einstellungen unwiderruflich gelöscht. Rechnungsdaten werden gemäß gesetzlicher Aufbewahrungsfristen aufbewahrt."}},
+    {"@type":"Question","name":"Kann ich meinen Tarif jederzeit wechseln?","acceptedAnswer":{"@type":"Answer","text":"Ja. Du kannst jederzeit auf einen höheren Tarif upgraden — die Differenz wird anteilig berechnet. Ein Downgrade ist zum Ende der aktuellen Abrechnungsperiode möglich."}},
+    {"@type":"Question","name":"Welche Zahlungsmethoden akzeptiert ihr?","acceptedAnswer":{"@type":"Answer","text":"Wir akzeptieren SEPA-Lastschrift und alle gängigen Kreditkarten (Visa, Mastercard, Amex). Die Zahlungsabwicklung erfolgt sicher über Stripe — deine Zahlungsdaten werden verschlüsselt übertragen und nie auf unseren Servern gespeichert."}}
+  ]}
+  </script>
 </head>
 <body class="bg-white text-gray-900 antialiased overflow-x-hidden">
 
@@ -568,6 +641,11 @@
       </div>
     </div>
   </section>
+
+  <!-- ===== RATGEBER LINK ===== -->
+  <div class="max-w-3xl mx-auto px-6 py-10 text-center">
+    <p class="text-gray-500 text-base" style="line-height:1.7;">Ausführlicher Kostenvergleich: <a href="blog/telefonservice-handwerker-kosten.html" class="text-brand-400 font-semibold hover:underline">Telefonservice für Handwerker: Kosten im Vergleich</a></p>
+  </div>
 
   <!-- ========== FAQ ========== -->
   <section class="bg-section-light relative py-20">

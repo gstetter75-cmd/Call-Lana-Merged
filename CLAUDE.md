@@ -10,7 +10,7 @@ Supabase (Auth, DB, Realtime, Storage)
 Externe APIs (Stripe, Resend, VAPI)
 ```
 
-- **Hosting:** GitHub Pages (statisch)
+- **Hosting:** Netlify (statisch, Custom Domain: call-lana.de)
 - **Backend:** Supabase (44 Tabellen, RLS, Realtime)
 - **Edge Functions:** 7 Deno-Functions in `supabase/functions/`
 - **Build:** esbuild via `build.js` → `dist/` Bundles

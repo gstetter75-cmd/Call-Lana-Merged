@@ -1,0 +1,43 @@
+# Call Lana — KI-Telefonassistent für Handwerker
+
+## Was ist Call Lana?
+Call Lana ist ein KI-Telefonassistent speziell für Handwerksbetriebe in Deutschland. Der Assistent nimmt Anrufe automatisch entgegen, bucht Termine, qualifiziert Kunden und leitet Notfälle weiter — rund um die Uhr, auch wenn der Meister auf der Baustelle ist.
+
+## Für wen?
+- Handwerksbetriebe aller Gewerke (Elektriker, Installateure, Maler, Dachdecker, etc.)
+- Kleine und mittlere Unternehmen (1-50 Mitarbeiter)
+- Betriebe, die Anrufe verpassen und Aufträge verlieren
+
+## Kernfunktionen
+- Automatische Anrufannahme 24/7
+- Intelligente Terminbuchung mit Kalender-Integration
+- Kundenqualifizierung und Lead-Scoring
+- Notfall-Erkennung und sofortige Weiterleitung
+- Anruf-Transkription und Zusammenfassung
+- WhatsApp/SMS-Benachrichtigungen
+- DSGVO-konform, Server in Deutschland
+
+## Preise
+- Starter: 149€/Monat (340 Inklusivminuten)
+- Professional: 299€/Monat (560 Inklusivminuten)
+- Business: 599€/Monat (individuelles Minutenkontingent)
+- Zusatzminuten: 0,39€/Min.
+- Jahresrabatt verfügbar
+- 30-Tage-Geld-zurück-Garantie
+
+## Unternehmen
+Call Lana GmbH
+Wetzellplatz 2, 31137 Hildesheim, Deutschland
+Gründer: Gero Stetter
+Gegründet: 2024
+E-Mail: info@call-lana.de
+Website: https://call-lana.de
+
+## Wichtige Seiten
+- Startseite: https://call-lana.de/
+- Funktionen: https://call-lana.de/funktionen.html
+- Branchen: https://call-lana.de/branchen.html
+- Preise: https://call-lana.de/preise.html
+- Ratgeber: https://call-lana.de/blog/
+- Über uns: https://call-lana.de/ueber-uns.html
+- Kontakt: https://call-lana.de/kontakt.html

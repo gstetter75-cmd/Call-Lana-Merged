@@ -25,6 +25,25 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/design.css" />
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://call-lana.de/"},{"@type":"ListItem","position":2,"name":"Funktionen","item":"https://call-lana.de/funktionen.html"}]}
+  </script>
+  <!-- Service structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "KI-Telefonassistent",
+    "name": "Call Lana KI-Telefonassistent",
+    "description": "KI-Telefonassistent für Handwerksbetriebe: automatische Anrufannahme, 24/7-Terminbuchung, Anruf-Transkription, Echtzeit-Weiterleitung, CRM-Integration und DSGVO-konforme Datenverarbeitung auf deutschen Servern.",
+    "provider": {
+      "@type": "Organization",
+      "name": "Call Lana GmbH",
+      "url": "https://call-lana.de"
+    },
+    "areaServed": "DE"
+  }
+  </script>
 </head>
 <body class="bg-white text-gray-900 antialiased overflow-x-hidden">
   <div id="nav-container"></div>
@@ -300,25 +319,25 @@
         <div class="flex flex-wrap items-center justify-center gap-8 sm:gap-12 lg:gap-16">
           <div class="flex flex-col items-center gap-3 group">
             <div class="w-20 h-20 rounded-2xl bg-dark-800/80 border border-gray-200 flex items-center justify-center p-4" style="transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease;">
-              <img src="pictures/google_calendar_logo_icon_159345.png" alt="Google Calendar" class="w-10 h-10 object-contain" />
+              <img src="pictures/google_calendar_logo_icon_159345.png" alt="Google Calendar" class="w-10 h-10 object-contain" loading="lazy" />
             </div>
             <span class="text-gray-500 text-xs font-medium">Google Calendar</span>
           </div>
           <div class="flex flex-col items-center gap-3 group">
             <div class="w-20 h-20 rounded-2xl bg-dark-800/80 border border-gray-200 flex items-center justify-center p-4" style="transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease;">
-              <img src="pictures/whatsapp_101778.png" alt="WhatsApp" class="w-10 h-10 object-contain" />
+              <img src="pictures/whatsapp_101778.png" alt="WhatsApp" class="w-10 h-10 object-contain" loading="lazy" />
             </div>
             <span class="text-gray-500 text-xs font-medium">WhatsApp</span>
           </div>
           <div class="flex flex-col items-center gap-3 group">
             <div class="w-20 h-20 rounded-2xl bg-dark-800/80 border border-gray-200 flex items-center justify-center p-4" style="transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease;">
-              <img src="pictures/telegram_icon-icons.com_72055.png" alt="Telegram" class="w-10 h-10 object-contain" />
+              <img src="pictures/telegram_icon-icons.com_72055.png" alt="Telegram" class="w-10 h-10 object-contain" loading="lazy" />
             </div>
             <span class="text-gray-500 text-xs font-medium">Telegram</span>
           </div>
           <div class="flex flex-col items-center gap-3 group">
             <div class="w-20 h-20 rounded-2xl bg-dark-800/80 border border-gray-200 flex items-center justify-center p-4" style="transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease;">
-              <img src="pictures/gmail_new_logo_icon_159149.png" alt="Gmail" class="w-10 h-10 object-contain" />
+              <img src="pictures/gmail_new_logo_icon_159149.png" alt="Gmail" class="w-10 h-10 object-contain" loading="lazy" />
             </div>
             <span class="text-gray-500 text-xs font-medium">Gmail</span>
           </div>
@@ -463,6 +482,11 @@
         </div>
       </div>
     </section>
+
+    <!-- ===== RATGEBER LINK ===== -->
+    <div class="max-w-3xl mx-auto px-6 py-10 text-center">
+      <p class="text-gray-500 text-base" style="line-height:1.7;">Mehr erfahren in unserem Ratgeber: <a href="blog/ki-telefonassistent-handwerk.html" class="text-brand-400 font-semibold hover:underline">KI-Telefonassistent für Handwerker &mdash; Der komplette Leitfaden</a></p>
+    </div>
 
     <!-- ===== CTA ===== -->
     <section class="relative bg-section-light noise-overlay py-20 lg:py-28">

@@ -1,4 +1,5 @@
-User-agent: *
+# Googlebot (no crawl-delay)
+User-agent: Googlebot
 Allow: /
 
 Disallow: /dashboard.html
@@ -6,5 +7,28 @@ Disallow: /settings.html
 Disallow: /admin.html
 Disallow: /sales.html
 Disallow: /reset-password.html
+Disallow: /dist/
+Disallow: /components/
+Disallow: /tests/
+Disallow: /sql/
+Disallow: /playwright-report/
+Disallow: /node_modules/
+
+# All other bots
+User-agent: *
+Allow: /
+Crawl-delay: 1
+
+Disallow: /dashboard.html
+Disallow: /settings.html
+Disallow: /admin.html
+Disallow: /sales.html
+Disallow: /reset-password.html
+Disallow: /dist/
+Disallow: /components/
+Disallow: /tests/
+Disallow: /sql/
+Disallow: /playwright-report/
+Disallow: /node_modules/
 
 Sitemap: https://call-lana.de/sitemap.xml
