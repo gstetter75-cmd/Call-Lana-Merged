@@ -1,17 +1,44 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @Environment(DependencyContainer.self) private var container
     @State private var selectedTab = Tab.home
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            ForEach(Tab.allCases) { tab in
-                tab.destination
-                    .tabItem {
-                        Label(tab.title, systemImage: tab.icon)
-                    }
-                    .tag(tab)
+            NavigationStack {
+                HomeView(
+                    callRepository: container.callRepository,
+                    appointmentRepository: container.appointmentRepository,
+                    leadRepository: container.leadRepository
+                )
             }
+            .tabItem { Label("Home", systemImage: "house.fill") }
+            .tag(Tab.home)
+
+            NavigationStack {
+                CallListView(callRepository: container.callRepository)
+            }
+            .tabItem { Label("Anrufe", systemImage: "phone.fill") }
+            .tag(Tab.calls)
+
+            NavigationStack {
+                AssistantListView(assistantRepository: container.assistantRepository)
+            }
+            .tabItem { Label("Assistenten", systemImage: "cpu.fill") }
+            .tag(Tab.assistants)
+
+            NavigationStack {
+                BillingOverviewView()
+            }
+            .tabItem { Label("Kosten", systemImage: "creditcard.fill") }
+            .tag(Tab.billing)
+
+            NavigationStack {
+                SettingsView()
+            }
+            .tabItem { Label("Mehr", systemImage: "gearshape.fill") }
+            .tag(Tab.settings)
         }
         .tint(Color.callLanaPurple)
     }
@@ -49,21 +76,8 @@ extension MainTabView {
             }
         }
 
-        @ViewBuilder
-        var destination: some View {
-            switch self {
-            case .home:
-                HomePlaceholderView()
-            case .calls:
-                PlaceholderTabView(title: "Anrufe", icon: "phone.fill", description: "Deine Anrufliste erscheint hier.")
-            case .assistants:
-                PlaceholderTabView(title: "Assistenten", icon: "cpu.fill", description: "Verwalte deine KI-Assistenten.")
-            case .billing:
-                PlaceholderTabView(title: "Kosten", icon: "creditcard.fill", description: "Deine Abrechnungsuebersicht.")
-            case .settings:
-                PlaceholderTabView(title: "Einstellungen", icon: "gearshape.fill", description: "Konto- und App-Einstellungen.")
-            }
-        }
+        // destination is resolved in MainTabView.body to access container
+        var destinationTag: String { rawValue }
     }
 }
 
