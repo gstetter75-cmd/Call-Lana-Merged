@@ -53,15 +53,10 @@ final class HomeViewModel {
         isLoading = true
         errorMessage = nil
 
-        async let callsTask = loadCalls()
-        async let metricsTask = loadMetrics()
-        async let appointmentsTask = loadAppointments()
-        async let leadsTask = loadLeads()
-
-        await callsTask
-        await metricsTask
-        await appointmentsTask
-        await leadsTask
+        await loadCalls()
+        await loadMetrics()
+        await loadAppointments()
+        await loadLeads()
 
         isLoading = false
     }

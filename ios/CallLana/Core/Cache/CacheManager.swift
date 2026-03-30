@@ -3,7 +3,7 @@
 
 import Foundation
 
-final class CacheManager: Sendable {
+final class CacheManager: @unchecked Sendable {
 
     static let shared = CacheManager()
 

@@ -3,7 +3,7 @@
 
 import Foundation
 
-enum Environment {
+enum AppConfig {
 
     // MARK: - Supabase
 

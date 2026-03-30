@@ -64,14 +64,14 @@ struct SettingsView: View {
                 Label {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Profil")
-                            .foregroundStyle(.clText)
+                            .foregroundStyle(Color.clText)
                         Text(viewModel.displayName)
                             .font(.caption)
-                            .foregroundStyle(.clTextSecondary)
+                            .foregroundStyle(Color.clTextSecondary)
                     }
                 } icon: {
                     Image(systemName: "person.circle.fill")
-                        .foregroundStyle(.clPurple)
+                        .foregroundStyle(Color.clPurple)
                 }
             }
 
@@ -80,10 +80,10 @@ struct SettingsView: View {
             } label: {
                 Label {
                     Text("Sicherheit")
-                        .foregroundStyle(.clText)
+                        .foregroundStyle(Color.clText)
                 } icon: {
                     Image(systemName: "lock.shield.fill")
-                        .foregroundStyle(.clPurple)
+                        .foregroundStyle(Color.clPurple)
                 }
             }
         }
@@ -98,10 +98,10 @@ struct SettingsView: View {
             } label: {
                 Label {
                     Text("Benachrichtigungen")
-                        .foregroundStyle(.clText)
+                        .foregroundStyle(Color.clText)
                 } icon: {
                     Image(systemName: "bell.badge.fill")
-                        .foregroundStyle(.clPurple)
+                        .foregroundStyle(Color.clPurple)
                 }
             }
         }
@@ -116,10 +116,10 @@ struct SettingsView: View {
             } label: {
                 Label {
                     Text("Zahlungsmethoden")
-                        .foregroundStyle(.clText)
+                        .foregroundStyle(Color.clText)
                 } icon: {
                     Image(systemName: "creditcard.fill")
-                        .foregroundStyle(.clPurple)
+                        .foregroundStyle(Color.clPurple)
                 }
             }
         }
@@ -132,27 +132,27 @@ struct SettingsView: View {
             HStack {
                 Label {
                     Text("Version")
-                        .foregroundStyle(.clText)
+                        .foregroundStyle(Color.clText)
                 } icon: {
                     Image(systemName: "info.circle.fill")
-                        .foregroundStyle(.clPurple)
+                        .foregroundStyle(Color.clPurple)
                 }
                 Spacer()
                 Text(viewModel.appVersion)
                     .font(.subheadline)
-                    .foregroundStyle(.clTextSecondary)
+                    .foregroundStyle(Color.clTextSecondary)
             }
 
             Toggle(isOn: $viewModel.isDarkModeEnabled) {
                 Label {
                     Text("Dark Mode")
-                        .foregroundStyle(.clText)
+                        .foregroundStyle(Color.clText)
                 } icon: {
                     Image(systemName: "moon.fill")
-                        .foregroundStyle(.clPurple)
+                        .foregroundStyle(Color.clPurple)
                 }
             }
-            .tint(.clPurple)
+            .tint(Color.clPurple)
         }
     }
 

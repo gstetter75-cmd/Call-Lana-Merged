@@ -26,19 +26,19 @@ struct AppointmentDetailView: View {
         VStack(spacing: 12) {
             Image(systemName: "calendar.circle.fill")
                 .font(.system(size: 48))
-                .foregroundStyle(.clPurple)
+                .foregroundStyle(Color.clPurple)
 
             Text(appointment.title ?? "Termin")
                 .font(.title3)
                 .fontWeight(.bold)
-                .foregroundStyle(.clText)
+                .foregroundStyle(Color.clText)
                 .multilineTextAlignment(.center)
 
             StatusBadgeView(text: statusLabel, style: statusBadgeStyle)
         }
         .frame(maxWidth: .infinity)
         .padding(20)
-        .background(.clCard)
+        .background(Color.clCard)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
     }
@@ -92,7 +92,7 @@ struct AppointmentDetailView: View {
             }
         }
         .padding(16)
-        .background(.clCard)
+        .background(Color.clCard)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
     }
@@ -105,15 +105,15 @@ struct AppointmentDetailView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Label("Titel", systemImage: "note.text")
                     .font(.headline)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
 
                 Text(title)
                     .font(.body)
-                    .foregroundStyle(.clTextSecondary)
+                    .foregroundStyle(Color.clTextSecondary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(16)
-            .background(.clCard)
+            .background(Color.clCard)
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
         }
@@ -124,19 +124,19 @@ struct AppointmentDetailView: View {
     private func detailRow(icon: String, label: String, value: String) -> some View {
         HStack(spacing: 12) {
             Image(systemName: icon)
-                .foregroundStyle(.clPurple)
+                .foregroundStyle(Color.clPurple)
                 .frame(width: 24)
 
             Text(label)
                 .font(.subheadline)
-                .foregroundStyle(.clTextSecondary)
+                .foregroundStyle(Color.clTextSecondary)
 
             Spacer()
 
             Text(value)
                 .font(.subheadline)
                 .fontWeight(.medium)
-                .foregroundStyle(.clText)
+                .foregroundStyle(Color.clText)
                 .multilineTextAlignment(.trailing)
         }
         .padding(.vertical, 10)

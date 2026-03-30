@@ -113,7 +113,7 @@ struct HomeView: View {
                         }
                     }
                 }
-                .background(.clCard)
+                .background(Color.clCard)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .padding(.horizontal)
             }
@@ -146,7 +146,7 @@ struct HomeView: View {
                         }
                     }
                 }
-                .background(.clCard)
+                .background(Color.clCard)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .padding(.horizontal)
             }
@@ -172,7 +172,7 @@ struct HomeView: View {
                         }
                     }
                 }
-                .background(.clCard)
+                .background(Color.clCard)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .padding(.horizontal)
             }
@@ -185,7 +185,7 @@ struct HomeView: View {
         HStack {
             Label(title, systemImage: icon)
                 .font(.headline)
-                .foregroundStyle(.clText)
+                .foregroundStyle(Color.clText)
 
             if let count, count > 0 {
                 Text("\(count)")
@@ -205,10 +205,10 @@ struct HomeView: View {
     private func sectionEmptyState(_ text: String) -> some View {
         Text(text)
             .font(.subheadline)
-            .foregroundStyle(.clTextSecondary)
+            .foregroundStyle(Color.clTextSecondary)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 24)
-            .background(.clCard)
+            .background(Color.clCard)
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .padding(.horizontal)
     }
@@ -228,7 +228,7 @@ private struct CallRowView: View {
                 Text(call.phoneNumber ?? "Unbekannt")
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
 
                 HStack(spacing: 4) {
                     Text(call.createdAt.timeString)
@@ -236,14 +236,14 @@ private struct CallRowView: View {
                     Text(formattedDuration)
                 }
                 .font(.caption)
-                .foregroundStyle(.clTextSecondary)
+                .foregroundStyle(Color.clTextSecondary)
             }
 
             Spacer()
 
             Image(systemName: "chevron.right")
                 .font(.caption)
-                .foregroundStyle(.clTextSecondary)
+                .foregroundStyle(Color.clTextSecondary)
         }
         .padding(.horizontal)
         .padding(.vertical, 10)
@@ -263,7 +263,7 @@ private struct CallRowView: View {
                     .foregroundStyle(.orange)
             default:
                 Image(systemName: "phone.fill")
-                    .foregroundStyle(.clTextSecondary)
+                    .foregroundStyle(Color.clTextSecondary)
             }
         }
         .font(.title3)
@@ -294,7 +294,7 @@ private struct AppointmentRowView: View {
                 Text(appointment.title ?? "Unbekannter Termin")
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
                     .lineLimit(1)
             }
 
@@ -337,13 +337,13 @@ private struct LeadRowView: View {
                 Text(lead.name ?? "Unbekannt")
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
                     .lineLimit(1)
 
                 if let company = lead.company, !company.isEmpty {
                     Text(company)
                         .font(.caption)
-                        .foregroundStyle(.clTextSecondary)
+                        .foregroundStyle(Color.clTextSecondary)
                         .lineLimit(1)
                 }
             }
@@ -357,7 +357,7 @@ private struct LeadRowView: View {
                 Text("\(lead.score ?? 0)")
                     .font(.caption)
                     .fontWeight(.bold)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
                     .frame(width: 28, alignment: .trailing)
             }
         }
@@ -375,8 +375,8 @@ private struct LeadRowView: View {
 
 #Preview {
     HomeView(
-        callRepository: CallRepository(client: SupabaseClientFactory.shared.client),
-        appointmentRepository: AppointmentRepository(client: SupabaseClientFactory.shared.client),
-        leadRepository: LeadRepository(client: SupabaseClientFactory.shared.client)
+        callRepository: CallRepository(client: SupabaseClientFactory.shared),
+        appointmentRepository: AppointmentRepository(client: SupabaseClientFactory.shared),
+        leadRepository: LeadRepository(client: SupabaseClientFactory.shared)
     )
 }

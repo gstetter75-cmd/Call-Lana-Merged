@@ -167,6 +167,21 @@ final class AuthService: @unchecked Sendable {
         }
     }
 
+    // MARK: - Biometric Sign In
+
+    @MainActor
+    func signInWithBiometrics() async throws {
+        isLoading = true
+        defer { isLoading = false }
+
+        // Verify biometrics first, then restore existing session
+        try await BiometricService.shared.authenticate(reason: "Anmeldung bei Call Lana")
+        await restoreSession()
+        if !isAuthenticated {
+            throw APIError.serverError(statusCode: 401, message: "Keine gespeicherte Session")
+        }
+    }
+
     // MARK: - Password Reset
 
     func resetPassword(email: String) async throws {

@@ -77,12 +77,12 @@ private struct AssistantCardView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(assistant.name ?? "Unbenannter Assistent")
                         .font(.headline)
-                        .foregroundStyle(.clText)
+                        .foregroundStyle(Color.clText)
 
                     if let phone = assistant.vapiAssistantId {
                         Text(phone)
                             .font(.caption)
-                            .foregroundStyle(.clTextSecondary)
+                            .foregroundStyle(Color.clTextSecondary)
                     }
                 }
 
@@ -98,7 +98,7 @@ private struct AssistantCardView: View {
                 if let description = assistant.description, !description.isEmpty {
                     Text(description)
                         .font(.caption)
-                        .foregroundStyle(.clTextSecondary)
+                        .foregroundStyle(Color.clTextSecondary)
                         .lineLimit(2)
                 }
 
@@ -127,7 +127,7 @@ private struct AssistantCardView: View {
             }
         }
         .padding()
-        .background(.clCard)
+        .background(Color.clCard)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
     }
@@ -139,6 +139,6 @@ private struct AssistantCardView: View {
 
 #Preview {
     AssistantListView(
-        assistantRepository: AssistantRepository(client: SupabaseClientFactory.shared.client)
+        assistantRepository: AssistantRepository(client: SupabaseClientFactory.shared)
     )
 }

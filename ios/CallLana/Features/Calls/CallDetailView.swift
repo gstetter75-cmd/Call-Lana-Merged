@@ -63,15 +63,15 @@ struct CallDetailView: View {
             Text(call.phoneNumber ?? "Unbekannt")
                 .font(.title2)
                 .fontWeight(.bold)
-                .foregroundStyle(.clText)
+                .foregroundStyle(Color.clText)
 
             Text("\(call.createdAt.dateString) um \(call.createdAt.timeString)")
                 .font(.subheadline)
-                .foregroundStyle(.clTextSecondary)
+                .foregroundStyle(Color.clTextSecondary)
         }
         .frame(maxWidth: .infinity)
         .padding()
-        .background(.clCard)
+        .background(Color.clCard)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .padding(.horizontal)
     }
@@ -100,7 +100,7 @@ struct CallDetailView: View {
             VStack(spacing: 8) {
                 Text("Sentiment")
                     .font(.caption)
-                    .foregroundStyle(.clTextSecondary)
+                    .foregroundStyle(Color.clTextSecondary)
 
                 ZStack {
                     Circle()
@@ -121,11 +121,11 @@ struct CallDetailView: View {
 
                 Text(sentimentLabel(score))
                     .font(.caption)
-                    .foregroundStyle(.clTextSecondary)
+                    .foregroundStyle(Color.clTextSecondary)
             }
             .frame(maxWidth: .infinity)
             .padding()
-            .background(.clCard)
+            .background(Color.clCard)
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .padding(.horizontal)
         }
@@ -143,7 +143,7 @@ struct CallDetailView: View {
             Divider().padding(.leading, 44)
             infoRow(label: "Uhrzeit", value: call.createdAt.timeString, icon: "clock.badge")
         }
-        .background(.clCard)
+        .background(Color.clCard)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .padding(.horizontal)
     }
@@ -157,14 +157,14 @@ struct CallDetailView: View {
 
             Text(label)
                 .font(.subheadline)
-                .foregroundStyle(.clTextSecondary)
+                .foregroundStyle(Color.clTextSecondary)
 
             Spacer()
 
             Text(value)
                 .font(.subheadline)
                 .fontWeight(.medium)
-                .foregroundStyle(.clText)
+                .foregroundStyle(Color.clText)
         }
         .padding(.horizontal)
         .padding(.vertical, 12)
@@ -182,13 +182,13 @@ struct CallDetailView: View {
                 HStack {
                     Label("Transkript", systemImage: "text.quote")
                         .font(.headline)
-                        .foregroundStyle(.clText)
+                        .foregroundStyle(Color.clText)
 
                     Spacer()
 
                     Image(systemName: isTranscriptExpanded ? "chevron.up" : "chevron.down")
                         .font(.caption)
-                        .foregroundStyle(.clTextSecondary)
+                        .foregroundStyle(Color.clTextSecondary)
                 }
                 .padding()
             }
@@ -199,12 +199,12 @@ struct CallDetailView: View {
 
                 Text(transcript)
                     .font(.body)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
             }
         }
-        .background(.clCard)
+        .background(Color.clCard)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .padding(.horizontal)
     }

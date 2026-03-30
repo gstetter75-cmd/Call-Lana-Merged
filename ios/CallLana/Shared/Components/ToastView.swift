@@ -31,7 +31,7 @@ struct ToastView: View {
                 .foregroundStyle(type.tintColor)
             Text(message)
                 .font(.subheadline)
-                .foregroundStyle(.clText)
+                .foregroundStyle(Color.clText)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)

@@ -39,20 +39,20 @@ private struct InvoiceRowView: View {
 
     private var statusBadgeStyle: StatusBadgeView.Style {
         switch invoice.status {
-        case "paid": return .green
-        case "issued": return .purple
-        case "cancelled", "credited": return .red
+        case .some("paid"): return .green
+        case .some("issued"): return .purple
+        case .some("cancelled"), .some("credited"): return .red
         default: return .gray
         }
     }
 
     private var statusLabel: String {
         switch invoice.status {
-        case "paid": return "Bezahlt"
-        case "issued": return "Offen"
-        case "draft": return "Entwurf"
-        case "cancelled": return "Storniert"
-        case "credited": return "Gutgeschrieben"
+        case .some("paid"): return "Bezahlt"
+        case .some("issued"): return "Offen"
+        case .some("draft"): return "Entwurf"
+        case .some("cancelled"): return "Storniert"
+        case .some("credited"): return "Gutgeschrieben"
         default: return invoice.status ?? "Unbekannt"
         }
     }
@@ -67,14 +67,12 @@ private struct InvoiceRowView: View {
                         Text(number)
                             .font(.subheadline)
                             .fontWeight(.medium)
-                            .foregroundStyle(.clText)
+                            .foregroundStyle(Color.clText)
                     }
 
-                    if let date = invoice.createdAt {
-                        Text(date.dateString)
-                            .font(.caption)
-                            .foregroundStyle(.clTextSecondary)
-                    }
+                    Text(invoice.createdAt.dateString)
+                        .font(.caption)
+                        .foregroundStyle(Color.clTextSecondary)
                 }
 
                 Spacer()
@@ -83,14 +81,14 @@ private struct InvoiceRowView: View {
                     Text(invoice.amountCents.centsToEUR)
                         .font(.subheadline)
                         .fontWeight(.semibold)
-                        .foregroundStyle(.clText)
+                        .foregroundStyle(Color.clText)
 
                     StatusBadgeView(text: statusLabel, style: statusBadgeStyle)
                 }
 
                 Image(systemName: "arrow.down.doc.fill")
                     .font(.caption)
-                    .foregroundStyle(.clPurple)
+                    .foregroundStyle(Color.clPurple)
                     .padding(.leading, 4)
             }
             .padding(.vertical, 4)

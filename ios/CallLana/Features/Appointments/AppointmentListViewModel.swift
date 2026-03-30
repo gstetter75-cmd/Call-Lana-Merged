@@ -11,7 +11,7 @@ final class AppointmentListViewModel {
     private(set) var todayAppointments: [Appointment] = []
     private(set) var weekAppointments: [Appointment] = []
     private(set) var isLoading = false
-    private(set) var errorMessage: String?
+    var errorMessage: String?
 
     var selectedSegment: Segment = .today
 

@@ -110,7 +110,7 @@ private struct CallListRowView: View {
                 Text(call.phoneNumber ?? "Unbekannt")
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
 
                 HStack(spacing: 4) {
                     Text(call.createdAt.relativeDateString)
@@ -118,7 +118,7 @@ private struct CallListRowView: View {
                     Text(call.createdAt.timeString)
                 }
                 .font(.caption)
-                .foregroundStyle(.clTextSecondary)
+                .foregroundStyle(Color.clTextSecondary)
             }
 
             Spacer()
@@ -127,7 +127,7 @@ private struct CallListRowView: View {
                 Text(formattedDuration)
                     .font(.caption)
                     .fontWeight(.medium)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
 
                 StatusBadgeView(
                     text: statusText,
@@ -152,7 +152,7 @@ private struct CallListRowView: View {
                     .foregroundStyle(.orange)
             default:
                 Image(systemName: "phone.fill")
-                    .foregroundStyle(.clTextSecondary)
+                    .foregroundStyle(Color.clTextSecondary)
             }
         }
         .font(.title3)
@@ -186,6 +186,6 @@ private struct CallListRowView: View {
 
 #Preview {
     CallListView(
-        callRepository: CallRepository(client: SupabaseClientFactory.shared.client)
+        callRepository: CallRepository(client: SupabaseClientFactory.shared)
     )
 }

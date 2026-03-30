@@ -40,24 +40,24 @@ struct NotificationSettingsView: View {
             Toggle(isOn: $callSummaries) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Anrufzusammenfassungen")
-                        .foregroundStyle(.clText)
+                        .foregroundStyle(Color.clText)
                     Text("Erhalte nach jedem Anruf eine Zusammenfassung per Push-Nachricht.")
                         .font(.caption)
-                        .foregroundStyle(.clTextSecondary)
+                        .foregroundStyle(Color.clTextSecondary)
                 }
             }
-            .tint(.clPurple)
+            .tint(Color.clPurple)
 
             Toggle(isOn: $importantForwards) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Wichtige Weiterleitungen")
-                        .foregroundStyle(.clText)
+                        .foregroundStyle(Color.clText)
                     Text("Werde sofort benachrichtigt, wenn Lana einen Anruf als dringend einstuft.")
                         .font(.caption)
-                        .foregroundStyle(.clTextSecondary)
+                        .foregroundStyle(Color.clTextSecondary)
                 }
             }
-            .tint(.clPurple)
+            .tint(Color.clPurple)
         }
     }
 
@@ -68,13 +68,13 @@ struct NotificationSettingsView: View {
             Toggle(isOn: $productUpdates) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Produktupdates")
-                        .foregroundStyle(.clText)
+                        .foregroundStyle(Color.clText)
                     Text("Informationen ueber neue Funktionen und Verbesserungen.")
                         .font(.caption)
-                        .foregroundStyle(.clTextSecondary)
+                        .foregroundStyle(Color.clTextSecondary)
                 }
             }
-            .tint(.clPurple)
+            .tint(Color.clPurple)
         }
     }
 
@@ -85,13 +85,13 @@ struct NotificationSettingsView: View {
             Toggle(isOn: $marketing) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Marketing")
-                        .foregroundStyle(.clText)
+                        .foregroundStyle(Color.clText)
                     Text("Gelegentliche Tipps, Angebote und Neuigkeiten rund um Call Lana.")
                         .font(.caption)
-                        .foregroundStyle(.clTextSecondary)
+                        .foregroundStyle(Color.clTextSecondary)
                 }
             }
-            .tint(.clPurple)
+            .tint(Color.clPurple)
         }
     }
 
@@ -104,7 +104,7 @@ struct NotificationSettingsView: View {
             .foregroundStyle(.white)
             .padding(.horizontal, 20)
             .padding(.vertical, 10)
-            .background(.clPurple, in: Capsule())
+            .background(Color.clPurple, in: Capsule())
             .padding(.bottom, 16)
     }
 

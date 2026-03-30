@@ -55,7 +55,7 @@ struct TopupSheetView: View {
         HStack {
             Text("Aktuelles Guthaben:")
                 .font(.subheadline)
-                .foregroundStyle(.clTextSecondary)
+                .foregroundStyle(Color.clTextSecondary)
             Spacer()
             Text(currentBalanceCents.centsToEUR)
                 .font(.subheadline)
@@ -90,8 +90,8 @@ struct TopupSheetView: View {
                         )
                         .foregroundStyle(
                             !isCustom && selectedAmountCents == amount
-                                ? .white
-                                : .clText
+                                ? Color.white
+                                : Color.clText
                         )
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
@@ -105,7 +105,7 @@ struct TopupSheetView: View {
         VStack(alignment: .leading, spacing: 6) {
             Text("Oder eigenen Betrag eingeben:")
                 .font(.caption)
-                .foregroundStyle(.clTextSecondary)
+                .foregroundStyle(Color.clTextSecondary)
 
             HStack {
                 TextField("Betrag in EUR", text: $customAmountText)
@@ -119,7 +119,7 @@ struct TopupSheetView: View {
 
                 Text("EUR")
                     .font(.subheadline)
-                    .foregroundStyle(.clTextSecondary)
+                    .foregroundStyle(Color.clTextSecondary)
             }
 
             if isCustom && !isValidAmount && !customAmountText.isEmpty {
@@ -155,7 +155,7 @@ struct TopupSheetView: View {
             .frame(height: 50)
         }
         .buttonStyle(.borderedProminent)
-        .tint(.clPurple)
+        .tint(Color.clPurple)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .disabled(!isValidAmount || isProcessing)
     }

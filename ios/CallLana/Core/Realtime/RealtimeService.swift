@@ -62,8 +62,8 @@ final class RealtimeService: @unchecked Sendable {
         Task { [weak self] in
             for await insertion in insertions {
                 guard let self,
-                      let record = try? insertion.decodeRecord(as: Call.self),
-                      record.userId?.uuidString == self.userId else { continue }
+                      let record = try? insertion.decodeRecord(as: Call.self, decoder: JSONDecoder()),
+                      record.userId.uuidString == self.userId else { continue }
                 self.onNewCall?(record)
             }
         }
@@ -76,7 +76,7 @@ final class RealtimeService: @unchecked Sendable {
         let channel = client.realtimeV2.channel("realtime-appointments")
 
         let changes = channel.postgresChange(
-            AnyAction.self,
+            InsertAction.self,
             schema: "public",
             table: "appointments"
         )
@@ -87,7 +87,7 @@ final class RealtimeService: @unchecked Sendable {
         Task { [weak self] in
             for await change in changes {
                 guard let self else { return }
-                if let record = try? change.decodeRecord(as: Appointment.self),
+                if let record = try? change.decodeRecord(as: Appointment.self, decoder: JSONDecoder()),
                    record.userId.uuidString == self.userId {
                     self.onAppointmentChange?(record)
                 }
@@ -113,7 +113,7 @@ final class RealtimeService: @unchecked Sendable {
         Task { [weak self] in
             for await insertion in insertions {
                 guard let self else { return }
-                if let record = try? insertion.decodeRecord(as: Lead.self) {
+                if let record = try? insertion.decodeRecord(as: Lead.self, decoder: JSONDecoder()) {
                     self.onNewLead?(record)
                 }
             }
@@ -130,5 +130,17 @@ final class RealtimeService: @unchecked Sendable {
         channels.removeAll()
         isConnected = false
         userId = nil
+    }
+
+    // MARK: - Lifecycle
+
+    @MainActor
+    func connect() async {
+        // No-op: subscribe(userId:) is called when user is authenticated
+    }
+
+    @MainActor
+    func disconnect() async {
+        await unsubscribeAll()
     }
 }

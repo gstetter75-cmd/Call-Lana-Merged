@@ -105,11 +105,11 @@ private struct AppointmentRowView: View {
                 Text(appointment.startTime.timeString)
                     .font(.headline)
                     .fontWeight(.bold)
-                    .foregroundStyle(.clPurple)
+                    .foregroundStyle(Color.clPurple)
 
                 Text(appointment.startTime.relativeDateString)
                     .font(.caption2)
-                    .foregroundStyle(.clTextSecondary)
+                    .foregroundStyle(Color.clTextSecondary)
             }
             .frame(width: 60)
 
@@ -118,13 +118,13 @@ private struct AppointmentRowView: View {
                 Text(appointment.title ?? "Termin")
                     .font(.subheadline)
                     .fontWeight(.medium)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
                     .lineLimit(1)
 
                 if let duration = durationText {
                     Text(duration)
                         .font(.caption)
-                        .foregroundStyle(.clTextSecondary)
+                        .foregroundStyle(Color.clTextSecondary)
                 }
             }
 

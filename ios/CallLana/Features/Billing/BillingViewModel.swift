@@ -12,7 +12,7 @@ final class BillingViewModel {
     private(set) var transactions: [BillingTransaction] = []
     private(set) var invoices: [Invoice] = []
     private(set) var isLoading = false
-    private(set) var errorMessage: String?
+    var errorMessage: String?
 
     // MARK: - Auto-Reload Bindings
 

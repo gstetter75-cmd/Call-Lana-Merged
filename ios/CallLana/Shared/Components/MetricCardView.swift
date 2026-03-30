@@ -11,12 +11,12 @@ struct MetricCardView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(.caption)
-                .foregroundStyle(.clTextSecondary)
+                .foregroundStyle(Color.clTextSecondary)
 
             Text(value)
                 .font(.title2)
                 .fontWeight(.bold)
-                .foregroundStyle(.clText)
+                .foregroundStyle(Color.clText)
 
             if let trend {
                 HStack(spacing: 4) {
@@ -33,7 +33,7 @@ struct MetricCardView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
-        .background(.clCard)
+        .background(Color.clCard)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
     }

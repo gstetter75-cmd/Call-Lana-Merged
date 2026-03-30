@@ -12,7 +12,7 @@ final class SettingsViewModel {
     private(set) var profile: Profile?
     private(set) var paymentMethods: [PaymentMethod] = []
     private(set) var isLoading = false
-    private(set) var errorMessage: String?
+    var errorMessage: String?
     var isDarkModeEnabled = false
 
     // MARK: - Dependencies

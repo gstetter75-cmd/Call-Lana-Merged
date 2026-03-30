@@ -110,18 +110,18 @@ struct BillingOverviewView: View {
         VStack(alignment: .leading, spacing: 12) {
             Label("Minuten", systemImage: "clock.fill")
                 .font(.headline)
-                .foregroundStyle(.clText)
+                .foregroundStyle(Color.clText)
 
             ProgressBarView(percentage: viewModel.minutesPercentage, height: 10)
 
             HStack {
                 Text("\(viewModel.usedMinutes) von \(viewModel.includedMinutes) Minuten verbraucht")
                     .font(.caption)
-                    .foregroundStyle(.clTextSecondary)
+                    .foregroundStyle(Color.clTextSecondary)
                 Spacer()
                 Text("\(viewModel.remainingMinutes) Min. uebrig")
                     .font(.caption)
-                    .foregroundStyle(.clTextSecondary)
+                    .foregroundStyle(Color.clTextSecondary)
             }
 
             if viewModel.overageMinutes > 0 {
@@ -136,7 +136,7 @@ struct BillingOverviewView: View {
             }
         }
         .padding(16)
-        .background(.clCard)
+        .background(Color.clCard)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
     }
@@ -147,7 +147,7 @@ struct BillingOverviewView: View {
         VStack(alignment: .leading, spacing: 12) {
             Label("Monatliche Ausgaben", systemImage: "chart.bar.fill")
                 .font(.headline)
-                .foregroundStyle(.clText)
+                .foregroundStyle(Color.clText)
 
             ProgressBarView(percentage: viewModel.spendingPercentage, height: 10)
 
@@ -155,22 +155,22 @@ struct BillingOverviewView: View {
                 Text(viewModel.formattedMonthlySpending)
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
                 Text("von")
                     .font(.caption)
-                    .foregroundStyle(.clTextSecondary)
+                    .foregroundStyle(Color.clTextSecondary)
                 Text(viewModel.formattedHardCap)
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
                 Spacer()
                 Text("\(Int(viewModel.spendingPercentage))% vom Limit")
                     .font(.caption)
-                    .foregroundStyle(.clTextSecondary)
+                    .foregroundStyle(Color.clTextSecondary)
             }
         }
         .padding(16)
-        .background(.clCard)
+        .background(Color.clCard)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
     }
@@ -182,9 +182,9 @@ struct BillingOverviewView: View {
             Toggle(isOn: $viewModel.autoReloadEnabled) {
                 Label("Auto-Aufladung", systemImage: "arrow.triangle.2.circlepath")
                     .font(.headline)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
             }
-            .tint(.clPurple)
+            .tint(Color.clPurple)
             .onChange(of: viewModel.autoReloadEnabled) { _, newValue in
                 Task {
                     await viewModel.updateAutoReload(
@@ -200,7 +200,7 @@ struct BillingOverviewView: View {
                     HStack {
                         Text("Schwelle:")
                             .font(.subheadline)
-                            .foregroundStyle(.clTextSecondary)
+                            .foregroundStyle(Color.clTextSecondary)
                         Spacer()
                         Text(viewModel.autoReloadThresholdCents.centsToEUR)
                             .font(.subheadline)
@@ -209,7 +209,7 @@ struct BillingOverviewView: View {
                     HStack {
                         Text("Aufladebetrag:")
                             .font(.subheadline)
-                            .foregroundStyle(.clTextSecondary)
+                            .foregroundStyle(Color.clTextSecondary)
                         Spacer()
                         Text(viewModel.autoReloadAmountCents.centsToEUR)
                             .font(.subheadline)
@@ -220,7 +220,7 @@ struct BillingOverviewView: View {
             }
         }
         .padding(16)
-        .background(.clCard)
+        .background(Color.clCard)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
     }
@@ -232,9 +232,9 @@ struct BillingOverviewView: View {
             Toggle(isOn: $viewModel.hardCapEnabled) {
                 Label("Ausgabenlimit", systemImage: "shield.fill")
                     .font(.headline)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
             }
-            .tint(.clPurple)
+            .tint(Color.clPurple)
             .onChange(of: viewModel.hardCapEnabled) { _, newValue in
                 Task {
                     await viewModel.updateHardCap(
@@ -248,7 +248,7 @@ struct BillingOverviewView: View {
                 HStack {
                     Text("Limit:")
                         .font(.subheadline)
-                        .foregroundStyle(.clTextSecondary)
+                        .foregroundStyle(Color.clTextSecondary)
                     Spacer()
                     Text(viewModel.hardCapCents.centsToEUR)
                         .font(.subheadline)
@@ -258,7 +258,7 @@ struct BillingOverviewView: View {
             }
         }
         .padding(16)
-        .background(.clCard)
+        .background(Color.clCard)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
     }
@@ -275,14 +275,14 @@ struct BillingOverviewView: View {
                     Spacer()
                     Text("\(viewModel.transactions.count)")
                         .font(.subheadline)
-                        .foregroundStyle(.clTextSecondary)
+                        .foregroundStyle(Color.clTextSecondary)
                     Image(systemName: "chevron.right")
                         .font(.caption)
-                        .foregroundStyle(.clTextSecondary)
+                        .foregroundStyle(Color.clTextSecondary)
                 }
                 .padding(16)
             }
-            .foregroundStyle(.clText)
+            .foregroundStyle(Color.clText)
 
             Divider()
                 .padding(.leading, 16)
@@ -295,16 +295,16 @@ struct BillingOverviewView: View {
                     Spacer()
                     Text("\(viewModel.invoices.count)")
                         .font(.subheadline)
-                        .foregroundStyle(.clTextSecondary)
+                        .foregroundStyle(Color.clTextSecondary)
                     Image(systemName: "chevron.right")
                         .font(.caption)
-                        .foregroundStyle(.clTextSecondary)
+                        .foregroundStyle(Color.clTextSecondary)
                 }
                 .padding(16)
             }
-            .foregroundStyle(.clText)
+            .foregroundStyle(Color.clText)
         }
-        .background(.clCard)
+        .background(Color.clCard)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
     }

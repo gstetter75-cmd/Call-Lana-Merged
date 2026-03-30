@@ -68,10 +68,10 @@ struct PaymentMethodsView: View {
     private var webAppHint: some View {
         HStack(spacing: 8) {
             Image(systemName: "globe")
-                .foregroundStyle(.clPurple)
+                .foregroundStyle(Color.clPurple)
             Text("Zahlungsmethoden koennen ueber die Web-App verwaltet werden.")
                 .font(.caption)
-                .foregroundStyle(.clTextSecondary)
+                .foregroundStyle(Color.clTextSecondary)
         }
         .padding(.horizontal, 4)
     }
@@ -147,23 +147,23 @@ private struct PaymentMethodCardView: View {
         HStack(spacing: 12) {
             Image(systemName: typeIcon)
                 .font(.title2)
-                .foregroundStyle(.clPurple)
+                .foregroundStyle(Color.clPurple)
                 .frame(width: 36)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(typeLabel)
                     .font(.subheadline)
                     .fontWeight(.medium)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
 
                 Text(method.maskedDisplay)
                     .font(.caption)
-                    .foregroundStyle(.clTextSecondary)
+                    .foregroundStyle(Color.clTextSecondary)
 
                 if let holder = method.accountHolder, !holder.isEmpty {
                     Text(holder)
                         .font(.caption2)
-                        .foregroundStyle(.clTextSecondary)
+                        .foregroundStyle(Color.clTextSecondary)
                 }
             }
 

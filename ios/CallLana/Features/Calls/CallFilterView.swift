@@ -42,7 +42,7 @@ struct CallFilterView: View {
                     Button("Zurücksetzen") {
                         onReset()
                     }
-                    .foregroundStyle(.clTextSecondary)
+                    .foregroundStyle(Color.clTextSecondary)
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -63,7 +63,7 @@ struct CallFilterView: View {
             ForEach(CallStatusFilter.allCases) { filter in
                 HStack {
                     Label(filter.displayName, systemImage: iconForFilter(filter))
-                        .foregroundStyle(.clText)
+                        .foregroundStyle(Color.clText)
 
                     Spacer()
 
@@ -87,7 +87,7 @@ struct CallFilterView: View {
         Section("Zeitraum") {
             Toggle(isOn: $useDateRange) {
                 Label("Zeitraum filtern", systemImage: "calendar.badge.clock")
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
             }
             .tint(Color.clPurple)
 
@@ -98,7 +98,7 @@ struct CallFilterView: View {
                     in: ...endDate,
                     displayedComponents: .date
                 )
-                .foregroundStyle(.clText)
+                .foregroundStyle(Color.clText)
 
                 DatePicker(
                     "Bis",
@@ -106,7 +106,7 @@ struct CallFilterView: View {
                     in: startDate...,
                     displayedComponents: .date
                 )
-                .foregroundStyle(.clText)
+                .foregroundStyle(Color.clText)
             }
         }
     }

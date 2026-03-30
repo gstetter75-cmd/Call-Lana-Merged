@@ -82,19 +82,19 @@ struct AssistantDetailView: View {
         Section("Allgemein") {
             HStack {
                 Label("Name", systemImage: "person.fill")
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
                 Spacer()
                 TextField("Assistentenname", text: $viewModel.name)
                     .multilineTextAlignment(.trailing)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
             }
 
             HStack {
                 Label("Telefon", systemImage: "phone.fill")
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
                 Spacer()
                 Text(viewModel.phoneNumber.isEmpty ? "–" : viewModel.phoneNumber)
-                    .foregroundStyle(.clTextSecondary)
+                    .foregroundStyle(Color.clTextSecondary)
             }
         }
     }
@@ -109,28 +109,28 @@ struct AssistantDetailView: View {
                 }
             } label: {
                 Label("Stimme", systemImage: "waveform")
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
             }
 
             VStack(alignment: .leading, spacing: 6) {
                 Label("Begrüßung", systemImage: "text.bubble")
                     .font(.subheadline)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
 
                 TextField("z.B. Hallo, wie kann ich helfen?", text: $viewModel.greeting)
                     .font(.body)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
             }
             .padding(.vertical, 4)
 
             VStack(alignment: .leading, spacing: 6) {
                 Label("System Prompt", systemImage: "doc.text")
                     .font(.subheadline)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
 
                 TextEditor(text: $viewModel.systemPrompt)
                     .font(.body)
-                    .foregroundStyle(.clText)
+                    .foregroundStyle(Color.clText)
                     .frame(minHeight: 100)
                     .scrollContentBackground(.hidden)
             }
@@ -149,7 +149,7 @@ struct AssistantDetailView: View {
                         .frame(width: 10, height: 10)
 
                     Text(viewModel.isLive ? "Live" : "Offline")
-                        .foregroundStyle(.clText)
+                        .foregroundStyle(Color.clText)
                 }
             }
             .tint(Color.clPurple)
@@ -212,7 +212,7 @@ struct AssistantDetailView: View {
         AssistantDetailView(
             assistantId: UUID(),
             assistantRepository: AssistantRepository(
-                client: SupabaseClientFactory.shared.client
+                client: SupabaseClientFactory.shared
             )
         )
     }

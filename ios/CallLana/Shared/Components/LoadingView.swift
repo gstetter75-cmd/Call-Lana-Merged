@@ -10,7 +10,7 @@ struct LoadingView: View {
                 .controlSize(.regular)
             Text(label)
                 .font(.subheadline)
-                .foregroundStyle(.clTextSecondary)
+                .foregroundStyle(Color.clTextSecondary)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

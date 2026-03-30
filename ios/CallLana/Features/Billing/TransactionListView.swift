@@ -62,16 +62,14 @@ private struct TransactionRowView: View {
             VStack(alignment: .leading, spacing: 4) {
                 StatusBadgeView(text: typeLabel, style: badgeStyle)
 
-                if let date = transaction.createdAt {
-                    Text(date.relativeDateString + " " + date.timeString)
-                        .font(.caption)
-                        .foregroundStyle(.clTextSecondary)
-                }
+                Text(transaction.createdAt.relativeDateString + " " + transaction.createdAt.timeString)
+                    .font(.caption)
+                    .foregroundStyle(Color.clTextSecondary)
 
                 if let description = transaction.description, !description.isEmpty {
                     Text(description)
                         .font(.caption2)
-                        .foregroundStyle(.clTextSecondary)
+                        .foregroundStyle(Color.clTextSecondary)
                         .lineLimit(1)
                 }
             }
@@ -82,12 +80,12 @@ private struct TransactionRowView: View {
                 Text("\(isPositive ? "+" : "-")\(abs(transaction.amountCents).centsToEUR)")
                     .font(.subheadline)
                     .fontWeight(.bold)
-                    .foregroundStyle(isPositive ? .green : .clText)
+                    .foregroundStyle(isPositive ? Color.green : Color.clText)
 
                 if let balanceAfter = transaction.balanceAfterCents {
                     Text("Saldo: \(balanceAfter.centsToEUR)")
                         .font(.caption2)
-                        .foregroundStyle(.clTextSecondary)
+                        .foregroundStyle(Color.clTextSecondary)
                 }
             }
         }

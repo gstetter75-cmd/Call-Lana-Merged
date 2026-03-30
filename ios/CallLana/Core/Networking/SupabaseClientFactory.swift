@@ -8,8 +8,8 @@ enum SupabaseClientFactory {
     /// Shared Supabase client — thread-safe singleton
     static let shared: SupabaseClient = {
         let client = SupabaseClient(
-            supabaseURL: Environment.supabaseURL,
-            supabaseKey: Environment.supabaseAnonKey
+            supabaseURL: AppConfig.supabaseURL,
+            supabaseKey: AppConfig.supabaseAnonKey
         )
         return client
     }()
