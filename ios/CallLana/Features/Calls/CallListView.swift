@@ -91,7 +91,7 @@ struct CallListView: View {
                   ? "line.3.horizontal.decrease.circle"
                   : "line.3.horizontal.decrease.circle.fill"
             )
-            .foregroundStyle(viewModel.statusFilter == .all ? .clText : Color.clPurple)
+            .foregroundStyle(viewModel.statusFilter == .all ? Color.clText : Color.clPurple)
         }
     }
 }

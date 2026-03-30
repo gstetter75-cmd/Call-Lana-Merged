@@ -193,7 +193,7 @@ struct AssistantDetailView: View {
             }
         }
         .disabled(!viewModel.hasChanges || viewModel.isSaving)
-        .foregroundStyle(viewModel.hasChanges ? Color.clPurple : .clTextSecondary)
+        .foregroundStyle(viewModel.hasChanges ? Color.clPurple : Color.clTextSecondary)
     }
 
     // MARK: - Error View

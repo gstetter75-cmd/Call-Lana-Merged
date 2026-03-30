@@ -27,7 +27,7 @@ struct MetricCardView: View {
                     }
                     Text(trend)
                         .font(.caption2)
-                        .foregroundStyle(trendUp == true ? .green : trendUp == false ? .red : .clTextSecondary)
+                        .foregroundStyle(trendUp == true ? Color.green : trendUp == false ? Color.red : Color.clTextSecondary)
                 }
             }
         }
