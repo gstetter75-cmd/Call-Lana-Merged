@@ -34,6 +34,7 @@ struct SettingsView: View {
                 titleVisibility: .visible
             ) {
                 Button("Abmelden", role: .destructive) {
+                    HapticService.impact(.heavy)
                     viewModel.signOut()
                 }
                 Button("Abbrechen", role: .cancel) {}

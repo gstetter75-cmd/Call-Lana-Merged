@@ -100,6 +100,8 @@ protocol BillingRepositoryProtocol: Sendable {
     func updateHardCap(enabled: Bool, capCents: Int) async throws
     func getTransactions(limit: Int) async throws -> [BillingTransaction]
     func getInvoices() async throws -> [Invoice]
+    func changePlan(to planId: String) async throws
+    func cancelSubscription(reason: String?) async throws
 }
 
 // MARK: - Implementation
@@ -210,6 +212,51 @@ final class BillingRepository: BillingRepositoryProtocol {
             .value
 
         return invoices
+    }
+
+    /// Change the subscription plan.
+    /// Updates plan, price, and included minutes on the subscription.
+    func changePlan(to planId: String) async throws {
+        let userId = try await currentUserId()
+
+        let planDetails: (priceCents: Int, minutes: Int) = switch planId {
+        case "starter": (14_900, 150)
+        case "professional": (29_900, 400)
+        case "business": (59_900, 1000)
+        default: throw RepositoryError.validationFailed("Unknown plan: \(planId)")
+        }
+
+        let updates: [String: AnyJSON] = [
+            "plan": .string(planId),
+            "plan_price_cents": .integer(planDetails.priceCents),
+            "included_minutes": .integer(planDetails.minutes)
+        ]
+
+        try await client
+            .from("subscriptions")
+            .update(updates)
+            .eq("user_id", value: userId)
+            .execute()
+    }
+
+    /// Cancel the subscription by setting status to cancelled.
+    func cancelSubscription(reason: String? = nil) async throws {
+        let userId = try await currentUserId()
+
+        var updates: [String: AnyJSON] = [
+            "status": .string("cancelled"),
+            "cancelled_at": .string(ISO8601DateFormatter().string(from: Date.now))
+        ]
+
+        if let reason {
+            updates["cancellation_reason"] = .string(reason)
+        }
+
+        try await client
+            .from("subscriptions")
+            .update(updates)
+            .eq("user_id", value: userId)
+            .execute()
     }
 
     // MARK: - Private

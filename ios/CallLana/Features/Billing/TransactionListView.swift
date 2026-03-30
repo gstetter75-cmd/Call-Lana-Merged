@@ -5,6 +5,7 @@ import SwiftUI
 
 struct TransactionListView: View {
     let transactions: [BillingTransaction]
+    var onRefresh: (() async -> Void)?
 
     var body: some View {
         Group {
@@ -20,6 +21,9 @@ struct TransactionListView: View {
         }
         .navigationTitle("Transaktionen")
         .navigationBarTitleDisplayMode(.inline)
+        .refreshable {
+            await onRefresh?()
+        }
     }
 
     // MARK: - List

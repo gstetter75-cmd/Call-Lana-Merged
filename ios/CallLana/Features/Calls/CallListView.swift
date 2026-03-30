@@ -15,7 +15,14 @@ struct CallListView: View {
         NavigationStack {
             Group {
                 if viewModel.isLoading && viewModel.calls.isEmpty {
-                    LoadingView(label: "Anrufe werden geladen…")
+                    VStack(spacing: 0) {
+                        ForEach(0..<5, id: \.self) { _ in
+                            SkeletonListRowView()
+                        }
+                    }
+                    .background(Color.clCard)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .padding()
                 } else if viewModel.filteredCalls.isEmpty {
                     EmptyStateView(
                         icon: "phone.arrow.down.left",
@@ -32,7 +39,7 @@ struct CallListView: View {
             .navigationTitle("Anrufe")
             .searchable(
                 text: $viewModel.searchText,
-                prompt: "Telefonnummer suchen…"
+                prompt: "Nummer oder Transkript suchen…"
             )
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -68,7 +75,10 @@ struct CallListView: View {
         List {
             ForEach(viewModel.filteredCalls) { call in
                 NavigationLink(destination: CallDetailView(callId: call.id)) {
-                    CallListRowView(call: call)
+                    CallListRowView(
+                        call: call,
+                        transcriptExcerpt: viewModel.transcriptExcerpt(for: call)
+                    )
                 }
                 .listRowBackground(Color.clCard)
                 .onAppear {
@@ -100,6 +110,7 @@ struct CallListView: View {
 
 private struct CallListRowView: View {
     let call: Call
+    var transcriptExcerpt: String?
 
     var body: some View {
         HStack(spacing: 12) {
@@ -111,6 +122,13 @@ private struct CallListRowView: View {
                     .font(.subheadline)
                     .fontWeight(.semibold)
                     .foregroundStyle(Color.clText)
+
+                if let excerpt = transcriptExcerpt {
+                    Text(excerpt)
+                        .font(.caption)
+                        .foregroundStyle(Color.callLanaPurple)
+                        .lineLimit(1)
+                }
 
                 HStack(spacing: 4) {
                     Text(call.createdAt.relativeDateString)

@@ -70,6 +70,16 @@
 		F9CB720641AE9B105BF1D580 /* CallDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E86031866F5B21C55258F45 /* CallDetailView.swift */; };
 		FC39DCCF34E49F60FFF28965 /* PaymentMethodsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3DBE326A1907BD7BDA9D97 /* PaymentMethodsView.swift */; };
 		FFBBEA9085315A2C95F08BE8 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F10F0D8D203617E5BF5EA3 /* HomeViewModel.swift */; };
+		BB110001 /* HapticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB110011 /* HapticService.swift */; };
+		BB110002 /* SkeletonCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB110012 /* SkeletonCardView.swift */; };
+		BB110003 /* SkeletonListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB110013 /* SkeletonListRowView.swift */; };
+		CC1122334455660A /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1122334455661A /* OnboardingView.swift */; };
+		CC1122334455660B /* OnboardingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1122334455661B /* OnboardingPageView.swift */; };
+		DD1122334455660A /* PlanChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1122334455661A /* PlanChangeView.swift */; };
+		DD1122334455660B /* PlanChangeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1122334455661B /* PlanChangeViewModel.swift */; };
+		DD1122334455660C /* CancelSubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1122334455661C /* CancelSubscriptionView.swift */; };
+		DD1122334455660D /* AddPaymentMethodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1122334455661D /* AddPaymentMethodView.swift */; };
+		DD1122334455660E /* AddPaymentMethodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1122334455661E /* AddPaymentMethodViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,6 +157,16 @@
 		F05ABC32EA6333C38847B03B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		FFC23CFC882574748B050253 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		FFD0B0435574CF0A57DBD82A /* CallRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallRepository.swift; sourceTree = "<group>"; };
+		BB110011 /* HapticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticService.swift; sourceTree = "<group>"; };
+		BB110012 /* SkeletonCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonCardView.swift; sourceTree = "<group>"; };
+		BB110013 /* SkeletonListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonListRowView.swift; sourceTree = "<group>"; };
+		CC1122334455661A /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		CC1122334455661B /* OnboardingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageView.swift; sourceTree = "<group>"; };
+		DD1122334455661A /* PlanChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanChangeView.swift; sourceTree = "<group>"; };
+		DD1122334455661B /* PlanChangeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanChangeViewModel.swift; sourceTree = "<group>"; };
+		DD1122334455661C /* CancelSubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelSubscriptionView.swift; sourceTree = "<group>"; };
+		DD1122334455661D /* AddPaymentMethodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPaymentMethodView.swift; sourceTree = "<group>"; };
+		DD1122334455661E /* AddPaymentMethodViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPaymentMethodViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +185,9 @@
 			isa = PBXGroup;
 			children = (
 				51D445A6ED5EC12D7E21C884 /* BillingOverviewView.swift */,
+				DD1122334455661C /* CancelSubscriptionView.swift */,
+				DD1122334455661A /* PlanChangeView.swift */,
+				DD1122334455661B /* PlanChangeViewModel.swift */,
 				6B47417F92AD7633A5BAABC6 /* BillingViewModel.swift */,
 				1E43171183C172DD01C845B2 /* InvoiceListView.swift */,
 				C33DEDDF5F6AEE6C3CFE2145 /* TopupSheetView.swift */,
@@ -207,6 +230,7 @@
 				088186ADE279B27AECB87EDD /* Billing */,
 				6570703651F4FF7D8D3B7678 /* Calls */,
 				D259EBB7FE83A73E7B83FA85 /* Home */,
+				CC1122334455670A /* Onboarding */,
 				85D1D72605A6CB4E7F24A829 /* Settings */,
 			);
 			path = Features;
@@ -261,6 +285,8 @@
 				627C8AAE28A1ED9AF5847764 /* LoadingView.swift */,
 				CD7AB1FE3B18AFABD465DD9A /* MetricCardView.swift */,
 				3C48F36B440ADEC23BEA531C /* ProgressBarView.swift */,
+				BB110012 /* SkeletonCardView.swift */,
+				BB110013 /* SkeletonListRowView.swift */,
 				971CB0F59BE7170EF62245BD /* StatusBadgeView.swift */,
 				39CF0C45711DB1EB2F51464C /* ToastView.swift */,
 			);
@@ -315,12 +341,21 @@
 			path = Calls;
 			sourceTree = "<group>";
 		};
+		BB110021 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				BB110011 /* HapticService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		65F7A7A54451405B8374EA5B /* Shared */ = {
 			isa = PBXGroup;
 			children = (
 				4B52D069EC54A91CF7DE15AC /* Components */,
 				F76E3C697043C3677ABECB63 /* Extensions */,
 				DEA226DA36BCAC032EBC95A8 /* Modifiers */,
+				BB110021 /* Services */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -356,6 +391,8 @@
 		85D1D72605A6CB4E7F24A829 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				DD1122334455661D /* AddPaymentMethodView.swift */,
+				DD1122334455661E /* AddPaymentMethodViewModel.swift */,
 				55D7A6F156BDA1637340B860 /* NotificationSettingsView.swift */,
 				B46789BBCAD4577727B48B59 /* PasswordChangeView.swift */,
 				0E3DBE326A1907BD7BDA9D97 /* PaymentMethodsView.swift */,
@@ -437,6 +474,22 @@
 				08D5A33107B54025D040CE9B /* Int+Currency.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		CC1122334455670A /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				CC1122334455661A /* OnboardingView.swift */,
+				CC1122334455661B /* OnboardingPageView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		BB11CC22DD33EE44FF55FF01 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -589,6 +642,16 @@
 				7A549BD16B37E368EEC77FD5 /* ToastView.swift in Sources */,
 				22C6618B5D164ECF1D9F14EA /* TopupSheetView.swift in Sources */,
 				BA69E2D5259106EBC079240D /* TransactionListView.swift in Sources */,
+				CC1122334455660A /* OnboardingView.swift in Sources */,
+				CC1122334455660B /* OnboardingPageView.swift in Sources */,
+				DD1122334455660A /* PlanChangeView.swift in Sources */,
+				DD1122334455660B /* PlanChangeViewModel.swift in Sources */,
+				DD1122334455660C /* CancelSubscriptionView.swift in Sources */,
+				DD1122334455660D /* AddPaymentMethodView.swift in Sources */,
+				DD1122334455660E /* AddPaymentMethodViewModel.swift in Sources */,
+				BB110001 /* HapticService.swift in Sources */,
+				BB110002 /* SkeletonCardView.swift in Sources */,
+				BB110003 /* SkeletonListRowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -37,16 +37,22 @@ struct CallLanaApp: App {
 
 private struct AuthGate: View {
     @Environment(DependencyContainer.self) private var container
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
 
     var body: some View {
         Group {
             if container.authService.isAuthenticated {
-                MainTabView()
+                if hasCompletedOnboarding {
+                    MainTabView()
+                } else {
+                    OnboardingView()
+                }
             } else {
                 LoginView()
             }
         }
         .animation(.easeInOut(duration: 0.3), value: container.authService.isAuthenticated)
+        .animation(.easeInOut(duration: 0.3), value: hasCompletedOnboarding)
     }
 }
 

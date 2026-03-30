@@ -50,7 +50,31 @@ struct HomeView: View {
             }
             .overlay {
                 if viewModel.isLoading && viewModel.recentCalls.isEmpty {
-                    LoadingView(label: "Dashboard wird geladen…")
+                    ScrollView {
+                        VStack(spacing: 20) {
+                            LazyVGrid(columns: [
+                                GridItem(.flexible(), spacing: 12),
+                                GridItem(.flexible(), spacing: 12)
+                            ], spacing: 12) {
+                                SkeletonCardView()
+                                SkeletonCardView()
+                                SkeletonCardView()
+                                SkeletonCardView()
+                            }
+                            .padding(.horizontal)
+
+                            VStack(spacing: 0) {
+                                ForEach(0..<3, id: \.self) { _ in
+                                    SkeletonListRowView()
+                                }
+                            }
+                            .background(Color.clCard)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .padding(.horizontal)
+                        }
+                        .padding(.vertical)
+                    }
+                    .background(Color(.systemGroupedBackground))
                 }
             }
         }

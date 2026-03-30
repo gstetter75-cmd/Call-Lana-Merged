@@ -50,11 +50,13 @@ struct BillingOverviewView: View {
         ScrollView {
             VStack(spacing: 16) {
                 balanceCard
+                planSection
                 minutesSection
                 spendingSection
                 autoReloadSection
                 hardCapSection
                 navigationSection
+                cancelSection
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
@@ -186,6 +188,7 @@ struct BillingOverviewView: View {
             }
             .tint(Color.clPurple)
             .onChange(of: viewModel.autoReloadEnabled) { _, newValue in
+                HapticService.selection()
                 Task {
                     await viewModel.updateAutoReload(
                         enabled: newValue,
@@ -236,6 +239,7 @@ struct BillingOverviewView: View {
             }
             .tint(Color.clPurple)
             .onChange(of: viewModel.hardCapEnabled) { _, newValue in
+                HapticService.selection()
                 Task {
                     await viewModel.updateHardCap(
                         enabled: newValue,
@@ -303,6 +307,66 @@ struct BillingOverviewView: View {
                 .padding(16)
             }
             .foregroundStyle(Color.clText)
+        }
+        .background(Color.clCard)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
+    }
+
+    // MARK: - Plan Section
+
+    private var planSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Label("Tarif", systemImage: "star.fill")
+                    .font(.headline)
+                    .foregroundStyle(Color.clText)
+                Spacer()
+                Text(viewModel.subscription?.plan?.capitalized ?? "–")
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundStyle(Color.clPurple)
+            }
+
+            NavigationLink {
+                PlanChangeView(
+                    currentPlan: viewModel.subscription?.plan ?? "",
+                    billingRepository: viewModel.billingRepository
+                )
+            } label: {
+                HStack {
+                    Text("Tarif aendern")
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .foregroundStyle(Color.clTextSecondary)
+                }
+            }
+            .foregroundStyle(Color.clPurple)
+        }
+        .padding(16)
+        .background(Color.clCard)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
+    }
+
+    // MARK: - Cancel Section
+
+    private var cancelSection: some View {
+        NavigationLink {
+            CancelSubscriptionView(billingRepository: viewModel.billingRepository)
+        } label: {
+            HStack {
+                Image(systemName: "xmark.circle.fill")
+                    .foregroundStyle(.red)
+                Text("Abo kuendigen")
+                    .foregroundStyle(.red)
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundStyle(Color.clTextSecondary)
+            }
+            .padding(16)
         }
         .background(Color.clCard)
         .clipShape(RoundedRectangle(cornerRadius: 12))

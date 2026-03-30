@@ -1,6 +1,5 @@
-// PaymentMethodsView.swift — Read-only payment methods list
+// PaymentMethodsView.swift — Payment methods list with add functionality
 // Shows card per method with icon, masked number, primary/fallback badge.
-// Editing is only available via the web app.
 
 import SwiftUI
 import Supabase
@@ -9,6 +8,7 @@ struct PaymentMethodsView: View {
     @State private var paymentMethods: [PaymentMethod] = []
     @State private var isLoading = true
     @State private var errorMessage: String?
+    @State private var showAddSheet = false
 
     var body: some View {
         Group {
@@ -44,7 +44,7 @@ struct PaymentMethodsView: View {
                 title: "Keine Zahlungsmethoden",
                 subtitle: "Du hast noch keine Zahlungsmethode hinterlegt."
             )
-            webAppHint
+            addButton
         }
     }
 
@@ -57,23 +57,27 @@ struct PaymentMethodsView: View {
             }
 
             Section {
-                webAppHint
+                addButton
             }
         }
         .listStyle(.insetGrouped)
     }
 
-    // MARK: - Web App Hint
+    // MARK: - Add Button
 
-    private var webAppHint: some View {
-        HStack(spacing: 8) {
-            Image(systemName: "globe")
-                .foregroundStyle(Color.clPurple)
-            Text("Zahlungsmethoden koennen ueber die Web-App verwaltet werden.")
-                .font(.caption)
-                .foregroundStyle(Color.clTextSecondary)
+    private var addButton: some View {
+        Button {
+            showAddSheet = true
+        } label: {
+            Label("Zahlungsmethode hinzufuegen", systemImage: "plus.circle.fill")
+                .fontWeight(.medium)
         }
-        .padding(.horizontal, 4)
+        .tint(Color.clPurple)
+        .sheet(isPresented: $showAddSheet, onDismiss: {
+            Task { await loadPaymentMethods() }
+        }) {
+            AddPaymentMethodView()
+        }
     }
 
     // MARK: - Load

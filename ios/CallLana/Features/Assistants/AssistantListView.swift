@@ -16,7 +16,14 @@ struct AssistantListView: View {
         NavigationStack {
             Group {
                 if viewModel.isLoading && viewModel.assistants.isEmpty {
-                    LoadingView(label: "Assistenten werden geladen…")
+                    VStack(spacing: 0) {
+                        ForEach(0..<3, id: \.self) { _ in
+                            SkeletonListRowView()
+                        }
+                    }
+                    .background(Color.clCard)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .padding()
                 } else if viewModel.assistants.isEmpty {
                     EmptyStateView(
                         icon: "cpu",
@@ -51,6 +58,7 @@ struct AssistantListView: View {
                         AssistantCardView(
                             assistant: assistant,
                             onToggle: {
+                                HapticService.selection()
                                 Task {
                                     await viewModel.toggleStatus(id: assistant.id)
                                 }

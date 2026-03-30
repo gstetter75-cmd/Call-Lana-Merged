@@ -139,6 +139,7 @@ struct TopupSheetView: View {
                 return
             }
             isProcessing = true
+            HapticService.impact(.medium)
             onTopUp(effectiveAmountCents)
             dismiss()
         } label: {

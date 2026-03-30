@@ -1,6 +1,7 @@
 // CallListViewModel.swift — Call list data loading with search and filter
 // Provides paginated calls, search, and status filtering.
 
+import Combine
 import Foundation
 import Observation
 
@@ -12,7 +13,10 @@ final class CallListViewModel {
 
     // MARK: - Search & Filter
 
-    var searchText = ""
+    var searchText = "" {
+        didSet { searchSubject.send(searchText) }
+    }
+    var debouncedSearchText = ""
     var statusFilter: CallStatusFilter = .all
 
     // MARK: - State
@@ -23,12 +27,27 @@ final class CallListViewModel {
     private var currentPage = 0
     private let pageSize = 30
 
+    // MARK: - Debounce
+
+    private let searchSubject = PassthroughSubject<String, Never>()
+    private var cancellables = Set<AnyCancellable>()
+
     // MARK: - Dependencies
 
     private let callRepository: CallRepositoryProtocol
 
     init(callRepository: CallRepositoryProtocol) {
         self.callRepository = callRepository
+        setupSearchDebounce()
+    }
+
+    private func setupSearchDebounce() {
+        searchSubject
+            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .sink { [weak self] text in
+                self?.debouncedSearchText = text
+            }
+            .store(in: &cancellables)
     }
 
     // MARK: - Computed
@@ -42,14 +61,41 @@ final class CallListViewModel {
         }
 
         // Search filter
-        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let query = debouncedSearchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         if !query.isEmpty {
             result = result.filter { call in
-                (call.phoneNumber?.lowercased().contains(query) ?? false)
+                let phoneMatch = call.phoneNumber?.lowercased().contains(query) ?? false
+                let transcriptMatch = call.transcript?.lowercased().contains(query) ?? false
+                let outcomeMatch = call.outcome?.lowercased().contains(query) ?? false
+                return phoneMatch || transcriptMatch || outcomeMatch
             }
         }
 
         return result
+    }
+
+    /// Returns a short transcript excerpt around the search match, or nil if no match.
+    func transcriptExcerpt(for call: Call) -> String? {
+        let query = debouncedSearchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        guard !query.isEmpty,
+              let transcript = call.transcript?.lowercased(),
+              let range = transcript.range(of: query) else {
+            return nil
+        }
+
+        let original = call.transcript!
+        let matchStart = transcript.distance(from: transcript.startIndex, to: range.lowerBound)
+        let excerptStart = max(0, matchStart - 30)
+        let excerptEnd = min(original.count, matchStart + query.count + 30)
+
+        let startIdx = original.index(original.startIndex, offsetBy: excerptStart)
+        let endIdx = original.index(original.startIndex, offsetBy: excerptEnd)
+        var excerpt = String(original[startIdx..<endIdx])
+
+        if excerptStart > 0 { excerpt = "…" + excerpt }
+        if excerptEnd < original.count { excerpt = excerpt + "…" }
+
+        return excerpt
     }
 
     // MARK: - Actions

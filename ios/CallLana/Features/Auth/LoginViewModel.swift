@@ -1,6 +1,7 @@
 import Foundation
 import Observation
 import LocalAuthentication
+import UIKit
 
 @Observable
 final class LoginViewModel {
@@ -37,8 +38,10 @@ final class LoginViewModel {
 
         do {
             try await authService?.signIn(email: trimmedEmail, password: password)
+            HapticService.notification(.success)
         } catch {
             errorMessage = mapError(error)
+            HapticService.notification(.error)
         }
 
         isLoading = false
@@ -60,13 +63,16 @@ final class LoginViewModel {
 
             guard success else {
                 errorMessage = "Biometrische Authentifizierung fehlgeschlagen."
+                HapticService.notification(.error)
                 isLoading = false
                 return
             }
 
             try await authService?.signInWithBiometrics()
+            HapticService.notification(.success)
         } catch {
             errorMessage = mapError(error)
+            HapticService.notification(.error)
         }
 
         isLoading = false
