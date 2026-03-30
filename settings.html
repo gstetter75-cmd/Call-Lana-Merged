@@ -120,6 +120,7 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
         <a href="#forwarding" class="sn-item" data-tab="forwarding"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 17 20 12 15 7"/><path d="M4 18v-2a4 4 0 014-4h12"/></svg>Weiterleitung</a>
         <a href="#addons" class="sn-item" data-tab="addons"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Add-Ons</a>
         <a href="#connectors" class="sn-item" data-tab="connectors"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Connectoren</a>
+        <a href="#referral" class="sn-item" data-tab="referral"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Freunde werben</a>
         <a href="#danger" class="sn-item" data-tab="danger"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Gefahrenzone</a>
       </div>
 
@@ -461,6 +462,11 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
           </div>
         </div>
 
+        <!-- REFERRAL TAB -->
+        <div class="tab-content" id="tab-referral" style="display:none;">
+          <div style="color:var(--tx3);text-align:center;padding:40px;">Lade Empfehlungsprogramm...</div>
+        </div>
+
         <!-- DANGER TAB -->
         <div class="tab-content" id="tab-danger" style="display:none;">
           <div class="sc-section">
@@ -483,6 +489,7 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
 <script>ErrorHandler.init();</script>
 <script src="js/logger.js"></script>
 <script src="js/supabase-init.js"></script>
+<script src="js/error-tracker.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/db/calls.js"></script>
 <script src="js/db/assistants.js"></script>
@@ -498,6 +505,23 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
 <script src="js/dashboard-components.js"></script>
 <script src="js/settings.js"></script>
 <script src="js/settings-extra.js"></script>
+<script src="js/referral.js"></script>
+<script>
+// Initialize referral tab when navigated to
+(function() {
+  var initialized = false;
+  document.querySelectorAll('.sn-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      if (item.getAttribute('data-tab') === 'referral' && !initialized) {
+        initialized = true;
+        Referral.init();
+      }
+    });
+  });
+  // Also init if URL hash is #referral
+  if (window.location.hash === '#referral') { initialized = true; Referral.init(); }
+})();
+</script>
 <script src="js/theme-toggle.js"></script>
 <script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});</script>
 <script src="js/idle-timeout.js"></script>

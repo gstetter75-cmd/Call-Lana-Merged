@@ -80,6 +80,14 @@ body{display:flex;overflow:hidden;}
         </div>
       </div>
 
+      <!-- CALL HISTORY CHART (Last 7 Days) -->
+      <div class="card" style="padding:20px;margin-bottom:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <h3 style="margin:0;font-size:14px;">Anrufe der letzten 7 Tage</h3>
+        </div>
+        <div id="chart-calls-7days" style="min-height:180px;"></div>
+      </div>
+
       <!-- TOP ROW: Chart + Donut -->
       <div class="home-top">
         <!-- Line Chart -->
@@ -1076,6 +1084,7 @@ body{display:flex;overflow:hidden;}
 <script>ErrorHandler.init();</script>
 <script src="js/logger.js"></script>
 <script src="js/supabase-init.js"></script>
+<script src="js/error-tracker.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/db/calls.js"></script>
 <script src="js/db/assistants.js"></script>
@@ -1105,6 +1114,16 @@ body{display:flex;overflow:hidden;}
 <script src="js/dashboard-extras.js"></script>
 <script src="js/dashboard-analytics.js"></script>
 <script src="js/dashboard-home-widgets.js"></script>
+<script src="js/dashboard-charts.js"></script>
+<script>
+// Initialize chart after page load
+document.addEventListener('DOMContentLoaded', function() {
+  if (document.getElementById('chart-calls-7days')) {
+    // Small delay to ensure auth is ready
+    setTimeout(function() { DashboardCharts.init(); }, 500);
+  }
+});
+</script>
 <script src="js/appointments.js"></script>
 <script src="js/analytics-page.js"></script>
 <script src="js/realtime.js"></script>

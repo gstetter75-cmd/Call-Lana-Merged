@@ -187,6 +187,7 @@
     {"@type":"Question","name":"Welche Zahlungsmethoden akzeptiert ihr?","acceptedAnswer":{"@type":"Answer","text":"Wir akzeptieren SEPA-Lastschrift und alle gängigen Kreditkarten (Visa, Mastercard, Amex). Die Zahlungsabwicklung erfolgt sicher über Stripe — deine Zahlungsdaten werden verschlüsselt übertragen und nie auf unseren Servern gespeichert."}}
   ]}
   </script>
+  <script defer data-domain="call-lana.de" src="https://plausible.io/js/script.js"></script>
 </head>
 <body class="bg-white text-gray-900 antialiased overflow-x-hidden">
 
@@ -212,6 +213,100 @@
       </p>
     </div>
   </section>
+
+  <!-- ========== PLAN FINDER / TARIFRECHNER ========== -->
+  <section class="relative py-14 md:py-16" style="background: linear-gradient(180deg, #FFFFFF 0%, #F9F7FF 100%);">
+    <div class="noise-overlay"></div>
+    <div class="relative z-10 max-w-3xl mx-auto px-6">
+      <div class="text-center mb-10">
+        <h2 class="font-display text-2xl md:text-3xl font-extrabold mb-3 text-gray-900" style="letter-spacing:-0.025em;">Welcher Tarif passt zu dir?</h2>
+        <p class="text-gray-500 font-body text-sm max-w-lg mx-auto" style="line-height:1.7;">Bewege den Regler, um deinen idealen Plan zu finden. Wir berechnen die ben&ouml;tigten Minuten basierend auf durchschnittlich 3 Minuten pro Anruf.</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-200 p-8 md:p-10" style="box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 32px rgba(124, 58, 237, 0.06);">
+        <div class="mb-8">
+          <div class="flex items-center justify-between mb-3">
+            <label class="font-body font-semibold text-gray-800 text-sm" for="planFinderCalls">Wie viele Anrufe erwartest du pro Tag?</label>
+            <div class="bg-brand-400/10 rounded-lg px-3 py-1 min-w-[4rem] text-center">
+              <span id="planFinderValue" class="font-display font-bold text-brand-400 text-lg">10</span>
+            </div>
+          </div>
+          <input type="range" id="planFinderCalls" class="calc-slider" min="1" max="50" value="10" step="1" />
+          <div class="flex justify-between text-xs text-gray-400 font-body mt-1.5">
+            <span>1</span>
+            <span>25</span>
+            <span>50</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-6 mb-6">
+          <div class="text-center">
+            <p class="text-xs text-gray-400 font-body uppercase tracking-wider mb-1">Anrufe / Monat</p>
+            <p id="planFinderMonthly" class="font-display text-2xl font-bold text-gray-900">220</p>
+          </div>
+          <div class="text-center">
+            <p class="text-xs text-gray-400 font-body uppercase tracking-wider mb-1">Minuten / Monat</p>
+            <p id="planFinderMinutes" class="font-display text-2xl font-bold text-brand-400">660</p>
+          </div>
+        </div>
+        <div id="planFinderReco" class="text-center bg-brand-400/10 border border-brand-400/25 rounded-xl px-6 py-4">
+          <p class="text-gray-700 font-body text-sm mb-1">Unser Vorschlag f&uuml;r dich:</p>
+          <p id="planFinderPlan" class="font-display text-lg font-bold text-brand-400">Call Lana Starter</p>
+          <p id="planFinderHint" class="text-gray-500 font-body text-xs mt-1">340 Inklusivminuten reichen f&uuml;r dein Volumen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+  (function() {
+    var slider = document.getElementById('planFinderCalls');
+    var valueEl = document.getElementById('planFinderValue');
+    var monthlyEl = document.getElementById('planFinderMonthly');
+    var minutesEl = document.getElementById('planFinderMinutes');
+    var planEl = document.getElementById('planFinderPlan');
+    var hintEl = document.getElementById('planFinderHint');
+    var AVG_CALL_MINUTES = 3;
+    var WORK_DAYS = 22;
+
+    function update() {
+      var callsPerDay = parseInt(slider.value, 10);
+      var callsPerMonth = callsPerDay * WORK_DAYS;
+      var minutesPerMonth = callsPerMonth * AVG_CALL_MINUTES;
+      valueEl.textContent = callsPerDay;
+      monthlyEl.textContent = callsPerMonth.toLocaleString('de-DE');
+      minutesEl.textContent = minutesPerMonth.toLocaleString('de-DE');
+
+      var plan, hint;
+      if (callsPerDay <= 11) {
+        plan = 'Call Lana Starter';
+        hint = '340 Inklusivminuten reichen f\u00fcr dein Volumen.';
+        highlightCard('cardLite');
+      } else if (callsPerDay <= 18) {
+        plan = 'Call Lana Professional';
+        hint = '560 Inklusivminuten decken deinen Bedarf ab.';
+        highlightCard('cardPro');
+      } else {
+        plan = 'Call Lana Business';
+        hint = 'Individuelles Minutenkontingent f\u00fcr dein hohes Volumen.';
+        highlightCard('cardIndividual');
+      }
+      planEl.textContent = plan;
+      hintEl.textContent = hint;
+    }
+
+    function highlightCard(activeId) {
+      var cards = document.querySelectorAll('.plan-recommended');
+      cards.forEach(function(card) {
+        card.classList.remove('is-recommended');
+      });
+      var active = document.getElementById(activeId);
+      if (active) {
+        active.classList.add('is-recommended');
+      }
+    }
+
+    slider.addEventListener('input', update);
+    update();
+  })();
+  </script>
 
   <!-- ========== BILLING TOGGLE + PRICING CARDS ========== -->
   <section class="bg-section-light relative py-20">

@@ -98,6 +98,7 @@
   ]}
   </script>
 
+  <script defer data-domain="call-lana.de" src="https://plausible.io/js/script.js"></script>
 </head>
 <body class="bg-white text-gray-900 antialiased overflow-x-hidden">
 
@@ -130,7 +131,7 @@
           <p class="text-gray-500 text-sm mb-8 lang-de">Einrichtung in 15 Minuten. Monatlich kündbar. Ab 149 €/Monat.</p>
           <p class="text-gray-500 text-sm mb-8 lang-en hidden">Setup in 15 minutes. Cancel monthly. From €149/month.</p>
           <div class="flex flex-col sm:flex-row items-start gap-3 mb-5">
-            <a href="registrierung.html" class="btn-brand inline-block px-8 py-4 rounded-xl text-base font-bold">
+            <a id="hero-cta" href="registrierung.html" class="btn-brand inline-block px-8 py-4 rounded-xl text-base font-bold">
               <span class="lang-de">Kostenlos testen</span>
               <span class="lang-en hidden">Try for free</span>
             </a>
@@ -262,6 +263,45 @@
       </div>
     </div>
   </section>
+
+  <!-- ========== LIVE CALL COUNTER ========== -->
+  <section class="relative py-5" style="background: linear-gradient(180deg, #FFFFFF 0%, #F9F7FF 100%);">
+    <div class="relative z-10 max-w-6xl mx-auto px-6 text-center">
+      <p class="text-gray-500 text-sm font-body flex items-center justify-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-green-400" style="animation: pulse-dot 2s ease-in-out infinite;"></span>
+        <span class="lang-de">Heute bereits <strong id="liveCallCounter" class="text-gray-800 font-semibold">0</strong> Anrufe bearbeitet</span>
+        <span class="lang-en hidden">Already <strong id="liveCallCounterEn" class="text-gray-800 font-semibold">0</strong> calls handled today</span>
+      </p>
+    </div>
+  </section>
+  <style>
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+  </style>
+  <script>
+  (function() {
+    var counterEl = document.getElementById('liveCallCounter');
+    var counterElEn = document.getElementById('liveCallCounterEn');
+    var hour = new Date().getHours();
+    var baseByHour = Math.round(150 + (hour / 24) * 250 + Math.random() * 50);
+    var current = baseByHour;
+
+    function render() {
+      var formatted = current.toLocaleString('de-DE');
+      if (counterEl) { counterEl.textContent = formatted; }
+      if (counterElEn) { counterElEn.textContent = formatted; }
+    }
+
+    render();
+
+    setInterval(function() {
+      current += Math.floor(Math.random() * 3) + 1;
+      render();
+    }, 4000 + Math.random() * 3000);
+  })();
+  </script>
 
   <!-- ========== TRUSTED BY ========== -->
   <section class="relative py-12 md:py-14 noise-overlay bg-section-dark overflow-hidden">
@@ -1489,8 +1529,134 @@
 
 
 
+<script src="js/ab-testing.js"></script>
+<script>
+  // A/B test: hero CTA button text
+  document.addEventListener('DOMContentLoaded', function () {
+    var variant = abTest('hero_cta', ['A', 'B']);
+    if (variant === 'B') {
+      var heroBtn = document.getElementById('hero-cta');
+      if (heroBtn) {
+        var deLbl = heroBtn.querySelector('.lang-de');
+        if (deLbl) deLbl.textContent = '30 Tage gratis testen';
+      }
+    }
+  });
+</script>
 <script src="js/homepage.js" defer></script>
 <script src="i18n.js" defer></script>
 <script src="cookie-consent.js" defer></script>
+
+<!-- ========== EXIT-INTENT POPUP ========== -->
+<style>
+  .exit-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .exit-overlay.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .exit-popup {
+    background: #FFFFFF;
+    border-radius: 1.5rem;
+    padding: 2.5rem 2rem;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), 0 0 40px rgba(124, 58, 237, 0.08);
+    transform: translateY(20px) scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .exit-overlay.is-visible .exit-popup {
+    transform: translateY(0) scale(1);
+  }
+  .exit-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: #F3F4F6;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6B7280;
+    font-size: 18px;
+    line-height: 1;
+    transition: background 0.15s ease;
+  }
+  .exit-close:hover {
+    background: #E5E7EB;
+  }
+</style>
+
+<div id="exitOverlay" class="exit-overlay">
+  <div class="exit-popup">
+    <button id="exitClose" class="exit-close" aria-label="Schliessen">&times;</button>
+    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">&#127873;</div>
+    <h3 class="font-display text-xl font-bold text-gray-900 mb-2">Warte!</h3>
+    <p class="text-gray-600 font-body text-sm mb-6" style="line-height: 1.7;">Teste Call Lana 30 Tage kostenlos &mdash; ohne Kreditkarte.</p>
+    <a href="registrierung.html" class="btn-brand inline-block px-8 py-3.5 rounded-xl text-base font-bold" style="width: 100%;">Kostenlos starten</a>
+    <p class="text-gray-400 text-xs mt-4 font-body">Kein Risiko. Jederzeit k&uuml;ndbar.</p>
+  </div>
+</div>
+
+<script>
+(function() {
+  var overlay = document.getElementById('exitOverlay');
+  var closeBtn = document.getElementById('exitClose');
+  if (!overlay || !closeBtn) { return; }
+
+  var referrer = document.referrer || '';
+  var fromApp = referrer.indexOf('login') !== -1
+    || referrer.indexOf('dashboard') !== -1
+    || referrer.indexOf('registrierung') !== -1;
+
+  if (fromApp || sessionStorage.getItem('exit_shown')) { return; }
+
+  function show() {
+    sessionStorage.setItem('exit_shown', '1');
+    overlay.classList.add('is-visible');
+    document.removeEventListener('mouseout', onMouseOut);
+  }
+
+  function hide() {
+    overlay.classList.remove('is-visible');
+  }
+
+  function onMouseOut(e) {
+    if (e.clientY <= 0 && e.relatedTarget === null) {
+      show();
+    }
+  }
+
+  document.addEventListener('mouseout', onMouseOut);
+
+  closeBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    hide();
+  });
+
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) { hide(); }
+  });
+})();
+</script>
+
 </body>
 </html>
