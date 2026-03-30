@@ -171,6 +171,7 @@
               <li><a href="datenschutz.html" class="nav-link text-gray-500 text-sm" data-i18n="footer.privacy">${t('footer.privacy')}</a></li>
               <li><a href="agb.html" class="nav-link text-gray-500 text-sm" data-i18n="footer.terms">${t('footer.terms')}</a></li>
               <li><a href="impressum.html" class="nav-link text-gray-500 text-sm" data-i18n="footer.imprint">${t('footer.imprint')}</a></li>
+              <li><a href="avv.html" class="nav-link text-gray-500 text-sm" data-i18n="footer.avv">${t('footer.avv')}</a></li>
             </ul>
           </div>
         </div>
