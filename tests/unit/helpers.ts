@@ -5,8 +5,13 @@ import path from 'path';
 export function loadBrowserScript(relativePath: string): void {
   const code = fs.readFileSync(path.resolve(__dirname, '../../', relativePath), 'utf-8');
   // Replace top-level var/const/let declarations with window assignments
-  const patched = code.replace(/^(var|const|let)\s+(\w+)\s*=/gm, 'window.$2 =');
-  // Execute with window globals available
-  const fn = new Function('window', 'document', 'localStorage', 'sessionStorage', 'navigator', patched);
-  fn(window, document, window.localStorage, window.sessionStorage, window.navigator);
+  let patched = code.replace(/^(var|const|let)\s+(\w+)\s*=/gm, 'window.$2 =');
+  // Replace top-level function declarations: keep local var + assign to window
+  // e.g. "function foo(" → "var foo = window.foo = function("
+  patched = patched.replace(/^function\s+(\w+)\s*\(/gm, 'var $1 = window.$1 = function(');
+  // Same for async function declarations
+  patched = patched.replace(/^async\s+function\s+(\w+)\s*\(/gm, 'var $1 = window.$1 = async function(');
+  // Execute with window globals available — also pass location for hostname checks
+  const fn = new Function('window', 'document', 'localStorage', 'sessionStorage', 'navigator', 'location', patched);
+  fn(window, document, window.localStorage, window.sessionStorage, window.navigator, window.location);
 }

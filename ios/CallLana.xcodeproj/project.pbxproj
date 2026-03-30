@@ -66,6 +66,7 @@
 		E84EDE01548384E04269D46E /* PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DB5B6C58C51E7096381DDE /* PaymentMethod.swift */; };
 		EDFBB710ECC02A3BA29366B5 /* BillingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B47417F92AD7633A5BAABC6 /* BillingViewModel.swift */; };
 		F090A98FB5A0D4706A31E253 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88DF7CC7D72429AF568C0395 /* Assets.xcassets */; };
+		CC000001L10NSTR1NG000001 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = CC000002L10NSTR1NG000002 /* Localizable.xcstrings */; };
 		F23A81C926459AB2682AA177 /* DependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CD37482B2229116F9FAD98 /* DependencyContainer.swift */; };
 		F9CB720641AE9B105BF1D580 /* CallDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E86031866F5B21C55258F45 /* CallDetailView.swift */; };
 		FC39DCCF34E49F60FFF28965 /* PaymentMethodsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3DBE326A1907BD7BDA9D97 /* PaymentMethodsView.swift */; };
@@ -132,6 +133,7 @@
 		6E1DF1719F2329C82A730656 /* AppointmentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentListView.swift; sourceTree = "<group>"; };
 		85DB5B6C58C51E7096381DDE /* PaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethod.swift; sourceTree = "<group>"; };
 		88DF7CC7D72429AF568C0395 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CC000002L10NSTR1NG000002 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		8E43BD9E918FADEEF10FEE5F /* SupabaseClientFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseClientFactory.swift; sourceTree = "<group>"; };
 		971CB0F59BE7170EF62245BD /* StatusBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBadgeView.swift; sourceTree = "<group>"; };
 		9C9811F4AEC443FBFF9A29E9 /* BillingRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillingRepository.swift; sourceTree = "<group>"; };
@@ -445,6 +447,7 @@
 			isa = PBXGroup;
 			children = (
 				88DF7CC7D72429AF568C0395 /* Assets.xcassets */,
+				CC000002L10NSTR1NG000002 /* Localizable.xcstrings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -547,6 +550,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
+				de,
 				en,
 			);
 			mainGroup = 29AF93DDD52F571F7B55E5A1;
@@ -571,6 +575,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F090A98FB5A0D4706A31E253 /* Assets.xcassets in Resources */,
+				CC000001L10NSTR1NG000001 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

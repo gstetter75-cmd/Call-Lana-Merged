@@ -1,0 +1,1684 @@
+{
+  "sourceLanguage": "de",
+  "strings": {
+
+    "Call Lana": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Call Lana" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Call Lana" } }
+      }
+    },
+    "Dein KI-Telefonassistent": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Dein KI-Telefonassistent" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Your AI phone assistant" } }
+      }
+    },
+    "E-Mail": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "E-Mail" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Email" } }
+      }
+    },
+    "Passwort": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Passwort" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Password" } }
+      }
+    },
+    "Anmelden": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Anmelden" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Sign In" } }
+      }
+    },
+    "Mit Face ID anmelden": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Mit Face ID anmelden" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Sign in with Face ID" } }
+      }
+    },
+    "Noch kein Konto?": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Noch kein Konto?" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Don't have an account?" } }
+      }
+    },
+    "Registrieren": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Registrieren" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Sign Up" } }
+      }
+    },
+    "Konto erstellen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Konto erstellen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Create Account" } }
+      }
+    },
+    "Starte jetzt mit deinem KI-Telefonassistenten": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Starte jetzt mit deinem KI-Telefonassistenten" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Get started with your AI phone assistant" } }
+      }
+    },
+    "Vorname": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Vorname" } },
+        "en": { "stringUnit": { "state": "translated", "value": "First Name" } }
+      }
+    },
+    "Nachname": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Nachname" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Last Name" } }
+      }
+    },
+    "Passwort (min. 8 Zeichen)": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Passwort (min. 8 Zeichen)" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Password (min. 8 characters)" } }
+      }
+    },
+    "Passwort bestaetigen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Passwort bestaetigen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Confirm Password" } }
+      }
+    },
+
+    "Home": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Home" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Home" } }
+      }
+    },
+    "Anrufe": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Anrufe" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Calls" } }
+      }
+    },
+    "Assistenten": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Assistenten" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Assistants" } }
+      }
+    },
+    "Kosten": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Kosten" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Billing" } }
+      }
+    },
+    "Mehr": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Mehr" } },
+        "en": { "stringUnit": { "state": "translated", "value": "More" } }
+      }
+    },
+    "Willkommen bei Call Lana": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Willkommen bei Call Lana" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Welcome to Call Lana" } }
+      }
+    },
+    "Dein KI-Telefonassistent ist bereit.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Dein KI-Telefonassistent ist bereit." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Your AI phone assistant is ready." } }
+      }
+    },
+
+    "Anrufe heute": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Anrufe heute" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Calls Today" } }
+      }
+    },
+    "Buchungsrate": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Buchungsrate" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Booking Rate" } }
+      }
+    },
+    "Minuten": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Minuten" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Minutes" } }
+      }
+    },
+    "Sentiment": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Sentiment" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Sentiment" } }
+      }
+    },
+    "Letzte Anrufe": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Letzte Anrufe" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Recent Calls" } }
+      }
+    },
+    "Noch keine Anrufe": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Noch keine Anrufe" } },
+        "en": { "stringUnit": { "state": "translated", "value": "No calls yet" } }
+      }
+    },
+    "Heutige Termine": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Heutige Termine" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Today's Appointments" } }
+      }
+    },
+    "Keine Termine heute": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Keine Termine heute" } },
+        "en": { "stringUnit": { "state": "translated", "value": "No appointments today" } }
+      }
+    },
+    "Top Leads": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Top Leads" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Top Leads" } }
+      }
+    },
+    "Keine Leads vorhanden": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Keine Leads vorhanden" } },
+        "en": { "stringUnit": { "state": "translated", "value": "No leads available" } }
+      }
+    },
+    "Unbekannt": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Unbekannt" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Unknown" } }
+      }
+    },
+    "Unbekannter Termin": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Unbekannter Termin" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Unknown Appointment" } }
+      }
+    },
+    "Storniert": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Storniert" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Cancelled" } }
+      }
+    },
+    "Erledigt": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Erledigt" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Completed" } }
+      }
+    },
+    "Bestätigt": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Bestätigt" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Confirmed" } }
+      }
+    },
+
+    "Notfall-Anruf!": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Notfall-Anruf!" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Emergency Call!" } }
+      }
+    },
+    "Gesehen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Gesehen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Dismiss" } }
+      }
+    },
+
+    "Keine Anrufe": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Keine Anrufe" } },
+        "en": { "stringUnit": { "state": "translated", "value": "No Calls" } }
+      }
+    },
+    "Sobald Anrufe eingehen, erscheinen sie hier.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Sobald Anrufe eingehen, erscheinen sie hier." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Calls will appear here once they come in." } }
+      }
+    },
+    "Nummer oder Transkript suchen…": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Nummer oder Transkript suchen…" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Search number or transcript…" } }
+      }
+    },
+    "Abgeschlossen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Abgeschlossen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Completed" } }
+      }
+    },
+    "Verpasst": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Verpasst" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Missed" } }
+      }
+    },
+    "Mailbox": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Mailbox" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Voicemail" } }
+      }
+    },
+
+    "Anruf wird geladen…": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Anruf wird geladen…" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Loading call…" } }
+      }
+    },
+    "Fehler": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Fehler" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Error" } }
+      }
+    },
+    "Anruf konnte nicht geladen werden.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Anruf konnte nicht geladen werden." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Call could not be loaded." } }
+      }
+    },
+    "Anruf-Details": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Anruf-Details" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Call Details" } }
+      }
+    },
+    "Dauer": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Dauer" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Duration" } }
+      }
+    },
+    "Status": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Status" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Status" } }
+      }
+    },
+    "Datum": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Datum" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Date" } }
+      }
+    },
+    "Uhrzeit": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Uhrzeit" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Time" } }
+      }
+    },
+    "Transkript": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Transkript" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Transcript" } }
+      }
+    },
+    "Positiv": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Positiv" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Positive" } }
+      }
+    },
+    "Neutral": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Neutral" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Neutral" } }
+      }
+    },
+    "Negativ": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Negativ" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Negative" } }
+      }
+    },
+
+    "Filter": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Filter" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Filter" } }
+      }
+    },
+    "Zurücksetzen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Zurücksetzen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Reset" } }
+      }
+    },
+    "Anwenden": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Anwenden" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Apply" } }
+      }
+    },
+    "Zeitraum": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Zeitraum" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Time Period" } }
+      }
+    },
+    "Zeitraum filtern": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Zeitraum filtern" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Filter by date range" } }
+      }
+    },
+    "Von": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Von" } },
+        "en": { "stringUnit": { "state": "translated", "value": "From" } }
+      }
+    },
+    "Bis": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Bis" } },
+        "en": { "stringUnit": { "state": "translated", "value": "To" } }
+      }
+    },
+    "Alle": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Alle" } },
+        "en": { "stringUnit": { "state": "translated", "value": "All" } }
+      }
+    },
+
+    "Keine Assistenten": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Keine Assistenten" } },
+        "en": { "stringUnit": { "state": "translated", "value": "No Assistants" } }
+      }
+    },
+    "Erstelle deinen ersten KI-Assistenten.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Erstelle deinen ersten KI-Assistenten." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Create your first AI assistant." } }
+      }
+    },
+    "Unbenannter Assistent": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Unbenannter Assistent" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Unnamed Assistant" } }
+      }
+    },
+    "Live": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Live" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Live" } }
+      }
+    },
+    "Offline": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Offline" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Offline" } }
+      }
+    },
+    "Deaktivieren": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Deaktivieren" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Deactivate" } }
+      }
+    },
+    "Aktivieren": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Aktivieren" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Activate" } }
+      }
+    },
+
+    "Assistent wird geladen…": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Assistent wird geladen…" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Loading assistant…" } }
+      }
+    },
+    "Assistent bearbeiten": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Assistent bearbeiten" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Edit Assistant" } }
+      }
+    },
+    "Assistent löschen?": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Assistent löschen?" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Delete assistant?" } }
+      }
+    },
+    "Löschen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Löschen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Delete" } }
+      }
+    },
+    "Abbrechen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Abbrechen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Cancel" } }
+      }
+    },
+    "Diese Aktion kann nicht rückgängig gemacht werden.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Diese Aktion kann nicht rückgängig gemacht werden." } },
+        "en": { "stringUnit": { "state": "translated", "value": "This action cannot be undone." } }
+      }
+    },
+    "Allgemein": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Allgemein" } },
+        "en": { "stringUnit": { "state": "translated", "value": "General" } }
+      }
+    },
+    "Name": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Name" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Name" } }
+      }
+    },
+    "Assistentenname": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Assistentenname" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Assistant Name" } }
+      }
+    },
+    "Telefon": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Telefon" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Phone" } }
+      }
+    },
+    "Verhalten": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Verhalten" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Behavior" } }
+      }
+    },
+    "Stimme": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Stimme" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Voice" } }
+      }
+    },
+    "Begrüßung": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Begrüßung" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Greeting" } }
+      }
+    },
+    "z.B. Hallo, wie kann ich helfen?": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "z.B. Hallo, wie kann ich helfen?" } },
+        "en": { "stringUnit": { "state": "translated", "value": "e.g. Hello, how can I help?" } }
+      }
+    },
+    "System Prompt": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "System Prompt" } },
+        "en": { "stringUnit": { "state": "translated", "value": "System Prompt" } }
+      }
+    },
+    "Assistent löschen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Assistent löschen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Delete Assistant" } }
+      }
+    },
+    "Speichern": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Speichern" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Save" } }
+      }
+    },
+    "Assistent konnte nicht geladen werden.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Assistent konnte nicht geladen werden." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Assistant could not be loaded." } }
+      }
+    },
+
+    "Termine": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Termine" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Appointments" } }
+      }
+    },
+    "Termine werden geladen...": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Termine werden geladen..." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Loading appointments..." } }
+      }
+    },
+    "Keine Termine": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Keine Termine" } },
+        "en": { "stringUnit": { "state": "translated", "value": "No Appointments" } }
+      }
+    },
+    "Heute stehen keine Termine an.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Heute stehen keine Termine an." } },
+        "en": { "stringUnit": { "state": "translated", "value": "No appointments scheduled for today." } }
+      }
+    },
+    "Diese Woche stehen keine Termine an.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Diese Woche stehen keine Termine an." } },
+        "en": { "stringUnit": { "state": "translated", "value": "No appointments scheduled this week." } }
+      }
+    },
+    "Heute": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Heute" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Today" } }
+      }
+    },
+    "Diese Woche": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Diese Woche" } },
+        "en": { "stringUnit": { "state": "translated", "value": "This Week" } }
+      }
+    },
+    "Bestaetigt": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Bestaetigt" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Confirmed" } }
+      }
+    },
+    "Abgesagt": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Abgesagt" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Cancelled" } }
+      }
+    },
+    "Ausstehend": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Ausstehend" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Pending" } }
+      }
+    },
+    "Termin": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Termin" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Appointment" } }
+      }
+    },
+    "OK": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "OK" } },
+        "en": { "stringUnit": { "state": "translated", "value": "OK" } }
+      }
+    },
+
+    "Termindetails": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Termindetails" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Appointment Details" } }
+      }
+    },
+    "Kunde": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Kunde" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Customer" } }
+      }
+    },
+    "Lead-ID": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Lead-ID" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Lead ID" } }
+      }
+    },
+    "Titel": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Titel" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Title" } }
+      }
+    },
+
+    "Abrechnung wird geladen...": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Abrechnung wird geladen..." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Loading billing..." } }
+      }
+    },
+    "Guthaben": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Guthaben" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Balance" } }
+      }
+    },
+    "Verfuegbar": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Verfuegbar" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Available" } }
+      }
+    },
+    "Kein Guthaben vorhanden": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Kein Guthaben vorhanden" } },
+        "en": { "stringUnit": { "state": "translated", "value": "No balance available" } }
+      }
+    },
+    "Aufladen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Aufladen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Top Up" } }
+      }
+    },
+    "Tarif": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Tarif" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Plan" } }
+      }
+    },
+    "Tarif aendern": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Tarif aendern" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Change Plan" } }
+      }
+    },
+    "Auto-Aufladung": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Auto-Aufladung" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Auto Reload" } }
+      }
+    },
+    "Schwelle:": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Schwelle:" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Threshold:" } }
+      }
+    },
+    "Aufladebetrag:": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Aufladebetrag:" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Reload Amount:" } }
+      }
+    },
+    "Ausgabenlimit": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Ausgabenlimit" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Spending Limit" } }
+      }
+    },
+    "Limit:": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Limit:" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Limit:" } }
+      }
+    },
+    "Monatliche Ausgaben": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Monatliche Ausgaben" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Monthly Spending" } }
+      }
+    },
+    "von": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "von" } },
+        "en": { "stringUnit": { "state": "translated", "value": "of" } }
+      }
+    },
+    "Transaktionen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Transaktionen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Transactions" } }
+      }
+    },
+    "Rechnungen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Rechnungen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Invoices" } }
+      }
+    },
+    "Abo kuendigen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Abo kuendigen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Cancel Subscription" } }
+      }
+    },
+    "Aktueller Tarif": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Aktueller Tarif" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Current Plan" } }
+      }
+    },
+
+    "Guthaben aufladen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Guthaben aufladen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Top Up Balance" } }
+      }
+    },
+    "Aktuelles Guthaben:": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Aktuelles Guthaben:" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Current Balance:" } }
+      }
+    },
+    "Oder eigenen Betrag eingeben:": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Oder eigenen Betrag eingeben:" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Or enter a custom amount:" } }
+      }
+    },
+    "Betrag in EUR": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Betrag in EUR" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Amount in EUR" } }
+      }
+    },
+    "EUR": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "EUR" } },
+        "en": { "stringUnit": { "state": "translated", "value": "EUR" } }
+      }
+    },
+    "Min. 5,00 EUR / Max. 1.000,00 EUR": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Min. 5,00 EUR / Max. 1.000,00 EUR" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Min. 5.00 EUR / Max. 1,000.00 EUR" } }
+      }
+    },
+
+    "Keine Transaktionen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Keine Transaktionen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "No Transactions" } }
+      }
+    },
+    "Sobald Buchungen anfallen, erscheinen sie hier.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Sobald Buchungen anfallen, erscheinen sie hier." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Transactions will appear here once charges are made." } }
+      }
+    },
+    "Tarifgebuehr": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Tarifgebuehr" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Plan Fee" } }
+      }
+    },
+    "Aufladung": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Aufladung" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Top-Up" } }
+      }
+    },
+    "Verbrauch": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Verbrauch" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Usage" } }
+      }
+    },
+    "Erstattung": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Erstattung" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Refund" } }
+      }
+    },
+    "Gutschrift": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Gutschrift" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Credit" } }
+      }
+    },
+
+    "Keine Rechnungen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Keine Rechnungen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "No Invoices" } }
+      }
+    },
+    "Rechnungen werden hier aufgelistet, sobald sie erstellt wurden.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Rechnungen werden hier aufgelistet, sobald sie erstellt wurden." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Invoices will be listed here once they are created." } }
+      }
+    },
+    "Bezahlt": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Bezahlt" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Paid" } }
+      }
+    },
+    "Offen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Offen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Open" } }
+      }
+    },
+    "Entwurf": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Entwurf" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Draft" } }
+      }
+    },
+    "Gutgeschrieben": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Gutgeschrieben" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Credited" } }
+      }
+    },
+
+    "Tarif wechseln": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Tarif wechseln" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Switch Plan" } }
+      }
+    },
+    "Wechseln": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Wechseln" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Switch" } }
+      }
+    },
+    "Waehle den passenden Tarif fuer dein Unternehmen.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Waehle den passenden Tarif fuer dein Unternehmen." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Choose the right plan for your business." } }
+      }
+    },
+    "/ Monat": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "/ Monat" } },
+        "en": { "stringUnit": { "state": "translated", "value": "/ month" } }
+      }
+    },
+    "Minuten inklusive": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Minuten inklusive" } },
+        "en": { "stringUnit": { "state": "translated", "value": "minutes included" } }
+      }
+    },
+    "Tarif gewechselt": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Tarif gewechselt" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Plan Changed" } }
+      }
+    },
+    "Dein Tarif wurde erfolgreich geaendert.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Dein Tarif wurde erfolgreich geaendert." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Your plan has been changed successfully." } }
+      }
+    },
+    "1 KI-Assistent": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "1 KI-Assistent" } },
+        "en": { "stringUnit": { "state": "translated", "value": "1 AI assistant" } }
+      }
+    },
+    "Anrufweiterleitung": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Anrufweiterleitung" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Call forwarding" } }
+      }
+    },
+    "E-Mail-Benachrichtigungen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "E-Mail-Benachrichtigungen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Email notifications" } }
+      }
+    },
+    "3 KI-Assistenten": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "3 KI-Assistenten" } },
+        "en": { "stringUnit": { "state": "translated", "value": "3 AI assistants" } }
+      }
+    },
+    "Kalender-Integration": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Kalender-Integration" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Calendar integration" } }
+      }
+    },
+    "CRM-Anbindung": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "CRM-Anbindung" } },
+        "en": { "stringUnit": { "state": "translated", "value": "CRM integration" } }
+      }
+    },
+    "Prioritaets-Support": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Prioritaets-Support" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Priority support" } }
+      }
+    },
+    "Unbegrenzte Assistenten": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Unbegrenzte Assistenten" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Unlimited assistants" } }
+      }
+    },
+    "Alle Integrationen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Alle Integrationen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "All integrations" } }
+      }
+    },
+    "Dedizierter Account Manager": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Dedizierter Account Manager" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Dedicated account manager" } }
+      }
+    },
+    "SLA-Garantie": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "SLA-Garantie" } },
+        "en": { "stringUnit": { "state": "translated", "value": "SLA guarantee" } }
+      }
+    },
+
+    "Abo wirklich kuendigen?": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Abo wirklich kuendigen?" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Really cancel subscription?" } }
+      }
+    },
+    "Diese Aktion kann nicht rueckgaengig gemacht werden. Dein Abo wird zum Ende des Abrechnungszeitraums beendet.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Diese Aktion kann nicht rueckgaengig gemacht werden. Dein Abo wird zum Ende des Abrechnungszeitraums beendet." } },
+        "en": { "stringUnit": { "state": "translated", "value": "This action cannot be undone. Your subscription will end at the end of the billing period." } }
+      }
+    },
+    "Abo gekuendigt": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Abo gekuendigt" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Subscription Cancelled" } }
+      }
+    },
+    "Dein Abo wurde gekuendigt. Es bleibt bis zum Ende des Abrechnungszeitraums aktiv.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Dein Abo wurde gekuendigt. Es bleibt bis zum Ende des Abrechnungszeitraums aktiv." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Your subscription has been cancelled. It remains active until the end of the billing period." } }
+      }
+    },
+    "Moechtest du dein Abo wirklich kuendigen?": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Moechtest du dein Abo wirklich kuendigen?" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Do you really want to cancel your subscription?" } }
+      }
+    },
+    "Wir bedauern, dass du gehst. Bitte beachte die folgenden Auswirkungen.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Wir bedauern, dass du gehst. Bitte beachte die folgenden Auswirkungen." } },
+        "en": { "stringUnit": { "state": "translated", "value": "We're sorry to see you go. Please note the following consequences." } }
+      }
+    },
+    "Was passiert bei Kuendigung:": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Was passiert bei Kuendigung:" } },
+        "en": { "stringUnit": { "state": "translated", "value": "What happens when you cancel:" } }
+      }
+    },
+    "Dein Assistent wird deaktiviert": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Dein Assistent wird deaktiviert" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Your assistant will be deactivated" } }
+      }
+    },
+    "Guthaben verfaellt nicht": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Guthaben verfaellt nicht" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Balance does not expire" } }
+      }
+    },
+    "Du kannst jederzeit reaktivieren": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Du kannst jederzeit reaktivieren" } },
+        "en": { "stringUnit": { "state": "translated", "value": "You can reactivate at any time" } }
+      }
+    },
+    "Aktiv bis Ende des Abrechnungszeitraums": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Aktiv bis Ende des Abrechnungszeitraums" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Active until end of billing period" } }
+      }
+    },
+    "Grund der Kuendigung (optional)": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Grund der Kuendigung (optional)" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Reason for cancellation (optional)" } }
+      }
+    },
+    "Grund": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Grund" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Reason" } }
+      }
+    },
+    "Zu teuer": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Zu teuer" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Too expensive" } }
+      }
+    },
+    "Nicht genutzt": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Nicht genutzt" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Not used" } }
+      }
+    },
+    "Alternative gefunden": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Alternative gefunden" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Found an alternative" } }
+      }
+    },
+    "Sonstiges": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Sonstiges" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Other" } }
+      }
+    },
+    "Doch behalten": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Doch behalten" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Keep Subscription" } }
+      }
+    },
+    "Kuendigung fehlgeschlagen. Bitte erneut versuchen.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Kuendigung fehlgeschlagen. Bitte erneut versuchen." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Cancellation failed. Please try again." } }
+      }
+    },
+
+    "Einstellungen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Einstellungen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Settings" } }
+      }
+    },
+    "Einstellungen werden geladen...": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Einstellungen werden geladen..." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Loading settings..." } }
+      }
+    },
+    "Konto": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Konto" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Account" } }
+      }
+    },
+    "Profil": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Profil" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Profile" } }
+      }
+    },
+    "Sicherheit": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Sicherheit" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Security" } }
+      }
+    },
+    "Praeferenzen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Praeferenzen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Preferences" } }
+      }
+    },
+    "Benachrichtigungen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Benachrichtigungen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Notifications" } }
+      }
+    },
+    "Zahlung": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Zahlung" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Payment" } }
+      }
+    },
+    "Zahlungsmethoden": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Zahlungsmethoden" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Payment Methods" } }
+      }
+    },
+    "App": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "App" } },
+        "en": { "stringUnit": { "state": "translated", "value": "App" } }
+      }
+    },
+    "Version": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Version" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Version" } }
+      }
+    },
+    "Dark Mode": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Dark Mode" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Dark Mode" } }
+      }
+    },
+    "Abmelden": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Abmelden" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Sign Out" } }
+      }
+    },
+    "Moechtest du dich wirklich abmelden?": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Moechtest du dich wirklich abmelden?" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Do you really want to sign out?" } }
+      }
+    },
+
+    "Profil bearbeiten": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Profil bearbeiten" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Edit Profile" } }
+      }
+    },
+    "Persoenliche Daten": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Persoenliche Daten" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Personal Data" } }
+      }
+    },
+    "Unternehmen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Unternehmen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Company" } }
+      }
+    },
+    "Firmenname": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Firmenname" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Company Name" } }
+      }
+    },
+    "Branche": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Branche" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Industry" } }
+      }
+    },
+    "Bitte waehlen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Bitte waehlen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Please select" } }
+      }
+    },
+    "Elektrotechnik": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Elektrotechnik" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Electrical Engineering" } }
+      }
+    },
+    "Sanitaer & Heizung": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Sanitaer & Heizung" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Plumbing & Heating" } }
+      }
+    },
+    "Malerei & Lackierung": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Malerei & Lackierung" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Painting & Coating" } }
+      }
+    },
+    "Schreinerei & Tischlerei": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Schreinerei & Tischlerei" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Carpentry & Joinery" } }
+      }
+    },
+    "Dachdecker": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Dachdecker" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Roofing" } }
+      }
+    },
+    "Metallbau & Schlosserei": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Metallbau & Schlosserei" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Metalwork & Locksmithing" } }
+      }
+    },
+    "Fliesenleger": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Fliesenleger" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Tiling" } }
+      }
+    },
+    "Zimmerei": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Zimmerei" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Timber Framing" } }
+      }
+    },
+    "Kfz-Werkstatt": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Kfz-Werkstatt" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Auto Repair" } }
+      }
+    },
+    "Garten- & Landschaftsbau": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Garten- & Landschaftsbau" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Landscaping & Gardening" } }
+      }
+    },
+    "Gebaeudereinigung": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Gebaeudereinigung" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Building Cleaning" } }
+      }
+    },
+    "Bau & Ausbau": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Bau & Ausbau" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Construction & Fit-out" } }
+      }
+    },
+    "Friseur & Kosmetik": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Friseur & Kosmetik" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Hair & Beauty" } }
+      }
+    },
+    "Sonstiges Handwerk": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Sonstiges Handwerk" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Other Trade" } }
+      }
+    },
+    "Gespeichert": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Gespeichert" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Saved" } }
+      }
+    },
+    "Dein Profil wurde aktualisiert.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Dein Profil wurde aktualisiert." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Your profile has been updated." } }
+      }
+    },
+    "Profil konnte nicht gespeichert werden.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Profil konnte nicht gespeichert werden." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Profile could not be saved." } }
+      }
+    },
+
+    "Passwort aendern": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Passwort aendern" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Change Password" } }
+      }
+    },
+    "Neues Passwort": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Neues Passwort" } },
+        "en": { "stringUnit": { "state": "translated", "value": "New Password" } }
+      }
+    },
+    "Mindestens 8 Zeichen erforderlich.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Mindestens 8 Zeichen erforderlich." } },
+        "en": { "stringUnit": { "state": "translated", "value": "At least 8 characters required." } }
+      }
+    },
+    "Passwoerter stimmen nicht ueberein.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Passwoerter stimmen nicht ueberein." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Passwords do not match." } }
+      }
+    },
+    "Passwort ist gueltig": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Passwort ist gueltig" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Password is valid" } }
+      }
+    },
+    "Erfolgreich": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Erfolgreich" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Success" } }
+      }
+    },
+    "Dein Passwort wurde geaendert.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Dein Passwort wurde geaendert." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Your password has been changed." } }
+      }
+    },
+    "Passwort konnte nicht geaendert werden. Bitte erneut versuchen.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Passwort konnte nicht geaendert werden. Bitte erneut versuchen." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Password could not be changed. Please try again." } }
+      }
+    },
+
+    "Anrufe": {
+      "comment": "Section header in notification settings",
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Anrufe" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Calls" } }
+      }
+    },
+    "Anrufzusammenfassungen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Anrufzusammenfassungen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Call Summaries" } }
+      }
+    },
+    "Erhalte nach jedem Anruf eine Zusammenfassung per Push-Nachricht.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Erhalte nach jedem Anruf eine Zusammenfassung per Push-Nachricht." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Receive a summary via push notification after each call." } }
+      }
+    },
+    "Wichtige Weiterleitungen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Wichtige Weiterleitungen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Important Forwards" } }
+      }
+    },
+    "Werde sofort benachrichtigt, wenn Lana einen Anruf als dringend einstuft.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Werde sofort benachrichtigt, wenn Lana einen Anruf als dringend einstuft." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Get notified immediately when Lana classifies a call as urgent." } }
+      }
+    },
+    "System": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "System" } },
+        "en": { "stringUnit": { "state": "translated", "value": "System" } }
+      }
+    },
+    "Produktupdates": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Produktupdates" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Product Updates" } }
+      }
+    },
+    "Informationen ueber neue Funktionen und Verbesserungen.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Informationen ueber neue Funktionen und Verbesserungen." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Information about new features and improvements." } }
+      }
+    },
+    "Marketing": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Marketing" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Marketing" } }
+      }
+    },
+    "Gelegentliche Tipps, Angebote und Neuigkeiten rund um Call Lana.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Gelegentliche Tipps, Angebote und Neuigkeiten rund um Call Lana." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Occasional tips, offers, and news about Call Lana." } }
+      }
+    },
+
+    "Zahlungsmethoden werden geladen...": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Zahlungsmethoden werden geladen..." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Loading payment methods..." } }
+      }
+    },
+    "Keine Zahlungsmethoden": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Keine Zahlungsmethoden" } },
+        "en": { "stringUnit": { "state": "translated", "value": "No Payment Methods" } }
+      }
+    },
+    "Du hast noch keine Zahlungsmethode hinterlegt.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Du hast noch keine Zahlungsmethode hinterlegt." } },
+        "en": { "stringUnit": { "state": "translated", "value": "You haven't added a payment method yet." } }
+      }
+    },
+    "Zahlungsmethode hinzufuegen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Zahlungsmethode hinzufuegen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Add Payment Method" } }
+      }
+    },
+    "Zahlungsmethoden konnten nicht geladen werden.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Zahlungsmethoden konnten nicht geladen werden." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Payment methods could not be loaded." } }
+      }
+    },
+    "SEPA-Lastschrift": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "SEPA-Lastschrift" } },
+        "en": { "stringUnit": { "state": "translated", "value": "SEPA Direct Debit" } }
+      }
+    },
+    "Kreditkarte": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Kreditkarte" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Credit Card" } }
+      }
+    },
+    "Primaer": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Primaer" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Primary" } }
+      }
+    },
+    "Ersatz": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Ersatz" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Backup" } }
+      }
+    },
+    "Aktiv": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Aktiv" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Active" } }
+      }
+    },
+    "Widerrufen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Widerrufen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Revoked" } }
+      }
+    },
+    "Fehlgeschlagen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Fehlgeschlagen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Failed" } }
+      }
+    },
+
+    "Zahlungsart": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Zahlungsart" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Payment Type" } }
+      }
+    },
+    "Typ": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Typ" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Type" } }
+      }
+    },
+    "Kontoinhaber": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Kontoinhaber" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Account Holder" } }
+      }
+    },
+    "IBAN": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "IBAN" } },
+        "en": { "stringUnit": { "state": "translated", "value": "IBAN" } }
+      }
+    },
+    "SEPA-Lastschriftmandat erteilen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "SEPA-Lastschriftmandat erteilen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Grant SEPA direct debit mandate" } }
+      }
+    },
+    "Ich ermaechtige Call Lana, Zahlungen von meinem Konto mittels Lastschrift einzuziehen.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Ich ermaechtige Call Lana, Zahlungen von meinem Konto mittels Lastschrift einzuziehen." } },
+        "en": { "stringUnit": { "state": "translated", "value": "I authorize Call Lana to collect payments from my account via direct debit." } }
+      }
+    },
+    "Karteninhaber": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Karteninhaber" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Card Holder" } }
+      }
+    },
+    "Kartennummer": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Kartennummer" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Card Number" } }
+      }
+    },
+    "Zahlungsmethode wurde hinzugefuegt.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Zahlungsmethode wurde hinzugefuegt." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Payment method has been added." } }
+      }
+    },
+    "Zahlungsdaten werden ueber Stripe tokenisiert. Sensible Daten werden nicht auf unseren Servern gespeichert.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Zahlungsdaten werden ueber Stripe tokenisiert. Sensible Daten werden nicht auf unseren Servern gespeichert." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Payment data is tokenized via Stripe. Sensitive data is not stored on our servers." } }
+      }
+    },
+
+    "Dein KI-Telefonassistent": {
+      "comment": "Onboarding slide 1 title",
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Dein KI-Telefonassistent" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Your AI Phone Assistant" } }
+      }
+    },
+    "Lana nimmt deine Anrufe entgegen, bucht Termine und qualifiziert Leads — rund um die Uhr.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Lana nimmt deine Anrufe entgegen, bucht Termine und qualifiziert Leads — rund um die Uhr." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Lana answers your calls, books appointments, and qualifies leads — around the clock." } }
+      }
+    },
+    "Alles im Blick": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Alles im Blick" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Everything at a Glance" } }
+      }
+    },
+    "Dashboard mit Anrufhistorie, Terminübersicht und Echtzeit-KPIs auf einen Blick.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Dashboard mit Anrufhistorie, Terminübersicht und Echtzeit-KPIs auf einen Blick." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Dashboard with call history, appointment overview, and real-time KPIs at a glance." } }
+      }
+    },
+    "Volle Kostenkontrolle": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Volle Kostenkontrolle" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Full Cost Control" } }
+      }
+    },
+    "Guthaben aufladen, Ausgabenlimit setzen, Rechnungen einsehen — transparent und fair.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Guthaben aufladen, Ausgabenlimit setzen, Rechnungen einsehen — transparent und fair." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Top up balance, set spending limits, view invoices — transparent and fair." } }
+      }
+    },
+    "Los geht's": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Los geht's" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Get Started" } }
+      }
+    },
+    "Weiter": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Weiter" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Next" } }
+      }
+    },
+    "Überspringen": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Überspringen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Skip" } }
+      }
+    },
+
+    "Laden…": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Laden…" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Loading…" } }
+      }
+    },
+    "Inhalt": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Inhalt" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Content" } }
+      }
+    },
+    "Erfolgreich gespeichert": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Erfolgreich gespeichert" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Saved successfully" } }
+      }
+    },
+    "Fehler beim Laden": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Fehler beim Laden" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Error loading" } }
+      }
+    },
+    "Neue Nachricht": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Neue Nachricht" } },
+        "en": { "stringUnit": { "state": "translated", "value": "New Message" } }
+      }
+    },
+
+    "Anrufe konnten nicht geladen werden.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Anrufe konnten nicht geladen werden." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Calls could not be loaded." } }
+      }
+    },
+    "Termine konnten nicht geladen werden.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Termine konnten nicht geladen werden." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Appointments could not be loaded." } }
+      }
+    },
+    "Tarifwechsel fehlgeschlagen. Bitte erneut versuchen.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Tarifwechsel fehlgeschlagen. Bitte erneut versuchen." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Plan change failed. Please try again." } }
+      }
+    },
+    "Betrag muss zwischen 5,00 EUR und 1.000,00 EUR liegen.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Betrag muss zwischen 5,00 EUR und 1.000,00 EUR liegen." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Amount must be between 5.00 EUR and 1,000.00 EUR." } }
+      }
+    },
+    "PayPal": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "PayPal" } },
+        "en": { "stringUnit": { "state": "translated", "value": "PayPal" } }
+      }
+    }
+  },
+  "version": "1.0"
+}
