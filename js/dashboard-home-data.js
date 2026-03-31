@@ -1,8 +1,5 @@
 // Extracted from dashboard.js — Month Select, Home Data, Call Chart
-
-// Safe DOM setter — avoids null reference errors when elements don't exist yet
-function setElText(id, text) { const el = document.getElementById(id); if (el) el.textContent = text; }
-function setElAttr(id, attr, val) { const el = document.getElementById(id); if (el) el.setAttribute(attr, val); }
+// Uses $setText/$setAttr from dashboard.js (loaded before this file)
 
 // MONTH SELECT
 // ==========================================
@@ -33,15 +30,15 @@ async function loadHomeData() {
   const result = await clanaDB.getStats(start.toISOString(), end.toISOString());
   if (result.success) {
     const s = result.stats;
-    setElText('csAnrufe', s.totalCalls.toLocaleString('de-DE'));
-    setElText('csSms', formatMinutes(s.avgDuration));
+    $setText('csAnrufe', s.totalCalls.toLocaleString('de-DE'));
+    $setText('csSms', formatMinutes(s.avgDuration));
     const completedCalls = s.statuses?.completed || 0;
     const successRate = s.totalCalls > 0 ? Math.round((completedCalls / s.totalCalls) * 100) : 0;
-    setElText('csKosten', successRate + '%');
+    $setText('csKosten', successRate + '%');
   } else {
-    setElText('csAnrufe', '0');
-    setElText('csSms', '0 min');
-    setElText('csKosten', '0%');
+    $setText('csAnrufe', '0');
+    $setText('csSms', '0 min');
+    $setText('csKosten', '0%');
   }
 
   // Balance donut
@@ -52,8 +49,8 @@ async function loadHomeData() {
   const pct = Math.min(balance / maxBalance, 1);
   const circumference = 2 * Math.PI * 40;
   const offset = circumference - (pct * circumference);
-  setElAttr('donutArc', 'stroke-dashoffset', offset);
-  setElText('donutCenter', formatCurrency(balance));
+  $setAttr('donutArc', 'stroke-dashoffset', offset);
+  $setText('donutCenter', formatCurrency(balance));
 
   // Call chart
   drawCallChart(start, end);

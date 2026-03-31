@@ -111,8 +111,8 @@ const Components = {
         const bg = colors[a.type] || colors.info;
         const div = document.createElement('div');
         div.style.cssText = `background:${bg};color:white;text-align:center;padding:8px 16px;font-size:12px;font-weight:600;font-family:Manrope,sans-serif;`;
-        const announceSanitize = typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeHtml : (s => s);
-        div.innerHTML = `${announceSanitize(a.title)}: ${announceSanitize(a.message)} <button onclick="this.parentElement.remove()" style="background:rgba(255,255,255,.2);border:none;color:white;padding:2px 8px;border-radius:4px;cursor:pointer;margin-left:8px;font-size:11px;">×</button>`;
+        const sanitize = typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeHtml : (s => s);
+        div.innerHTML = `${sanitize(a.title)}: ${sanitize(a.message)} <button onclick="this.parentElement.remove()" style="background:rgba(255,255,255,.2);border:none;color:white;padding:2px 8px;border-radius:4px;cursor:pointer;margin-left:8px;font-size:11px;">×</button>`;
         container.appendChild(div);
       });
 

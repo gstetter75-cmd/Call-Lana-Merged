@@ -352,9 +352,8 @@ async function loadBilling() {
   const settings = settingsResult.success ? settingsResult.data : {};
   const balance = settings.balance || 0;
 
-  const setEl = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
-  setEl('balanceValue', formatCurrency(balance));
-  setEl('balanceSub', balance > 0 ? 'Verfügbar' : 'Kein Guthaben vorhanden');
+  $setText('balanceValue', formatCurrency(balance));
+  $setText('balanceSub', balance > 0 ? 'Verfügbar' : 'Kein Guthaben vorhanden');
 
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
@@ -363,14 +362,14 @@ async function loadBilling() {
 
   if (statsResult.success) {
     const s = statsResult.stats;
-    setEl('usageCalls', s.totalCalls.toLocaleString('de-DE'));
-    setEl('usageMinutes', Math.round(s.totalDuration / 60).toLocaleString('de-DE'));
+    $setText('usageCalls', s.totalCalls.toLocaleString('de-DE'));
+    $setText('usageMinutes', Math.round(s.totalDuration / 60).toLocaleString('de-DE'));
     const cost = (s.totalDuration / 60) * 0.15;
-    setEl('usageCost', formatCurrency(cost));
+    $setText('usageCost', formatCurrency(cost));
   } else {
-    setEl('usageCalls', '0');
-    setEl('usageMinutes', '0');
-    setEl('usageCost', '0,00 €');
+    $setText('usageCalls', '0');
+    $setText('usageMinutes', '0');
+    $setText('usageCost', '0,00 €');
   }
 }
 
