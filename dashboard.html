@@ -223,6 +223,11 @@ body{display:flex;overflow:hidden;}
           </div>
         </div>
         <div class="form-group">
+          <label class="form-label">Telefonnummer</label>
+          <input type="tel" class="form-input" id="edPhone" placeholder="+49 152 12345678">
+          <div class="form-hint">Die Telefonnummer, unter der dieser Assistent erreichbar ist.</div>
+        </div>
+        <div class="form-group">
           <label class="form-label">Startnachricht</label>
           <textarea class="form-textarea" id="edGreeting" placeholder="Hallo, hier ist Lana von [Firma]. Wie kann ich Ihnen helfen?"></textarea>
           <div class="form-hint">Diese Nachricht wird beim Gesprächsbeginn abgespielt.</div>
@@ -370,7 +375,7 @@ body{display:flex;overflow:hidden;}
     <div id="page-phones" class="page-section">
       <div class="page-title-row">
         <h1>Telefonnummern</h1>
-        <button class="btn-primary" style="font-size:13px;padding:10px 20px;" onclick="showToast('Kontaktiere den Support unter info@call-lana.de um eine Nummer hinzuzufügen.')">+ Nummer hinzufügen</button>
+        <button class="btn-primary" style="font-size:13px;padding:10px 20px;" onclick="navigateToPage('assistants');showToast('Weise eine Telefonnummer im Assistenten-Editor zu.')">+ Nummer zuweisen</button>
       </div>
       <p class="page-desc">Deine zugewiesenen Telefonnummern.</p>
 

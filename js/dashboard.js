@@ -183,6 +183,7 @@ function editAssistant(id) {
   document.getElementById('edName').value = a.name || '';
   document.getElementById('edVoice').value = a.voice || 'Marie';
   document.getElementById('edLang').value = a.language || 'de';
+  document.getElementById('edPhone').value = a.phone_number || '';
   document.getElementById('edGreeting').value = a.greeting || '';
   document.getElementById('edModel').value = a.model || 'gpt-4';
   document.getElementById('edTemp').value = a.temperature ?? 0.7;
@@ -212,6 +213,7 @@ function clearEditorForm() {
   document.getElementById('edName').value = '';
   document.getElementById('edVoice').value = 'Marie';
   document.getElementById('edLang').value = 'de';
+  document.getElementById('edPhone').value = '';
   document.getElementById('edGreeting').value = '';
   document.getElementById('edModel').value = 'gpt-4';
   document.getElementById('edTemp').value = '0.7';
@@ -243,6 +245,7 @@ document.getElementById('btnSaveAssistant').addEventListener('click', async () =
     name,
     voice: document.getElementById('edVoice').value,
     language: document.getElementById('edLang').value,
+    phone_number: document.getElementById('edPhone').value.trim() || null,
     greeting: document.getElementById('edGreeting').value,
     model: document.getElementById('edModel').value,
     temperature: parseFloat(document.getElementById('edTemp').value),
