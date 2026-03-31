@@ -10,26 +10,26 @@ test.describe('Legal Pages', () => {
 
   for (const page of legalPages) {
     test(`${page.title} page loads with heading`, async ({ page: p }) => {
-      await p.goto(page.url, { waitUntil: 'domcontentloaded' });
+      await p.goto(page.url, { waitUntil: 'load' });
       await expect(p.locator('h1')).toContainText(page.heading);
     });
 
     test(`${page.title} has meta description`, async ({ page: p }) => {
-      await p.goto(page.url, { waitUntil: 'domcontentloaded' });
+      await p.goto(page.url, { waitUntil: 'load' });
       const desc = await p.locator('meta[name="description"]').getAttribute('content');
       expect(desc).toBeTruthy();
       expect(desc!.length).toBeGreaterThan(10);
     });
 
     test(`${page.title} has canonical URL`, async ({ page: p }) => {
-      await p.goto(page.url, { waitUntil: 'domcontentloaded' });
+      await p.goto(page.url, { waitUntil: 'load' });
       const canonical = await p.locator('link[rel="canonical"]').getAttribute('href');
       expect(canonical).toContain('call-lana.de');
     });
   }
 
   test('Impressum contains required legal info', async ({ page }) => {
-    await page.goto('/impressum.html', { waitUntil: 'domcontentloaded' });
+    await page.goto('/impressum.html', { waitUntil: 'load' });
     const text = await page.locator('.legal-content').innerText();
     expect(text).toContain('Call Lana GmbH');
     expect(text).toContain('Gero Stetter');
@@ -39,14 +39,14 @@ test.describe('Legal Pages', () => {
   });
 
   test('Impressum links to AGB, Datenschutz, AVV', async ({ page }) => {
-    await page.goto('/impressum.html', { waitUntil: 'domcontentloaded' });
+    await page.goto('/impressum.html', { waitUntil: 'load' });
     await expect(page.locator('a[href="agb.html"]')).toBeVisible();
     await expect(page.locator('a[href="datenschutz.html"]')).toBeVisible();
     await expect(page.locator('a[href="avv.html"]')).toBeVisible();
   });
 
   test('AGB contains key paragraphs', async ({ page }) => {
-    await page.goto('/agb.html', { waitUntil: 'domcontentloaded' });
+    await page.goto('/agb.html', { waitUntil: 'load' });
     const text = await page.locator('.legal-content').innerText();
     expect(text).toContain('§ 1');
     expect(text).toContain('§ 15');
@@ -55,7 +55,7 @@ test.describe('Legal Pages', () => {
   });
 
   test('Datenschutz mentions DSGVO and subprocessors', async ({ page }) => {
-    await page.goto('/datenschutz.html', { waitUntil: 'domcontentloaded' });
+    await page.goto('/datenschutz.html', { waitUntil: 'load' });
     const text = await page.locator('.legal-content').innerText();
     expect(text).toContain('DSGVO');
     expect(text).toContain('Supabase');
@@ -64,13 +64,13 @@ test.describe('Legal Pages', () => {
   });
 
   test('Datenschutz links to AVV', async ({ page }) => {
-    await page.goto('/datenschutz.html', { waitUntil: 'domcontentloaded' });
+    await page.goto('/datenschutz.html', { waitUntil: 'load' });
     const avvLinks = page.locator('a[href="avv.html"]');
     expect(await avvLinks.count()).toBeGreaterThan(0);
   });
 
   test('AVV contains Art. 28 DSGVO sections', async ({ page }) => {
-    await page.goto('/avv.html', { waitUntil: 'domcontentloaded' });
+    await page.goto('/avv.html', { waitUntil: 'load' });
     const text = await page.locator('.legal-content').innerText();
     expect(text).toContain('Art. 28 DSGVO');
     expect(text).toContain('Technische und organisatorische Maßnahmen');
@@ -79,7 +79,7 @@ test.describe('Legal Pages', () => {
   });
 
   test('AVV contains subprocessor table', async ({ page }) => {
-    await page.goto('/avv.html', { waitUntil: 'domcontentloaded' });
+    await page.goto('/avv.html', { waitUntil: 'load' });
     const table = page.locator('.sub-table, table');
     expect(await table.count()).toBeGreaterThan(0);
   });
@@ -87,7 +87,7 @@ test.describe('Legal Pages', () => {
   // Footer links on legal pages
   for (const lp of legalPages) {
     test(`${lp.title} footer contains legal links`, async ({ page: p }) => {
-      await p.goto(lp.url, { waitUntil: 'domcontentloaded' });
+      await p.goto(lp.url, { waitUntil: 'load' });
       const footer = p.locator('footer');
       await expect(footer.locator('a[href="impressum.html"]')).toBeVisible();
       await expect(footer.locator('a[href="datenschutz.html"]')).toBeVisible();

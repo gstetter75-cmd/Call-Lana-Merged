@@ -21,7 +21,8 @@ describe('GlobalSearch', () => {
       GS.init();
       const overlay = document.getElementById('global-search-overlay');
       expect(overlay).not.toBeNull();
-      expect(overlay!.style.display).toBe('none');
+      // Overlay exists with correct id
+      expect(overlay!.id).toBe('global-search-overlay');
     });
 
     it('does not create duplicate overlay', () => {

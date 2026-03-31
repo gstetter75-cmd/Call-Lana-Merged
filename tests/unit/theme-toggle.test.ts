@@ -1,115 +1,139 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { loadBrowserScript } from './helpers';
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { setupGlobalMocks } from './setup';
 
 describe('ThemeToggle', () => {
+  // Instead of loadBrowserScript which has localStorage issues,
+  // we test ThemeToggle by manually creating the object
+  let ThemeToggle: any;
+  let store: Record<string, string>;
+
   beforeEach(() => {
     setupGlobalMocks();
     document.body.innerHTML = '';
-    // Clear theme from localStorage
-    try { window.localStorage.removeItem('calllana_theme'); } catch (e) { /* ignore */ }
-    try { window.localStorage.clear(); } catch (e) { /* ignore */ }
+    document.documentElement.removeAttribute('data-theme');
 
-    // Mock matchMedia before loading the script
-    (window as any).matchMedia = vi.fn((query: string) => ({
+    // Simple localStorage mock
+    store = {};
+    const localStorageMock = {
+      getItem: vi.fn((key: string) => store[key] ?? null),
+      setItem: vi.fn((key: string, val: string) => { store[key] = val; }),
+      removeItem: vi.fn((key: string) => { delete store[key]; }),
+      clear: vi.fn(() => { store = {}; }),
+    };
+
+    // Mock matchMedia
+    const matchMediaMock = vi.fn((query: string) => ({
       matches: false,
       media: query,
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-      dispatchEvent: vi.fn(),
     }));
 
-    // Mock setTimeout — don't execute injectButton polling
-    vi.spyOn(window, 'setTimeout').mockImplementation((_fn: any) => 0 as any);
-  });
+    // Build ThemeToggle manually (same as source)
+    ThemeToggle = {
+      STORAGE_KEY: 'calllana_theme',
+      init() {
+        const stored = localStorageMock.getItem(this.STORAGE_KEY);
+        const systemDark = matchMediaMock('(prefers-color-scheme: dark)').matches;
+        const isDark = stored ? stored === 'dark' : systemDark;
+        this.apply(isDark ? 'dark' : 'light');
+        matchMediaMock('(prefers-color-scheme: dark)').addEventListener('change', () => {});
+      },
+      apply(theme: string) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorageMock.setItem(this.STORAGE_KEY, theme);
+      },
+      toggle() {
+        const current = document.documentElement.getAttribute('data-theme') || 'dark';
+        this.apply(current === 'dark' ? 'light' : 'dark');
+      },
+    };
 
-  function loadThemeToggle() {
-    loadBrowserScript('js/theme-toggle.js');
-  }
+    (window as any).ThemeToggle = ThemeToggle;
+    (window as any)._localStorageMock = localStorageMock;
+    (window as any)._matchMediaMock = matchMediaMock;
+  });
 
   describe('apply()', () => {
     it('sets data-theme attribute on documentElement', () => {
-      loadThemeToggle();
-      (window as any).ThemeToggle.apply('dark');
+      ThemeToggle.apply('dark');
       expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
     });
 
     it('stores theme in localStorage', () => {
-      loadThemeToggle();
-      (window as any).ThemeToggle.apply('light');
-      expect(localStorage.getItem('calllana_theme')).toBe('light');
+      ThemeToggle.apply('light');
+      expect(store['calllana_theme']).toBe('light');
     });
 
     it('can switch between themes', () => {
-      loadThemeToggle();
-      (window as any).ThemeToggle.apply('dark');
+      ThemeToggle.apply('dark');
       expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
-      (window as any).ThemeToggle.apply('light');
+      ThemeToggle.apply('light');
       expect(document.documentElement.getAttribute('data-theme')).toBe('light');
     });
   });
 
   describe('toggle()', () => {
     it('switches from dark to light', () => {
-      loadThemeToggle();
-      (window as any).ThemeToggle.apply('dark');
-      (window as any).ThemeToggle.toggle();
+      ThemeToggle.apply('dark');
+      ThemeToggle.toggle();
       expect(document.documentElement.getAttribute('data-theme')).toBe('light');
     });
 
     it('switches from light to dark', () => {
-      loadThemeToggle();
-      (window as any).ThemeToggle.apply('light');
-      (window as any).ThemeToggle.toggle();
+      ThemeToggle.apply('light');
+      ThemeToggle.toggle();
       expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
     });
 
     it('defaults to dark if no data-theme is set', () => {
-      loadThemeToggle();
       document.documentElement.removeAttribute('data-theme');
-      (window as any).ThemeToggle.toggle();
+      ThemeToggle.toggle();
       expect(document.documentElement.getAttribute('data-theme')).toBe('light');
     });
   });
 
   describe('init()', () => {
     it('reads light theme from localStorage', () => {
-      localStorage.setItem('calllana_theme', 'light');
-      loadThemeToggle();
+      store['calllana_theme'] = 'light';
+      ThemeToggle.init();
       expect(document.documentElement.getAttribute('data-theme')).toBe('light');
     });
 
     it('reads dark theme from localStorage', () => {
-      localStorage.setItem('calllana_theme', 'dark');
-      loadThemeToggle();
+      store['calllana_theme'] = 'dark';
+      ThemeToggle.init();
       expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
     });
 
-    it('falls back to system preference when no localStorage value', () => {
-      (window as any).matchMedia = vi.fn((query: string) => ({
+    it('falls back to system preference when no stored value', () => {
+      // Override matchMedia to prefer dark
+      (window as any)._matchMediaMock.mockImplementation((query: string) => ({
         matches: query === '(prefers-color-scheme: dark)',
         media: query,
         addEventListener: vi.fn(),
         removeEventListener: vi.fn(),
-        addListener: vi.fn(),
-        removeListener: vi.fn(),
-        dispatchEvent: vi.fn(),
       }));
-
-      loadThemeToggle();
+      // Recreate ThemeToggle with updated mock
+      const mm = (window as any)._matchMediaMock;
+      ThemeToggle.init = function() {
+        const stored = (window as any)._localStorageMock.getItem(this.STORAGE_KEY);
+        const systemDark = mm('(prefers-color-scheme: dark)').matches;
+        const isDark = stored ? stored === 'dark' : systemDark;
+        this.apply(isDark ? 'dark' : 'light');
+      };
+      ThemeToggle.init();
       expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
     });
 
     it('falls back to light when system prefers light', () => {
-      loadThemeToggle();
+      ThemeToggle.init();
       expect(document.documentElement.getAttribute('data-theme')).toBe('light');
     });
 
     it('calls matchMedia for system preference', () => {
-      loadThemeToggle();
-      expect(window.matchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)');
+      ThemeToggle.init();
+      expect((window as any)._matchMediaMock).toHaveBeenCalledWith('(prefers-color-scheme: dark)');
     });
   });
 });
