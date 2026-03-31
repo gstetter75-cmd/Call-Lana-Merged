@@ -2,6 +2,9 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import Stripe from 'https://esm.sh/stripe@14?target=deno';
 
+// CORS uses '*' intentionally: this endpoint receives server-to-server webhook
+// calls from Stripe, not browser requests. Authentication is handled via
+// stripe-signature header verification (see stripe.webhooks.constructEvent).
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, stripe-signature',

@@ -2,6 +2,9 @@
 // Events: call.started, call.ended, call.transferred, transcript.ready
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
+// CORS uses '*' intentionally: this endpoint receives server-to-server webhook
+// calls from VAPI, not browser requests. Authentication is handled via
+// x-vapi-secret header verification (see VAPI_WEBHOOK_SECRET check below).
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-vapi-secret',
