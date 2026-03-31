@@ -4,6 +4,13 @@
 // Split modules: dashboard-billing.js, dashboard-integrations.js, dashboard-payment.js
 // ==========================================
 
+// Null-safe DOM helpers (prevent TypeError when elements don't exist yet)
+function $id(id) { return document.getElementById(id); }
+function $setText(id, text) { const el = $id(id); if (el) el.textContent = text; }
+function $setVal(id, val) { const el = $id(id); if (el) el.value = val; }
+function $setHtml(id, html) { const el = $id(id); if (el) el.innerHTML = html; }
+function $setAttr(id, attr, val) { const el = $id(id); if (el) el.setAttribute(attr, val); }
+
 // ==========================================
 // GLOBALS
 // ==========================================
@@ -342,8 +349,9 @@ async function loadBilling() {
   const settings = settingsResult.success ? settingsResult.data : {};
   const balance = settings.balance || 0;
 
-  document.getElementById('balanceValue').textContent = formatCurrency(balance);
-  document.getElementById('balanceSub').textContent = balance > 0 ? 'Verfügbar' : 'Kein Guthaben vorhanden';
+  const setEl = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+  setEl('balanceValue', formatCurrency(balance));
+  setEl('balanceSub', balance > 0 ? 'Verfügbar' : 'Kein Guthaben vorhanden');
 
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
@@ -352,14 +360,14 @@ async function loadBilling() {
 
   if (statsResult.success) {
     const s = statsResult.stats;
-    document.getElementById('usageCalls').textContent = s.totalCalls.toLocaleString('de-DE');
-    document.getElementById('usageMinutes').textContent = Math.round(s.totalDuration / 60).toLocaleString('de-DE');
+    setEl('usageCalls', s.totalCalls.toLocaleString('de-DE'));
+    setEl('usageMinutes', Math.round(s.totalDuration / 60).toLocaleString('de-DE'));
     const cost = (s.totalDuration / 60) * 0.15;
-    document.getElementById('usageCost').textContent = formatCurrency(cost);
+    setEl('usageCost', formatCurrency(cost));
   } else {
-    document.getElementById('usageCalls').textContent = '0';
-    document.getElementById('usageMinutes').textContent = '0';
-    document.getElementById('usageCost').textContent = '0,00 €';
+    setEl('usageCalls', '0');
+    setEl('usageMinutes', '0');
+    setEl('usageCost', '0,00 €');
   }
 }
 
@@ -377,10 +385,10 @@ async function loadPlan() {
   };
 
   const p = plans[plan] || plans.free;
-  document.getElementById('planBadge').textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
-  document.getElementById('planName').textContent = p.name;
-  document.getElementById('planDesc').textContent = p.desc;
-  document.getElementById('planFeatures').innerHTML = p.features.map(f => '<li>' + escHtml(f) + '</li>').join('');
+  $setText('planBadge', plan.charAt(0).toUpperCase() + plan.slice(1));
+  $setText('planName', p.name);
+  $setText('planDesc', p.desc);
+  $setHtml('planFeatures', p.features.map(f => '<li>' + escHtml(f) + '</li>').join(''));
 }
 
 // ==========================================
