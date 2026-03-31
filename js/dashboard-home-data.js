@@ -27,7 +27,12 @@ async function loadHomeData() {
   const start = new Date(now.getFullYear(), now.getMonth() - monthOffset, 1);
   const end = new Date(now.getFullYear(), now.getMonth() - monthOffset + 1, 0, 23, 59, 59);
 
-  const result = await clanaDB.getStats(start.toISOString(), end.toISOString());
+  // Fetch stats + settings in parallel (independent calls)
+  const [result, settingsResult] = await Promise.all([
+    clanaDB.getStats(start.toISOString(), end.toISOString()),
+    clanaDB.getSettings()
+  ]);
+
   if (result.success) {
     const s = result.stats;
     $setText('csAnrufe', s.totalCalls.toLocaleString('de-DE'));
@@ -42,7 +47,6 @@ async function loadHomeData() {
   }
 
   // Balance donut
-  const settingsResult = await clanaDB.getSettings();
   const settings = settingsResult.success ? settingsResult.data : {};
   const balance = settings.balance || 0;
   const maxBalance = Math.max(balance * 1.5, 100);
@@ -63,12 +67,23 @@ async function drawCallChart(start, end) {
   const svg = document.getElementById('callChart');
   if (!svg) return;
   const daysInMonth = new Date(start.getFullYear(), start.getMonth() + 1, 0).getDate();
-  const callsResult = await clanaDB.getCalls(1000);
-  const calls = callsResult.success ? callsResult.data : [];
 
   // Previous month range
   const prevStart = new Date(start.getFullYear(), start.getMonth() - 1, 1);
   const prevEnd = new Date(start.getFullYear(), start.getMonth(), 0, 23, 59, 59);
+
+  // Fetch only the 2 months needed (not 1000 unfiltered calls)
+  let calls = [];
+  try {
+    const effectiveId = await auth.getEffectiveUserId();
+    if (effectiveId) {
+      const { data } = await supabaseClient.from('calls').select('created_at')
+        .eq('user_id', effectiveId)
+        .gte('created_at', prevStart.toISOString())
+        .lte('created_at', end.toISOString());
+      calls = data || [];
+    }
+  } catch (e) { /* chart will show zeros */ }
   const prevDays = new Date(prevStart.getFullYear(), prevStart.getMonth() + 1, 0).getDate();
 
   // Count calls per day (current + previous month)

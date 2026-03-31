@@ -17,7 +17,12 @@ describe('Invoices', () => {
     (window as any).escapeHtml = (s: string) => s;
     (window as any).updateSelectionBar = vi.fn();
     (window as any).getStatusBadge = (s: string) => `<span class="badge">${s}</span>`;
+    (window as any).showToast = vi.fn();
+    (window as any).currentUser = { id: 'test-uid' };
+    (window as any).loadBillingData = vi.fn();
 
+    // formatCents is defined in dashboard-billing.js, load it first
+    loadBrowserScript('js/dashboard-billing.js');
     loadBrowserScript('js/invoices.js');
   });
 

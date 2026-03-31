@@ -71,14 +71,7 @@ function renderInvoiceTable(invoices) {
   updateSelectionBar();
 }
 
-/**
- * Format cents (integer) to German EUR currency string.
- * @param {number} cents - Amount in cents
- * @returns {string} Formatted currency string, e.g. "1.234,56 EUR"
- */
-function formatCents(cents) {
-  return (cents / 100).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
-}
+// formatCents is defined in dashboard-billing.js (loaded before this file)
 
 /**
  * Format an ISO date string to German DD.MM.YYYY format.
