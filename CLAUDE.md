@@ -26,8 +26,8 @@ node build.js --watch          # JS-Bundles in watch mode
 ## Tests
 
 ```bash
-npm run test:unit              # Vitest Unit Tests (21 Tests)
-npm test                       # Playwright E2E Tests (124 Tests)
+npm run test:unit              # Vitest Unit Tests (487 Tests)
+npm test                       # Playwright E2E Tests (22 Specs)
 npm run test:all               # Beides
 ```
 
