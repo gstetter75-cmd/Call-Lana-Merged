@@ -1,8 +1,14 @@
 // Extracted from dashboard.js — Month Select, Home Data, Call Chart
+
+// Safe DOM setter — avoids null reference errors when elements don't exist yet
+function setElText(id, text) { const el = document.getElementById(id); if (el) el.textContent = text; }
+function setElAttr(id, attr, val) { const el = document.getElementById(id); if (el) el.setAttribute(attr, val); }
+
 // MONTH SELECT
 // ==========================================
 function initMonthSelect() {
   const sel = document.getElementById('monthSelect');
+  if (!sel) return;
   const now = new Date();
   const months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
   for (let i = 0; i < 6; i++) {
@@ -19,7 +25,7 @@ function initMonthSelect() {
 // HOME DATA
 // ==========================================
 async function loadHomeData() {
-  const monthOffset = parseInt(document.getElementById('monthSelect').value) || 0;
+  const monthOffset = parseInt(document.getElementById('monthSelect')?.value) || 0;
   const now = new Date();
   const start = new Date(now.getFullYear(), now.getMonth() - monthOffset, 1);
   const end = new Date(now.getFullYear(), now.getMonth() - monthOffset + 1, 0, 23, 59, 59);
@@ -27,15 +33,15 @@ async function loadHomeData() {
   const result = await clanaDB.getStats(start.toISOString(), end.toISOString());
   if (result.success) {
     const s = result.stats;
-    document.getElementById('csAnrufe').textContent = s.totalCalls.toLocaleString('de-DE');
-    document.getElementById('csSms').textContent = formatMinutes(s.avgDuration);
+    setElText('csAnrufe', s.totalCalls.toLocaleString('de-DE'));
+    setElText('csSms', formatMinutes(s.avgDuration));
     const completedCalls = s.statuses?.completed || 0;
     const successRate = s.totalCalls > 0 ? Math.round((completedCalls / s.totalCalls) * 100) : 0;
-    document.getElementById('csKosten').textContent = successRate + '%';
+    setElText('csKosten', successRate + '%');
   } else {
-    document.getElementById('csAnrufe').textContent = '0';
-    document.getElementById('csSms').textContent = '0 min';
-    document.getElementById('csKosten').textContent = '0%';
+    setElText('csAnrufe', '0');
+    setElText('csSms', '0 min');
+    setElText('csKosten', '0%');
   }
 
   // Balance donut
@@ -46,8 +52,8 @@ async function loadHomeData() {
   const pct = Math.min(balance / maxBalance, 1);
   const circumference = 2 * Math.PI * 40;
   const offset = circumference - (pct * circumference);
-  document.getElementById('donutArc').setAttribute('stroke-dashoffset', offset);
-  document.getElementById('donutCenter').textContent = formatCurrency(balance);
+  setElAttr('donutArc', 'stroke-dashoffset', offset);
+  setElText('donutCenter', formatCurrency(balance));
 
   // Call chart
   drawCallChart(start, end);
