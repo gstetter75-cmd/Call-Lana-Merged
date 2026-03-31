@@ -12,7 +12,7 @@ Externe APIs (Stripe, Resend, VAPI)
 
 - **Hosting:** Netlify (statisch, Custom Domain: call-lana.de)
 - **Backend:** Supabase (44 Tabellen, RLS, Realtime)
-- **Edge Functions:** 7 Deno-Functions in `supabase/functions/`
+- **Edge Functions:** 9 Deno-Functions in `supabase/functions/`
 - **Build:** esbuild via `build.js` → `dist/` Bundles
 
 ## Lokale Entwicklung
@@ -50,7 +50,9 @@ npm run test:all               # Beides
 │   ├── send-welcome-email/    # Willkommens-E-Mail
 │   ├── encrypt-secret/        # AES-256 Verschlüsselung
 │   ├── vapi-webhook/          # VAPI Call-Events
-│   └── create-checkout-session/ # Stripe Checkout
+│   ├── create-checkout-session/ # Stripe Checkout
+│   ├── send-daily-digest/     # Tägliche Zusammenfassung
+│   └── send-whatsapp-notification/ # WhatsApp-Benachrichtigungen
 ├── sql/                       # DB-Migrations (001-039)
 ├── tests/
 │   ├── e2e/                   # Playwright E2E Tests

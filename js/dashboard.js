@@ -387,7 +387,7 @@ async function loadPlan() {
 // KNOWLEDGE BASE (placeholder)
 // ==========================================
 document.getElementById('btnUploadDoc').addEventListener('click', () => {
-  showToast('Dokument-Upload wird bald verfügbar sein.');
+  showToast('Dokument-Upload: Kontaktiere den Support unter info@call-lana.de.');
 });
 
 document.getElementById('kbSearch').addEventListener('input', (e) => {

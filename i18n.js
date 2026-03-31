@@ -278,7 +278,7 @@ const translations = {
     'footer.register': 'Registrieren',
     'footer.login': 'Login',
     'footer.dashboard': 'Dashboard',
-    'footer.copyright': 'Copyright 2025 by Call Lana – Alle Rechte vorbehalten',
+    'footer.copyright': '© 2025–2026 Call Lana – Alle Rechte vorbehalten',
     'footer.tagline': 'Der KI-Telefonassistent auf Deutsch. DSGVO-konform, skalierbar, sofort einsatzbereit.',
 
     // Login
@@ -574,7 +574,7 @@ const translations = {
     'footer.register': 'Register',
     'footer.login': 'Login',
     'footer.dashboard': 'Dashboard',
-    'footer.copyright': 'Copyright 2025 by Call Lana – All rights reserved',
+    'footer.copyright': '© 2025–2026 Call Lana – All rights reserved',
     'footer.tagline': 'AI phone assistant in German. GDPR-compliant, scalable, ready to use.',
 
     // Login

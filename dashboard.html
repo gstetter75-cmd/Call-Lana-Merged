@@ -108,7 +108,7 @@ body{display:flex;overflow:hidden;}
             </svg>
             <div class="donut-center" id="donutCenter">0 €</div>
           </div>
-          <button class="btn-balance" onclick="showToast('Zahlungsanbindung wird bald verfügbar sein.')">Guthaben kaufen</button>
+          <button class="btn-balance" onclick="if(typeof openTopupModal==='function')openTopupModal();else navigateToPage('billing');">Guthaben kaufen</button>
         </div>
       </div>
 
@@ -369,7 +369,7 @@ body{display:flex;overflow:hidden;}
     <div id="page-phones" class="page-section">
       <div class="page-title-row">
         <h1>Telefonnummern</h1>
-        <button class="btn-primary" style="font-size:13px;padding:10px 20px;" onclick="showToast('Nummernverwaltung wird bald verfügbar sein.')">+ Nummer hinzufügen</button>
+        <button class="btn-primary" style="font-size:13px;padding:10px 20px;" onclick="showToast('Kontaktiere den Support unter info@call-lana.de um eine Nummer hinzuzufügen.')">+ Nummer hinzufügen</button>
       </div>
       <p class="page-desc">Deine zugewiesenen Telefonnummern.</p>
 

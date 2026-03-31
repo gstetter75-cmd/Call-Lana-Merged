@@ -27,3 +27,4 @@ dist/
 *.swo
 .DS_Store
 supabase/.temp/
+coverage/

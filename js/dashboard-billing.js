@@ -234,7 +234,7 @@ async function loadTransactions() {
       const prefix = isPositive ? '+' : '-';
       return `<tr>
         <td>${new Date(tx.created_at).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>
-        <td><span class="status-badge ${isPositive ? 'completed' : 'active'}">${typeLabels[tx.type] || tx.type}</span></td>
+        <td><span class="status-badge ${isPositive ? 'completed' : 'active'}">${typeLabels[tx.type] || escHtml(tx.type)}</span></td>
         <td>${escHtml(tx.description || '–')}</td>
         <td style="font-weight:700;color:${amountColor};">${prefix}${formatCents(Math.abs(tx.amount_cents))}</td>
         <td style="color:var(--tx3);">${tx.balance_after_cents != null ? formatCents(tx.balance_after_cents) : '–'}</td>

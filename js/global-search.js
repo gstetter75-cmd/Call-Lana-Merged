@@ -111,7 +111,8 @@ const GlobalSearch = {
       }
 
       if (!html) {
-        html = '<div style="padding:20px;text-align:center;color:var(--tx3);font-size:13px;">Keine Ergebnisse für "' + query + '"</div>';
+        const sanitize = typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeHtml : (s => s);
+        html = '<div style="padding:20px;text-align:center;color:var(--tx3);font-size:13px;">Keine Ergebnisse für "' + sanitize(query) + '"</div>';
       }
 
       container.innerHTML = html;
@@ -121,6 +122,7 @@ const GlobalSearch = {
   },
 
   renderSection(title, items) {
+    const sanitize = typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeHtml : (s => s);
     return `
       <div style="margin-bottom:8px;">
         <div style="padding:6px 8px;font-size:11px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;">${title}</div>
@@ -128,10 +130,10 @@ const GlobalSearch = {
           <div onclick="${i.action};GlobalSearch.close();" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .15s;" onmouseenter="this.style.background='var(--bg3)'" onmouseleave="this.style.background=''">
             <span style="font-size:16px;">${i.icon}</span>
             <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${i.title}</div>
-              ${i.subtitle ? `<div style="font-size:11px;color:var(--tx3);">${i.subtitle}</div>` : ''}
+              <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${sanitize(i.title)}</div>
+              ${i.subtitle ? `<div style="font-size:11px;color:var(--tx3);">${sanitize(i.subtitle)}</div>` : ''}
             </div>
-            ${i.badge ? `<span class="badge badge-purple" style="font-size:10px;">${i.badge}</span>` : ''}
+            ${i.badge ? `<span class="badge badge-purple" style="font-size:10px;">${sanitize(i.badge)}</span>` : ''}
           </div>
         `).join('')}
       </div>

@@ -262,7 +262,7 @@ async function deleteAccount() {
   const confirmed = prompt('Gib "LÖSCHEN" ein, um dein Konto unwiderruflich zu löschen:');
   if (confirmed !== 'LÖSCHEN') return;
 
-  showToast('Kontolöschung wird bald verfügbar sein. Kontaktiere den Support.', true);
+  showToast('Bitte kontaktiere den Support unter info@call-lana.de für die Kontolöschung.', true);
 }
 
 // ==========================================
