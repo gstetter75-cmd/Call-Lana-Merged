@@ -54,13 +54,13 @@ describe('dbCustomers', () => {
       );
     });
 
-    it('applies limit filter', async () => {
+    it('applies pagination via range', async () => {
       const qm = createQueryMock([]);
       mocks.supabase.from.mockReturnValue(qm);
 
-      await (window as any).dbCustomers.getCustomers({ limit: 10 });
+      await (window as any).dbCustomers.getCustomers({ page: 2, pageSize: 10 });
 
-      expect(qm.limit).toHaveBeenCalledWith(10);
+      expect(qm.range).toHaveBeenCalledWith(20, 29);
     });
 
     it('fails when not authenticated', async () => {

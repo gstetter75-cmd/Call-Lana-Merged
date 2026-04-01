@@ -2,6 +2,10 @@
 // In-App Notification Center
 // ==========================================
 
+if (typeof SafeActions !== 'undefined') {
+  SafeActions.register('notification-click', (id) => NotificationCenter.handleClick(Number(id)));
+}
+
 const NotificationCenter = {
   notifications: [],
   isOpen: false,
@@ -103,7 +107,7 @@ const NotificationCenter = {
     const sanitize = typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeHtml : (s => s);
 
     list.innerHTML = this.notifications.slice(0, 20).map(n => `
-      <div style="padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer;background:${n.read ? 'transparent' : 'var(--bg3)'};transition:background .15s;" onmouseenter="this.style.background='var(--bg3)'" onmouseleave="this.style.background='${n.read ? 'transparent' : 'var(--bg3)'}';" onclick="NotificationCenter.handleClick(${n.id})">
+      <div style="padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer;background:${n.read ? 'transparent' : 'var(--bg3)'};transition:background .15s;" onmouseenter="this.style.background='var(--bg3)'" onmouseleave="this.style.background='${n.read ? 'transparent' : 'var(--bg3)'}';" data-action="notification-click" data-id="${typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeAttr(n.id) : n.id}">
         <div style="display:flex;gap:8px;align-items:flex-start;">
           <span style="font-size:16px;margin-top:1px;">${typeIcons[n.type] || 'ℹ️'}</span>
           <div style="flex:1;min-width:0;">

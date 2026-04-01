@@ -8,9 +8,12 @@ const dbCustomers = {
       const user = await auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
+      const pageSize = filters.pageSize || 100;
+      const page = filters.page || 0;
+
       let query = supabaseClient
         .from('customers')
-        .select('*, customer_tag_assignments(tag_id, customer_tags(name, color))')
+        .select('*, customer_tag_assignments(tag_id, customer_tags(name, color))', { count: 'exact' })
         .order('created_at', { ascending: false });
 
       if (filters.status) query = query.eq('status', filters.status);
@@ -18,11 +21,12 @@ const dbCustomers = {
       if (filters.search) {
         query = query.or(`company_name.ilike.%${filters.search}%,contact_name.ilike.%${filters.search}%,email.ilike.%${filters.search}%`);
       }
-      if (filters.limit) query = query.limit(filters.limit);
 
-      const { data, error } = await query;
+      query = query.range(page * pageSize, (page + 1) * pageSize - 1);
+
+      const { data, error, count } = await query;
       if (error) throw error;
-      return { success: true, data: data || [] };
+      return { success: true, data: data || [], count, page, pageSize };
     } catch (error) {
       Logger.error('db.getCustomers', error);
       return { success: false, error: error.message || 'Fehler beim Laden der Kunden.' };
@@ -174,7 +178,7 @@ const dbCustomers = {
 
   // ====== CRM: Call Protocols ======
 
-  async getCallProtocols(customerId) {
+  async getCallProtocols(customerId, limit = 50) {
     try {
       const user = await auth.getUser();
       if (!user) throw new Error('Not authenticated');
@@ -183,7 +187,8 @@ const dbCustomers = {
         .from('call_protocols')
         .select('*')
         .eq('customer_id', customerId)
-        .order('called_at', { ascending: false });
+        .order('called_at', { ascending: false })
+        .limit(limit);
 
       if (error) throw error;
       return { success: true, data: data || [] };

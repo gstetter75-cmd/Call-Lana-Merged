@@ -6,24 +6,28 @@ const dbLeads = {
       const user = await auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
+      const pageSize = filters.pageSize || 200;
+      const page = filters.page || 0;
+
       const buildQuery = (select) => {
-        let q = supabaseClient.from('leads').select(select).order('created_at', { ascending: false });
+        let q = supabaseClient.from('leads').select(select, { count: 'exact' }).order('created_at', { ascending: false });
         if (filters.status) q = q.eq('status', filters.status);
         if (filters.assigned_to) q = q.eq('assigned_to', filters.assigned_to);
-        if (filters.limit) q = q.limit(filters.limit);
+        q = q.range(page * pageSize, (page + 1) * pageSize - 1);
         return q;
       };
 
       // Try with profile join, fallback to plain select if FK relationship not available
-      let { data, error } = await buildQuery('*, profiles:assigned_to(id, first_name, last_name)');
+      let { data, error, count } = await buildQuery('*, profiles:assigned_to(id, first_name, last_name)');
       if (error) {
         Logger.warn('db.getLeads', 'Profile join failed, retrying without join', error.message);
         const retry = await buildQuery('*');
         data = retry.data;
         error = retry.error;
+        count = retry.count;
       }
       if (error) throw error;
-      return { success: true, data: data || [] };
+      return { success: true, data: data || [], count, page, pageSize };
     } catch (error) {
       Logger.error('db.getLeads', error);
       return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };

@@ -8,6 +8,16 @@ let allCustomerTags = [];
 let currentCustomerDetailId = null;
 let customersLoaded = false;
 
+// Register safe event delegation actions
+if (typeof SafeActions !== 'undefined') {
+  SafeActions.registerAll({
+    'view-customer': (id) => viewCustomer(id),
+    'open-protocol': (id) => openCallProtocolModal(id),
+    'edit-customer': (id) => editCustomer(id),
+    'save-note': (id) => saveCustomerNote(id),
+  });
+}
+
 // ==========================================
 // LOAD & RENDER
 // ==========================================
@@ -75,7 +85,7 @@ function renderCustomersTable() {
     const tagHtml = tags.map(t => `<span class="tag-chip" style="background:${t.color}22;color:${t.color}">${clanaUtils.sanitizeHtml(t.name)}</span>`).join(' ');
     const lastContact = c.last_contact_at ? new Date(c.last_contact_at).toLocaleDateString('de-DE') : '—';
 
-    return `<tr onclick="viewCustomer('${c.id}')" style="cursor:pointer;">
+    return `<tr data-action="view-customer" data-id="${clanaUtils.sanitizeAttr(c.id)}" style="cursor:pointer;">
       <td><strong>${clanaUtils.sanitizeHtml(c.company_name)}</strong><br><span style="font-size:11px;color:var(--tx3);">${clanaUtils.sanitizeHtml(c.contact_name || '')}</span></td>
       <td>${c.email ? `<a href="${clanaUtils.safeMailHref(c.email)}" onclick="event.stopPropagation()" style="color:var(--cyan);text-decoration:none;font-size:12px;">${clanaUtils.sanitizeHtml(c.email)}</a>` : '—'}</td>
       <td><span class="badge badge-purple">${CONFIG.getPlanLabel(c.plan)}</span></td>
@@ -83,7 +93,7 @@ function renderCustomersTable() {
       <td><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:${healthColor};"></span>${c.health_score || 0}%</span></td>
       <td style="font-size:12px;">${lastContact}</td>
       <td>${tagHtml || '—'}</td>
-      <td><button class="btn-icon" onclick="event.stopPropagation();viewCustomer('${c.id}')">→</button></td>
+      <td><button class="btn-icon" data-action="view-customer" data-id="${clanaUtils.sanitizeAttr(c.id)}">→</button></td>
     </tr>`;
   }).join('');
 }
@@ -127,8 +137,8 @@ async function viewCustomer(id) {
     <div style="display:flex;gap:8px;margin-bottom:20px;">
       ${c.phone ? `<a href="${clanaUtils.safeTelHref(c.phone)}" class="btn btn-outline" style="font-size:12px;padding:6px 14px;">📞 Anrufen</a>` : ''}
       ${c.email ? `<a href="${clanaUtils.safeMailHref(c.email)}" class="btn btn-outline" style="font-size:12px;padding:6px 14px;">✉️ E-Mail</a>` : ''}
-      <button class="btn btn-outline" style="font-size:12px;padding:6px 14px;" onclick="openCallProtocolModal('${c.id}')">📝 Anruf protokollieren</button>
-      <button class="btn btn-outline" style="font-size:12px;padding:6px 14px;" onclick="editCustomer('${c.id}')">✏️ Bearbeiten</button>
+      <button class="btn btn-outline" style="font-size:12px;padding:6px 14px;" data-action="open-protocol" data-id="${clanaUtils.sanitizeAttr(c.id)}">📝 Anruf protokollieren</button>
+      <button class="btn btn-outline" style="font-size:12px;padding:6px 14px;" data-action="edit-customer" data-id="${clanaUtils.sanitizeAttr(c.id)}">✏️ Bearbeiten</button>
     </div>
 
     <div style="border-top:1px solid var(--border);padding-top:16px;">
@@ -217,7 +227,7 @@ async function loadCustomerNotes(customerId) {
   container.innerHTML = `
     <div style="margin-bottom:12px;">
       <textarea id="cust-note-input" class="form-input" rows="3" placeholder="Notiz hinzufügen..."></textarea>
-      <button class="btn" style="margin-top:8px;font-size:12px;" onclick="saveCustomerNote('${customerId}')">Notiz speichern</button>
+      <button class="btn" style="margin-top:8px;font-size:12px;" data-action="save-note" data-id="${clanaUtils.sanitizeAttr(customerId)}">Notiz speichern</button>
     </div>
     <div id="cust-notes-list" style="color:var(--tx3);text-align:center;padding:10px;">Laden...</div>
   `;

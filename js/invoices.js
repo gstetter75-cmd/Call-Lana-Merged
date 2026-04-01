@@ -2,6 +2,14 @@
 // INVOICE MANAGEMENT FOR DASHBOARD
 // ==========================================
 
+// Register safe event delegation actions
+if (typeof SafeActions !== 'undefined') {
+  SafeActions.registerAll({
+    'download-pdf': (id) => downloadInvoicePdf(id),
+    'resend-email': (id) => resendInvoiceEmail(id),
+  });
+}
+
 /**
  * Load invoices from Supabase and render them into the dashboard table.
  */
@@ -47,17 +55,17 @@ function renderInvoiceTable(invoices) {
 
     return `<tr>
       <td style="text-align:center;"><input type="checkbox" class="invoice-checkbox" data-invoice-id="${inv.id}" onchange="toggleInvoiceSelect(this)" style="cursor:pointer;width:16px;height:16px;accent-color:var(--pu);"></td>
-      <td style="font-weight:600;">${escapeHtml(inv.invoice_number || '–')}</td>
+      <td style="font-weight:600;">${clanaUtils.sanitizeHtml(inv.invoice_number || '–')}</td>
       <td>${invoiceDate || '–'}</td>
       <td>${period}</td>
       <td style="font-weight:600;">${formatCents(inv.total_gross_cents || 0)}</td>
       <td>${getStatusBadge(inv.status)}</td>
       <td style="display:flex;gap:6px;align-items:center;">
-        <button class="btn-icon" onclick="downloadInvoicePdf('${inv.id}')" title="PDF herunterladen"
+        <button class="btn-icon" data-action="download-pdf" data-id="${clanaUtils.sanitizeAttr(inv.id)}" title="PDF herunterladen"
           style="background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-radius:8px;padding:6px 12px;cursor:pointer;color:var(--pu3);font-size:12px;font-weight:600;transition:all .2s;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PDF
         </button>
-        <button class="btn-icon" onclick="resendInvoiceEmail('${inv.id}')" title="${inv.email_sent ? 'Erneut senden' : 'Per E-Mail senden'}"
+        <button class="btn-icon" data-action="resend-email" data-id="${clanaUtils.sanitizeAttr(inv.id)}" title="${inv.email_sent ? 'Erneut senden' : 'Per E-Mail senden'}"
           style="background:${inv.email_sent ? 'rgba(74,222,128,.1)' : 'rgba(96,165,250,.1)'};border:1px solid ${inv.email_sent ? 'rgba(74,222,128,.25)' : 'rgba(96,165,250,.25)'};border-radius:8px;padding:6px 12px;cursor:pointer;color:${inv.email_sent ? 'var(--green)' : '#60a5fa'};font-size:12px;font-weight:600;transition:all .2s;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>${inv.email_sent ? 'Erneut' : 'Senden'}
         </button>
@@ -106,16 +114,7 @@ function getStatusBadge(status) {
   return `<span class="status-badge" style="background:${s.bg};color:${s.color};">${s.label}</span>`;
 }
 
-/**
- * Escape HTML special characters for safe rendering.
- * @param {string} str - Raw string
- * @returns {string} Escaped string
- */
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
+// escapeHtml removed — use clanaUtils.sanitizeHtml() instead
 
 /**
  * Download a PDF for a given invoice.

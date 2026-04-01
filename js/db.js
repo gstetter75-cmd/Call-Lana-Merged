@@ -44,9 +44,25 @@ const utils = {
   },
 
   sanitizeHtml(str) {
+    if (str == null) return '';
     const div = document.createElement('div');
-    div.textContent = str;
+    div.textContent = String(str);
     return div.innerHTML;
+  },
+
+  /**
+   * Sanitize a value for use inside HTML attribute values (e.g. onclick, data-*).
+   * Escapes quotes and backslashes in addition to HTML entities.
+   */
+  sanitizeAttr(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/\\/g, '&#92;');
   },
 
   validateEmail(email) {

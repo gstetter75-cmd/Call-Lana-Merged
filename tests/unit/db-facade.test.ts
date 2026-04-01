@@ -115,6 +115,61 @@ describe('db facade and utils', () => {
       const utils = (window as any).clanaUtils;
       expect(utils.sanitizeHtml('Hello World')).toBe('Hello World');
     });
+
+    it('handles null and undefined', () => {
+      const utils = (window as any).clanaUtils;
+      expect(utils.sanitizeHtml(null)).toBe('');
+      expect(utils.sanitizeHtml(undefined)).toBe('');
+    });
+  });
+
+  describe('clanaUtils.sanitizeAttr', () => {
+    it('escapes double quotes', () => {
+      const fn = (window as any).clanaUtils.sanitizeAttr;
+      expect(fn('value"with"quotes')).toContain('&quot;');
+      expect(fn('value"with"quotes')).not.toContain('"with"');
+    });
+
+    it('escapes single quotes', () => {
+      const fn = (window as any).clanaUtils.sanitizeAttr;
+      expect(fn("it's")).toContain('&#39;');
+    });
+
+    it('escapes HTML angle brackets', () => {
+      const fn = (window as any).clanaUtils.sanitizeAttr;
+      const result = fn('<script>');
+      expect(result).not.toContain('<');
+      expect(result).toContain('&lt;');
+    });
+
+    it('escapes backslashes', () => {
+      const fn = (window as any).clanaUtils.sanitizeAttr;
+      expect(fn('path\\to\\file')).toContain('&#92;');
+    });
+
+    it('escapes ampersands', () => {
+      const fn = (window as any).clanaUtils.sanitizeAttr;
+      expect(fn('a&b')).toContain('&amp;');
+    });
+
+    it('handles null and undefined', () => {
+      const fn = (window as any).clanaUtils.sanitizeAttr;
+      expect(fn(null)).toBe('');
+      expect(fn(undefined)).toBe('');
+    });
+
+    it('converts numbers to strings', () => {
+      const fn = (window as any).clanaUtils.sanitizeAttr;
+      expect(fn(42)).toBe('42');
+    });
+
+    it('prevents onclick injection via ID', () => {
+      const fn = (window as any).clanaUtils.sanitizeAttr;
+      const malicious = "');alert('xss');//";
+      const result = fn(malicious);
+      expect(result).not.toContain("'");
+      expect(result).toContain('&#39;');
+    });
   });
 
   describe('clanaUtils.validateEmail', () => {

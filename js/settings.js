@@ -5,6 +5,13 @@ let currentUser = null;
 let currentProfile = null;
 let userSettings = {};
 
+// Register safe event delegation actions
+if (typeof SafeActions !== 'undefined') {
+  SafeActions.registerAll({
+    'open-conn': (id) => openConnModal(id),
+  });
+}
+
 // ==========================================
 // AUTH CHECK (role-based via AuthGuard)
 // ==========================================
@@ -364,9 +371,7 @@ let connConnected = [];
 let connCurrentProvider = null;
 
 function escHtml(str) {
-  const d = document.createElement('div');
-  d.textContent = str;
-  return d.innerHTML;
+  return clanaUtils.sanitizeHtml(str);
 }
 
 function getConnCategories() {
@@ -412,7 +417,7 @@ function renderConnectors() {
       const cfg = c.config || {};
       const typeLabel = cfg.type === 'sip' ? 'SIP' : cfg.type === 'webhook' ? 'Webhook' : cfg.type === 'apikey' ? 'API-Key' : cfg.type === 'oauth' ? 'OAuth' : cfg.type === 'forward' ? 'Rufumleitung' : '';
       return `<div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--bg3);border:1px solid rgba(74,222,128,.25);border-radius:12px;cursor:pointer;transition:all .2s;"
-        onclick="openConnModal('${c.provider}')"
+        data-action="open-conn" data-id="${clanaUtils.sanitizeAttr(c.provider)}"
         onmouseover="this.style.borderColor='rgba(74,222,128,.5)'" onmouseout="this.style.borderColor='rgba(74,222,128,.25)'">
         <span style="font-size:1.3rem;">${def.icon || '🔗'}</span>
         <div style="flex:1;min-width:0;">
@@ -441,7 +446,7 @@ function renderConnectors() {
       ? '<span style="font-size:10px;background:rgba(251,146,60,.15);color:var(--orange);padding:4px 10px;border-radius:12px;font-weight:600;">Bald</span>'
       : '<span style="font-size:10px;background:rgba(124,58,237,.15);color:var(--pu3);padding:4px 10px;border-radius:12px;font-weight:600;">Verbinden</span>';
     return `<div style="display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .2s;"
-      onclick="openConnModal('${c.provider}')"
+      data-action="open-conn" data-id="${clanaUtils.sanitizeAttr(c.provider)}"
       onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='var(--border)'">
       <span style="font-size:1.3rem;">${c.icon}</span>
       <div style="flex:1;min-width:0;">

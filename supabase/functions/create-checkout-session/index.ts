@@ -1,11 +1,30 @@
 // Create Stripe Checkout Session — For top-ups and plan upgrades
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import Stripe from 'https://esm.sh/stripe@14?target=deno';
+import { rateLimit, rateLimitResponse } from '../_shared/rate-limit.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': Deno.env.get('ALLOWED_ORIGIN') || 'https://call-lana.de',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+const ALLOWED_ORIGINS = [
+  'https://call-lana.de',
+  'https://www.call-lana.de',
+  Deno.env.get('ALLOWED_ORIGIN'),
+].filter(Boolean);
+
+const MIN_TOPUP_CENTS = 500;    // 5 EUR minimum
+const MAX_TOPUP_CENTS = 50000;  // 500 EUR maximum
+
+function validateRedirectUrl(url: string | undefined, fallback: string): string {
+  if (!url) return fallback;
+  try {
+    const parsed = new URL(url);
+    if (ALLOWED_ORIGINS.includes(parsed.origin)) return url;
+  } catch { /* invalid URL */ }
+  return fallback;
+}
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -34,7 +53,29 @@ Deno.serve(async (req) => {
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) throw new Error('Unauthorized');
 
+    // Rate limit: 5 checkout sessions per minute per user
+    const rl = rateLimit(user.id, 5, 60_000);
+    if (!rl.allowed) return rateLimitResponse(rl.retryAfterMs, corsHeaders);
+
     const { mode, amount_cents, plan, success_url, cancel_url } = await req.json();
+
+    // Validate redirect URLs against whitelist
+    const baseUrl = Deno.env.get('ALLOWED_ORIGIN') || 'https://call-lana.de';
+    const safeSuccessUrl = validateRedirectUrl(success_url, `${baseUrl}/dashboard.html?payment=success`);
+    const safeCancelUrl = validateRedirectUrl(cancel_url, `${baseUrl}/dashboard.html?payment=cancelled`);
+
+    // Validate top-up amount
+    if (mode === 'topup') {
+      const cents = Number(amount_cents);
+      if (!Number.isInteger(cents) || cents < MIN_TOPUP_CENTS || cents > MAX_TOPUP_CENTS) {
+        return new Response(JSON.stringify({
+          error: `Betrag muss zwischen ${MIN_TOPUP_CENTS / 100}€ und ${MAX_TOPUP_CENTS / 100}€ liegen.`,
+        }), {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+    }
     const stripe = new Stripe(stripeKey, { apiVersion: '2023-10-16' });
 
     // Get or create Stripe customer
@@ -72,8 +113,8 @@ Deno.serve(async (req) => {
           quantity: 1,
         }],
         metadata: { user_id: user.id, type: 'topup' },
-        success_url: success_url || `${Deno.env.get('ALLOWED_ORIGIN')}/dashboard.html?payment=success`,
-        cancel_url: cancel_url || `${Deno.env.get('ALLOWED_ORIGIN')}/dashboard.html?payment=cancelled`,
+        success_url: safeSuccessUrl,
+        cancel_url: safeCancelUrl,
       });
     } else if (mode === 'subscription') {
       // Plan upgrade/change
@@ -85,8 +126,8 @@ Deno.serve(async (req) => {
         mode: 'subscription',
         line_items: [{ price: priceId, quantity: 1 }],
         metadata: { user_id: user.id, plan: plan || 'starter' },
-        success_url: success_url || `${Deno.env.get('ALLOWED_ORIGIN')}/dashboard.html?payment=success&plan=${plan}`,
-        cancel_url: cancel_url || `${Deno.env.get('ALLOWED_ORIGIN')}/dashboard.html?payment=cancelled`,
+        success_url: safeSuccessUrl,
+        cancel_url: safeCancelUrl,
       });
     } else {
       throw new Error('Invalid mode. Use "topup" or "subscription".');

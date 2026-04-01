@@ -19,7 +19,7 @@ describe('AppointmentsPage', () => {
       <div id="appt-list-body"></div>
       <span id="apptListCount"></span>
     `;
-    (window as any).clanaUtils = { sanitizeHtml: (s: string) => s };
+    (window as any).clanaUtils = { sanitizeHtml: (s: string) => s, sanitizeAttr: (s: string) => s };
     (window as any).Logger = { warn: vi.fn(), error: vi.fn() };
 
     loadBrowserScript('js/appointments.js');

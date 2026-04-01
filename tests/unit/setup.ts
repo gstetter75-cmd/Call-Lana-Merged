@@ -20,6 +20,7 @@ export function createQueryMock(resolveData: any = null, resolveError: any = nul
     ilike: vi.fn().mockReturnThis(),
     order: vi.fn().mockReturnThis(),
     limit: vi.fn().mockReturnThis(),
+    range: vi.fn().mockReturnThis(),
     single: vi.fn().mockImplementation(() =>
       Promise.resolve({ data: resolveData, error: resolveError })
     ),
@@ -42,9 +43,10 @@ export function createQueryMock(resolveData: any = null, resolveError: any = nul
   mock[Symbol.for('nodejs.util.promisify.custom')] = () =>
     Promise.resolve({ data: resolveData, error: resolveError });
 
-  // Make it thenable
+  // Make it thenable (includes count for pagination support)
   mock.then = (resolve: any, reject: any) => {
-    const result = { data: Array.isArray(resolveData) ? resolveData : resolveData ? [resolveData] : [], error: resolveError };
+    const dataArr = Array.isArray(resolveData) ? resolveData : resolveData ? [resolveData] : [];
+    const result = { data: dataArr, error: resolveError, count: dataArr.length };
     if (resolveError && reject) return reject(resolveError);
     return resolve ? resolve(result) : result;
   };
@@ -125,6 +127,31 @@ export function setupGlobalMocks(options: {
   (window as any).Logger = logger;
   (window as any).auth = authMock;
   (window as any).clanaAuth = authMock;
+
+  // Provide clanaUtils mock with sanitize helpers
+  if (!(window as any).clanaUtils) {
+    (window as any).clanaUtils = {
+      sanitizeHtml: (s: any) => String(s ?? ''),
+      sanitizeAttr: (s: any) => String(s ?? ''),
+      formatDate: (s: string) => s,
+      formatDuration: (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`,
+      validateEmail: (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s),
+      validatePhone: (s: string) => /^[+]?[\d\s()-]{6,20}$/.test(s),
+      safeTelHref: (s: string) => s ? 'tel:' + s : '#',
+      safeMailHref: (s: string) => s ? 'mailto:' + s : '#',
+    };
+  }
+
+  // Provide SafeActions mock
+  if (!(window as any).SafeActions) {
+    (window as any).SafeActions = {
+      _handlers: {},
+      register: function(a: string, h: Function) { this._handlers[a] = h; },
+      registerAll: function(m: Record<string, Function>) { Object.assign(this._handlers, m); },
+      init: function() {},
+    };
+  }
+
   // Do NOT overwrite window.location — it breaks localStorage in jsdom.
   // Tests that need specific hostnames should use Object.defineProperty on window.location.
 

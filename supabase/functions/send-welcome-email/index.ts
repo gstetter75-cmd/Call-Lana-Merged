@@ -1,5 +1,6 @@
 // Send Welcome Email — Triggered after user signup
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { rateLimit, rateLimitResponse } from '../_shared/rate-limit.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': Deno.env.get('ALLOWED_ORIGIN') || 'https://call-lana.de',
@@ -21,6 +22,21 @@ Deno.serve(async (req) => {
     }
 
     const { email, firstName } = await req.json();
+
+    // Validate email format
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return new Response(JSON.stringify({ error: 'Invalid email format' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Rate limit by email to prevent abuse (3 welcome emails per hour)
+    if (email) {
+      const rl = rateLimit(email, 3, 3600_000);
+      if (!rl.allowed) return rateLimitResponse(rl.retryAfterMs, corsHeaders);
+    }
+
     if (!email) {
       return new Response(JSON.stringify({ error: 'Email required' }), {
         status: 400,

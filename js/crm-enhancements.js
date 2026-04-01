@@ -179,7 +179,7 @@ const CRMEnhancements = {
         <div style="display:flex;flex-wrap:wrap;gap:6px;">
           ${stale.slice(0, 5).map(l => {
             const days = Math.floor((now - new Date(l.updated_at || l.created_at).getTime()) / 86400000);
-            return `<span style="padding:4px 10px;background:var(--bg2);border-radius:6px;font-size:11px;cursor:pointer;" onclick="viewLead('${l.id}')">${clanaUtils.sanitizeHtml(l.company_name)} <strong style="color:#f59e0b;">(${days}d)</strong></span>`;
+            return `<span style="padding:4px 10px;background:var(--bg2);border-radius:6px;font-size:11px;cursor:pointer;" data-action="view-lead" data-id="${clanaUtils.sanitizeAttr(l.id)}">${clanaUtils.sanitizeHtml(l.company_name)} <strong style="color:#f59e0b;">(${days}d)</strong></span>`;
           }).join('')}
           ${stale.length > 5 ? `<span style="padding:4px 10px;font-size:11px;color:var(--tx3);">+${stale.length - 5} weitere</span>` : ''}
         </div>

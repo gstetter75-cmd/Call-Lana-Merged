@@ -5,6 +5,7 @@
 
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { rateLimit, rateLimitResponse } from '../_shared/rate-limit.ts'
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': Deno.env.get('ALLOWED_ORIGIN') || 'https://call-lana.de',
@@ -58,6 +59,10 @@ serve(async (req) => {
       })
     }
 
+    // Rate limit: 5 payment method creations per minute per user
+    const rl = rateLimit(user.id, 5, 60_000)
+    if (!rl.allowed) return rateLimitResponse(rl.retryAfterMs, CORS_HEADERS)
+
     const payload = await req.json()
 
     // Get or create Stripe customer for this user
@@ -88,12 +93,26 @@ serve(async (req) => {
     let paymentMethodId: string
 
     if (payload.type === 'card') {
-      const [expMonth, expYear] = (payload.expiry || '').split('/')
+      const [expMonth, expYearRaw] = (payload.expiry || '').split('/')
+      if (!expMonth || !expYearRaw) {
+        return new Response(JSON.stringify({ error: 'Invalid expiry format. Use MM/YY or MM/YYYY.' }), {
+          status: 400, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+        })
+      }
+      // Handle both "24" and "2024" formats
+      const expYear = expYearRaw.trim().length === 4 ? expYearRaw.trim() : `20${expYearRaw.trim()}`
+
+      if (!payload.number || !payload.cvc) {
+        return new Response(JSON.stringify({ error: 'Card number and CVC are required.' }), {
+          status: 400, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+        })
+      }
+
       const pm = await stripeRequest('/payment_methods', {
         type: 'card',
         'card[number]': payload.number,
-        'card[exp_month]': expMonth,
-        'card[exp_year]': `20${expYear}`,
+        'card[exp_month]': expMonth.trim(),
+        'card[exp_year]': expYear,
         'card[cvc]': payload.cvc,
         'billing_details[name]': payload.holder || '',
       })
@@ -104,9 +123,16 @@ serve(async (req) => {
         customer: customerId,
       })
     } else if (payload.type === 'sepa_debit') {
+      const iban = (payload.iban || '').replace(/\s/g, '').toUpperCase()
+      if (!/^[A-Z]{2}\d{2}[A-Z0-9]{10,30}$/.test(iban)) {
+        return new Response(JSON.stringify({ error: 'Invalid IBAN format.' }), {
+          status: 400, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+        })
+      }
+
       const pm = await stripeRequest('/payment_methods', {
         type: 'sepa_debit',
-        'sepa_debit[iban]': payload.iban,
+        'sepa_debit[iban]': iban,
         'billing_details[name]': payload.holder || '',
       })
       paymentMethodId = pm.id
@@ -115,7 +141,7 @@ serve(async (req) => {
         customer: customerId,
       })
     } else {
-      return new Response(JSON.stringify({ error: 'Unsupported payment type' }), {
+      return new Response(JSON.stringify({ error: 'Unsupported payment type. Use "card" or "sepa_debit".' }), {
         status: 400, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
       })
     }

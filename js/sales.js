@@ -137,7 +137,7 @@ function renderPipeline() {
           <span class="kanban-count">${stageLeads.length}</span>
         </div>
         ${stageLeads.length ? stageLeads.map(lead => `
-          <div class="kanban-card" draggable="true" ondragstart="event.dataTransfer.setData('text/plain','${lead.id}')" onclick="viewLead('${lead.id}')">
+          <div class="kanban-card" draggable="true" ondragstart="event.dataTransfer.setData('text/plain','${clanaUtils.sanitizeAttr(lead.id)}')" data-action="view-lead" data-id="${clanaUtils.sanitizeAttr(lead.id)}">
             <div style="display:flex;justify-content:space-between;align-items:center;">
               <div class="kanban-card-title">${clanaUtils.sanitizeHtml(lead.company_name)}</div>
               ${lead.score ? `<span style="font-size:10px;font-weight:700;padding:2px 6px;border-radius:6px;background:${lead.score>=70?'#10b98122':lead.score>=40?'#f59e0b22':'#ef444422'};color:${lead.score>=70?'#10b981':lead.score>=40?'#f59e0b':'#ef4444'};">${lead.score}</span>` : ''}
@@ -234,7 +234,7 @@ function renderLeadsTable() {
         <td>${l.profiles ? `${l.profiles.first_name || ''} ${l.profiles.last_name || ''}` : '—'}</td>
         <td>${l.score ? `<span style="font-weight:700;color:${l.score>=70?'#10b981':l.score>=40?'#f59e0b':'#ef4444'}">${l.score}</span>` : '—'}</td>
         <td>${clanaUtils.formatDate(l.created_at)}</td>
-        <td><button class="btn btn-sm btn-outline" onclick="viewLead('${l.id}')">Details</button></td>
+        <td><button class="btn btn-sm btn-outline" data-action="view-lead" data-id="${clanaUtils.sanitizeAttr(l.id)}">Details</button></td>
       </tr>
     `;
   }).join('');
@@ -298,7 +298,7 @@ async function openEmailTemplate(leadOrCustomer) {
   const preis = CONFIG.getPlanPrice(leadOrCustomer.plan || 'starter');
 
   // Show template picker
-  const list = templates.map(t => `<div style="padding:10px;border:1px solid var(--border);border-radius:8px;cursor:pointer;margin-bottom:6px;transition:background .15s;" onmouseenter="this.style.background='var(--bg3)'" onmouseleave="this.style.background=''" onclick="useEmailTemplate('${t.id}', this.parentElement)">
+  const list = templates.map(t => `<div style="padding:10px;border:1px solid var(--border);border-radius:8px;cursor:pointer;margin-bottom:6px;transition:background .15s;" onmouseenter="this.style.background='var(--bg3)'" onmouseleave="this.style.background=''" data-action="use-template" data-id="${clanaUtils.sanitizeAttr(t.id)}">
     <div style="font-weight:600;font-size:13px;">${clanaUtils.sanitizeHtml(t.name)}</div>
     <div style="font-size:11px;color:var(--tx3);">${clanaUtils.sanitizeHtml(t.category)}</div>
   </div>`).join('');
@@ -599,7 +599,7 @@ function renderTasks() {
 
     return `
       <div class="task-row">
-        <div class="task-checkbox ${isDone ? 'done' : ''}" onclick="toggleTask('${t.id}', '${t.status}')">
+        <div class="task-checkbox ${isDone ? 'done' : ''}" data-action="toggle-task" data-id="${clanaUtils.sanitizeAttr(t.id)}" data-extra="${clanaUtils.sanitizeAttr(t.status)}"
           ${isDone ? '<svg width="12" height="12" fill="white" stroke="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" fill="none"/></svg>' : ''}
         </div>
         <div class="task-title ${isDone ? 'done' : ''}">${clanaUtils.sanitizeHtml(t.title)}
@@ -676,7 +676,7 @@ async function loadAvailability() {
     const isToday = dateStr === today.toISOString().split('T')[0];
 
     return `
-      <div class="avail-day" style="${isToday ? 'border-color:var(--pu);' : ''}" onclick="setAvailForDate('${dateStr}')">
+      <div class="avail-day" style="${isToday ? 'border-color:var(--pu);' : ''}" data-action="set-avail" data-id="${clanaUtils.sanitizeAttr(dateStr)}">
         <div class="avail-day-label">${dayNames[d.getDay()]}</div>
         <div class="avail-day-num" style="${isToday ? 'color:var(--pu3);' : ''}">${d.getDate()}</div>
         ${entry ? `<div class="avail-dot ${entry.type}"></div>` : ''}
@@ -823,6 +823,16 @@ function estimateFromLeadValue(value) {
 }
 
 // openModal/closeModal provided by js/modal.js
+
+// Register safe event delegation actions
+if (typeof SafeActions !== 'undefined') {
+  SafeActions.registerAll({
+    'view-lead': (id) => viewLead(id),
+    'use-template': (id, _, el) => useEmailTemplate(id, el.parentElement),
+    'toggle-task': (id, extra) => toggleTask(id, extra),
+    'set-avail': (id) => setAvailForDate(id),
+  });
+}
 
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
   overlay.addEventListener('click', (e) => {

@@ -85,16 +85,22 @@ Deno.serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const today = new Date();
-    const todayStr = today.toISOString().slice(0, 10);
-    const dateFormatted = formatDate(today);
+    // Use Europe/Berlin timezone for German customers
+    const berlinNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Berlin' }));
+    const todayStr = berlinNow.getFullYear() + '-' +
+      String(berlinNow.getMonth() + 1).padStart(2, '0') + '-' +
+      String(berlinNow.getDate()).padStart(2, '0');
+    const dateFormatted = formatDate(berlinNow);
 
-    // Query today's calls
+    // Query today's calls (Berlin timezone boundaries)
+    const dayStartUtc = new Date(`${todayStr}T00:00:00+01:00`).toISOString();
+    const dayEndUtc = new Date(`${todayStr}T23:59:59+01:00`).toISOString();
+
     const { data: calls, error: callsErr } = await supabase
       .from('calls')
       .select('id, duration')
-      .gte('created_at', `${todayStr}T00:00:00`)
-      .lt('created_at', `${todayStr}T23:59:59`);
+      .gte('created_at', dayStartUtc)
+      .lt('created_at', dayEndUtc);
 
     if (callsErr) throw new Error(`Calls query failed: ${callsErr.message}`);
 
@@ -106,8 +112,8 @@ Deno.serve(async (req) => {
     const { count: appointmentCount, error: apptErr } = await supabase
       .from('appointments')
       .select('id', { count: 'exact', head: true })
-      .gte('created_at', `${todayStr}T00:00:00`)
-      .lt('created_at', `${todayStr}T23:59:59`);
+      .gte('created_at', dayStartUtc)
+      .lt('created_at', dayEndUtc);
 
     if (apptErr) throw new Error(`Appointments query failed: ${apptErr.message}`);
 
@@ -115,8 +121,8 @@ Deno.serve(async (req) => {
     const { count: newLeadCount, error: leadsErr } = await supabase
       .from('leads')
       .select('id', { count: 'exact', head: true })
-      .gte('created_at', `${todayStr}T00:00:00`)
-      .lt('created_at', `${todayStr}T23:59:59`);
+      .gte('created_at', dayStartUtc)
+      .lt('created_at', dayEndUtc);
 
     if (leadsErr) throw new Error(`Leads query failed: ${leadsErr.message}`);
 

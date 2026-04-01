@@ -4,6 +4,14 @@
 // Split modules: dashboard-billing.js, dashboard-integrations.js, dashboard-payment.js
 // ==========================================
 
+// Register safe event delegation actions
+if (typeof SafeActions !== 'undefined') {
+  SafeActions.registerAll({
+    'edit-assistant': (id) => editAssistant(id),
+    'delete-assistant': (id, name) => deleteAssistant(id, name),
+  });
+}
+
 // Null-safe DOM helpers (prevent TypeError when elements don't exist yet)
 function $id(id) { return document.getElementById(id); }
 function $setText(id, text) { const el = $id(id); if (el) el.textContent = text; }
@@ -130,12 +138,12 @@ function renderAssistantsList() {
     const statusCls = a.status === 'live' ? 'completed' : 'voicemail';
     const statusLabel = a.status === 'live' ? 'LIVE' : 'Offline';
     html += '<tr>' +
-      '<td style="font-weight:600;color:var(--tx);cursor:pointer;" onclick="editAssistant(\'' + a.id + '\')">' + escHtml(a.name) + '</td>' +
+      '<td style="font-weight:600;color:var(--tx);cursor:pointer;" data-action="edit-assistant" data-id="' + clanaUtils.sanitizeAttr(a.id) + '">' + escHtml(a.name) + '</td>' +
       '<td><span class="status-badge ' + statusCls + '">' + statusLabel + '</span></td>' +
-      '<td>' + (a.phone_number || '–') + '</td>' +
+      '<td>' + escHtml(a.phone_number || '–') + '</td>' +
       '<td>' + escHtml(a.voice || 'Marie') + '</td>' +
       '<td>' + clanaUtils.formatDate(a.created_at) + '</td>' +
-      '<td><button onclick="event.stopPropagation();deleteAssistant(\'' + a.id + '\',\'' + escHtml(a.name) + '\')" style="background:none;border:1px solid rgba(248,113,113,.3);border-radius:6px;padding:4px 10px;color:var(--red);font-size:11px;cursor:pointer;font-family:inherit;">Löschen</button></td>' +
+      '<td><button data-action="delete-assistant" data-id="' + clanaUtils.sanitizeAttr(a.id) + '" data-extra="' + clanaUtils.sanitizeAttr(a.name) + '" style="background:none;border:1px solid rgba(248,113,113,.3);border-radius:6px;padding:4px 10px;color:var(--red);font-size:11px;cursor:pointer;font-family:inherit;">Löschen</button></td>' +
     '</tr>';
   });
   html += '</tbody></table></div>';
@@ -612,9 +620,7 @@ async function deleteAssistant(id, name) {
 }
 
 function escHtml(str) {
-  const d = document.createElement('div');
-  d.textContent = str;
-  return d.innerHTML;
+  return clanaUtils.sanitizeHtml(str);
 }
 
 function showToast(msg, isError) {

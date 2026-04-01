@@ -3,6 +3,13 @@
 // Depends on: db.js, config.js, dashboard-components.js
 // ==========================================
 
+// Register safe event delegation actions
+if (typeof SafeActions !== 'undefined') {
+  SafeActions.registerAll({
+    'delete-webhook': (id) => AdminAnalytics.deleteWebhook(id),
+  });
+}
+
 const AdminAnalytics = {
 
   // ==========================================
@@ -229,7 +236,7 @@ const AdminAnalytics = {
           <td>${(eventTypes.find(e => e.key === w.event_type) || {}).label || clanaUtils.sanitizeHtml(w.event_type)}</td>
           <td style="font-size:11px;max-width:250px;overflow:hidden;text-overflow:ellipsis;">${clanaUtils.sanitizeHtml(w.url)}</td>
           <td><span class="badge ${w.is_active ? 'badge-green' : 'badge-red'}">${w.is_active ? 'Aktiv' : 'Inaktiv'}</span></td>
-          <td><button class="btn btn-sm btn-danger" onclick="AdminAnalytics.deleteWebhook('${w.id}')">×</button></td>
+          <td><button class="btn btn-sm btn-danger" data-action="delete-webhook" data-id="${clanaUtils.sanitizeAttr(w.id)}">×</button></td>
         </tr>`).join('')}</tbody>
       </table>` : '<div style="color:var(--tx3);text-align:center;padding:20px;font-size:13px;">Keine Webhooks konfiguriert.</div>'}
     `;

@@ -19,7 +19,7 @@ describe('AvailabilityModule', () => {
       setWorkingHours: vi.fn().mockResolvedValue({ success: true }),
       createTimeOffRequest: vi.fn().mockResolvedValue({ success: true }),
     };
-    (window as any).clanaUtils = { sanitizeHtml: (s: string) => s };
+    (window as any).clanaUtils = { sanitizeHtml: (s: string) => s, sanitizeAttr: (s: string) => s };
     (window as any).Components = { toast: vi.fn() };
     (window as any).openModal = vi.fn();
     (window as any).closeModal = vi.fn();

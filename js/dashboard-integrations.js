@@ -2,6 +2,13 @@
 // ==========================================
 // INTEGRATIONS (dashboard view — connectors managed in settings.html#connectors)
 // ==========================================
+
+// Register safe event delegation actions
+if (typeof SafeActions !== 'undefined') {
+  SafeActions.registerAll({
+    'sync-integration': (id) => syncIntegration(id),
+  });
+}
 const INTEGRATION_ICONS = {
   sip_trunk: '📞', fritzbox: '📠', rufumleitung: '↪️', eigene_rufnummer: '🔢',
   rest_api: '🔌', pre_call_webhook: '⚡', mid_call_api: '🔄', post_call_webhook: '📤', outbound_api: '📲',
@@ -55,7 +62,7 @@ async function loadIntegrations() {
             ${c.records_synced ? ' · ' + c.records_synced + ' Datensaetze' : ''}
           </div>
           <div style="display:flex;gap:8px;margin-top:10px;">
-            <button class="btn-sm" onclick="syncIntegration('${c.id}')">Syncen</button>
+            <button class="btn-sm" data-action="sync-integration" data-id="${clanaUtils.sanitizeAttr(c.id)}">Syncen</button>
             <a href="settings.html#connectors" class="btn-secondary" style="font-size:11px;padding:6px 12px;text-decoration:none;">Konfigurieren</a>
           </div>
         </div>`;

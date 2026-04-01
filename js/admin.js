@@ -113,8 +113,8 @@ async function loadUsers() {
       <td>${clanaUtils.formatDate(u.created_at)}</td>
       <td>
         <div class="user-actions">
-          <button onclick="editUserRole('${u.id}', '${clanaUtils.sanitizeHtml(u.email || '')}', '${u.role}', '${u.organization_id || ''}')">Rolle</button>
-          <button onclick="toggleUserActive('${u.id}', ${u.is_active})">${u.is_active ? 'Sperren' : 'Aktivieren'}</button>
+          <button data-action="edit-role" data-id="${clanaUtils.sanitizeAttr(u.id)}" data-extra="${clanaUtils.sanitizeAttr(JSON.stringify({email:u.email||'',role:u.role,org:u.organization_id||''}))}">Rolle</button>
+          <button data-action="toggle-active" data-id="${clanaUtils.sanitizeAttr(u.id)}" data-extra="${u.is_active}">${u.is_active ? 'Sperren' : 'Aktivieren'}</button>
         </div>
       </td>
     </tr>
@@ -139,7 +139,7 @@ async function loadOrgs() {
       <td>${clanaUtils.formatDate(o.created_at)}</td>
       <td>
         <div class="user-actions">
-          <button onclick="editOrg('${o.id}')">Bearbeiten</button>
+          <button data-action="edit-org" data-id="${clanaUtils.sanitizeAttr(o.id)}">Bearbeiten</button>
         </div>
       </td>
     </tr>
@@ -342,7 +342,7 @@ async function loadOverview() {
           <td>${price.toLocaleString('de-DE')} €</td>
           <td>${clanaUtils.sanitizeHtml(salesName)}</td>
           <td>${clanaUtils.formatDate(c.created_at)}</td>
-          <td><button class="btn btn-sm btn-outline" onclick="viewCustomer('${c.id}')">Details</button></td>
+          <td><button class="btn btn-sm btn-outline" data-action="view-customer" data-id="${clanaUtils.sanitizeAttr(c.id)}">Details</button></td>
         </tr>
       `;
     }).join('');
@@ -376,7 +376,7 @@ async function loadOverview() {
       ${inactiveCustomers.slice(0, 5).map(c => `
         <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:12px;">
           <span style="color:var(--tx2);">${clanaUtils.sanitizeHtml((c.first_name || '') + ' ' + (c.last_name || ''))}</span>
-          <button class="btn btn-sm btn-outline" style="font-size:10px;padding:2px 8px;" onclick="toggleUserActive('${c.id}',false)">Aktivieren</button>
+          <button class="btn btn-sm btn-outline" style="font-size:10px;padding:2px 8px;" data-action="toggle-active" data-id="${clanaUtils.sanitizeAttr(c.id)}" data-extra="false">Aktivieren</button>
         </div>
       `).join('')}
     </div>` : '<div style="text-align:center;color:var(--green);font-size:12px;padding:12px;">Keine inaktiven Kunden</div>'}
@@ -512,7 +512,7 @@ async function loadCustomers() {
         <td>${clanaUtils.sanitizeHtml(c.industry || '—')}</td>
         <td><span class="badge ${c.is_active !== false ? 'badge-green' : 'badge-red'}">${c.is_active !== false ? 'Aktiv' : 'Inaktiv'}</span></td>
         <td>${clanaUtils.formatDate(c.created_at)}</td>
-        <td><button class="btn btn-sm btn-outline" onclick="viewCustomer('${c.id}')">Details</button></td>
+        <td><button class="btn btn-sm btn-outline" data-action="view-customer" data-id="${clanaUtils.sanitizeAttr(c.id)}">Details</button></td>
       </tr>
     `;
   }).join('');
@@ -609,9 +609,9 @@ async function viewCustomer(customerId) {
     </div>
 
     <div style="display:flex;gap:8px;justify-content:flex-end;">
-      <button class="btn btn-sm" style="background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 0 12px rgba(245,158,11,.3);" onclick="closeModal('modal-customer-detail'); ImpersonationManager.start('${customer.id}');">👁 Als Kunde anmelden</button>
-      <button class="btn btn-sm btn-outline" onclick="editUserRole('${customer.id}', '${clanaUtils.sanitizeHtml(customer.email || '')}', '${customer.role}', '${customer.organization_id || ''}'); closeModal('modal-customer-detail');">Rolle ändern</button>
-      <button class="btn btn-sm ${customer.is_active !== false ? 'btn-danger' : ''}" onclick="toggleUserActive('${customer.id}', ${customer.is_active !== false}); closeModal('modal-customer-detail');">
+      <button class="btn btn-sm" style="background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 0 12px rgba(245,158,11,.3);" data-action="impersonate" data-id="${clanaUtils.sanitizeAttr(customer.id)}">👁 Als Kunde anmelden</button>
+      <button class="btn btn-sm btn-outline" data-action="edit-role" data-id="${clanaUtils.sanitizeAttr(customer.id)}" data-extra="${clanaUtils.sanitizeAttr(JSON.stringify({email:customer.email||'',role:customer.role,org:customer.organization_id||''}))}">Rolle ändern</button>
+      <button class="btn btn-sm ${customer.is_active !== false ? 'btn-danger' : ''}" data-action="toggle-active" data-id="${clanaUtils.sanitizeAttr(customer.id)}" data-extra="${customer.is_active !== false}">
         ${customer.is_active !== false ? 'Sperren' : 'Aktivieren'}
       </button>
     </div>
@@ -739,6 +739,25 @@ async function editOrg(orgId) {
 }
 
 // openModal/closeModal provided by js/modal.js
+
+// Register safe event delegation actions
+if (typeof SafeActions !== 'undefined') {
+  SafeActions.registerAll({
+    'edit-role': (id, extraJson) => {
+      try {
+        const d = JSON.parse(extraJson);
+        editUserRole(id, d.email, d.role, d.org);
+      } catch { /* ignore parse error */ }
+    },
+    'toggle-active': (id, extra) => toggleUserActive(id, extra === 'true'),
+    'edit-org': (id) => editOrg(id),
+    'view-customer': (id) => viewCustomer(id),
+    'impersonate': (id) => {
+      closeModal('modal-customer-detail');
+      ImpersonationManager.start(id);
+    },
+  });
+}
 
 // Close modals on overlay click
 document.querySelectorAll('.modal-overlay').forEach(overlay => {

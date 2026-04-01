@@ -3,6 +3,13 @@
 // Depends on: db.js, config.js, dashboard-components.js
 // ==========================================
 
+if (typeof SafeActions !== 'undefined') {
+  SafeActions.register('set-avail-date', (dateStr) => {
+    document.getElementById('avail-date').value = dateStr;
+    openModal('modal-avail');
+  });
+}
+
 const AvailabilityModule = {
   currentSubTab: 'calendar',
   workingHours: [],
@@ -93,7 +100,7 @@ const AvailabilityModule = {
                 else if (isBreak) bg = 'rgba(249,115,22,0.1)';
                 else if (isWorkTime) bg = 'rgba(16,185,129,0.12)';
 
-                return `<div style="height:32px;border-radius:4px;background:${bg};border:1px solid transparent;cursor:pointer;transition:all .15s;" onmouseenter="this.style.borderColor='var(--pu)'" onmouseleave="this.style.borderColor='transparent'" onclick="document.getElementById('avail-date').value='${dateStr}';openModal('modal-avail')"></div>`;
+                return `<div style="height:32px;border-radius:4px;background:${bg};border:1px solid transparent;cursor:pointer;transition:all .15s;" onmouseenter="this.style.borderColor='var(--pu)'" onmouseleave="this.style.borderColor='transparent'" data-action="set-avail-date" data-id="${clanaUtils.sanitizeAttr(dateStr)}"></div>`;
               }).join('');
           }).join('')}
         </div>

@@ -40,15 +40,14 @@ const RealtimeManager = {
 
   _subscribeCalls() {
     const channel = supabaseClient
-      .channel('realtime-calls')
+      .channel('realtime-calls-' + this._userId)
       .on('postgres_changes', {
         event: 'INSERT',
         schema: 'public',
-        table: 'calls'
+        table: 'calls',
+        filter: 'user_id=eq.' + this._userId,
       }, (payload) => {
-        if (payload.new && payload.new.user_id === this._userId) {
-          this._onNewCall(payload.new);
-        }
+        if (payload.new) this._onNewCall(payload.new);
       })
       .subscribe();
 
@@ -83,14 +82,13 @@ const RealtimeManager = {
 
   _subscribeAppointments() {
     const channel = supabaseClient
-      .channel('realtime-appointments')
+      .channel('realtime-appointments-' + this._userId)
       .on('postgres_changes', {
         event: '*',
         schema: 'public',
-        table: 'appointments'
+        table: 'customer_appointments',
+        filter: 'user_id=eq.' + this._userId,
       }, (payload) => {
-        // Only react to own appointments
-        if (payload.new && payload.new.user_id && payload.new.user_id !== this._userId) return;
         this._onAppointmentChange(payload);
       })
       .subscribe();
@@ -141,9 +139,14 @@ const RealtimeManager = {
 
   _subscribeMessages() {
     const channel = supabaseClient
-      .channel('realtime-messages')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
-        if (!payload.new || payload.new.sender_id === this._userId) return;
+      .channel('realtime-messages-' + this._userId)
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'messages',
+        filter: 'recipient_id=eq.' + this._userId,
+      }, (payload) => {
+        if (!payload.new) return;
         if (typeof showToast !== 'undefined') showToast('Neue Nachricht eingegangen');
         // Update unread badge if exists
         const badge = document.getElementById('msg-unread-badge');
@@ -163,11 +166,14 @@ const RealtimeManager = {
 
   _subscribeTasks() {
     const channel = supabaseClient
-      .channel('realtime-tasks')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, (payload) => {
+      .channel('realtime-tasks-' + this._userId)
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'tasks',
+        filter: 'assigned_to=eq.' + this._userId,
+      }, (payload) => {
         if (!payload.new) return;
-        // Only react to tasks assigned to me or created by me
-        if (payload.new.assigned_to !== this._userId && payload.new.created_by !== this._userId) return;
         if (payload.eventType === 'INSERT') {
           const title = this._sanitize(payload.new.title || 'Neue Aufgabe');
           if (typeof showToast !== 'undefined') showToast('Neue Aufgabe: ' + title);

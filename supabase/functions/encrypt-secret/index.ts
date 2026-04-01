@@ -5,6 +5,7 @@
 
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { rateLimit, rateLimitResponse } from '../_shared/rate-limit.ts'
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': Deno.env.get('ALLOWED_ORIGIN') || 'https://call-lana.de',
@@ -39,6 +40,10 @@ serve(async (req) => {
         headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
       })
     }
+
+    // Rate limit: 10 encryption requests per minute per user
+    const rl = rateLimit(user.id, 10, 60_000)
+    if (!rl.allowed) return rateLimitResponse(rl.retryAfterMs, CORS_HEADERS)
 
     const { provider, secret } = await req.json()
     if (!provider || !secret) {

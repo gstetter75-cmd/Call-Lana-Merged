@@ -3,6 +3,12 @@
 // Depends on: db.js, dashboard-components.js
 // ==========================================
 
+if (typeof SafeActions !== 'undefined') {
+  SafeActions.register('navigate-page', (id) => {
+    if (typeof navigateToPage === 'function') navigateToPage(id);
+  });
+}
+
 const Onboarding = {
   steps: [
     { key: 'create_assistant', label: 'KI-Assistenten erstellen', desc: 'Erstelle deinen ersten Telefon-Assistenten', icon: '🤖', page: 'assistants' },
@@ -107,7 +113,7 @@ const Onboarding = {
         <div style="display:flex;flex-direction:column;gap:8px;">
           ${this.steps.map(s => {
             const isDone = this.completedSteps.has(s.key);
-            return `<div style="display:flex;align-items:center;gap:12px;padding:8px 12px;border-radius:10px;background:${isDone ? 'var(--bg3)' : 'transparent'};cursor:${isDone ? 'default' : 'pointer'};opacity:${isDone ? '0.6' : '1'};" ${!isDone ? `onclick="if(typeof navigateToPage==='function')navigateToPage('${s.page}')"` : ''}>
+            return `<div style="display:flex;align-items:center;gap:12px;padding:8px 12px;border-radius:10px;background:${isDone ? 'var(--bg3)' : 'transparent'};cursor:${isDone ? 'default' : 'pointer'};opacity:${isDone ? '0.6' : '1'};" ${!isDone ? `data-action="navigate-page" data-id="${clanaUtils.sanitizeAttr(s.page)}"` : ''}>
               <span style="font-size:20px;">${isDone ? '✅' : s.icon}</span>
               <div style="flex:1;">
                 <div style="font-size:13px;font-weight:600;${isDone ? 'text-decoration:line-through;' : ''}">${s.label}</div>

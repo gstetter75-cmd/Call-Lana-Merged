@@ -2,6 +2,13 @@
 // Admin: Audit Log, Activity Feed, KPI Goals, Announcements
 // ==========================================
 
+// Register safe event delegation actions
+if (typeof SafeActions !== 'undefined') {
+  SafeActions.registerAll({
+    'deactivate-announcement': (id) => AdminAudit.deactivateAnnouncement(id),
+  });
+}
+
 const AdminAudit = {
 
   // ==========================================
@@ -220,7 +227,7 @@ const AdminAudit = {
               ${a.target_role ? `Zielgruppe: ${a.target_role}` : 'Alle Nutzer'} · ${new Date(a.created_at).toLocaleDateString('de-DE')}
             </div>
           </div>
-          <button class="btn-icon" style="font-size:12px;" onclick="AdminAudit.deactivateAnnouncement('${a.id}')" title="Deaktivieren">×</button>
+          <button class="btn-icon" style="font-size:12px;" data-action="deactivate-announcement" data-id="${clanaUtils.sanitizeAttr(a.id)}" title="Deaktivieren">×</button>
         </div>
       `).join('') : '<div style="color:var(--tx3);text-align:center;padding:16px;font-size:12px;">Keine aktiven Ankündigungen.</div>'}
     `;

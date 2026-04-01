@@ -95,7 +95,7 @@ const GlobalSearch = {
           title: c.company_name,
           subtitle: c.contact_name || c.email || '',
           badge: c.plan || c.status,
-          action: `switchTab('customers');setTimeout(()=>viewCustomer('${c.id}'),300)`,
+          action: `switchTab('customers');setTimeout(()=>viewCustomer('${clanaUtils.sanitizeAttr(c.id)}'),300)`,
           icon: '👤'
         })));
       }

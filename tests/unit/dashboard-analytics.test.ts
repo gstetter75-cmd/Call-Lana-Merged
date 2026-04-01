@@ -21,6 +21,7 @@ describe('DashboardAnalytics', () => {
     };
     (window as any).clanaUtils = {
       sanitizeHtml: (s: string) => s,
+      sanitizeAttr: (s: string) => s,
     };
     (window as any).navigateToPage = vi.fn();
 

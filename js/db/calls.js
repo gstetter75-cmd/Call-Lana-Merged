@@ -53,9 +53,10 @@ const dbCalls = {
       if (!user) throw new Error('Not authenticated');
       const effectiveId = await auth.getEffectiveUserId();
 
+      // Only fetch fields needed for aggregation — not full transcripts etc.
       const { data, error } = await supabaseClient
         .from('calls')
-        .select('*')
+        .select('duration, status', { count: 'exact' })
         .eq('user_id', effectiveId)
         .gte('created_at', startDate)
         .lte('created_at', endDate);

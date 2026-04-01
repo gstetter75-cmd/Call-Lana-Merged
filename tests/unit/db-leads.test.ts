@@ -23,7 +23,7 @@ describe('dbLeads', () => {
       expect(result.success).toBe(true);
       expect(result.data).toEqual(leads);
       expect(mocks.supabase.from).toHaveBeenCalledWith('leads');
-      expect(qm.select).toHaveBeenCalledWith('*, profiles:assigned_to(id, first_name, last_name)');
+      expect(qm.select).toHaveBeenCalledWith('*, profiles:assigned_to(id, first_name, last_name)', { count: 'exact' });
     });
 
     it('applies status filter', async () => {
@@ -44,22 +44,22 @@ describe('dbLeads', () => {
       expect(qm.eq).toHaveBeenCalledWith('assigned_to', 'u-1');
     });
 
-    it('applies limit filter', async () => {
+    it('applies pagination via range', async () => {
       const qm = createQueryMock([]);
       mocks.supabase.from.mockReturnValue(qm);
 
-      await (window as any).dbLeads.getLeads({ limit: 10 });
+      await (window as any).dbLeads.getLeads({ page: 1, pageSize: 10 });
 
-      expect(qm.limit).toHaveBeenCalledWith(10);
+      expect(qm.range).toHaveBeenCalledWith(10, 19);
     });
 
     it('falls back to plain select if profile join fails', async () => {
       // First call returns error, second returns data
-      // Supabase returns errors in response, not thrown
       const errorQm = createQueryMock(null);
-      errorQm.then = (resolve: any) => resolve({ data: null, error: { message: 'relation not found' } });
+      errorQm.then = (resolve: any) => resolve({ data: null, error: { message: 'relation not found' }, count: null });
       errorQm.select = vi.fn().mockReturnValue(errorQm);
       errorQm.order = vi.fn().mockReturnValue(errorQm);
+      errorQm.range = vi.fn().mockReturnValue(errorQm);
 
       const successQm = createQueryMock([{ id: 'l1' }]);
 
