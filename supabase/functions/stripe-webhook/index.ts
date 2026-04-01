@@ -37,6 +37,22 @@ Deno.serve(async (req) => {
 
     const event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
 
+    // Idempotency: skip already-processed events (prevents double-charging on retries)
+    const { data: existing } = await supabase
+      .from('webhook_events')
+      .select('event_id')
+      .eq('event_id', event.id)
+      .maybeSingle();
+
+    if (existing) {
+      return new Response(JSON.stringify({ received: true, duplicate: true }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Mark event as processing
+    await supabase.from('webhook_events').insert({ event_id: event.id, source: 'stripe' });
+
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object;

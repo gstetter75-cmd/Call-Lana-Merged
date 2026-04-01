@@ -137,13 +137,13 @@ describe('dbProfiles', () => {
       expect(qm.eq).toHaveBeenCalledWith('organization_id', 'org-1');
     });
 
-    it('applies limit filter', async () => {
+    it('applies pagination via range', async () => {
       const qm = createQueryMock([]);
       mocks.supabase.from.mockReturnValue(qm);
 
-      await (window as any).dbProfiles.getAllProfiles({ limit: 10 });
+      await (window as any).dbProfiles.getAllProfiles({ page: 1, pageSize: 50 });
 
-      expect(qm.limit).toHaveBeenCalledWith(10);
+      expect(qm.range).toHaveBeenCalledWith(50, 99);
     });
 
     it('returns error when not authenticated', async () => {

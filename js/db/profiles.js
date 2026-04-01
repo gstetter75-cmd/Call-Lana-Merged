@@ -48,18 +48,22 @@ const dbProfiles = {
       const user = await auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
+      const pageSize = filters.pageSize || 200;
+      const page = filters.page || 0;
+
       let query = supabaseClient
         .from('profiles')
-        .select('*, organizations(name, plan)')
+        .select('*, organizations(name, plan)', { count: 'exact' })
         .order('created_at', { ascending: false });
 
       if (filters.role) query = query.eq('role', filters.role);
       if (filters.organization_id) query = query.eq('organization_id', filters.organization_id);
-      if (filters.limit) query = query.limit(filters.limit);
 
-      const { data, error } = await query;
+      query = query.range(page * pageSize, (page + 1) * pageSize - 1);
+
+      const { data, error, count } = await query;
       if (error) throw error;
-      return { success: true, data: data || [] };
+      return { success: true, data: data || [], count, page, pageSize };
     } catch (error) {
       Logger.error('db.getAllProfiles', error);
       return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };

@@ -32,9 +32,10 @@ const dbCalls = {
       if (!user) throw new Error('Not authenticated');
       const effectiveId = await auth.getEffectiveUserId();
 
+      // Select only needed fields — excludes transcript (5-15KB each) for list views
       const { data, error } = await supabaseClient
         .from('calls')
-        .select('*')
+        .select('id, user_id, phone_number, caller_name, duration, status, outcome, sentiment_score, created_at, vapi_call_id')
         .eq('user_id', effectiveId)
         .order('created_at', { ascending: false })
         .limit(limit);

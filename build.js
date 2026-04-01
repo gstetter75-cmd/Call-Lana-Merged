@@ -60,9 +60,27 @@ async function build() {
   console.log(`\n  Total: ${(totalSize / 1024).toFixed(1)} KB in ${Date.now() - startTime}ms`);
 }
 
+// Generate a build manifest with timestamps for cache-busting
+function writeManifest() {
+  const manifest = { buildTime: Date.now(), version: Date.now().toString(36) };
+  pages.forEach(page => {
+    const outfile = `dist/${page}.bundle.js`;
+    if (fs.existsSync(outfile)) {
+      const stat = fs.statSync(outfile);
+      manifest[page] = { size: stat.size, file: `${page}.bundle.js` };
+    }
+  });
+  fs.writeFileSync('dist/manifest.json', JSON.stringify(manifest, null, 2));
+  // Write a small JS snippet that HTML pages can include for cache-busted paths
+  const v = manifest.version;
+  fs.writeFileSync('dist/version.js', `window.__buildVersion="${v}";`);
+  return v;
+}
+
 console.log('Building Call Lana bundles...\n');
 build().then(() => {
-  console.log('\n  Done! Bundles are in dist/');
+  const v = writeManifest();
+  console.log(`\n  Done! Bundles are in dist/ (version: ${v})`);
   if (isWatch) {
     console.log('  Watching for changes...');
     fs.watch('js', { recursive: true }, () => {

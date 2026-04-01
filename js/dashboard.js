@@ -99,13 +99,52 @@ let currentConversationId = null;
       }
     }
   } catch (e) {
-    window.__trialStatus = null;
+    // RPC failed — fallback: read subscription directly
+    try {
+      const effectiveId = await auth.getEffectiveUserId();
+      const { data: sub } = await supabaseClient
+        .from('subscriptions')
+        .select('trial_active, trial_ends_at, balance_cents, plan, service_active, paused_reason')
+        .eq('user_id', effectiveId)
+        .single();
+
+      if (sub?.trial_active) {
+        const daysLeft = Math.max(0, Math.floor((new Date(sub.trial_ends_at) - Date.now()) / 86400000));
+        if (daysLeft <= 0 || sub.balance_cents <= 0) {
+          window.__trialStatus = { status: 'trial_expired', reason: sub.balance_cents <= 0 ? 'credit_exhausted' : 'time_expired' };
+        } else {
+          window.__trialStatus = { status: 'trial_active', days_remaining: daysLeft, credit_remaining_cents: sub.balance_cents };
+        }
+      } else if (sub?.paused_reason === 'trial_expired') {
+        window.__trialStatus = { status: 'trial_expired', reason: 'time_expired' };
+      } else {
+        window.__trialStatus = { status: sub?.plan || 'none', service_active: sub?.service_active };
+      }
+
+      // Render overlay for expired trials (same as above)
+      if (window.__trialStatus?.status === 'trial_expired') {
+        const overlay = document.createElement('div');
+        overlay.id = 'trial-expired-overlay';
+        overlay.style.cssText = 'position:fixed;inset:0;z-index:10000;background:rgba(6,6,15,.92);display:flex;align-items:center;justify-content:center;';
+        overlay.innerHTML = `<div style="background:var(--bg2);border-radius:20px;padding:40px;max-width:500px;text-align:center;border:1px solid var(--border);">
+          <div style="font-size:48px;margin-bottom:16px;">⏰</div>
+          <h2 style="font-size:20px;margin-bottom:8px;">Testphase beendet</h2>
+          <p style="color:var(--tx3);font-size:14px;margin-bottom:24px;">Wähle jetzt einen Plan, um Call Lana weiter zu nutzen.</p>
+          <button class="btn btn-primary" data-action="navigate" data-id="plans" style="font-size:16px;padding:14px 32px;">Plan auswählen</button>
+        </div>`;
+        document.body.appendChild(overlay);
+      }
+    } catch (fallbackErr) {
+      window.__trialStatus = null;
+    }
   }
 
   // Handle payment return from Stripe
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('payment') === 'success') {
     if (typeof showToast === 'function') showToast('Zahlung erfolgreich! Daten werden aktualisiert.');
+    // Force billing data reload on success
+    setTimeout(() => { if (typeof loadBillingData === 'function') loadBillingData(); }, 500);
     window.history.replaceState({}, '', window.location.pathname + window.location.hash);
   } else if (urlParams.get('payment') === 'cancelled') {
     if (typeof showToast === 'function') showToast('Zahlung abgebrochen.', true);
