@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/common.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" integrity="sha384-0VpB0wAYDdhWCEv3+IjT0Z9Kgpvszkf70RFX3ro7l4QR5nywxsMaOpmvZKsfRF8I" crossorigin="anonymous"></script>
 <style>
   .admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
   .search-input { background: var(--bg3); border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px 10px 36px; color: var(--tx); font-size: 13px; font-family: 'Manrope', sans-serif; outline: none; width: 280px; transition: all .2s; background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' fill='none' stroke='%236b5f8a' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='7' cy='7' r='5'/%3E%3Cpath d='M11 11l3 3'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: 12px center; }
@@ -555,40 +555,8 @@
   </div>
 </div>
 
-<script src="js/impersonation.js"></script>
-<script src="js/modal.js"></script>
-<script src="js/error-handler.js"></script>
-<script>ErrorHandler.init();</script>
-<script src="js/logger.js"></script>
-<script src="js/supabase-init.js"></script>
-<script src="js/error-tracker.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/db/calls.js"></script>
-<script src="js/db/assistants.js"></script>
-<script src="js/db/profiles.js"></script>
-<script src="js/db/leads.js"></script>
-<script src="js/db/messaging.js"></script>
-<script src="js/db/customers.js"></script>
-<script src="js/db/tools.js"></script>
-<script src="js/db.js"></script>
-<script src="js/auth-guard.js"></script>
-<script src="js/pricing-data.js"></script>
-<script src="js/config.js"></script>
-<script src="js/dashboard-components.js"></script>
-<script src="js/admin-analytics.js"></script>
-<script src="js/admin-overview.js"></script>
-<script src="js/admin-audit.js"></script>
-<script src="js/admin-pdf-export.js"></script>
-<script src="js/admin-health.js"></script>
-<script src="js/admin-extra.js"></script>
-<script src="js/admin-bulk.js"></script>
-<script src="js/integrations-hub.js"></script>
-<script src="js/global-search.js"></script>
-<script src="js/keyboard-shortcuts.js"></script>
-<script src="js/admin.js"></script>
-<script src="js/theme-toggle.js"></script>
-<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});</script>
-<script src="js/idle-timeout.js"></script>
-<script src="cookie-consent.js"></script>
+<!-- Single bundle replaces ~33 individual script tags -->
+<script src="dist/admin.bundle.js"></script>
+<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});</script>
 </body>
 </html>

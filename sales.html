@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/common.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" integrity="sha384-0VpB0wAYDdhWCEv3+IjT0Z9Kgpvszkf70RFX3ro7l4QR5nywxsMaOpmvZKsfRF8I" crossorigin="anonymous"></script>
 <style>
   .pipeline-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
   .lead-value { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--green); font-size: 12px; }
@@ -649,35 +649,8 @@
   </div>
 </div>
 
-<script src="js/modal.js"></script>
-<script src="js/error-handler.js"></script>
-<script>ErrorHandler.init();</script>
-<script src="js/logger.js"></script>
-<script src="js/supabase-init.js"></script>
-<script src="js/error-tracker.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/db/calls.js"></script>
-<script src="js/db/assistants.js"></script>
-<script src="js/db/profiles.js"></script>
-<script src="js/db/leads.js"></script>
-<script src="js/db/messaging.js"></script>
-<script src="js/db/customers.js"></script>
-<script src="js/db/tools.js"></script>
-<script src="js/db.js"></script>
-<script src="js/auth-guard.js"></script>
-<script src="js/pricing-data.js"></script>
-<script src="js/config.js"></script>
-<script src="js/dashboard-components.js"></script>
-<script src="js/sales-customers.js"></script>
-<script src="js/availability.js"></script>
-<script src="js/notifications.js"></script>
-<script src="js/crm-enhancements.js"></script>
-<script src="js/global-search.js"></script>
-<script src="js/keyboard-shortcuts.js"></script>
-<script src="js/sales.js"></script>
-<script src="js/theme-toggle.js"></script>
-<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});</script>
-<script src="js/idle-timeout.js"></script>
-<script src="cookie-consent.js"></script>
+<!-- Single bundle replaces ~22 individual script tags -->
+<script src="dist/sales.bundle.js"></script>
+<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});</script>
 </body>
 </html>

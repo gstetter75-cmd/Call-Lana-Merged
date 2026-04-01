@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/common.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" integrity="sha384-0VpB0wAYDdhWCEv3+IjT0Z9Kgpvszkf70RFX3ro7l4QR5nywxsMaOpmvZKsfRF8I" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="css/dashboard.css">
 <style>
 body{display:flex;overflow:hidden;}
@@ -1084,60 +1084,16 @@ body{display:flex;overflow:hidden;}
   </div>
 </div>
 
-<script src="js/impersonation.js"></script>
-<script src="js/modal.js"></script>
-<script src="js/error-handler.js"></script>
-<script>ErrorHandler.init();</script>
-<script src="js/logger.js"></script>
-<script src="js/supabase-init.js"></script>
-<script src="js/error-tracker.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/db/calls.js"></script>
-<script src="js/db/assistants.js"></script>
-<script src="js/db/profiles.js"></script>
-<script src="js/db/leads.js"></script>
-<script src="js/db/messaging.js"></script>
-<script src="js/db/customers.js"></script>
-<script src="js/db/tools.js"></script>
-<script src="js/db.js"></script>
-<script src="js/auth-guard.js"></script>
-<script src="js/pricing-data.js"></script>
-<script src="js/config.js"></script>
-<script src="js/dashboard-components.js"></script>
-<script src="js/dashboard.js"></script>
-<script src="js/dashboard-home-data.js"></script>
-<script src="js/dashboard-team.js"></script>
-<script src="js/dashboard-billing.js"></script>
-<script src="js/dashboard-integrations.js"></script>
-<script src="js/dashboard-payment.js"></script>
-<script src="js/confetti.js"></script>
-<script src="js/onboarding.js"></script>
-<script src="js/notifications.js"></script>
-<script src="js/integration-demo.js"></script>
-<script src="js/push-notifications.js"></script>
-<script src="js/offline-cache.js"></script>
-<script src="js/install-prompt.js"></script>
-<script src="js/dashboard-extras.js"></script>
-<script src="js/dashboard-analytics.js"></script>
-<script src="js/dashboard-home-widgets.js"></script>
-<script src="js/dashboard-charts.js"></script>
+<!-- Single bundle replaces ~45 individual script tags -->
+<script src="dist/dashboard.bundle.js"></script>
 <script>
-// Initialize chart after page load
+// Post-bundle init: chart, keyboard shortcuts, jsPDF lazy-load, service worker
 document.addEventListener('DOMContentLoaded', function() {
-  if (document.getElementById('chart-calls-7days')) {
-    // Small delay to ensure auth is ready
+  if (typeof KeyboardShortcuts !== 'undefined') KeyboardShortcuts.init({});
+  if (document.getElementById('chart-calls-7days') && typeof DashboardCharts !== 'undefined') {
     setTimeout(function() { DashboardCharts.init(); }, 500);
   }
 });
-</script>
-<script src="js/appointments.js"></script>
-<script src="js/analytics-page.js"></script>
-<script src="js/realtime.js"></script>
-<script src="js/global-search.js"></script>
-<script src="js/keyboard-shortcuts.js"></script>
-<script>KeyboardShortcuts.init({});</script>
-<script src="js/invoices.js"></script>
-<script>
 // Lazy-load jsPDF + invoice-pdf only when invoice tab is opened
 (function() {
   var loaded = false;
@@ -1158,19 +1114,14 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     document.head.appendChild(s1);
   }
-  // Load when invoices tab is shown or any PDF button is clicked
   document.addEventListener('click', function(e) {
-    var t = e.target.closest('[data-tab="invoices"], .invoice-pdf-btn, [onclick*="PDF"], [onclick*="pdf"]');
+    var t = e.target.closest('[data-tab="invoices"], .invoice-pdf-btn, [data-action*="pdf"]');
     if (t) loadJsPdf();
   });
-  // Also load if navigated directly to invoices tab
   if (location.hash === '#invoices') loadJsPdf();
 })();
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function(){});
 </script>
-<script src="js/theme-toggle.js"></script>
-<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});</script>
-<script src="js/idle-timeout.js"></script>
-<script src="cookie-consent.js"></script>
 <!-- Invoice Selection Action Bar -->
 <div id="invoiceSelectionBar" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:2px solid var(--pu);padding:14px 24px;align-items:center;justify-content:space-between;z-index:100;box-shadow:0 -4px 12px rgba(0,0,0,.1);">
   <span id="invoiceSelectionCount" style="font-weight:700;color:var(--tx);font-size:14px;">0 Rechnungen ausgewählt</span>

@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/common.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" integrity="sha384-0VpB0wAYDdhWCEv3+IjT0Z9Kgpvszkf70RFX3ro7l4QR5nywxsMaOpmvZKsfRF8I" crossorigin="anonymous"></script>
 <style>
 /* Settings-specific overrides (base styles in common.css) */
 body{display:flex;overflow:hidden;}
@@ -484,29 +484,8 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
 
 <div class="toast" id="toast"></div>
 
-<script src="js/impersonation.js"></script>
-<script src="js/modal.js"></script>
-<script src="js/error-handler.js"></script>
-<script>ErrorHandler.init();</script>
-<script src="js/logger.js"></script>
-<script src="js/supabase-init.js"></script>
-<script src="js/error-tracker.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/db/calls.js"></script>
-<script src="js/db/assistants.js"></script>
-<script src="js/db/profiles.js"></script>
-<script src="js/db/leads.js"></script>
-<script src="js/db/messaging.js"></script>
-<script src="js/db/customers.js"></script>
-<script src="js/db/tools.js"></script>
-<script src="js/db.js"></script>
-<script src="js/auth-guard.js"></script>
-<script src="js/pricing-data.js"></script>
-<script src="js/config.js"></script>
-<script src="js/dashboard-components.js"></script>
-<script src="js/settings.js"></script>
-<script src="js/settings-extra.js"></script>
-<script src="js/referral.js"></script>
+<!-- Single bundle replaces ~22 individual script tags -->
+<script src="dist/settings.bundle.js"></script>
 <script>
 // Initialize referral tab when navigated to
 (function() {
@@ -515,17 +494,13 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
     item.addEventListener('click', function() {
       if (item.getAttribute('data-tab') === 'referral' && !initialized) {
         initialized = true;
-        Referral.init();
+        if (typeof Referral !== 'undefined') Referral.init();
       }
     });
   });
-  // Also init if URL hash is #referral
-  if (window.location.hash === '#referral') { initialized = true; Referral.init(); }
+  if (window.location.hash === '#referral' && typeof Referral !== 'undefined') { initialized = true; Referral.init(); }
 })();
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function(){});
 </script>
-<script src="js/theme-toggle.js"></script>
-<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});</script>
-<script src="js/idle-timeout.js"></script>
-<script src="cookie-consent.js"></script>
 </body>
 </html>
