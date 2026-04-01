@@ -484,8 +484,8 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
 
 <div class="toast" id="toast"></div>
 
-<!-- Single bundle replaces ~22 individual script tags -->
-<script src="dist/settings.bundle.js"></script>
-<script src="js/init-settings.js"></script>
+<!-- Single bundle with shared chunks (code-splitting) -->
+<script type="module" src="dist/settings.bundle.js"></script>
+<script src="js/init-settings.js" defer></script>
 </body>
 </html>

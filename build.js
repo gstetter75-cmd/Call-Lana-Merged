@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 // ==========================================
-// Call Lana Build Script — esbuild bundler
+// Call Lana Build Script — esbuild bundler with code splitting
 // Usage: node build.js [--watch]
 //
-// Bundles ES Module entrypoints from js/entries/*.js into dist/*.bundle.js.
-// esbuild resolves all imports, tree-shakes unused code, and minifies.
+// Bundles ES Module entrypoints with shared chunks.
+// Shared code (db modules, utils, auth) is extracted into chunk files
+// that are loaded once and shared across pages.
 // ==========================================
 
 const esbuild = require('esbuild');
@@ -14,73 +15,77 @@ const path = require('path');
 const isWatch = process.argv.includes('--watch');
 
 const pages = ['dashboard', 'admin', 'sales', 'settings'];
+const entryPoints = pages
+  .map(p => `js/entries/${p}.js`)
+  .filter(f => fs.existsSync(f));
 
 // Create dist directory
 if (!fs.existsSync('dist')) fs.mkdirSync('dist');
 
 async function build() {
   const startTime = Date.now();
+
+  // Clean old chunks (keep source maps for debugging)
+  const oldFiles = fs.readdirSync('dist').filter(f => f.endsWith('.js') || f.endsWith('.js.map'));
+  oldFiles.forEach(f => fs.unlinkSync(path.join('dist', f)));
+
+  await esbuild.build({
+    entryPoints,
+    bundle: true,
+    splitting: true,       // Extract shared code into chunk files
+    format: 'esm',         // Required for splitting
+    minify: true,
+    sourcemap: true,
+    outdir: 'dist',
+    target: ['es2020'],
+    charset: 'utf8',
+    entryNames: '[name].bundle',
+    chunkNames: 'chunk-[hash]',
+    define: {
+      'process.env.NODE_ENV': '"production"',
+    },
+  });
+
+  // Report sizes
   let totalSize = 0;
+  const distFiles = fs.readdirSync('dist').filter(f => f.endsWith('.js') && !f.endsWith('.map'));
+  const bundles = distFiles.filter(f => f.includes('.bundle.'));
+  const chunks = distFiles.filter(f => f.startsWith('chunk-'));
 
-  for (const page of pages) {
-    const entryPoint = `js/entries/${page}.js`;
-    const outfile = `dist/${page}.bundle.js`;
+  for (const f of bundles) {
+    const size = fs.statSync(path.join('dist', f)).size;
+    totalSize += size;
+    console.log(`  ✓ dist/${f} (${(size / 1024).toFixed(1)} KB)`);
+  }
 
-    if (!fs.existsSync(entryPoint)) {
-      console.warn(`  ⚠ Skipping missing entrypoint: ${entryPoint}`);
-      continue;
-    }
-
-    try {
-      await esbuild.build({
-        entryPoints: [entryPoint],
-        bundle: true,
-        minify: true,
-        sourcemap: true,
-        outfile,
-        target: ['es2020'],
-        format: 'iife',  // Wrap in IIFE for browser compat (no module loader needed)
-        charset: 'utf8',
-        // Supabase is loaded from CDN, mark as external
-        external: [],
-        // Define for dead code elimination
-        define: {
-          'process.env.NODE_ENV': '"production"',
-        },
-      });
-
-      const size = fs.statSync(outfile).size;
-      totalSize += size;
-      console.log(`  ✓ ${outfile} (${(size / 1024).toFixed(1)} KB)`);
-    } catch (err) {
-      console.error(`  ✗ ${outfile} failed:`, err.message);
-    }
+  let chunkTotal = 0;
+  for (const f of chunks) {
+    chunkTotal += fs.statSync(path.join('dist', f)).size;
+  }
+  if (chunks.length > 0) {
+    console.log(`  ✓ ${chunks.length} shared chunks (${(chunkTotal / 1024).toFixed(1)} KB)`);
+    totalSize += chunkTotal;
   }
 
   console.log(`\n  Total: ${(totalSize / 1024).toFixed(1)} KB in ${Date.now() - startTime}ms`);
 }
 
-// Generate a build manifest with timestamps for cache-busting
 function writeManifest() {
-  const manifest = { buildTime: Date.now(), version: Date.now().toString(36) };
-  pages.forEach(page => {
-    const outfile = `dist/${page}.bundle.js`;
-    if (fs.existsSync(outfile)) {
-      const stat = fs.statSync(outfile);
-      manifest[page] = { size: stat.size, file: `${page}.bundle.js` };
-    }
-  });
+  const distFiles = fs.readdirSync('dist').filter(f => f.endsWith('.js') && !f.endsWith('.map'));
+  const manifest = { buildTime: Date.now(), version: Date.now().toString(36), files: {} };
+
+  for (const f of distFiles) {
+    manifest.files[f] = fs.statSync(path.join('dist', f)).size;
+  }
+
   fs.writeFileSync('dist/manifest.json', JSON.stringify(manifest, null, 2));
-  // Write a small JS snippet that HTML pages can include for cache-busted paths
-  const v = manifest.version;
-  fs.writeFileSync('dist/version.js', `window.__buildVersion="${v}";`);
-  return v;
+  return manifest.version;
 }
 
 console.log('Building Call Lana bundles...\n');
 build().then(() => {
   const v = writeManifest();
-  console.log(`\n  Done! Bundles are in dist/ (version: ${v})`);
+  console.log(`\n  Done! (version: ${v})`);
   if (isWatch) {
     console.log('  Watching for changes...');
     fs.watch('js', { recursive: true }, () => {

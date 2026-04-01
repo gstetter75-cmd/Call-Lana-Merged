@@ -649,8 +649,8 @@
   </div>
 </div>
 
-<!-- Single bundle replaces ~22 individual script tags -->
-<script src="dist/sales.bundle.js"></script>
-<script src="js/init-sw.js"></script>
+<!-- Single bundle with shared chunks (code-splitting) -->
+<script type="module" src="dist/sales.bundle.js"></script>
+<script src="js/init-sw.js" defer></script>
 </body>
 </html>

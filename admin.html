@@ -555,8 +555,8 @@
   </div>
 </div>
 
-<!-- Single bundle replaces ~33 individual script tags -->
-<script src="dist/admin.bundle.js"></script>
-<script src="js/init-sw.js"></script>
+<!-- Single bundle with shared chunks (code-splitting) -->
+<script type="module" src="dist/admin.bundle.js"></script>
+<script src="js/init-sw.js" defer></script>
 </body>
 </html>
