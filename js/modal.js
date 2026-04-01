@@ -33,9 +33,22 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Click overlay background to close
+// Click overlay background to close + data-close-modal support
 document.addEventListener('click', (e) => {
   if (e.target.classList.contains('modal-overlay') && e.target.classList.contains('active')) {
     closeModal(e.target.id);
+    return;
+  }
+  // data-close-modal="modal-id" replaces onclick="closeModal('modal-id')"
+  const closeBtn = e.target.closest('[data-close-modal]');
+  if (closeBtn) {
+    closeModal(closeBtn.dataset.closeModal);
+    return;
+  }
+  // .modal-close buttons close their parent overlay
+  const modalClose = e.target.closest('.modal-close');
+  if (modalClose) {
+    const overlay = modalClose.closest('.modal-overlay');
+    if (overlay) closeModal(overlay.id);
   }
 });

@@ -334,7 +334,7 @@
   <div class="modal">
     <div class="modal-header">
       <h3 class="modal-title">Neuer Lead</h3>
-      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-add-lead')">&times;</button>
+      <button class="modal-close" aria-label="Schließen">&times;</button>
     </div>
     <div class="form-group">
       <label class="form-label">Firma *</label>
@@ -393,7 +393,7 @@
       <textarea class="form-input" id="lead-notes" rows="3" placeholder="Erste Notizen..."></textarea>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('modal-add-lead')">Abbrechen</button>
+      <button class="btn btn-outline" data-close-modal="modal-add-lead">Abbrechen</button>
       <button class="btn" id="btn-save-lead">Lead erstellen</button>
     </div>
   </div>
@@ -404,7 +404,7 @@
   <div class="modal">
     <div class="modal-header">
       <h3 class="modal-title">Neue Aufgabe</h3>
-      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-add-task')">&times;</button>
+      <button class="modal-close" aria-label="Schließen">&times;</button>
     </div>
     <div class="form-group">
       <label class="form-label">Titel *</label>
@@ -436,7 +436,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('modal-add-task')">Abbrechen</button>
+      <button class="btn btn-outline" data-close-modal="modal-add-task">Abbrechen</button>
       <button class="btn" id="btn-save-task">Aufgabe erstellen</button>
     </div>
   </div>
@@ -447,7 +447,7 @@
   <div class="modal">
     <div class="modal-header">
       <h3 class="modal-title">Verfügbarkeit eintragen</h3>
-      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-avail')">&times;</button>
+      <button class="modal-close" aria-label="Schließen">&times;</button>
     </div>
     <div class="form-group">
       <label class="form-label">Datum</label>
@@ -477,7 +477,7 @@
       <input type="text" class="form-input" id="avail-note" placeholder="Optional...">
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('modal-avail')">Abbrechen</button>
+      <button class="btn btn-outline" data-close-modal="modal-avail">Abbrechen</button>
       <button class="btn" id="btn-save-avail">Speichern</button>
     </div>
   </div>
@@ -488,7 +488,7 @@
   <div class="modal" style="max-width:600px;">
     <div class="modal-header">
       <h3 class="modal-title">Lead Details</h3>
-      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-lead-detail')">&times;</button>
+      <button class="modal-close" aria-label="Schließen">&times;</button>
     </div>
     <div id="lead-detail-content">
       <div style="text-align:center;color:var(--tx3);padding:40px;">Laden...</div>
@@ -501,7 +501,7 @@
   <div class="modal" style="max-width:700px;">
     <div class="modal-header">
       <h3 class="modal-title">Kundendetails</h3>
-      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-customer-detail')">&times;</button>
+      <button class="modal-close" aria-label="Schließen">&times;</button>
     </div>
     <div id="cust-detail-content"></div>
   </div>
@@ -512,7 +512,7 @@
   <div class="modal">
     <div class="modal-header">
       <h3 class="modal-title" id="cust-modal-title">Neuer Kunde</h3>
-      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-add-customer')">&times;</button>
+      <button class="modal-close" aria-label="Schließen">&times;</button>
     </div>
     <div class="form-group"><label class="form-label">Firma *</label><input type="text" class="form-input" id="cust-company" placeholder="Firmenname"></div>
     <div class="form-group"><label class="form-label">Kontaktperson</label><input type="text" class="form-input" id="cust-contact" placeholder="Vor- und Nachname"></div>
@@ -548,7 +548,7 @@
     <div class="form-group"><label class="form-label">Adresse</label><input type="text" class="form-input" id="cust-address" placeholder="Straße, PLZ Ort"></div>
     <div class="form-group"><label class="form-label">Notizen</label><textarea class="form-input" id="cust-notes-field" rows="2" placeholder="Notizen..."></textarea></div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('modal-add-customer')">Abbrechen</button>
+      <button class="btn btn-outline" data-close-modal="modal-add-customer">Abbrechen</button>
       <button class="btn" id="btn-save-customer" onclick="saveCustomer()">Kunde erstellen</button>
     </div>
   </div>
@@ -559,7 +559,7 @@
   <div class="modal">
     <div class="modal-header">
       <h3 class="modal-title">Anruf protokollieren</h3>
-      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-call-protocol')">&times;</button>
+      <button class="modal-close" aria-label="Schließen">&times;</button>
     </div>
     <input type="hidden" id="cp-customer-id">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
@@ -591,7 +591,7 @@
       <div class="form-group" style="padding-bottom:2px;"><label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="cp-create-task" checked> Task erstellen</label></div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('modal-call-protocol')">Abbrechen</button>
+      <button class="btn btn-outline" data-close-modal="modal-call-protocol">Abbrechen</button>
       <button class="btn" onclick="saveCallProtocol()">Protokoll speichern</button>
     </div>
   </div>
@@ -602,7 +602,7 @@
   <div class="modal" style="max-width:600px;">
     <div class="modal-header">
       <h3 class="modal-title">Kunden aus CSV importieren</h3>
-      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-csv-import')">&times;</button>
+      <button class="modal-close" aria-label="Schließen">&times;</button>
     </div>
     <div class="form-group">
       <label class="form-label">CSV-Datei auswählen</label>
@@ -612,7 +612,7 @@
     <div style="font-weight:600;font-size:13px;margin-bottom:8px;" id="csv-import-count"></div>
     <div id="csv-preview-content" style="max-height:250px;overflow:auto;"></div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('modal-csv-import')">Abbrechen</button>
+      <button class="btn btn-outline" data-close-modal="modal-csv-import">Abbrechen</button>
       <button class="btn" id="btn-csv-import" onclick="importCSVCustomers()">Importieren</button>
     </div>
   </div>
@@ -623,7 +623,7 @@
   <div class="modal">
     <div class="modal-header">
       <h3 class="modal-title">Abwesenheit beantragen</h3>
-      <button class="modal-close" aria-label="Schließen" onclick="closeModal('modal-time-off')">&times;</button>
+      <button class="modal-close" aria-label="Schließen">&times;</button>
     </div>
     <div class="form-group"><label class="form-label">Typ</label>
       <select class="form-input form-select" id="to-type">
@@ -643,7 +643,7 @@
     </div>
     <div class="form-group"><label class="form-label">Notiz</label><textarea class="form-input" id="to-note" rows="2" placeholder="Optional..."></textarea></div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('modal-time-off')">Abbrechen</button>
+      <button class="btn btn-outline" data-close-modal="modal-time-off">Abbrechen</button>
       <button class="btn" onclick="AvailabilityModule.saveTimeOffRequest()">Beantragen</button>
     </div>
   </div>

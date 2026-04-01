@@ -211,4 +211,66 @@ describe('Admin Dashboard', () => {
       expect(tabs).not.toContain(undefined);
     });
   });
+
+  describe('loadCustomers', () => {
+    it('renders only customers (not sales/admin roles)', async () => {
+      (window as any).clanaDB.getAllProfiles.mockResolvedValue({
+        success: true,
+        data: [
+          { id: 'c1', first_name: 'Kunde', last_name: 'Eins', email: 'k@test.de', role: 'customer', is_active: true, created_at: '2025-01-01T00:00:00Z', organizations: { name: 'Org', plan: 'starter' } },
+          { id: 'a1', first_name: 'Admin', last_name: 'User', email: 'a@test.de', role: 'superadmin', is_active: true, created_at: '2025-01-01T00:00:00Z' },
+          { id: 's1', first_name: 'Sales', last_name: 'Rep', email: 's@test.de', role: 'sales', is_active: true, created_at: '2025-01-01T00:00:00Z' },
+        ],
+      });
+
+      await (window as any).loadCustomers();
+      const tbody = document.getElementById('customers-tbody')!;
+
+      // Should only show the customer, not admin/sales
+      expect(tbody.innerHTML).toContain('k@test.de');
+      expect(tbody.innerHTML).not.toContain('a@test.de');
+      expect(tbody.innerHTML).not.toContain('s@test.de');
+    });
+
+    it('shows empty state when no customers', async () => {
+      (window as any).clanaDB.getAllProfiles.mockResolvedValue({
+        success: true,
+        data: [
+          { id: 'a1', role: 'superadmin', created_at: '2025-01-01T00:00:00Z' },
+        ],
+      });
+
+      await (window as any).loadCustomers();
+      const tbody = document.getElementById('customers-tbody')!;
+      expect(tbody.innerHTML).toContain('Keine Kunden');
+    });
+
+    it('sanitizes customer data in output', async () => {
+      (window as any).clanaDB.getAllProfiles.mockResolvedValue({
+        success: true,
+        data: [
+          { id: 'xss', first_name: '<img onerror=alert(1)>', last_name: '', email: 'test@test.de', role: 'customer', is_active: true, created_at: '2025-01-01T00:00:00Z', organizations: { plan: 'starter' } },
+        ],
+      });
+
+      await (window as any).loadCustomers();
+      const tbody = document.getElementById('customers-tbody')!;
+      expect(tbody.innerHTML).not.toContain('<img');
+      expect(tbody.innerHTML).toContain('&lt;img');
+    });
+
+    it('uses data-action instead of onclick for detail button', async () => {
+      (window as any).clanaDB.getAllProfiles.mockResolvedValue({
+        success: true,
+        data: [
+          { id: 'c1', first_name: 'Test', last_name: '', email: 'c@t.de', role: 'customer', is_active: true, created_at: '2025-01-01T00:00:00Z', organizations: { plan: 'starter' } },
+        ],
+      });
+
+      await (window as any).loadCustomers();
+      const tbody = document.getElementById('customers-tbody')!;
+      expect(tbody.innerHTML).toContain('data-action="view-customer"');
+      expect(tbody.innerHTML).not.toContain('onclick=');
+    });
+  });
 });

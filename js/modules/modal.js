@@ -29,8 +29,22 @@ export function initModalListeners() {
   });
 
   document.addEventListener('click', (e) => {
+    // Overlay click to close
     if (e.target.classList.contains('modal-overlay') && e.target.classList.contains('active')) {
       closeModal(e.target.id);
+      return;
+    }
+    // data-close-modal attribute on buttons (replaces onclick="closeModal('...')")
+    const closeBtn = e.target.closest('[data-close-modal]');
+    if (closeBtn) {
+      closeModal(closeBtn.dataset.closeModal);
+      return;
+    }
+    // .modal-close buttons close their parent overlay
+    const modalClose = e.target.closest('.modal-close');
+    if (modalClose) {
+      const overlay = modalClose.closest('.modal-overlay');
+      if (overlay) closeModal(overlay.id);
     }
   });
 }
