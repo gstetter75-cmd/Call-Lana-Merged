@@ -15,6 +15,13 @@ if (typeof SafeActions !== 'undefined') {
     'open-protocol': (id) => openCallProtocolModal(id),
     'edit-customer': (id) => editCustomer(id),
     'save-note': (id) => saveCustomerNote(id),
+    'open-csv-import': () => openCSVImportModal(),
+    'export-customers-csv': () => exportCustomersCSV(),
+    'open-new-customer': () => openNewCustomerModal(),
+    'save-customer': () => saveCustomer(),
+    'save-protocol': () => saveCallProtocol(),
+    'import-csv-customers': () => importCSVCustomers(),
+    'save-time-off': () => { if (typeof AvailabilityModule !== 'undefined') AvailabilityModule.saveTimeOffRequest(); },
   });
 }
 

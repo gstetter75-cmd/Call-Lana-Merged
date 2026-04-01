@@ -161,7 +161,7 @@
               <h3 style="margin:0;font-size:14px;">Automatische Rechnungen</h3>
               <p style="margin:4px 0 0;font-size:12px;color:var(--tx3);">Generiere monatliche Rechnungen für alle aktiven Kunden basierend auf deren Plan.</p>
             </div>
-            <button class="btn btn-sm" onclick="AdminAnalytics.generateMonthlyInvoices()">Rechnungen generieren</button>
+            <button class="btn btn-sm" data-action="gen-invoices">Rechnungen generieren</button>
           </div>
         </div>
       </div>
@@ -283,7 +283,7 @@
           <h1>Alle Kunden</h1>
           <div style="display:flex;gap:12px;align-items:center;">
             <input type="text" class="search-input" id="customer-search" placeholder="Kunden suchen...">
-            <button class="btn btn-sm btn-outline" onclick="exportCustomersCSV()">CSV Export</button>
+            <button class="btn btn-sm btn-outline" data-action="export-customers-csv">CSV Export</button>
           </div>
         </div>
         <div class="card" style="padding:0;overflow:hidden;">
@@ -314,7 +314,7 @@
           <h1>Benutzer verwalten</h1>
           <div style="display:flex;gap:12px;align-items:center;">
             <input type="text" class="search-input" id="user-search" placeholder="Benutzer suchen...">
-            <button class="btn btn-sm btn-outline" onclick="AdminOverview.exportUsersCSV()">📥 CSV</button>
+            <button class="btn btn-sm btn-outline" data-action="export-users-csv">📥 CSV</button>
             <button class="btn btn-sm" id="btn-add-user">+ Benutzer</button>
           </div>
         </div>
@@ -342,7 +342,7 @@
       <div class="page-section" id="tab-orgs">
         <div class="admin-header">
           <h1>Organisationen</h1>
-          <button class="btn btn-sm btn-outline" onclick="AdminOverview.exportOrgsCSV()">📥 CSV</button>
+          <button class="btn btn-sm btn-outline" data-action="export-orgs-csv">📥 CSV</button>
           <button class="btn btn-sm" id="btn-add-org">+ Organisation</button>
         </div>
         <div class="card" style="padding:0;overflow:hidden;">

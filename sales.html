@@ -215,9 +215,9 @@
         <div class="pipeline-header">
           <h1>Kunden</h1>
           <div style="display:flex;gap:8px;">
-            <button class="btn btn-outline btn-sm" onclick="openCSVImportModal()">📁 CSV Import</button>
-            <button class="btn btn-outline btn-sm" onclick="exportCustomersCSV()">📥 CSV Export</button>
-            <button class="btn btn-sm" onclick="openNewCustomerModal()">+ Neuer Kunde</button>
+            <button class="btn btn-outline btn-sm" data-action="open-csv-import">📁 CSV Import</button>
+            <button class="btn btn-outline btn-sm" data-action="export-customers-csv">📥 CSV Export</button>
+            <button class="btn btn-sm" data-action="open-new-customer">+ Neuer Kunde</button>
           </div>
         </div>
 
@@ -549,7 +549,7 @@
     <div class="form-group"><label class="form-label">Notizen</label><textarea class="form-input" id="cust-notes-field" rows="2" placeholder="Notizen..."></textarea></div>
     <div class="modal-footer">
       <button class="btn btn-outline" data-close-modal="modal-add-customer">Abbrechen</button>
-      <button class="btn" id="btn-save-customer" onclick="saveCustomer()">Kunde erstellen</button>
+      <button class="btn" id="btn-save-customer" data-action="save-customer">Kunde erstellen</button>
     </div>
   </div>
 </div>
@@ -592,7 +592,7 @@
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" data-close-modal="modal-call-protocol">Abbrechen</button>
-      <button class="btn" onclick="saveCallProtocol()">Protokoll speichern</button>
+      <button class="btn" data-action="save-protocol">Protokoll speichern</button>
     </div>
   </div>
 </div>
@@ -613,7 +613,7 @@
     <div id="csv-preview-content" style="max-height:250px;overflow:auto;"></div>
     <div class="modal-footer">
       <button class="btn btn-outline" data-close-modal="modal-csv-import">Abbrechen</button>
-      <button class="btn" id="btn-csv-import" onclick="importCSVCustomers()">Importieren</button>
+      <button class="btn" id="btn-csv-import" data-action="import-csv-customers">Importieren</button>
     </div>
   </div>
 </div>
@@ -644,7 +644,7 @@
     <div class="form-group"><label class="form-label">Notiz</label><textarea class="form-input" id="to-note" rows="2" placeholder="Optional..."></textarea></div>
     <div class="modal-footer">
       <button class="btn btn-outline" data-close-modal="modal-time-off">Abbrechen</button>
-      <button class="btn" onclick="AvailabilityModule.saveTimeOffRequest()">Beantragen</button>
+      <button class="btn" data-action="save-time-off">Beantragen</button>
     </div>
   </div>
 </div>

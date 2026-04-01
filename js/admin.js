@@ -756,6 +756,10 @@ if (typeof SafeActions !== 'undefined') {
       closeModal('modal-customer-detail');
       ImpersonationManager.start(id);
     },
+    'gen-invoices': () => { if (typeof AdminAnalytics !== 'undefined') AdminAnalytics.generateMonthlyInvoices(); },
+    'export-customers-csv': () => exportCustomersCSV(),
+    'export-users-csv': () => { if (typeof AdminOverview !== 'undefined') AdminOverview.exportUsersCSV(); },
+    'export-orgs-csv': () => { if (typeof AdminOverview !== 'undefined') AdminOverview.exportOrgsCSV(); },
   });
 }
 

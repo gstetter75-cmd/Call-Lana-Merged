@@ -9,6 +9,28 @@ let userSettings = {};
 if (typeof SafeActions !== 'undefined') {
   SafeActions.registerAll({
     'open-conn': (id) => openConnModal(id),
+    'save-profile': () => saveProfile(),
+    'save-billing': () => saveBillingAddress(),
+    'change-pw': () => changePassword(),
+    'save-notifs': () => saveNotifications(),
+    'toggle-notif': (_, __, el) => toggleNotif(el),
+    'close-conn': () => closeConnModal(),
+    'conn-oauth': () => connStartOAuth(),
+    'conn-save-api': () => connSaveApiKey(),
+    'conn-copy-webhook': () => connCopyWebhook(),
+    'conn-toggle-secret': () => connToggleSecret(),
+    'conn-activate-webhook': () => connActivateWebhook(),
+    'conn-save-sip': () => connSaveSip(),
+    'conn-copy-forward': () => connCopyForward(),
+    'conn-activate-forward': () => connActivateForward(),
+    'conn-notify-ready': () => connNotifyReady(),
+    'conn-disconnect': () => connDisconnect(),
+    'save-emergency': () => { if (typeof SettingsExtra !== 'undefined') SettingsExtra.saveEmergency(); },
+    'connect-calendar': () => { if (typeof SettingsExtra !== 'undefined') SettingsExtra.connectCalendar(); },
+    'save-calendar': () => { if (typeof SettingsExtra !== 'undefined') SettingsExtra.saveCalendar(); },
+    'add-forward-rule': () => { if (typeof SettingsExtra !== 'undefined') SettingsExtra.addForwardingRule(); },
+    'save-addons': () => { if (typeof SettingsExtra !== 'undefined') SettingsExtra.saveAddons(); },
+    'delete-account': () => deleteAccount(),
   });
 }
 

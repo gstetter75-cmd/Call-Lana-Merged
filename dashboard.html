@@ -109,7 +109,7 @@ body{display:flex;overflow:hidden;}
             </svg>
             <div class="donut-center" id="donutCenter">0 €</div>
           </div>
-          <button class="btn-balance" onclick="if(typeof openTopupModal==='function')openTopupModal();else navigateToPage('billing');">Guthaben kaufen</button>
+          <button class="btn-balance" data-action="open-topup">Guthaben kaufen</button>
         </div>
       </div>
 
@@ -119,7 +119,7 @@ body{display:flex;overflow:hidden;}
         <div class="card" style="padding:16px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
             <h3 style="margin:0;font-size:14px;">Letzte Anrufe</h3>
-            <a href="#transactions" onclick="navigateToPage('transactions')" style="font-size:11px;color:var(--pu);text-decoration:none;font-weight:600;">Alle →</a>
+            <a href="#transactions" data-action="navigate" data-id="transactions" style="font-size:11px;color:var(--pu);text-decoration:none;font-weight:600;">Alle →</a>
           </div>
           <div id="widget-recent-calls">
             <div style="color:var(--tx3);font-size:13px;text-align:center;padding:20px;">Lade…</div>
@@ -180,7 +180,7 @@ body{display:flex;overflow:hidden;}
     <!-- ===================== ASSISTANT EDIT ===================== -->
     <div id="page-assistant-edit" class="page-section">
       <div class="page-title-row">
-        <button class="btn-secondary" style="padding:8px 14px;font-size:12px;" onclick="navigateToPage('assistants')">← Zurück</button>
+        <button class="btn-secondary" style="padding:8px 14px;font-size:12px;" data-action="navigate" data-id="assistants">← Zurück</button>
         <h1 id="editTitle">Assistent bearbeiten</h1>
       </div>
       <p class="page-desc" id="editDesc">Konfiguriere deinen Assistenten.</p>
@@ -342,7 +342,7 @@ body{display:flex;overflow:hidden;}
       <!-- SAVE BUTTON -->
       <div style="margin-top:28px;display:flex;gap:12px;">
         <button class="btn-primary" id="btnSaveAssistant">Speichern</button>
-        <button class="btn-secondary" onclick="navigateToPage('assistants')">Abbrechen</button>
+        <button class="btn-secondary" data-action="navigate" data-id="assistants">Abbrechen</button>
       </div>
     </div>
 
@@ -375,7 +375,7 @@ body{display:flex;overflow:hidden;}
     <div id="page-phones" class="page-section">
       <div class="page-title-row">
         <h1>Telefonnummern</h1>
-        <button class="btn-primary" style="font-size:13px;padding:10px 20px;" onclick="navigateToPage('assistants');showToast('Weise eine Telefonnummer im Assistenten-Editor zu.')">+ Nummer zuweisen</button>
+        <button class="btn-primary" style="font-size:13px;padding:10px 20px;" data-action="assign-number">+ Nummer zuweisen</button>
       </div>
       <p class="page-desc">Deine zugewiesenen Telefonnummern.</p>
 
@@ -399,7 +399,7 @@ body{display:flex;overflow:hidden;}
       <div id="transcript-search-section"></div>
       <div class="page-title-row">
         <h1>Anrufverlauf</h1>
-        <button class="btn-secondary" style="font-size:12px;padding:8px 16px;" onclick="CallsPage.exportCSV()">📥 CSV Export</button>
+        <button class="btn-secondary" style="font-size:12px;padding:8px 16px;" data-action="export-csv-calls">📥 CSV Export</button>
       </div>
       <p class="page-desc">Alle Anrufe auf einen Blick.</p>
 
@@ -440,8 +440,8 @@ body{display:flex;overflow:hidden;}
         <h1>Termine</h1>
         <div style="display:flex;gap:8px;align-items:center;">
           <div class="editor-tabs" style="margin-bottom:0;">
-            <button class="editor-tab active" onclick="AppointmentsPage.setView('week')">Woche</button>
-            <button class="editor-tab" onclick="AppointmentsPage.setView('list')">Liste</button>
+            <button class="editor-tab active" data-action="appt-view" data-id="week">Woche</button>
+            <button class="editor-tab" data-action="appt-view" data-id="list">Liste</button>
           </div>
         </div>
       </div>
@@ -449,9 +449,9 @@ body{display:flex;overflow:hidden;}
 
       <!-- Week Navigation -->
       <div id="appt-week-nav" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-        <button class="btn-secondary" style="padding:6px 12px;font-size:12px;" onclick="AppointmentsPage.prevWeek()">← Vorherige</button>
+        <button class="btn-secondary" style="padding:6px 12px;font-size:12px;" data-action="appt-prev">← Vorherige</button>
         <span style="font-size:14px;font-weight:700;" id="appt-week-label">Woche</span>
-        <button class="btn-secondary" style="padding:6px 12px;font-size:12px;" onclick="AppointmentsPage.nextWeek()">Nächste →</button>
+        <button class="btn-secondary" style="padding:6px 12px;font-size:12px;" data-action="appt-next">Nächste →</button>
       </div>
 
       <!-- Week View -->
@@ -527,7 +527,7 @@ body{display:flex;overflow:hidden;}
           <div class="balance-label">Aktuelles Guthaben</div>
           <div class="balance-value-big" id="balanceValue">–</div>
           <div class="balance-sub" id="balanceSub">Lade…</div>
-          <button class="btn-primary" style="margin-top:16px;" onclick="openTopupModal()">Guthaben aufladen</button>
+          <button class="btn-primary" style="margin-top:16px;" data-action="open-topup">Guthaben aufladen</button>
         </div>
 
         <!-- Plan Minutes Usage -->
@@ -692,17 +692,17 @@ body{display:flex;overflow:hidden;}
       <div class="modal" style="max-width:440px;">
         <div class="modal-header">
           <h2>Guthaben aufladen</h2>
-          <button class="modal-close" aria-label="Schließen" onclick="closeTopupModal()">&times;</button>
+          <button class="modal-close" aria-label="Schließen" data-action="close-topup">&times;</button>
         </div>
         <div class="modal-body">
           <p style="font-size:13px;color:var(--tx2);margin-bottom:20px;">Wähle einen Betrag. Die Abbuchung erfolgt über deine hinterlegte Zahlungsmethode.</p>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;">
-            <button class="topup-btn" data-amount="1000" onclick="selectTopup(this)">10 €</button>
-            <button class="topup-btn" data-amount="2000" onclick="selectTopup(this)">20 €</button>
-            <button class="topup-btn active" data-amount="5000" onclick="selectTopup(this)">50 €</button>
-            <button class="topup-btn" data-amount="10000" onclick="selectTopup(this)">100 €</button>
-            <button class="topup-btn" data-amount="20000" onclick="selectTopup(this)">200 €</button>
-            <button class="topup-btn" data-amount="50000" onclick="selectTopup(this)">500 €</button>
+            <button class="topup-btn" data-amount="1000" data-action="select-topup">10 €</button>
+            <button class="topup-btn" data-amount="2000" data-action="select-topup">20 €</button>
+            <button class="topup-btn active" data-amount="5000" data-action="select-topup">50 €</button>
+            <button class="topup-btn" data-amount="10000" data-action="select-topup">100 €</button>
+            <button class="topup-btn" data-amount="20000" data-action="select-topup">200 €</button>
+            <button class="topup-btn" data-amount="50000" data-action="select-topup">500 €</button>
           </div>
           <div style="font-size:12px;color:var(--tx3);margin-bottom:8px;">Oder eigenen Betrag eingeben:</div>
           <div style="display:flex;gap:10px;align-items:center;">
@@ -711,8 +711,8 @@ body{display:flex;overflow:hidden;}
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn-secondary" onclick="closeTopupModal()">Abbrechen</button>
-          <button class="btn-primary" id="topupConfirmBtn" onclick="confirmTopup()">50,00 € aufladen</button>
+          <button class="btn-secondary" data-action="close-topup">Abbrechen</button>
+          <button class="btn-primary" id="topupConfirmBtn" data-action="confirm-topup">50,00 € aufladen</button>
         </div>
       </div>
     </div>
@@ -733,7 +733,7 @@ body{display:flex;overflow:hidden;}
             <div class="icon">💳</div>
             <h3>Keine primäre Zahlungsmethode</h3>
             <p>Hinterlege eine Zahlungsmethode, um Call Lana nutzen zu können.</p>
-            <button class="btn-primary" style="margin-top:16px;font-size:13px;padding:10px 20px;" onclick="openPaymentModal(1)">+ Zahlungsmethode hinzufügen</button>
+            <button class="btn-primary" style="margin-top:16px;font-size:13px;padding:10px 20px;" data-action="open-payment" data-id="1">+ Zahlungsmethode hinzufügen</button>
           </div>
           <div id="pm1Card" style="display:none;">
             <div style="display:flex;align-items:center;justify-content:space-between;">
@@ -745,8 +745,8 @@ body{display:flex;overflow:hidden;}
                 <div style="font-size:12px;color:var(--tx3);margin-top:4px;" id="pm1Detail">–</div>
               </div>
               <div style="display:flex;gap:8px;">
-                <button class="btn-secondary" style="font-size:12px;padding:8px 14px;" onclick="openPaymentModal(1)">Ändern</button>
-                <button class="btn-danger" style="font-size:12px;padding:8px 14px;" onclick="removePaymentMethod(1)">Entfernen</button>
+                <button class="btn-secondary" style="font-size:12px;padding:8px 14px;" data-action="open-payment" data-id="1">Ändern</button>
+                <button class="btn-danger" style="font-size:12px;padding:8px 14px;" data-action="remove-payment" data-id="1">Entfernen</button>
               </div>
             </div>
           </div>
@@ -764,7 +764,7 @@ body{display:flex;overflow:hidden;}
             <div class="icon">🔄</div>
             <h3>Keine Ersatz-Zahlungsmethode</h3>
             <p>Falls die primäre Zahlungsmethode fehlschlägt, wird die Ersatz-Methode belastet.</p>
-            <button class="btn-secondary" style="margin-top:16px;font-size:13px;padding:10px 20px;" onclick="openPaymentModal(2)">+ Ersatz hinzufügen</button>
+            <button class="btn-secondary" style="margin-top:16px;font-size:13px;padding:10px 20px;" data-action="open-payment" data-id="2">+ Ersatz hinzufügen</button>
           </div>
           <div id="pm2Card" style="display:none;">
             <div style="display:flex;align-items:center;justify-content:space-between;">
@@ -776,8 +776,8 @@ body{display:flex;overflow:hidden;}
                 <div style="font-size:12px;color:var(--tx3);margin-top:4px;" id="pm2Detail">–</div>
               </div>
               <div style="display:flex;gap:8px;">
-                <button class="btn-secondary" style="font-size:12px;padding:8px 14px;" onclick="openPaymentModal(2)">Ändern</button>
-                <button class="btn-danger" style="font-size:12px;padding:8px 14px;" onclick="removePaymentMethod(2)">Entfernen</button>
+                <button class="btn-secondary" style="font-size:12px;padding:8px 14px;" data-action="open-payment" data-id="2">Ändern</button>
+                <button class="btn-danger" style="font-size:12px;padding:8px 14px;" data-action="remove-payment" data-id="2">Entfernen</button>
               </div>
             </div>
           </div>
@@ -795,15 +795,15 @@ body{display:flex;overflow:hidden;}
       <div class="modal" style="max-width:520px;">
         <div class="modal-header">
           <h2 id="pmModalTitle">Zahlungsmethode hinzufügen</h2>
-          <button class="modal-close" aria-label="Schließen" onclick="closePaymentModal()">&times;</button>
+          <button class="modal-close" aria-label="Schließen" data-action="close-payment">&times;</button>
         </div>
         <div class="modal-body">
           <!-- Payment Type Selector -->
           <div style="display:flex;gap:10px;margin-bottom:24px;">
-            <button class="pm-type-btn active" data-type="sepa" onclick="selectPaymentType('sepa')">
+            <button class="pm-type-btn active" data-type="sepa" data-action="select-pm-type" data-id="sepa">
               <span>🏦</span> SEPA-Lastschrift
             </button>
-            <button class="pm-type-btn" data-type="credit_card" onclick="selectPaymentType('credit_card')">
+            <button class="pm-type-btn" data-type="credit_card" data-action="select-pm-type" data-id="credit_card">
               <span>💳</span> Kreditkarte
             </button>
             <button class="pm-type-btn" data-type="paypal" disabled style="opacity:0.4;cursor:not-allowed;" title="Demnächst verfügbar">
@@ -885,8 +885,8 @@ body{display:flex;overflow:hidden;}
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn-secondary" onclick="closePaymentModal()">Abbrechen</button>
-          <button class="btn-primary" id="pmSaveBtn" onclick="savePaymentMethod()">Zahlungsmethode speichern</button>
+          <button class="btn-secondary" data-action="close-payment">Abbrechen</button>
+          <button class="btn-primary" id="pmSaveBtn" data-action="save-payment">Zahlungsmethode speichern</button>
         </div>
       </div>
     </div>
@@ -966,7 +966,7 @@ body{display:flex;overflow:hidden;}
         <h1>Integrationen</h1>
         <div style="display:flex;gap:8px;">
           <a href="settings.html#connectors" class="btn-primary" style="font-size:13px;padding:10px 20px;text-decoration:none;">Connectoren verwalten</a>
-          <button class="btn-secondary" style="font-size:13px;padding:10px 20px;" onclick="openContactImport()">CSV-Import</button>
+          <button class="btn-secondary" style="font-size:13px;padding:10px 20px;" data-action="open-contact-import">CSV-Import</button>
         </div>
       </div>
       <p class="page-desc">Hier siehst du deine verbundenen Tools und synchronisierten Kontakte. Connectoren verwaltest du unter <a href="settings.html#connectors" style="color:var(--pu3);">Einstellungen &rarr; Connectoren</a>.</p>
@@ -1011,11 +1011,11 @@ body{display:flex;overflow:hidden;}
       <div class="modal" style="max-width:520px;">
         <div class="modal-header">
           <h2>Kontakte importieren</h2>
-          <button class="modal-close" aria-label="Schließen" onclick="closeCsvImportModal()">&times;</button>
+          <button class="modal-close" aria-label="Schließen" data-action="close-csv-import">&times;</button>
         </div>
         <div class="modal-body">
           <p style="font-size:13px;color:var(--tx2);margin-bottom:16px;">Lade eine CSV-Datei mit Kontaktdaten hoch. Erwartete Spalten: <code>Vorname, Nachname, Firma, Telefon, E-Mail</code></p>
-          <div style="border:2px dashed var(--border);border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;" id="csvDropZone" onclick="document.getElementById('csvFileInput').click()">
+          <div style="border:2px dashed var(--border);border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;" id="csvDropZone" data-action="csv-drop-click">
             <div style="font-size:2rem;margin-bottom:8px;">📄</div>
             <p style="font-size:13px;color:var(--tx3);">CSV-Datei hierher ziehen oder klicken zum Auswählen</p>
             <input type="file" id="csvFileInput" accept=".csv" style="display:none;" onchange="handleCsvFile(this)">
@@ -1026,8 +1026,8 @@ body{display:flex;overflow:hidden;}
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn-secondary" onclick="closeCsvImportModal()">Abbrechen</button>
-          <button class="btn-primary" id="csvImportBtn" onclick="importCsvContacts()" disabled>Importieren</button>
+          <button class="btn-secondary" data-action="close-csv-import">Abbrechen</button>
+          <button class="btn-primary" id="csvImportBtn" data-action="import-csv" disabled>Importieren</button>
         </div>
       </div>
     </div>
@@ -1042,7 +1042,7 @@ body{display:flex;overflow:hidden;}
   <div class="modal">
     <div class="modal-header">
       <h2 class="modal-title">Neue Konversation</h2>
-      <button class="modal-close" aria-label="Schließen" onclick="closeNewConvModal()">&times;</button>
+      <button class="modal-close" aria-label="Schließen" data-action="close-conv">&times;</button>
     </div>
     <div class="form-group">
       <label class="form-label" for="convSubject">Betreff</label>
@@ -1053,8 +1053,8 @@ body{display:flex;overflow:hidden;}
       <textarea id="convMessage" class="form-input form-textarea" placeholder="Schreibe deine Nachricht..." style="min-height:100px;resize:vertical;"></textarea>
     </div>
     <div class="modal-footer">
-      <button class="btn-secondary" onclick="closeNewConvModal()">Abbrechen</button>
-      <button class="btn-primary" onclick="createNewConversation()">Konversation starten</button>
+      <button class="btn-secondary" data-action="close-conv">Abbrechen</button>
+      <button class="btn-primary" data-action="create-conv">Konversation starten</button>
     </div>
   </div>
 </div>
@@ -1064,7 +1064,7 @@ body{display:flex;overflow:hidden;}
   <div class="modal">
     <div class="modal-header">
       <h2 class="modal-title">Teammitglied einladen</h2>
-      <button class="modal-close" aria-label="Schließen" onclick="closeInviteModal()">&times;</button>
+      <button class="modal-close" aria-label="Schließen" data-action="close-invite">&times;</button>
     </div>
     <div class="form-group">
       <label class="form-label" for="inviteEmail">E-Mail-Adresse</label>
@@ -1078,8 +1078,8 @@ body{display:flex;overflow:hidden;}
       </select>
     </div>
     <div class="modal-footer">
-      <button class="btn-secondary" onclick="closeInviteModal()">Abbrechen</button>
-      <button class="btn-primary" onclick="sendInvite()">Einladung senden</button>
+      <button class="btn-secondary" data-action="close-invite">Abbrechen</button>
+      <button class="btn-primary" data-action="send-invite">Einladung senden</button>
     </div>
   </div>
 </div>
@@ -1126,30 +1126,30 @@ if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catc
 <div id="invoiceSelectionBar" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:2px solid var(--pu);padding:14px 24px;align-items:center;justify-content:space-between;z-index:100;box-shadow:0 -4px 12px rgba(0,0,0,.1);">
   <span id="invoiceSelectionCount" style="font-weight:700;color:var(--tx);font-size:14px;">0 Rechnungen ausgewählt</span>
   <div style="display:flex;gap:10px;">
-    <button onclick="downloadSelectedInvoices()" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 16px;cursor:pointer;color:var(--tx);font-size:13px;font-weight:600;font-family:'Manrope',sans-serif;transition:all .2s;">📄 PDFs herunterladen</button>
-    <button onclick="sendSelectedInvoices()" style="background:var(--pu);border:1px solid var(--pu);border-radius:8px;padding:8px 16px;cursor:pointer;color:#fff;font-size:13px;font-weight:600;font-family:'Manrope',sans-serif;transition:all .2s;">✉️ Per E-Mail senden</button>
+    <button data-action="download-invoices" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 16px;cursor:pointer;color:var(--tx);font-size:13px;font-weight:600;font-family:'Manrope',sans-serif;transition:all .2s;">📄 PDFs herunterladen</button>
+    <button data-action="send-invoices" style="background:var(--pu);border:1px solid var(--pu);border-radius:8px;padding:8px 16px;cursor:pointer;color:#fff;font-size:13px;font-weight:600;font-family:'Manrope',sans-serif;transition:all .2s;">✉️ Per E-Mail senden</button>
   </div>
 </div>
 
 <!-- MOBILE BOTTOM NAV (Spec §6) -->
 <nav class="mobile-bottom-nav" id="mobileBottomNav">
-  <a class="mob-nav-item active" data-page="home" onclick="navigateToPage('home')">
+  <a class="mob-nav-item active" data-page="home" data-action="navigate" data-id="home">
     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="14" height="14" rx="3"/><path d="M3 8h14"/></svg>
     <span>Home</span>
   </a>
-  <a class="mob-nav-item" data-page="transactions" onclick="navigateToPage('transactions')">
+  <a class="mob-nav-item" data-page="transactions" data-action="navigate" data-id="transactions">
     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 10h-4l-2 7-4-14-2 7H2"/></svg>
     <span>Anrufe</span>
   </a>
-  <a class="mob-nav-item" data-page="appointments" onclick="navigateToPage('appointments')">
+  <a class="mob-nav-item" data-page="appointments" data-action="navigate" data-id="appointments">
     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="14" height="13" rx="2"/><path d="M3 8h14"/><path d="M7 2v4M13 2v4"/></svg>
     <span>Termine</span>
   </a>
-  <a class="mob-nav-item" data-page="analytics" onclick="navigateToPage('analytics')">
+  <a class="mob-nav-item" data-page="analytics" data-action="navigate" data-id="analytics">
     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 17V11M8 17V7M12 17V9M16 17V4"/></svg>
     <span>Analytics</span>
   </a>
-  <a class="mob-nav-item" data-page="more" onclick="document.querySelector('.sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');">
+  <a class="mob-nav-item" data-page="more" data-action="toggle-sidebar">
     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="5" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="10" cy="15" r="1.5"/></svg>
     <span>Mehr</span>
   </a>
