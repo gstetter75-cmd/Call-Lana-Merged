@@ -67,7 +67,7 @@ Deno.serve(async (req) => {
             p_amount_cents: amountCents,
           });
         } else if (session.mode === 'subscription') {
-          // Plan upgrade
+          // Plan upgrade — also deactivates trial if active
           const plan = session.metadata?.plan || 'starter';
           await supabase
             .from('subscriptions')
@@ -76,6 +76,8 @@ Deno.serve(async (req) => {
               stripe_subscription_id: session.subscription,
               stripe_customer_id: session.customer,
               service_active: true,
+              trial_active: false,
+              paused_reason: null,
             })
             .eq('user_id', userId);
         }

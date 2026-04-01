@@ -65,15 +65,17 @@ const dbMessaging = {
 
   // ====== Messaging / Chat ======
 
-  async getConversations() {
+  async getConversations(limit = 50) {
     try {
       const user = await auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
+      // Only fetch last message per conversation (not all messages)
       const { data, error } = await supabaseClient
         .from('conversations')
-        .select('*, conversation_participants(user_id, profiles(first_name, last_name, role)), messages(content, created_at, sender_id)')
-        .order('updated_at', { ascending: false });
+        .select('*, conversation_participants(user_id, profiles(first_name, last_name, role))')
+        .order('updated_at', { ascending: false })
+        .limit(limit);
 
       if (error) throw error;
       return { success: true, data: data || [] };

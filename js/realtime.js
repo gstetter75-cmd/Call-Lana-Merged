@@ -122,9 +122,15 @@ const RealtimeManager = {
   // ==========================================
 
   _subscribeLeads() {
+    // Filter by assigned_to to only get leads assigned to this user
     const channel = supabaseClient
-      .channel('realtime-leads')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'leads' }, (payload) => {
+      .channel('realtime-leads-' + this._userId)
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'leads',
+        filter: 'assigned_to=eq.' + this._userId,
+      }, (payload) => {
         if (!payload.new) return;
         const name = this._sanitize(payload.new.company_name || 'Neuer Lead');
         if (typeof showToast !== 'undefined') showToast('Neuer Lead: ' + name);
@@ -194,5 +200,8 @@ const RealtimeManager = {
     this._channels = [];
   }
 };
+
+// Auto-cleanup on page unload to prevent orphaned channels
+window.addEventListener('beforeunload', () => RealtimeManager.destroy());
 
 window.RealtimeManager = RealtimeManager;

@@ -457,7 +457,10 @@ function renderFilteredCalls() {
   }
 }
 
+let _callFiltersInitialized = false;
 function initCallFilters() {
+  if (_callFiltersInitialized) return;
+  _callFiltersInitialized = true;
   document.getElementById('callSearchInput')?.addEventListener('input', renderFilteredCalls);
   document.getElementById('callStatusFilter')?.addEventListener('change', renderFilteredCalls);
   document.getElementById('callOutcomeFilter')?.addEventListener('change', renderFilteredCalls);

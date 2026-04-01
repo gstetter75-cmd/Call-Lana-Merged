@@ -723,21 +723,27 @@ async function loadCommissions() {
   // Get won leads (customers acquired by this sales person)
   const wonLeads = allLeads.filter(l => l.status === 'won');
 
-  // Try to load customer profiles for these leads
+  // Batch-load customer profiles for all won leads in a single query (fixes N+1)
+  const wonEmails = wonLeads.map(l => l.email).filter(Boolean);
+  let profileMap = {};
+  if (wonEmails.length > 0) {
+    const { data: profiles } = await supabaseClient
+      .from('profiles')
+      .select('*, organizations(name, plan)')
+      .eq('role', 'customer')
+      .in('email', wonEmails);
+    if (profiles) {
+      profileMap = Object.fromEntries(profiles.map(p => [p.email, p]));
+    }
+  }
+
   let customers = [];
   for (const lead of wonLeads) {
-    // Match lead to a customer profile by email
     if (lead.email) {
-      const { data } = await supabaseClient
-        .from('profiles')
-        .select('*, organizations(name, plan)')
-        .eq('email', lead.email)
-        .eq('role', 'customer')
-        .maybeSingle();
-      if (data) {
-        customers.push({ ...data, lead });
+      const profile = profileMap[lead.email];
+      if (profile) {
+        customers.push({ ...profile, lead });
       } else {
-        // No profile yet — show lead as pending customer
         customers.push({
           email: lead.email,
           first_name: lead.contact_name?.split(' ')[0] || lead.company_name,
