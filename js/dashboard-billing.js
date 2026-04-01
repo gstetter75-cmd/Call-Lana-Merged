@@ -47,32 +47,67 @@ async function confirmTopup() {
   const amount = custom ? Math.round(parseFloat(custom) * 100) : selectedTopupAmount;
 
   if (amount < 500) { showToast('Mindestbetrag: 5,00 €', true); return; }
-  if (amount > 100000) { showToast('Maximalbetrag: 1.000,00 €', true); return; }
+  if (amount > 50000) { showToast('Maximalbetrag: 500,00 €', true); return; }
 
   const btn = document.getElementById('topupConfirmBtn');
   btn.disabled = true;
-  btn.textContent = 'Wird aufgeladen...';
+  btn.textContent = 'Weiterleitung zu Stripe...';
 
   const user = await clanaAuth.getUser();
   if (!user) { showToast('Nicht angemeldet.', true); btn.disabled = false; updateTopupButton(); return; }
 
   try {
-    // Atomic balance topup via PostgreSQL function (prevents race conditions)
-    const { data, error } = await supabaseClient.rpc('atomic_balance_topup', {
-      p_user_id: currentUser.id,
-      p_amount_cents: amount
+    // Create Stripe Checkout Session — actual payment required before balance update
+    const { data, error } = await supabaseClient.functions.invoke('create-checkout-session', {
+      body: {
+        mode: 'topup',
+        amount_cents: amount,
+        success_url: window.location.origin + '/dashboard.html?payment=success#billing',
+        cancel_url: window.location.origin + '/dashboard.html?payment=cancelled#billing',
+      }
     });
-    if (error) throw error;
 
-    showToast('Guthaben aufgeladen: ' + formatCents(amount));
-    closeTopupModal();
-    await loadBillingData();
+    if (error) throw error;
+    if (data?.url) {
+      window.location.href = data.url;
+    } else {
+      throw new Error('Keine Checkout-URL erhalten');
+    }
   } catch (err) {
     Logger.error('topupBalance', err);
     showToast('Aufladung fehlgeschlagen. Bitte versuchen Sie es erneut.', true);
   } finally {
     btn.disabled = false;
     updateTopupButton();
+  }
+}
+
+// Plan selection via Stripe Checkout
+async function selectPlan(plan) {
+  if (!['starter', 'professional'].includes(plan)) {
+    showToast('Für den Business-Plan kontaktiere uns bitte direkt.', true);
+    return;
+  }
+
+  try {
+    const { data, error } = await supabaseClient.functions.invoke('create-checkout-session', {
+      body: {
+        mode: 'subscription',
+        plan,
+        success_url: window.location.origin + '/dashboard.html?payment=success&plan=' + plan + '#plans',
+        cancel_url: window.location.origin + '/dashboard.html?payment=cancelled#plans',
+      }
+    });
+
+    if (error) throw error;
+    if (data?.url) {
+      window.location.href = data.url;
+    } else {
+      throw new Error('Keine Checkout-URL erhalten');
+    }
+  } catch (err) {
+    Logger.error('selectPlan', err);
+    showToast('Plan-Auswahl fehlgeschlagen. Bitte versuche es erneut.', true);
   }
 }
 

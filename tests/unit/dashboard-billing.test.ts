@@ -98,10 +98,10 @@ describe('Dashboard Billing', () => {
       expect((window as any).showToast).toHaveBeenCalledWith('Mindestbetrag: 5,00 €', true);
     });
 
-    it('rejects amounts above 100000 cents', async () => {
-      (document.getElementById('customTopup') as HTMLInputElement).value = '1001';
+    it('rejects amounts above 50000 cents', async () => {
+      (document.getElementById('customTopup') as HTMLInputElement).value = '501';
       await (window as any).confirmTopup();
-      expect((window as any).showToast).toHaveBeenCalledWith('Maximalbetrag: 1.000,00 €', true);
+      expect((window as any).showToast).toHaveBeenCalledWith('Maximalbetrag: 500,00 €', true);
     });
   });
 });

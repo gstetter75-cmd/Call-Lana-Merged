@@ -244,10 +244,19 @@ tr:hover td{background:rgba(124,58,237,.03);}
   .home-top{grid-template-columns:1fr;}.compact-stats,.balance-donut-card{max-width:100%;}
   .billing-top-row{grid-template-columns:1fr 1fr;}
 }
+/* Analytics grid rows */
+.analytics-row-1,.analytics-row-2,.analytics-row-3{display:grid;gap:16px;margin-bottom:16px;}
+.analytics-row-1{grid-template-columns:2fr 1fr;}
+.analytics-row-2{grid-template-columns:1fr 1fr;}
+.analytics-row-3{grid-template-columns:2fr 1fr;margin-bottom:0;}
+/* Plan selection grid */
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+
 @media(max-width:900px){
   .home-top{grid-template-columns:1fr;}.home-top .balance-donut-card{grid-column:span 1;}
   .home-widgets-grid{grid-template-columns:1fr 1fr;}
-  .analytics-row-1,.analytics-row-2,.analytics-row-3{grid-template-columns:1fr !important;}
+  .analytics-row-1,.analytics-row-2,.analytics-row-3{grid-template-columns:1fr;}
+  .plans-grid{grid-template-columns:1fr;}
   .stats-grid{grid-template-columns:repeat(2,1fr);}
   .content{padding:24px 20px;}
   .form-row{grid-template-columns:1fr;}

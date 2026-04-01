@@ -13,24 +13,37 @@ const DashboardAnalytics = {
     const alertContainer = document.getElementById('usage-alert');
     if (!alertContainer) return;
 
+    const trialStatus = window.__trialStatus;
+
+    // Trial users: show trial-specific alerts (banner is already in trial-banner div)
+    if (trialStatus?.status === 'trial_active' || trialStatus?.status === 'trial_expired') {
+      alertContainer.innerHTML = '';
+      return;
+    }
+
+    // Load balance from billing data
     const settingsResult = await clanaDB.getSettings();
     if (!settingsResult.success) return;
 
-    const balance = settingsResult.data?.balance || 0;
-    const monthlyLimit = settingsResult.data?.monthly_limit || 500;
-    const usagePct = monthlyLimit > 0 ? (1 - balance / monthlyLimit) * 100 : 0;
+    const balance = settingsResult.data?.balance;
 
-    if (balance <= 10) {
+    // No balance field means user has no billing setup yet — don't show warning
+    if (balance === undefined || balance === null) {
+      alertContainer.innerHTML = '';
+      return;
+    }
+
+    if (balance <= 10 && balance >= 0) {
       alertContainer.innerHTML = `<div style="background:#ef444422;border:1px solid #ef444444;border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;margin-bottom:16px;">
         <span style="font-size:20px;">🚨</span>
         <div><strong style="color:#ef4444;font-size:13px;">Guthaben fast aufgebraucht!</strong><br><span style="font-size:12px;color:var(--tx3);">Nur noch ${balance.toFixed(2)} € verbleibend. Bitte lade dein Guthaben auf.</span></div>
-        <button class="btn btn-sm" onclick="navigateToPage('billing')" style="margin-left:auto;white-space:nowrap;">Aufladen</button>
+        <button class="btn btn-sm" data-action="navigate" data-id="billing" style="margin-left:auto;white-space:nowrap;">Aufladen</button>
       </div>`;
     } else if (balance <= 50) {
       alertContainer.innerHTML = `<div style="background:#f59e0b22;border:1px solid #f59e0b44;border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;margin-bottom:16px;">
         <span style="font-size:20px;">⚠️</span>
         <div><strong style="color:#f59e0b;font-size:13px;">Guthaben wird knapp</strong><br><span style="font-size:12px;color:var(--tx3);">Noch ${balance.toFixed(2)} € verbleibend.</span></div>
-        <button class="btn btn-sm btn-outline" onclick="navigateToPage('billing')" style="margin-left:auto;white-space:nowrap;">Aufladen</button>
+        <button class="btn btn-sm btn-outline" data-action="navigate" data-id="billing" style="margin-left:auto;white-space:nowrap;">Aufladen</button>
       </div>`;
     } else {
       alertContainer.innerHTML = '';

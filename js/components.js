@@ -67,7 +67,7 @@
         <a href="index.html" class="flex items-center focus-visible:outline-2 focus-visible:outline-brand-400 focus-visible:outline-offset-4 rounded group">
           <picture><source srcset="logo-nav.webp" type="image/webp"><img src="logo-nav.png" alt="Call Lana" style="height:36px; width:auto;" /></picture>
         </a>
-        <div id="desktopNavLinks" class="items-center gap-7" style="display:none;">
+        <div id="desktopNavLinks" class="items-center gap-8" style="display:none;">
           <a href="funktionen.html" class="nav-link text-sm font-medium ${isActive('funktionen')}" data-i18n="nav.features">${t('nav.features')}</a>
           <a href="branchen.html" class="nav-link text-sm font-medium ${isActive('branchen')}" data-i18n="nav.industries">${t('nav.industries')}</a>
           <a href="preise.html" class="nav-link text-sm font-medium ${isActive('preise')}" data-i18n="nav.pricing">${t('nav.pricing')}</a>

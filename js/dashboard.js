@@ -33,6 +33,7 @@ if (typeof SafeActions !== 'undefined') {
     'download-invoices': () => downloadSelectedInvoices(),
     'send-invoices': () => sendSelectedInvoices(),
     'assign-number': () => { navigateToPage('assistants'); showToast('Weise eine Telefonnummer im Assistenten-Editor zu.'); },
+    'select-plan': (id) => { if (typeof selectPlan === 'function') selectPlan(id); },
     'csv-drop-click': () => document.getElementById('csvFileInput')?.click(),
     'toggle-sidebar': () => { document.querySelector('.sidebar')?.classList.toggle('open'); document.getElementById('sidebarOverlay')?.classList.toggle('open'); },
   });
@@ -63,6 +64,53 @@ let currentConversationId = null;
   if (!currentProfile) return;
 
   currentUser = await clanaAuth.getUser();
+
+  // Check trial status
+  try {
+    const { data: trialStatus } = await supabaseClient.rpc('check_trial_status', {
+      p_user_id: currentUser.id
+    });
+    window.__trialStatus = trialStatus;
+
+    // Render trial banner
+    const trialBanner = document.getElementById('trial-banner');
+    if (trialBanner && trialStatus) {
+      if (trialStatus.status === 'trial_active') {
+        const days = trialStatus.days_remaining;
+        const credit = (trialStatus.credit_remaining_cents / 100).toFixed(2);
+        const urgentClass = days <= 5 || trialStatus.credit_remaining_cents <= 500 ? '#f59e0b' : '#7c3aed';
+        trialBanner.innerHTML = `<div style="background:${urgentClass}22;border:1px solid ${urgentClass}44;border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <span style="font-size:20px;">🎁</span>
+          <div style="flex:1;"><strong style="color:${urgentClass};font-size:13px;">Testphase aktiv</strong><br><span style="font-size:12px;color:var(--tx3);">Noch ${days} Tage und ${credit} € Guthaben verbleibend.</span></div>
+          <button class="btn btn-sm" data-action="navigate" data-id="plans" style="white-space:nowrap;">Plan wählen</button>
+        </div>`;
+      } else if (trialStatus.status === 'trial_expired') {
+        // Blocking overlay
+        const overlay = document.createElement('div');
+        overlay.id = 'trial-expired-overlay';
+        overlay.style.cssText = 'position:fixed;inset:0;z-index:10000;background:rgba(6,6,15,.92);display:flex;align-items:center;justify-content:center;';
+        overlay.innerHTML = `<div style="background:var(--bg2);border-radius:20px;padding:40px;max-width:500px;text-align:center;border:1px solid var(--border);">
+          <div style="font-size:48px;margin-bottom:16px;">⏰</div>
+          <h2 style="font-size:20px;margin-bottom:8px;">Testphase beendet</h2>
+          <p style="color:var(--tx3);font-size:14px;margin-bottom:24px;">${trialStatus.reason === 'credit_exhausted' ? 'Dein Testguthaben ist aufgebraucht.' : 'Die 30-Tage-Testphase ist abgelaufen.'} Wähle jetzt einen Plan, um Call Lana weiter zu nutzen.</p>
+          <button class="btn btn-primary" data-action="navigate" data-id="plans" style="font-size:16px;padding:14px 32px;">Plan auswählen</button>
+        </div>`;
+        document.body.appendChild(overlay);
+      }
+    }
+  } catch (e) {
+    window.__trialStatus = null;
+  }
+
+  // Handle payment return from Stripe
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('payment') === 'success') {
+    if (typeof showToast === 'function') showToast('Zahlung erfolgreich! Daten werden aktualisiert.');
+    window.history.replaceState({}, '', window.location.pathname + window.location.hash);
+  } else if (urlParams.get('payment') === 'cancelled') {
+    if (typeof showToast === 'function') showToast('Zahlung abgebrochen.', true);
+    window.history.replaceState({}, '', window.location.pathname + window.location.hash);
+  }
 
   // Load shared sidebar
   await Components.loadSidebar('sidebar-container', currentProfile);
@@ -411,20 +459,54 @@ async function loadBilling() {
 // PLAN
 // ==========================================
 async function loadPlan() {
-  const meta = currentUser?.user_metadata || {};
-  const plan = meta.plan || 'free';
-  const plans = {
-    free: { name: 'Free-Plan', desc: 'Du nutzt den kostenlosen Plan.', features: ['100 Testminuten', '1 Benutzer', 'E-Mail-Support'] },
-    solo: { name: 'Solo-Plan', desc: 'Ideal für Einzelunternehmer.', features: ['1.000 Minuten/Monat', '1 Benutzer', '1 KI-Stimme', 'Eigene Telefonnummer', 'Basis-Reporting'] },
-    team: { name: 'Team-Plan', desc: 'Perfekt für wachsende Teams.', features: ['3.000 Minuten/Monat', 'Unbegrenzte Benutzer', '5 gleichzeitige Gespräche', 'Alle Stimmen', 'CRM-Integration'] },
-    business: { name: 'Business-Plan', desc: 'Für große Unternehmen.', features: ['Unbegrenzte Minuten', 'Eigene KI-Stimme', 'SLA-Garantie 99,9%', 'API-Zugang', 'Dedizierter Account Manager'] }
+  // Read plan from subscriptions table (source of truth) instead of user_metadata
+  let plan = 'trial';
+  try {
+    const effectiveId = await auth.getEffectiveUserId();
+    const { data: sub } = await supabaseClient
+      .from('subscriptions').select('plan, trial_active').eq('user_id', effectiveId).single();
+    if (sub) {
+      plan = sub.trial_active ? 'trial' : (sub.plan || 'trial');
+    }
+  } catch (e) {
+    // Fallback to user_metadata
+    plan = currentUser?.user_metadata?.plan || 'trial';
+  }
+
+  const labels = {
+    trial: 'Testphase',
+    free: 'Free',
+    starter: 'Starter',
+    professional: 'Professional',
+    business: 'Business',
+  };
+  const descs = {
+    trial: '30-Tage-Testphase mit 25 € Guthaben.',
+    free: 'Kostenloser Plan.',
+    starter: '340 Inklusivminuten pro Monat.',
+    professional: '560 Inklusivminuten pro Monat.',
+    business: 'Individuelles Paket.',
   };
 
-  const p = plans[plan] || plans.free;
-  $setText('planBadge', plan.charAt(0).toUpperCase() + plan.slice(1));
-  $setText('planName', p.name);
-  $setText('planDesc', p.desc);
-  $setHtml('planFeatures', p.features.map(f => '<li>' + escHtml(f) + '</li>').join(''));
+  $setText('planBadge', labels[plan] || plan);
+  $setText('planName', labels[plan] || plan);
+  $setText('planDesc', descs[plan] || '');
+
+  // Highlight current plan card and disable its button
+  document.querySelectorAll('.plans-grid .card').forEach(card => {
+    card.style.borderColor = '';
+  });
+  const cardId = 'planCard' + plan.charAt(0).toUpperCase() + plan.slice(1);
+  const currentCard = document.getElementById(cardId);
+  if (currentCard) {
+    currentCard.style.borderColor = 'var(--green)';
+    const btn = currentCard.querySelector('[data-action="select-plan"]');
+    if (btn) {
+      btn.textContent = 'Aktueller Plan';
+      btn.disabled = true;
+      btn.style.opacity = '0.5';
+    }
+  }
 }
 
 // ==========================================
