@@ -53,10 +53,21 @@ serve(async (req) => {
       })
     }
 
-    // Get encryption key from Supabase secrets
+    // Key rotation support: use latest key version, store key ID for decryption.
+    // ENCRYPTION_KEY is the current key. ENCRYPTION_KEY_V1, V2, etc. are older versions
+    // kept for decrypting data encrypted with previous keys.
+    const currentKeyVersion = Deno.env.get('ENCRYPTION_KEY_VERSION') || 'v1';
     const encKeyHex = Deno.env.get('ENCRYPTION_KEY')
     if (!encKeyHex) {
       return new Response(JSON.stringify({ error: 'Encryption not configured' }), {
+        status: 500,
+        headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+      })
+    }
+
+    // Validate key length (AES-256 = 32 bytes = 64 hex chars)
+    if (encKeyHex.length !== 64 || !/^[0-9a-fA-F]+$/.test(encKeyHex)) {
+      return new Response(JSON.stringify({ error: 'Invalid encryption key format' }), {
         status: 500,
         headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
       })
@@ -93,7 +104,7 @@ serve(async (req) => {
       .from('integrations')
       .update({
         access_token_encrypted: Array.from(encrypted),
-        encryption_key_id: 'env:ENCRYPTION_KEY',
+        encryption_key_id: `env:ENCRYPTION_KEY:${currentKeyVersion}`,
       })
       .eq('user_id', user.id)
       .eq('provider', provider)

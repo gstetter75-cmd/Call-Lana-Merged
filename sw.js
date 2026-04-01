@@ -3,7 +3,7 @@
 //   HTML + JS → Network-first (always get latest code, fallback to cache offline)
 //   CSS + Images + Fonts → Cache-first (static assets, fast loading)
 //   Supabase API → Skip (let browser handle)
-const CACHE_VERSION = 3;
+const CACHE_VERSION = 4;
 const CACHE_NAME = 'calllana-v' + CACHE_VERSION;
 
 // Derive base path from SW scope (works on any deployment URL)
@@ -13,8 +13,13 @@ const BASE = new URL('./', self.location).pathname;
 // JS is NOT cached to ensure users always get the latest code after deploys
 const STATIC_ASSETS = [
   'css/common.css',
+  'css/dashboard.css',
   'css/tailwind.css',
   'css/design.css',
+  'dist/dashboard.bundle.js',
+  'dist/admin.bundle.js',
+  'dist/sales.bundle.js',
+  'dist/settings.bundle.js',
   'logo-nav.png',
   'logo-nav.webp',
   'logo-footer.png',
