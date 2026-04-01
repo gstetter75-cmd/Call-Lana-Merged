@@ -486,21 +486,6 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
 
 <!-- Single bundle replaces ~22 individual script tags -->
 <script src="dist/settings.bundle.js"></script>
-<script>
-// Initialize referral tab when navigated to
-(function() {
-  var initialized = false;
-  document.querySelectorAll('.sn-item').forEach(function(item) {
-    item.addEventListener('click', function() {
-      if (item.getAttribute('data-tab') === 'referral' && !initialized) {
-        initialized = true;
-        if (typeof Referral !== 'undefined') Referral.init();
-      }
-    });
-  });
-  if (window.location.hash === '#referral' && typeof Referral !== 'undefined') { initialized = true; Referral.init(); }
-})();
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function(){});
-</script>
+<script src="js/init-settings.js"></script>
 </body>
 </html>

@@ -138,7 +138,10 @@ Deno.serve(async (req) => {
     });
   } catch (err) {
     console.error('Checkout session error:', err);
-    return new Response(JSON.stringify({ error: err.message }), {
+    const safeMsg = err.message?.includes('Invalid') || err.message?.includes('Price') || err.message?.includes('Betrag')
+      ? err.message
+      : 'Zahlungsvorgang fehlgeschlagen. Bitte versuche es erneut.';
+    return new Response(JSON.stringify({ error: safeMsg }), {
       status: 400,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

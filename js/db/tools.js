@@ -176,7 +176,7 @@ const dbTools = {
     try {
       const user = await auth.getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabaseClient.from('email_templates').select('*').order('category');
+      const { data, error } = await supabaseClient.from('email_templates').select('*').order('category').limit(100);
       if (error) throw error;
       return { success: true, data: data || [] };
     } catch (error) {

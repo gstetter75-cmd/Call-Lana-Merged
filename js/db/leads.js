@@ -137,12 +137,12 @@ const dbLeads = {
       let query = supabaseClient
         .from('tasks')
         .select('*')
-        .order('due_date', { ascending: true });
+        .order('due_date', { ascending: true })
+        .limit(filters.limit || 200);
 
       if (filters.status) query = query.eq('status', filters.status);
       if (filters.assigned_to) query = query.eq('assigned_to', filters.assigned_to);
       if (filters.lead_id) query = query.eq('lead_id', filters.lead_id);
-      if (filters.limit) query = query.limit(filters.limit);
 
       const { data, error } = await query;
       if (error) throw error;

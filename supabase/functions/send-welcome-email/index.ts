@@ -44,7 +44,10 @@ Deno.serve(async (req) => {
       });
     }
 
-    const name = firstName || 'dort';
+    // Escape HTML in user-provided name to prevent XSS in email clients
+    const rawName = firstName || 'dort';
+    const name = rawName.replace(/[<>&"']/g, (c: string) =>
+      ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;' }[c] || c));
     const html = `
       <!DOCTYPE html>
       <html>

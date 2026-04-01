@@ -154,7 +154,10 @@ serve(async (req) => {
     })
   } catch (err) {
     console.error('create-payment-method error:', err)
-    return new Response(JSON.stringify({ error: err.message || 'Payment processing failed' }), {
+    const safeMsg = err.message?.includes('Invalid') || err.message?.includes('IBAN') || err.message?.includes('card')
+      ? err.message
+      : 'Zahlungsmethode konnte nicht gespeichert werden.'
+    return new Response(JSON.stringify({ error: safeMsg }), {
       status: 500, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
     })
   }

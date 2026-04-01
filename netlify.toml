@@ -50,3 +50,24 @@
   for = "/dist/*"
   [headers.values]
     Cache-Control = "public, max-age=3600, must-revalidate"
+
+# Strict CSP for protected pages — NO unsafe-inline (all inline scripts extracted)
+[[headers]]
+  for = "/dashboard.html"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self' https://fgwtptriileytmmotevs.supabase.co wss://fgwtptriileytmmotevs.supabase.co https://plausible.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+
+[[headers]]
+  for = "/admin.html"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self' https://fgwtptriileytmmotevs.supabase.co wss://fgwtptriileytmmotevs.supabase.co https://plausible.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+
+[[headers]]
+  for = "/sales.html"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self' https://fgwtptriileytmmotevs.supabase.co wss://fgwtptriileytmmotevs.supabase.co https://plausible.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+
+[[headers]]
+  for = "/settings.html"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self' https://fgwtptriileytmmotevs.supabase.co wss://fgwtptriileytmmotevs.supabase.co https://plausible.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
