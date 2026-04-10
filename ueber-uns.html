@@ -21,139 +21,121 @@
 <link rel="alternate" hreflang="x-default" href="https://call-lana.de/ueber-uns.html">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/marketing.css">
+<link rel="stylesheet" href="css/tailwind.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/design.css" />
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"Call Lana GmbH","url":"https://call-lana.de","logo":"https://call-lana.de/img/og-image.png","description":"KI-Telefonassistent für Handwerksbetriebe. Automatische Anrufannahme, Terminbuchung und Kundenqualifizierung.","address":{"@type":"PostalAddress","streetAddress":"Wetzellplatz 2","addressLocality":"Hildesheim","postalCode":"31137","addressCountry":"DE"},"email":"info@call-lana.de","foundingDate":"2024","founder":{"@type":"Person","name":"Gero Stetter"},"sameAs":[],"areaServed":"DE"}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://call-lana.de/"},{"@type":"ListItem","position":2,"name":"Über uns","item":"https://call-lana.de/ueber-uns.html"}]}
 </script>
-<style>
-  .about-hero { padding: 120px 6% 60px; text-align: center; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 50%, #f5f3ff 100%); }
-  .about-hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 16px; color: #1a1a2e; }
-  .about-hero p { font-size: 1.1rem; color: #6b7280; max-width: 600px; margin: 0 auto; line-height: 1.7; }
-  .about-section { padding: 80px 6%; max-width: 900px; margin: 0 auto; }
-  .about-section h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 20px; color: #1a1a2e; }
-  .about-section p { color: #4b5563; line-height: 1.8; margin-bottom: 16px; font-size: 1.05rem; }
-  .values-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-top: 32px; }
-  .value-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 28px; }
-  .value-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: #1a1a2e; }
-  .value-card p { font-size: 0.95rem; color: #6b7280; line-height: 1.6; margin: 0; }
-  .stats-row { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; margin: 40px 0; }
-  .stat-item { text-align: center; }
-  .stat-number { font-size: 2.5rem; font-weight: 800; color: #7c3aed; }
-  .stat-label { font-size: 0.9rem; color: #6b7280; margin-top: 4px; }
-  .team-card { display: flex; align-items: center; gap: 24px; background: #f9fafb; border-radius: 16px; padding: 32px; margin: 32px 0; }
-  .team-avatar { width: 80px; height: 80px; border-radius: 50%; background: #7c3aed; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 700; flex-shrink: 0; }
-  .team-info h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
-  .team-info p { color: #6b7280; font-size: 0.95rem; margin: 0; }
-  .cta-section { background: #1a1a2e; color: #fff; text-align: center; padding: 80px 6%; }
-  .cta-section h2 { font-size: 2rem; font-weight: 700; margin-bottom: 16px; }
-  .cta-section p { color: #9ca3af; margin-bottom: 32px; font-size: 1.05rem; }
-  .cta-btn { display: inline-block; background: #7c3aed; color: #fff; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: background 0.2s; }
-  .cta-btn:hover { background: #6d28d9; }
-  @media (max-width: 640px) {
-    .team-card { flex-direction: column; text-align: center; }
-    .stats-row { gap: 24px; }
-  }
-</style>
-  <script defer data-domain="call-lana.de" src="https://plausible.io/js/script.js"></script>
+<script defer data-domain="call-lana.de" src="https://plausible.io/js/script.js"></script>
 </head>
-<body>
+<body class="bg-white text-gray-900 font-body antialiased overflow-x-hidden">
 <a href="#main" class="skip-link">Zum Inhalt springen</a>
 
 <div id="nav-container"></div>
 
-<section id="main" class="about-hero">
-  <h1>Über Call Lana</h1>
-  <p>Wir glauben, dass kein Anruf verloren gehen sollte. Deshalb haben wir Call Lana gebaut — den KI-Telefonassistenten, der Handwerkern den Rücken freihält.</p>
+<!-- Hero -->
+<section id="main" class="relative pt-32 pb-16 bg-section-light noise-overlay text-center">
+  <div class="max-w-3xl mx-auto px-6">
+    <h1 class="font-display text-3xl sm:text-4xl font-extrabold text-gray-950 mb-4" style="letter-spacing:-0.03em;">Über Call Lana</h1>
+    <p class="text-gray-500 text-lg max-w-xl mx-auto leading-relaxed">Wir glauben, dass kein Anruf verloren gehen sollte. Deshalb haben wir Call Lana gebaut — den KI-Telefonassistenten, der Handwerkern den Rücken freihält.</p>
+  </div>
 </section>
 
-<section class="about-section">
-  <h2>Unsere Geschichte</h2>
-  <p>Call Lana entstand aus einer einfachen Beobachtung: Handwerker verbringen zu viel Zeit am Telefon. Zwischen Baustelle und Büro gehen wertvolle Anfragen verloren — und damit Umsatz.</p>
-  <p>Gegründet 2024 in Hildesheim, entwickelt Call Lana einen KI-Assistenten, der Anrufe natürlich entgegennimmt, Termine bucht und Kunden qualifiziert — rund um die Uhr, auch wenn der Meister auf dem Dach steht.</p>
-  <p>Unsere Mission: <strong>Jeder Handwerksbetrieb verdient einen professionellen Telefonempfang</strong> — ohne Sekretariat, ohne Callcenter, ohne verpasste Chancen.</p>
+<!-- Story -->
+<section class="max-w-4xl mx-auto px-6 py-16">
+  <h2 class="font-display text-2xl font-bold text-gray-950 mb-5">Unsere Geschichte</h2>
+  <p class="text-gray-600 leading-relaxed mb-4">Call Lana entstand aus einer einfachen Beobachtung: Handwerker verbringen zu viel Zeit am Telefon. Zwischen Baustelle und Büro gehen wertvolle Anfragen verloren — und damit Umsatz.</p>
+  <p class="text-gray-600 leading-relaxed mb-4">Gegründet 2024 in Hildesheim, entwickelt Call Lana einen KI-Assistenten, der Anrufe natürlich entgegennimmt, Termine bucht und Kunden qualifiziert — rund um die Uhr, auch wenn der Meister auf dem Dach steht.</p>
+  <p class="text-gray-600 leading-relaxed">Unsere Mission: <strong>Jeder Handwerksbetrieb verdient einen professionellen Telefonempfang</strong> — ohne Sekretariat, ohne Callcenter, ohne verpasste Chancen.</p>
 </section>
 
-<section class="about-section" style="padding-top:0;">
-  <h2>Unser Team</h2>
-  <div class="team-card">
-    <div class="team-avatar">GS</div>
-    <div class="team-info">
-      <h3>Gero Stetter</h3>
-      <p><strong>Gründer & Geschäftsführer</strong></p>
-      <p>Technologie-Unternehmer mit Leidenschaft für KI und Automatisierung. Gero hat Call Lana gegründet, um Handwerkern die Digitalisierung zu erleichtern.</p>
+<!-- Team -->
+<section class="max-w-4xl mx-auto px-6 pb-16">
+  <h2 class="font-display text-2xl font-bold text-gray-950 mb-5">Unser Team</h2>
+  <div class="feature-card flex items-center gap-6 sm:flex-row flex-col sm:text-left text-center">
+    <div class="w-20 h-20 rounded-full bg-brand-400 text-white flex items-center justify-center text-2xl font-bold shrink-0">GS</div>
+    <div>
+      <h3 class="font-display text-lg font-bold mb-1">Gero Stetter</h3>
+      <p class="text-gray-600 text-sm"><strong>Gründer & Geschäftsführer</strong></p>
+      <p class="text-gray-500 text-sm mt-1">Technologie-Unternehmer mit Leidenschaft für KI und Automatisierung. Gero hat Call Lana gegründet, um Handwerkern die Digitalisierung zu erleichtern.</p>
     </div>
   </div>
 </section>
 
-<section class="about-section" style="padding-top:0;">
-  <h2>Call Lana in Zahlen</h2>
-  <div class="stats-row">
-    <div class="stat-item">
-      <div class="stat-number">24/7</div>
-      <div class="stat-label">Erreichbarkeit</div>
+<!-- Stats -->
+<section class="max-w-4xl mx-auto px-6 pb-16">
+  <h2 class="font-display text-2xl font-bold text-gray-950 mb-5">Call Lana in Zahlen</h2>
+  <div class="flex gap-8 justify-center flex-wrap">
+    <div class="text-center">
+      <div class="font-display text-4xl font-extrabold text-brand-400">24/7</div>
+      <div class="text-gray-500 text-sm mt-1">Erreichbarkeit</div>
     </div>
-    <div class="stat-item">
-      <div class="stat-number">&lt;15 Min</div>
-      <div class="stat-label">Setup-Zeit</div>
+    <div class="text-center">
+      <div class="font-display text-4xl font-extrabold text-brand-400">&lt;15 Min</div>
+      <div class="text-gray-500 text-sm mt-1">Setup-Zeit</div>
     </div>
-    <div class="stat-item">
-      <div class="stat-number">100%</div>
-      <div class="stat-label">DSGVO-konform</div>
+    <div class="text-center">
+      <div class="font-display text-4xl font-extrabold text-brand-400">100%</div>
+      <div class="text-gray-500 text-sm mt-1">DSGVO-konform</div>
     </div>
-    <div class="stat-item">
-      <div class="stat-number">DE</div>
-      <div class="stat-label">Server in Deutschland</div>
-    </div>
-  </div>
-</section>
-
-<section class="about-section" style="padding-top:0;">
-  <h2>Unsere Werte</h2>
-  <div class="values-grid">
-    <div class="value-card">
-      <h3>Datenschutz zuerst</h3>
-      <p>DSGVO ist kein Hindernis, sondern Grundlage. Alle Daten bleiben auf deutschen Servern. Keine Weitergabe an Dritte.</p>
-    </div>
-    <div class="value-card">
-      <h3>Einfachheit</h3>
-      <p>Technologie soll helfen, nicht überfordern. Call Lana ist in 15 Minuten eingerichtet — ohne IT-Kenntnisse.</p>
-    </div>
-    <div class="value-card">
-      <h3>Transparenz</h3>
-      <p>Faire Preise, keine versteckten Kosten. Monatlich kündbar. 30-Tage-Geld-zurück-Garantie.</p>
-    </div>
-    <div class="value-card">
-      <h3>Handwerk verstehen</h3>
-      <p>Wir entwickeln Call Lana gemeinsam mit Handwerkern. Jede Funktion löst ein echtes Problem aus dem Alltag.</p>
+    <div class="text-center">
+      <div class="font-display text-4xl font-extrabold text-brand-400">DE</div>
+      <div class="text-gray-500 text-sm mt-1">Server in Deutschland</div>
     </div>
   </div>
 </section>
 
-<section class="about-section" style="padding-top:0;">
-  <h2>Unternehmensdaten</h2>
-  <p><strong>Call Lana GmbH</strong><br>
+<!-- Values -->
+<section class="max-w-4xl mx-auto px-6 pb-16">
+  <h2 class="font-display text-2xl font-bold text-gray-950 mb-5">Unsere Werte</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="feature-card">
+      <h3 class="font-display text-base font-bold mb-2">Datenschutz zuerst</h3>
+      <p class="text-gray-500 text-sm leading-relaxed">DSGVO ist kein Hindernis, sondern Grundlage. Alle Daten bleiben auf deutschen Servern. Keine Weitergabe an Dritte.</p>
+    </div>
+    <div class="feature-card">
+      <h3 class="font-display text-base font-bold mb-2">Einfachheit</h3>
+      <p class="text-gray-500 text-sm leading-relaxed">Technologie soll helfen, nicht überfordern. Call Lana ist in 15 Minuten eingerichtet — ohne IT-Kenntnisse.</p>
+    </div>
+    <div class="feature-card">
+      <h3 class="font-display text-base font-bold mb-2">Transparenz</h3>
+      <p class="text-gray-500 text-sm leading-relaxed">Faire Preise, keine versteckten Kosten. Monatlich kündbar. 30-Tage-Geld-zurück-Garantie.</p>
+    </div>
+    <div class="feature-card">
+      <h3 class="font-display text-base font-bold mb-2">Handwerk verstehen</h3>
+      <p class="text-gray-500 text-sm leading-relaxed">Wir entwickeln Call Lana gemeinsam mit Handwerkern. Jede Funktion löst ein echtes Problem aus dem Alltag.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Company data -->
+<section class="max-w-4xl mx-auto px-6 pb-16">
+  <h2 class="font-display text-2xl font-bold text-gray-950 mb-5">Unternehmensdaten</h2>
+  <p class="text-gray-600 leading-relaxed"><strong>Call Lana GmbH</strong><br>
   Wetzellplatz 2<br>
   31137 Hildesheim<br>
   Deutschland</p>
-  <p>E-Mail: <a href="mailto:info@call-lana.de" style="color:#7c3aed;">info@call-lana.de</a><br>
+  <p class="text-gray-600 leading-relaxed mt-4">E-Mail: <a href="mailto:info@call-lana.de" class="text-brand-400 hover:underline">info@call-lana.de</a><br>
   Geschäftsführer: Gero Stetter<br>
   Registergericht: Amtsgericht Hildesheim</p>
 </section>
 
-<section class="cta-section">
-  <h2>Bereit für einen Assistenten, der nie krank wird?</h2>
-  <p>Teste Call Lana 30 Tage kostenlos. Keine Kreditkarte erforderlich.</p>
-  <a href="registrierung.html" class="cta-btn">Kostenlos starten</a>
+<!-- CTA -->
+<section class="bg-gray-950 text-white text-center py-20 px-6">
+  <h2 class="font-display text-2xl sm:text-3xl font-bold mb-4">Bereit für einen Assistenten, der nie krank wird?</h2>
+  <p class="text-gray-400 mb-8 text-lg">Teste Call Lana 30 Tage kostenlos. Keine Kreditkarte erforderlich.</p>
+  <a href="registrierung.html" class="btn-brand">Kostenlos starten</a>
 </section>
 
 <div id="footer-container"></div>
-
 <script src="js/components.js"></script>
+<script src="i18n.js"></script>
+<script src="cookie-consent.js"></script>
 </body>
 </html>

@@ -6,94 +6,36 @@
 <title>Seite nicht gefunden – Call Lana</title>
 <meta property="og:title" content="404 – Seite nicht gefunden">
 <meta property="og:description" content="Die angeforderte Seite konnte leider nicht gefunden werden.">
-  <meta property="og:image" content="https://call-lana.de/img/og-image.png">
+<meta property="og:image" content="https://call-lana.de/img/og-image.png">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="de_DE">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/marketing.css">
-<style>
-  .error-hero {
-    padding: 160px 6% 80px;
-    text-align: center;
-    min-height: 60vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  .error-hero .error-code {
-    font-size: clamp(4rem, 10vw, 8rem);
-    font-weight: 800;
-    color: #e2e8f0;
-    line-height: 1;
-    margin-bottom: 16px;
-  }
-  .error-hero h1 {
-    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-    font-weight: 800;
-    color: #1e293b;
-    margin-bottom: 12px;
-  }
-  .error-hero p {
-    color: #64748b;
-    font-size: 1.05rem;
-    line-height: 1.7;
-    max-width: 480px;
-    margin: 0 auto 32px;
-  }
-  .error-hero .back-btn {
-    display: inline-block;
-    padding: 14px 32px;
-    background: #7c3aed;
-    color: #fff;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: background .2s;
-  }
-  .error-hero .back-btn:hover {
-    background: #6d28d9;
-  }
-</style>
+<link rel="stylesheet" href="css/tailwind.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/design.css" />
 </head>
-<body>
+<body class="bg-white text-gray-900 font-body antialiased overflow-x-hidden">
+<a href="#main" class="skip-link">Zum Inhalt springen</a>
 
-<a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:9999;padding:8px 16px;background:#7c3aed;color:#fff;text-decoration:none;font-weight:600;border-radius:0 0 8px 0;" onfocus="this.style.cssText='position:fixed;left:0;top:0;z-index:9999;padding:8px 16px;background:#7c3aed;color:#fff;text-decoration:none;font-weight:600;border-radius:0 0 8px 0;'" onblur="this.style.cssText='position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;'">Zum Inhalt springen</a>
-
-<nav id="nav">
-  <a href="index.html" class="logo"><picture><source srcset="logo-nav.webp" type="image/webp"><img src="logo-nav.png" alt="Call Lana" height="40"></picture></a>
-  <ul class="nav-links">
-    <li><a href="funktionen.html">Funktionen</a></li>
-    <li><a href="branchen.html">Branchen</a></li>
-    <li><a href="blog/">Ratgeber</a></li>
-    <li><a href="preise.html">Preise</a></li>
-    <li><a href="kontakt.html">Kontakt</a></li>
-  </ul>
-  <div class="nav-right"><a href="login.html" class="nav-login">Login</a><a href="registrierung.html" class="nav-cta">Kostenlos starten</a></div>
-  <button class="mob-btn" id="mb" aria-label="Menu"><span></span><span></span><span></span></button>
-</nav>
+<div id="nav-container"></div>
 
 <main id="main">
-  <section class="error-hero">
-    <div class="error-code">404</div>
-    <h1>Seite nicht gefunden</h1>
-    <p>Die Seite, die Sie suchen, existiert leider nicht oder wurde verschoben. Kehren Sie zur Startseite zurueck und finden Sie, was Sie brauchen.</p>
-    <a href="index.html" class="back-btn">Zur Startseite</a>
+  <section class="relative pt-32 pb-20 text-center">
+    <div class="max-w-xl mx-auto px-6">
+      <div class="font-display text-[clamp(4rem,10vw,8rem)] font-extrabold text-gray-200 leading-none mb-4">404</div>
+      <h1 class="font-display text-2xl sm:text-3xl font-extrabold text-gray-950 mb-3" style="letter-spacing:-0.03em;">Seite nicht gefunden</h1>
+      <p class="text-gray-500 text-base leading-relaxed max-w-md mx-auto mb-8">Die Seite, die Sie suchen, existiert leider nicht oder wurde verschoben. Kehren Sie zur Startseite zurueck und finden Sie, was Sie brauchen.</p>
+      <a href="index.html" class="btn-brand">Zur Startseite</a>
+    </div>
   </section>
 </main>
 
-<footer></footer>
-<script src="js/footer-inject.js"></script>
-
+<div id="footer-container"></div>
+<script src="js/components.js"></script>
+<script src="i18n.js"></script>
 <script src="cookie-consent.js"></script>
-<script>
-document.querySelector('.mob-btn').addEventListener('click',()=>document.getElementById('nav').classList.toggle('open'));
-window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>10);},{passive:true});
-</script>
 </body>
 </html>

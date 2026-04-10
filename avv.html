@@ -20,69 +20,37 @@
 <link rel="alternate" hreflang="x-default" href="https://call-lana.de/avv.html">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/marketing.css">
+<link rel="stylesheet" href="css/tailwind.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/design.css" />
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://call-lana.de/"},{"@type":"ListItem","position":2,"name":"AVV","item":"https://call-lana.de/avv.html"}]}
 </script>
-<style>
-  .legal-hero { padding: 120px 6% 48px; text-align: center; }
-  .legal-hero h1 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; margin-bottom: 8px; }
-  .legal-hero p { color: #64748b; font-size: 0.95rem; }
-  .legal-content { max-width: 800px; margin: 0 auto 80px; padding: 0 6%; }
-  .legal-section { margin-bottom: 40px; }
-  .legal-section h2 { font-size: 1.4rem; font-weight: 700; color: #1e293b; margin-bottom: 12px; }
-  .legal-section h3 { font-size: 1.1rem; font-weight: 600; color: #475569; margin: 24px 0 10px; }
-  .legal-section p { color: #475569; line-height: 1.8; margin-bottom: 12px; }
-  .legal-section a { color: #7c3aed; text-decoration: none; }
-  .legal-section a:hover { text-decoration: underline; }
-  .legal-section ul { list-style: none; padding-left: 0; }
-  .legal-section ul li { padding-left: 20px; position: relative; margin-bottom: 8px; color: #475569; }
-  .legal-section ul li::before { content: '\2192'; position: absolute; left: 0; color: #7c3aed; }
-  .legal-section ol { padding-left: 24px; color: #475569; }
-  .legal-section ol li { margin-bottom: 10px; line-height: 1.75; }
-  .highlight-box { background: #f1f0ff; border: 1px solid #e0dbff; border-radius: 12px; padding: 20px 24px; margin: 24px 0; }
-  .highlight-box h3 { color: #7c3aed; margin-top: 0; font-size: 1.1rem; font-weight: 600; }
-  .highlight-box p { color: #475569; line-height: 1.8; margin-bottom: 0; }
-  .highlight-box a { color: #7c3aed; text-decoration: none; }
-  .highlight-box a:hover { text-decoration: underline; }
-  .sub-table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; }
-  .sub-table th, .sub-table td { text-align: left; padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #475569; font-size: 0.9rem; line-height: 1.6; }
-  .sub-table th { font-weight: 600; color: #1e293b; background: #f8fafc; }
-  .sub-table tr:last-child td { border-bottom: none; }
-</style>
 <script defer data-domain="call-lana.de" src="https://plausible.io/js/script.js"></script>
 </head>
-<body>
+<body class="bg-white text-gray-900 font-body antialiased overflow-x-hidden">
 <a href="#main" class="skip-link">Zum Inhalt springen</a>
 
-<nav id="nav">
-  <a href="index.html" class="logo"><picture><source srcset="logo-nav.webp" type="image/webp"><img src="logo-nav.png" alt="Call Lana" height="40"></picture></a>
-  <ul class="nav-links">
-    <li><a href="funktionen.html">Funktionen</a></li>
-    <li><a href="branchen.html">Branchen</a></li>
-    <li><a href="preise.html">Preise</a></li>
-    <li><a href="kontakt.html">Kontakt</a></li>
-  </ul>
-  <div class="nav-right"><a href="login.html" class="nav-login">Login</a><a href="registrierung.html" class="nav-cta">Kostenlos starten</a></div>
-  <button class="mob-btn" id="mb" aria-label="Menu"><span></span><span></span><span></span></button>
-</nav>
+<div id="nav-container"></div>
 
-<section class="legal-hero" id="main">
-  <h1>Auftragsverarbeitungsvertrag (AVV)</h1>
-  <p>Gemäß Art. 28 DSGVO · Stand: März 2026</p>
+<!-- Hero -->
+<section class="relative pt-32 pb-12 bg-section-light noise-overlay" id="main">
+  <div class="max-w-3xl mx-auto px-6 text-center">
+    <h1 class="font-display text-3xl sm:text-4xl font-extrabold text-gray-950 mb-3" style="letter-spacing:-0.03em;">Auftragsverarbeitungsvertrag (AVV)</h1>
+    <p class="text-gray-500 text-sm">Gemäß Art. 28 DSGVO · Stand: März 2026</p>
+  </div>
 </section>
 
-<div class="legal-content">
-  <div class="highlight-box">
-    <h3>Zusammenfassung</h3>
-    <p>Dieser Auftragsverarbeitungsvertrag regelt die Verarbeitung personenbezogener Daten, die Call Lana im Auftrag des Kunden (Auftraggeber) durchführt. Er wird automatisch Bestandteil des Vertragsverhältnisses bei Nutzung des Dienstes.</p>
+<div class="legal-content max-w-3xl mx-auto px-6 py-16">
+  <div class="bg-violet-50 border border-violet-200 rounded-2xl p-6 my-8">
+    <h3 class="font-display text-base font-bold text-brand-400 mb-2">Zusammenfassung</h3>
+    <p class="text-gray-600 text-sm leading-relaxed">Dieser Auftragsverarbeitungsvertrag regelt die Verarbeitung personenbezogener Daten, die Call Lana im Auftrag des Kunden (Auftraggeber) durchführt. Er wird automatisch Bestandteil des Vertragsverhältnisses bei Nutzung des Dienstes.</p>
   </div>
 
   <!-- § 1 -->
-  <div class="legal-section">
+  <div class="mb-10">
     <h2>§ 1 Gegenstand und Dauer der Verarbeitung</h2>
     <p>
       (1) Gegenstand dieses Auftragsverarbeitungsvertrags ist die Durchführung folgender Aufgaben durch den Auftragnehmer (Call Lana GmbH, nachfolgend „Auftragnehmer") im Auftrag des Kunden (nachfolgend „Auftraggeber"):
@@ -100,7 +68,7 @@
   </div>
 
   <!-- § 2 -->
-  <div class="legal-section">
+  <div class="mb-10">
     <h2>§ 2 Art und Zweck der Verarbeitung</h2>
     <p>
       (1) Der Auftragnehmer verarbeitet personenbezogene Daten im Auftrag des Auftraggebers ausschließlich zum Zweck der Erbringung des KI-Telefonassistenten-Dienstes „Call Lana".
@@ -118,7 +86,7 @@
   </div>
 
   <!-- § 3 -->
-  <div class="legal-section">
+  <div class="mb-10">
     <h2>§ 3 Art der personenbezogenen Daten</h2>
     <p>
       Folgende Kategorien personenbezogener Daten sind Gegenstand der Verarbeitung:
@@ -135,7 +103,7 @@
   </div>
 
   <!-- § 4 -->
-  <div class="legal-section">
+  <div class="mb-10">
     <h2>§ 4 Kategorien betroffener Personen</h2>
     <p>
       Von der Verarbeitung betroffen sind:
@@ -148,7 +116,7 @@
   </div>
 
   <!-- § 5 -->
-  <div class="legal-section">
+  <div class="mb-10">
     <h2>§ 5 Pflichten des Auftragnehmers</h2>
     <p>
       (1) Der Auftragnehmer verarbeitet personenbezogene Daten ausschließlich auf dokumentierte Weisung des Auftraggebers, es sei denn, er ist nach dem Recht der Union oder der Mitgliedstaaten, dem er unterliegt, zur Verarbeitung verpflichtet.
@@ -174,7 +142,7 @@
   </div>
 
   <!-- § 6 -->
-  <div class="legal-section">
+  <div class="mb-10">
     <h2>§ 6 Pflichten des Auftraggebers</h2>
     <p>
       (1) Der Auftraggeber ist für die Rechtmäßigkeit der Datenverarbeitung sowie für die Wahrung der Rechte der Betroffenen verantwortlich (Art. 4 Nr. 7 DSGVO).
@@ -194,7 +162,7 @@
   </div>
 
   <!-- § 7 -->
-  <div class="legal-section">
+  <div class="mb-10">
     <h2>§ 7 Technisch-organisatorische Maßnahmen (TOMs)</h2>
     <p>
       Der Auftragnehmer hat folgende technische und organisatorische Maßnahmen gemäß Art. 32 DSGVO implementiert:
@@ -231,55 +199,55 @@
   </div>
 
   <!-- § 8 -->
-  <div class="legal-section">
+  <div class="mb-10">
     <h2>§ 8 Unterauftragsverarbeiter</h2>
     <p>
       (1) Der Auftraggeber stimmt dem Einsatz der nachfolgend aufgeführten Unterauftragsverarbeiter zu:
     </p>
 
-    <table class="sub-table">
+    <table class="w-full border-collapse my-4 mb-6 text-sm">
       <thead>
         <tr>
-          <th>Unterauftragnehmer</th>
-          <th>Standort</th>
-          <th>Zweck</th>
+          <th class="text-left p-3 border-b border-gray-200 font-semibold text-gray-950 bg-gray-50">Unterauftragnehmer</th>
+          <th class="text-left p-3 border-b border-gray-200 font-semibold text-gray-950 bg-gray-50">Standort</th>
+          <th class="text-left p-3 border-b border-gray-200 font-semibold text-gray-950 bg-gray-50">Zweck</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="text-gray-600">
         <tr>
-          <td><strong>Supabase Inc.</strong> (Hosting: Hetzner)</td>
-          <td>Nürnberg, Deutschland</td>
-          <td>Datenbank, Authentifizierung, Echtzeit-Funktionen</td>
+          <td class="p-3 border-b border-gray-100"><strong>Supabase Inc.</strong> (Hosting: Hetzner)</td>
+          <td class="p-3 border-b border-gray-100">Nürnberg, Deutschland</td>
+          <td class="p-3 border-b border-gray-100">Datenbank, Authentifizierung, Echtzeit-Funktionen</td>
         </tr>
         <tr>
-          <td><strong>Microsoft Azure</strong> (OpenAI-Dienste)</td>
-          <td>EU (West Europe)</td>
-          <td>KI-Sprachverarbeitung und -Transkription</td>
+          <td class="p-3 border-b border-gray-100"><strong>Microsoft Azure</strong> (OpenAI-Dienste)</td>
+          <td class="p-3 border-b border-gray-100">EU (West Europe)</td>
+          <td class="p-3 border-b border-gray-100">KI-Sprachverarbeitung und -Transkription</td>
         </tr>
         <tr>
-          <td><strong>VAPI Inc.</strong></td>
-          <td>USA (mit EU-DPA/SCCs)</td>
-          <td>Telefonie-Infrastruktur und Anrufabwicklung</td>
+          <td class="p-3 border-b border-gray-100"><strong>VAPI Inc.</strong></td>
+          <td class="p-3 border-b border-gray-100">USA (mit EU-DPA/SCCs)</td>
+          <td class="p-3 border-b border-gray-100">Telefonie-Infrastruktur und Anrufabwicklung</td>
         </tr>
         <tr>
-          <td><strong>Stripe Inc.</strong> (Stripe Payments Europe Ltd.)</td>
-          <td>Dublin, Irland (EU)</td>
-          <td>Zahlungsabwicklung</td>
+          <td class="p-3 border-b border-gray-100"><strong>Stripe Inc.</strong> (Stripe Payments Europe Ltd.)</td>
+          <td class="p-3 border-b border-gray-100">Dublin, Irland (EU)</td>
+          <td class="p-3 border-b border-gray-100">Zahlungsabwicklung</td>
         </tr>
         <tr>
-          <td><strong>Resend Inc.</strong></td>
-          <td>USA (mit EU-DPA/SCCs)</td>
-          <td>Transaktionale E-Mails (Rechnungen, Benachrichtigungen)</td>
+          <td class="p-3 border-b border-gray-100"><strong>Resend Inc.</strong></td>
+          <td class="p-3 border-b border-gray-100">USA (mit EU-DPA/SCCs)</td>
+          <td class="p-3 border-b border-gray-100">Transaktionale E-Mails (Rechnungen, Benachrichtigungen)</td>
         </tr>
         <tr>
-          <td><strong>Plausible Analytics</strong></td>
-          <td>EU</td>
-          <td>Cookielose Website-Analyse</td>
+          <td class="p-3 border-b border-gray-100"><strong>Plausible Analytics</strong></td>
+          <td class="p-3 border-b border-gray-100">EU</td>
+          <td class="p-3 border-b border-gray-100">Cookielose Website-Analyse</td>
         </tr>
         <tr>
-          <td><strong>Netlify Inc.</strong></td>
-          <td>USA (mit EU-DPA/SCCs)</td>
-          <td>Website-Hosting und Content Delivery</td>
+          <td class="p-3"><strong>Netlify Inc.</strong></td>
+          <td class="p-3">USA (mit EU-DPA/SCCs)</td>
+          <td class="p-3">Website-Hosting und Content Delivery</td>
         </tr>
       </tbody>
     </table>
@@ -296,7 +264,7 @@
   </div>
 
   <!-- § 9 -->
-  <div class="legal-section">
+  <div class="mb-10">
     <h2>§ 9 Rechte der betroffenen Personen</h2>
     <p>
       (1) Der Auftragnehmer unterstützt den Auftraggeber nach Möglichkeit mit geeigneten technischen und organisatorischen Maßnahmen bei der Erfüllung seiner Pflichten zur Beantwortung von Anträgen auf Wahrnehmung der Betroffenenrechte gemäß Kapitel III DSGVO:
@@ -315,7 +283,7 @@
   </div>
 
   <!-- § 10 -->
-  <div class="legal-section">
+  <div class="mb-10">
     <h2>§ 10 Meldung von Datenschutzverletzungen</h2>
     <p>
       (1) Der Auftragnehmer benachrichtigt den Auftraggeber unverzüglich, spätestens jedoch innerhalb von 24 Stunden nach Bekanntwerden einer Verletzung des Schutzes personenbezogener Daten.
@@ -333,7 +301,7 @@
   </div>
 
   <!-- § 11 -->
-  <div class="legal-section">
+  <div class="mb-10">
     <h2>§ 11 Löschung und Rückgabe von Daten</h2>
     <p>
       (1) Nach Beendigung des Hauptvertrages löscht der Auftragnehmer sämtliche im Auftrag verarbeiteten personenbezogenen Daten, sofern nicht nach dem Unionsrecht oder dem Recht der Mitgliedstaaten eine Verpflichtung zur Speicherung besteht.
@@ -347,7 +315,7 @@
   </div>
 
   <!-- § 12 -->
-  <div class="legal-section">
+  <div class="mb-10">
     <h2>§ 12 Kontroll- und Prüfrechte</h2>
     <p>
       (1) Der Auftraggeber hat das Recht, die Einhaltung der Bestimmungen dieses Vertrages und der datenschutzrechtlichen Vorschriften durch den Auftragnehmer zu überprüfen. Dies kann erfolgen durch:
@@ -363,7 +331,7 @@
   </div>
 
   <!-- § 13 -->
-  <div class="legal-section">
+  <div class="mb-10">
     <h2>§ 13 Haftung</h2>
     <p>
       (1) Die Haftung der Vertragsparteien richtet sich nach Art. 82 DSGVO.
@@ -374,7 +342,7 @@
   </div>
 
   <!-- § 14 -->
-  <div class="legal-section">
+  <div class="mb-10">
     <h2>§ 14 Schlussbestimmungen</h2>
     <p>
       (1) Dieser Auftragsverarbeitungsvertrag wird automatisch Bestandteil des Vertragsverhältnisses bei Registrierung und Nutzung des Dienstes „Call Lana" und ergänzt die <a href="agb.html">Allgemeinen Geschäftsbedingungen</a>.
@@ -390,9 +358,9 @@
     </p>
   </div>
 
-  <div class="highlight-box">
-    <h3>Fragen zur Auftragsverarbeitung?</h3>
-    <p>
+  <div class="bg-violet-50 border border-violet-200 rounded-2xl p-6 my-8">
+    <h3 class="font-display text-base font-bold text-brand-400 mb-2">Fragen zur Auftragsverarbeitung?</h3>
+    <p class="text-gray-600 text-sm leading-relaxed">
       Wir stehen Ihnen für Rückfragen jederzeit zur Verfügung:<br>
       E-Mail: <a href="mailto:info@call-lana.de">info@call-lana.de</a><br>
       Telefon: +49 152 33539841
@@ -400,13 +368,10 @@
   </div>
 </div>
 
-<footer></footer>
-<script src="js/footer-inject.js"></script>
-
+<div id="footer-container"></div>
+<script src="js/components.js"></script>
+<script src="i18n.js"></script>
 <script src="cookie-consent.js"></script>
-<script>
-document.querySelector('.mob-btn').addEventListener('click',()=>document.getElementById('nav').classList.toggle('open'));
-window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>10);},{passive:true});
-</script>
 </body>
 </html>
+
