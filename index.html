@@ -74,19 +74,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/design.css" />
-  <script>
-    // Global error handler: catch Spline / WebGL errors so they never break the page
-    window.addEventListener('error', function(e) {
-      if (e.filename && e.filename.indexOf('spline') !== -1) { e.preventDefault(); }
-    });
-    window.addEventListener('unhandledrejection', function(e) {
-      var msg = e.reason && (e.reason.message || String(e.reason));
-      if (msg && (msg.indexOf('spline') !== -1 || msg.indexOf('WebGL') !== -1 || msg.indexOf('GL_') !== -1)) {
-        e.preventDefault();
-      }
-    });
-  </script>
-  <!-- Spline 3D viewer loaded lazily after page renders -->
+  <!-- Hero visual: pure CSS/SVG conversation animation (no external 3D dependencies) -->
 
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
@@ -154,70 +142,138 @@
           </div>
         </div>
         <div class="flex justify-center md:justify-end">
-          <div class="robot-container relative w-full max-w-lg" style="height:480px;overflow:hidden;contain:strict;perspective:800px;">
-            <!-- Ambient glow behind robot -->
-            <div class="absolute -inset-16 rounded-full blur-3xl" style="z-index:0;background:radial-gradient(circle, rgba(124,58,237,0.20) 0%, rgba(124,58,237,0.08) 45%, transparent 72%);"></div>
-            <!-- Fallback shown while Spline loads or if it fails -->
-            <div id="splineFallback" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;">
-              <div style="text-align:center;">
-                <div style="width:120px;height:120px;margin:0 auto 20px;border-radius:50%;background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(139,92,246,0.08));display:flex;align-items:center;justify-content:center;animation:pulse-glow 2s ease-in-out infinite;">
-                  <img src="brand_assets/clana-icon-64.png" alt="Call Lana" style="width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(124,58,237,0.3));" />
+          <div class="hero-call-visual relative w-full max-w-lg" style="height:480px;">
+            <!-- Ambient glow -->
+            <div class="absolute -inset-16 rounded-full blur-3xl" style="z-index:0;background:radial-gradient(circle, rgba(124,58,237,0.15) 0%, rgba(124,58,237,0.05) 45%, transparent 72%);"></div>
+
+            <!-- Phone mockup -->
+            <div style="position:relative;z-index:2;width:280px;margin:0 auto;height:460px;">
+              <!-- Phone frame -->
+              <div style="width:100%;height:100%;border-radius:36px;background:linear-gradient(145deg,#1a1a2e 0%,#16162a 100%);border:2px solid rgba(124,58,237,0.2);box-shadow:0 25px 60px rgba(0,0,0,0.15),0 0 40px rgba(124,58,237,0.08);padding:16px 12px;display:flex;flex-direction:column;">
+                <!-- Phone notch -->
+                <div style="width:80px;height:6px;background:#0f0f1e;border-radius:4px;margin:0 auto 16px;"></div>
+
+                <!-- Call header -->
+                <div style="text-align:center;margin-bottom:20px;">
+                  <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7C3AED,#5B21B6);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(124,58,237,0.4);">
+                    <img src="brand_assets/clana-icon-64.png" alt="Call Lana" style="width:32px;height:32px;object-fit:contain;" />
+                  </div>
+                  <p style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#e2e0f0;">Lana</p>
+                  <p style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:rgba(124,58,237,0.8);font-weight:500;letter-spacing:0.05em;">
+                    <span class="lang-de">Aktiver Anruf</span>
+                    <span class="lang-en hidden">Active Call</span>
+                  </p>
                 </div>
-                <p style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:rgba(124,58,237,0.6);letter-spacing:0.05em;">KI-Assistentin</p>
-              </div>
-            </div>
-            <style>@keyframes pulse-glow{0%,100%{box-shadow:0 0 20px rgba(124,58,237,0.1)}50%{box-shadow:0 0 40px rgba(124,58,237,0.25)}}</style>
-            <!-- Spline 3D robot — contained, non-blocking -->
-            <spline-viewer
-              url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-              loading="lazy"
-              style="position:absolute;inset:0;width:100%;height:100%;background:transparent;pointer-events:none;z-index:3;"
-            ></spline-viewer>
-            <!-- Bottom fade to ground the robot -->
-            <div style="position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(to top,rgba(237,233,254,1) 0%,rgba(237,233,254,0) 100%);pointer-events:none;z-index:4;"></div>
-            <!-- Call Lana badge — physically attached to robot chest in 3D -->
-            <div id="robotLogo" style="position:absolute;top:52%;left:50%;width:0;height:0;transform-style:preserve-3d;z-index:5;pointer-events:none;opacity:0;transition:opacity 0.8s ease;will-change:transform;">
-              <div style="position:absolute;top:0;left:0;transform:translate(-50%,-50%);transform-style:preserve-3d;">
-                <!-- Contact shadow pressed onto chest surface -->
-                <div style="position:absolute;bottom:-4px;left:50%;transform:translateX(-50%) translateZ(-2px);width:50px;height:10px;border-radius:50%;background:rgba(0,0,0,0.35);filter:blur(4px);"></div>
-                <!-- Badge body — solid opaque disc with physical thickness -->
-                <div style="position:relative;width:54px;height:54px;border-radius:50%;background:linear-gradient(160deg,#eee8f8 0%,#d8cdef 40%,#c0aee0 100%);border:2px solid rgba(100,40,200,0.25);display:flex;align-items:center;justify-content:center;transform-style:preserve-3d;box-shadow:
-                  0 2px 1px rgba(0,0,0,0.18),
-                  0 4px 6px rgba(0,0,0,0.15),
-                  0 1px 0 rgba(0,0,0,0.25),
-                  0 -1px 0 rgba(255,255,255,0.15),
-                  inset 0 2px 3px rgba(255,255,255,0.5),
-                  inset 0 -2px 3px rgba(80,30,160,0.12);
-                ">
-                  <!-- Top-edge bevel highlight (catches light) -->
-                  <div style="position:absolute;inset:2px;border-radius:50%;border-top:1.5px solid rgba(255,255,255,0.6);border-left:1px solid rgba(255,255,255,0.3);border-bottom:1.5px solid rgba(0,0,0,0.12);border-right:1px solid rgba(0,0,0,0.06);pointer-events:none;"></div>
-                  <!-- Rim edge — simulates physical thickness -->
-                  <div style="position:absolute;inset:-1px;border-radius:50%;border:1px solid rgba(0,0,0,0.1);pointer-events:none;"></div>
-                  <img src="brand_assets/clana-icon-64.png" alt="Call Lana" style="width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 1px 1px rgba(80,30,160,0.2));" />
+
+                <!-- Animated soundwave -->
+                <div style="display:flex;align-items:center;justify-content:center;gap:3px;height:48px;margin-bottom:20px;">
+                  <div class="hero-wave" style="--d:0.0s;"></div>
+                  <div class="hero-wave" style="--d:0.15s;"></div>
+                  <div class="hero-wave" style="--d:0.3s;"></div>
+                  <div class="hero-wave" style="--d:0.1s;"></div>
+                  <div class="hero-wave" style="--d:0.25s;"></div>
+                  <div class="hero-wave hero-wave-accent" style="--d:0.05s;"></div>
+                  <div class="hero-wave" style="--d:0.2s;"></div>
+                  <div class="hero-wave hero-wave-accent" style="--d:0.35s;"></div>
+                  <div class="hero-wave" style="--d:0.12s;"></div>
+                  <div class="hero-wave" style="--d:0.28s;"></div>
+                  <div class="hero-wave" style="--d:0.08s;"></div>
+                  <div class="hero-wave hero-wave-accent" style="--d:0.18s;"></div>
+                  <div class="hero-wave" style="--d:0.32s;"></div>
+                  <div class="hero-wave" style="--d:0.22s;"></div>
+                  <div class="hero-wave" style="--d:0.02s;"></div>
                 </div>
-              </div>
-            </div>
-            <!-- Phone visual element floating near robot hand -->
-            <div style="position:absolute;bottom:28%;right:8%;z-index:5;pointer-events:none;animation:phoneFloat 3s ease-in-out infinite;">
-              <div style="width:38px;height:64px;border-radius:10px;background:linear-gradient(135deg,#1F2937 0%,#374151 100%);border:2px solid #4B5563;box-shadow:0 4px 20px rgba(124,58,237,0.25),0 0 30px rgba(124,58,237,0.1);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
-                <!-- Phone screen -->
-                <div style="width:30px;height:52px;border-radius:6px;background:linear-gradient(180deg,#7C3AED 0%,#5B21B6 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;">
-                  <!-- Phone icon on screen -->
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
-                  </svg>
-                  <!-- Signal waves -->
-                  <div style="display:flex;gap:1px;align-items:flex-end;">
-                    <div style="width:2px;height:4px;background:rgba(255,255,255,0.6);border-radius:1px;animation:signalPulse 1.5s ease-in-out infinite;"></div>
-                    <div style="width:2px;height:7px;background:rgba(255,255,255,0.8);border-radius:1px;animation:signalPulse 1.5s ease-in-out 0.2s infinite;"></div>
-                    <div style="width:2px;height:10px;background:rgba(255,255,255,1);border-radius:1px;animation:signalPulse 1.5s ease-in-out 0.4s infinite;"></div>
+
+                <!-- Chat transcript -->
+                <div style="flex:1;display:flex;flex-direction:column;gap:10px;overflow:hidden;padding:0 4px;">
+                  <!-- Caller message -->
+                  <div class="hero-chat hero-chat-in" style="animation-delay:0.5s;">
+                    <p style="font-size:12px;color:#d1d5e8;line-height:1.4;">
+                      <span class="lang-de">Hallo, ich bräuchte einen Termin für nächste Woche Dienstag.</span>
+                      <span class="lang-en hidden">Hi, I need an appointment for next Tuesday.</span>
+                    </p>
+                  </div>
+                  <!-- Lana response -->
+                  <div class="hero-chat hero-chat-out" style="animation-delay:1.8s;">
+                    <p style="font-size:12px;color:#f0edf8;line-height:1.4;">
+                      <span class="lang-de">Gerne! Dienstag habe ich 9:00 und 14:00 Uhr frei. Was passt Ihnen besser?</span>
+                      <span class="lang-en hidden">Sure! I have 9 AM and 2 PM available on Tuesday. Which works better?</span>
+                    </p>
+                  </div>
+                  <!-- Caller reply -->
+                  <div class="hero-chat hero-chat-in" style="animation-delay:3.5s;">
+                    <p style="font-size:12px;color:#d1d5e8;line-height:1.4;">
+                      <span class="lang-de">14 Uhr wäre perfekt.</span>
+                      <span class="lang-en hidden">2 PM would be perfect.</span>
+                    </p>
+                  </div>
+                  <!-- Lana confirm -->
+                  <div class="hero-chat hero-chat-out" style="animation-delay:5.0s;">
+                    <p style="font-size:12px;color:#f0edf8;line-height:1.4;">
+                      <span class="lang-de">Ist eingetragen! Sie bekommen eine Bestätigung per SMS. Schönen Tag noch!</span>
+                      <span class="lang-en hidden">Booked! You'll get a confirmation via SMS. Have a great day!</span>
+                    </p>
                   </div>
                 </div>
-                <!-- Phone notch -->
-                <div style="position:absolute;top:3px;left:50%;transform:translateX(-50%);width:14px;height:3px;background:#1F2937;border-radius:2px;"></div>
+
+                <!-- Call controls -->
+                <div style="display:flex;justify-content:center;gap:20px;margin-top:12px;padding-bottom:4px;">
+                  <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+                  </div>
+                  <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#ef4444,#dc2626);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 15px rgba(239,68,68,0.3);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                  </div>
+                  <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating notification badge -->
+            <div style="position:absolute;top:20%;right:0;z-index:3;animation:floatBadge 3s ease-in-out infinite;">
+              <div style="background:white;border-radius:16px;padding:10px 16px;box-shadow:0 8px 30px rgba(0,0,0,0.08),0 0 0 1px rgba(124,58,237,0.08);display:flex;align-items:center;gap:10px;">
+                <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#10B981,#059669);display:flex;align-items:center;justify-content:center;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M20 6L9 17l-5-5"/><path d="M20 6L9 17l-5-5" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div>
+                  <p style="font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:#1F2937;">
+                    <span class="lang-de">Termin gebucht</span>
+                    <span class="lang-en hidden">Appointment booked</span>
+                  </p>
+                  <p style="font-family:'Space Grotesk',sans-serif;font-size:10px;color:#6B7280;">Di, 14:00 Uhr</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating call duration badge -->
+            <div style="position:absolute;bottom:25%;left:-10px;z-index:3;animation:floatBadge 3s ease-in-out 1.5s infinite;">
+              <div style="background:white;border-radius:16px;padding:10px 16px;box-shadow:0 8px 30px rgba(0,0,0,0.08),0 0 0 1px rgba(124,58,237,0.08);display:flex;align-items:center;gap:10px;">
+                <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#7C3AED,#5B21B6);display:flex;align-items:center;justify-content:center;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div>
+                  <p style="font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:#1F2937;">0:42</p>
+                  <p style="font-family:'Space Grotesk',sans-serif;font-size:10px;color:#6B7280;">
+                    <span class="lang-de">Anrufdauer</span>
+                    <span class="lang-en hidden">Call duration</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
+
+          <style>
+            .hero-wave{width:4px;border-radius:4px;background:rgba(124,58,237,0.6);animation:waveAnim 1.2s ease-in-out infinite;animation-delay:var(--d);}
+            .hero-wave-accent{background:rgba(124,58,237,0.9);}
+            @keyframes waveAnim{0%,100%{height:8px}50%{height:36px}}
+            .hero-chat{opacity:0;animation:chatIn 0.5s ease forwards;transform:translateY(8px);}
+            .hero-chat-in{align-self:flex-start;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:14px 14px 14px 4px;padding:10px 14px;max-width:85%;}
+            .hero-chat-out{align-self:flex-end;background:linear-gradient(135deg,rgba(124,58,237,0.3),rgba(124,58,237,0.15));border:1px solid rgba(124,58,237,0.2);border-radius:14px 14px 4px 14px;padding:10px 14px;max-width:85%;}
+            @keyframes chatIn{to{opacity:1;transform:translateY(0)}}
+            @keyframes floatBadge{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+          </style>
         </div>
       </div>
     </div>
