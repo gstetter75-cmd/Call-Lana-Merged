@@ -1,5 +1,6 @@
 // Extracted from dashboard.js — Month Select, Home Data, Call Chart
-// Uses $setText/$setAttr from dashboard.js (loaded before this file)
+import { $setText, $setAttr } from './modules/dom-helpers.js';
+import { formatMinutes, formatCurrency } from './modules/format.js';
 
 // MONTH SELECT
 // ==========================================
@@ -38,15 +39,15 @@ async function loadHomeData() {
 
   if (result.success) {
     const s = result.stats;
-    window.$setText('csAnrufe', s.totalCalls.toLocaleString('de-DE'));
-    window.$setText('csSms', window.formatMinutes(s.avgDuration));
+    $setText('csAnrufe', s.totalCalls.toLocaleString('de-DE'));
+    $setText('csSms', formatMinutes(s.avgDuration));
     const completedCalls = s.statuses?.completed || 0;
     const successRate = s.totalCalls > 0 ? Math.round((completedCalls / s.totalCalls) * 100) : 0;
-    window.$setText('csKosten', successRate + '%');
+    $setText('csKosten', successRate + '%');
   } else {
-    window.$setText('csAnrufe', '0');
-    window.$setText('csSms', '0 min');
-    window.$setText('csKosten', '0%');
+    $setText('csAnrufe', '0');
+    $setText('csSms', '0 min');
+    $setText('csKosten', '0%');
   }
 
   // Balance donut
@@ -56,8 +57,8 @@ async function loadHomeData() {
   const pct = Math.min(balance / maxBalance, 1);
   const circumference = 2 * Math.PI * 40;
   const offset = circumference - (pct * circumference);
-  window.$setAttr('donutArc', 'stroke-dashoffset', offset);
-  window.$setText('donutCenter', window.formatCurrency(balance));
+  $setAttr('donutArc', 'stroke-dashoffset', offset);
+  $setText('donutCenter', formatCurrency(balance));
 
   // Call chart
   drawCallChart(start, end);
