@@ -38,6 +38,7 @@ if (typeof SafeActions !== 'undefined') {
 // AUTH CHECK (role-based via AuthGuard)
 // ==========================================
 (async () => {
+  try { await supabaseClient.auth.refreshSession(); } catch (e) { /* ignore */ }
   currentProfile = await AuthGuard.init();
   if (!currentProfile) return;
 

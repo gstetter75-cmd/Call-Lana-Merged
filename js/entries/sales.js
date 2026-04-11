@@ -27,4 +27,5 @@ import '../sales.js';
 import '../sales-tasks.js';
 import '../theme-toggle.js';
 import '../idle-timeout.js';
+import '../debug-mode.js';
 import '../../cookie-consent.js';

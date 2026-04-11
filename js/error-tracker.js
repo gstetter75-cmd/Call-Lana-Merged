@@ -21,16 +21,15 @@
   }
 
   function shouldIgnore(message, source) {
-    if (typeof message === 'string' && /404/.test(message)) return true;
+    if (typeof message === 'string' && /404|403|406/.test(message)) return true;
+    if (typeof message === 'string' && /Failed to fetch|Load failed|NetworkError/.test(message)) return true;
     if (typeof source === 'string' && !source.includes(location.hostname)) return true;
     return false;
   }
 
   function getUserId() {
     try {
-      const session = supabaseClient?.auth?.session?.() ?? null;
-      if (session?.user?.id) return session.user.id;
-      // Fallback: check stored session
+      // Supabase v2 API — read from localStorage (sync, no await needed)
       const stored = JSON.parse(localStorage.getItem('sb-fgwtptriileytmmotevs-auth-token') || 'null');
       return stored?.user?.id || null;
     } catch {

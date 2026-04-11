@@ -45,4 +45,5 @@ import '../keyboard-shortcuts.js';
 import '../invoices.js';
 import '../theme-toggle.js';
 import '../idle-timeout.js';
+import '../debug-mode.js';
 import '../../cookie-consent.js';

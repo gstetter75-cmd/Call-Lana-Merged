@@ -87,18 +87,49 @@ const ErrorHandler = {
     });
   },
 
-  // Detect Supabase errors in fetch responses
+  // Detect Supabase errors in fetch responses + auto-retry on 403
   _patchFetch() {
     const originalFetch = window.fetch;
     let consecutiveErrors = 0;
+    let isRefreshing = false;
 
     window.fetch = async function(...args) {
       try {
         const response = await originalFetch.apply(this, args);
-        // Reset counter on any successful response
-        if (response.ok || response.status < 500) {
+
+        if (response.ok || response.status < 400) {
           consecutiveErrors = 0;
-        } else if (response.status >= 500) {
+          return response;
+        }
+
+        // 403 on Supabase = stale token — auto-refresh and retry once
+        if (response.status === 403 && !isRefreshing) {
+          const url = typeof args[0] === 'string' ? args[0] : args[0]?.url || '';
+          if (url.includes('supabase.co')) {
+            isRefreshing = true;
+            try {
+              if (typeof supabaseClient !== 'undefined') {
+                const { data } = await supabaseClient.auth.refreshSession();
+                if (data?.session) {
+                  // Update Authorization header with new token
+                  const opts = args[1] || {};
+                  const headers = new Headers(opts.headers || {});
+                  headers.set('Authorization', 'Bearer ' + data.session.access_token);
+                  headers.set('apikey', headers.get('apikey') || '');
+                  const retryResponse = await originalFetch.call(this, args[0], { ...opts, headers });
+                  isRefreshing = false;
+                  if (retryResponse.ok) {
+                    if (typeof Logger !== 'undefined') Logger.info('ErrorHandler', '403 retry succeeded after token refresh');
+                    return retryResponse;
+                  }
+                }
+              }
+            } catch (e) { /* ignore refresh failure */ }
+            isRefreshing = false;
+          }
+        }
+
+        if (response.status >= 500) {
           consecutiveErrors++;
           if (consecutiveErrors >= 3) {
             ErrorHandler._showBanner('Server-Probleme erkannt. Einige Funktionen sind eingeschränkt.', 'warning');
@@ -131,3 +162,6 @@ const ErrorHandler = {
 };
 
 window.ErrorHandler = ErrorHandler;
+
+// Auto-init when script loads
+ErrorHandler.init();

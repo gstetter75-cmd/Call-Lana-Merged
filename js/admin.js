@@ -148,7 +148,7 @@ async function loadUsers() {
 
 async function loadOrgs() {
   const result = await clanaDB.getOrganizations();
-  if (!result.success) return;
+  if (!result.success) { Components.toast('Fehler beim Laden der Organisationen', 'error'); return; }
   const tbody = document.getElementById('orgs-tbody');
   const orgs = result.data || [];
   if (!orgs.length) {
@@ -178,7 +178,7 @@ async function loadOrgs() {
 
 async function loadCustomers() {
   const result = await clanaDB.getAllProfiles();
-  if (!result.success) return;
+  if (!result.success) { Components.toast('Fehler beim Laden der Kunden', 'error'); return; }
 
   const customers = (result.data || []).filter(u => u.role === 'customer');
   const tbody = document.getElementById('customers-tbody');

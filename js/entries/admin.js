@@ -41,4 +41,5 @@ import '../admin.js';
 import '../admin-stats.js';
 import '../theme-toggle.js';
 import '../idle-timeout.js';
+import '../debug-mode.js';
 import '../../cookie-consent.js';
