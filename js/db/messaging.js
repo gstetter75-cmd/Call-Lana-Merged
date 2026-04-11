@@ -130,7 +130,7 @@ const dbMessaging = {
       return { success: true, data: conv };
     } catch (error) {
       Logger.error('db.createConversation', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
     }
   },
 

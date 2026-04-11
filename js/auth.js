@@ -150,3 +150,4 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
 });
 
 window.clanaAuth = auth;
+window.auth = auth;
