@@ -1,6 +1,8 @@
 // ==========================================
 // INVOICE MANAGEMENT FOR DASHBOARD
 // ==========================================
+import { showToast } from './modules/toast.js';
+import { formatCents } from './modules/format.js';
 
 // Register safe event delegation actions
 if (typeof SafeActions !== 'undefined') {
@@ -165,7 +167,7 @@ async function downloadInvoicePdf(invoiceId) {
     await generateInvoicePdf(invoice, items || [], settings);
   } catch (err) {
     Logger.error('downloadInvoicePdf', err);
-    if (typeof showToast === 'function') {
+    {
       showToast('PDF konnte nicht erstellt werden: ' + (err.message || err), true);
     }
   }
@@ -249,9 +251,7 @@ async function sendSelectedInvoices() {
   if (!confirmed) return;
 
   try {
-    if (typeof showToast === 'function') {
-      showToast(`${label} werden gesendet...`);
-    }
+    showToast(`${label} werden gesendet...`);
 
     const { data: sessionData } = await supabaseClient.auth.getSession();
     const accessToken = sessionData?.session?.access_token;
@@ -278,14 +278,12 @@ async function sendSelectedInvoices() {
       throw new Error(result.error || 'Fehler beim Senden der Rechnungen');
     }
 
-    if (typeof showToast === 'function') {
-      showToast(`${label} erfolgreich gesendet!`);
-    }
+    showToast(`${label} erfolgreich gesendet!`);
 
     await loadInvoices();
   } catch (err) {
     Logger.error('sendSelectedInvoices', err);
-    if (typeof showToast === 'function') {
+    {
       showToast('E-Mail konnte nicht gesendet werden: ' + (err.message || err), true);
     }
   }
@@ -298,7 +296,7 @@ async function downloadSelectedInvoices() {
   const ids = getSelectedInvoiceIds();
   if (ids.length === 0) return;
 
-  if (typeof showToast === 'function') {
+  {
     showToast(`${ids.length} PDF(s) werden erstellt...`);
   }
 
@@ -315,12 +313,10 @@ async function downloadSelectedInvoices() {
     }
   }
 
-  if (typeof showToast === 'function') {
+  {
     if (errorCount === 0) {
       showToast(`${successCount} PDF(s) heruntergeladen.`);
-    } else {
-      showToast(`${successCount} heruntergeladen, ${errorCount} fehlgeschlagen.`, true);
-    }
+    } else showToast(`${successCount} heruntergeladen, ${errorCount} fehlgeschlagen.`, true);
   }
 }
 
@@ -343,9 +339,7 @@ async function resendInvoiceEmail(invoiceId) {
     if (!confirmed) return;
 
     // Show loading state
-    if (typeof showToast === 'function') {
-      showToast('Rechnung wird gesendet...');
-    }
+    showToast('Rechnung wird gesendet...');
 
     const { data: sessionData } = await supabaseClient.auth.getSession();
     const accessToken = sessionData?.session?.access_token;
@@ -373,15 +367,13 @@ async function resendInvoiceEmail(invoiceId) {
       throw new Error(result.error || 'Fehler beim Senden der Rechnung');
     }
 
-    if (typeof showToast === 'function') {
-      showToast('Rechnung erfolgreich gesendet!');
-    }
+    showToast('Rechnung erfolgreich gesendet!');
 
     // Reload invoice table to reflect updated status
     await loadInvoices();
   } catch (err) {
     Logger.error('resendInvoiceEmail', err);
-    if (typeof showToast === 'function') {
+    {
       showToast('E-Mail konnte nicht gesendet werden: ' + (err.message || err), true);
     }
   }
