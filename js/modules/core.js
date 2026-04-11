@@ -12,6 +12,7 @@ import { openModal, closeModal, initModalListeners } from './modal.js';
 import { SafeActions } from './safe-actions.js';
 import { showToast } from './toast.js';
 import { formatMinutes, formatCurrency, formatCents } from './format.js';
+import { $id, $setText, $setVal, $setHtml, $setAttr } from './dom-helpers.js';
 
 // Establish window globals for legacy code
 window.Logger = Logger;
@@ -25,6 +26,11 @@ window.showToast = showToast;
 window.formatMinutes = formatMinutes;
 window.formatCurrency = formatCurrency;
 window.formatCents = formatCents;
+window.$id = $id;
+window.$setText = $setText;
+window.$setVal = $setVal;
+window.$setHtml = $setHtml;
+window.$setAttr = $setAttr;
 
 // clanaUtils — single source of truth
 window.clanaUtils = {

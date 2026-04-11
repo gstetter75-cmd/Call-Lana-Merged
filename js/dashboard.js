@@ -39,22 +39,12 @@ if (typeof SafeActions !== 'undefined') {
   });
 }
 
-// Null-safe DOM helpers (prevent TypeError when elements don't exist yet)
-function $id(id) { return document.getElementById(id); }
-function $setText(id, text) { const el = $id(id); if (el) el.textContent = text; }
-function $setVal(id, val) { const el = $id(id); if (el) el.value = val; }
-function $setHtml(id, html) { const el = $id(id); if (el) el.innerHTML = html; }
-function $setAttr(id, attr, val) { const el = $id(id); if (el) el.setAttribute(attr, val); }
+// DOM helpers, showToast, format*, escHtml — now in js/modules/ via core.js
 
-// Window exports for cross-file access (showToast, formatCurrency, formatMinutes, escHtml now from modules/)
+// Window exports for cross-file access
 window.navigateToPage = navigateToPage;
 window.loadBilling = loadBilling;
 window.loadPlan = loadPlan;
-window.$id = $id;
-window.$setText = $setText;
-window.$setVal = $setVal;
-window.$setHtml = $setHtml;
-window.$setAttr = $setAttr;
 
 
 // ==========================================
