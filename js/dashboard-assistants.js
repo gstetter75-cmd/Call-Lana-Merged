@@ -1,5 +1,6 @@
 // Extracted from dashboard.js — Assistant CRUD, editor, phones
-// Depends on: dashboard.js (globals on window: assistantsList, editingAssistantId, escHtml, showToast, navigateToPage; core: clanaDB, clanaUtils)
+import { showToast } from './modules/toast.js';
+import { sanitizeHtml as escHtml } from './modules/utils.js';
 // ==========================================
 
 // Window exports for cross-file access
@@ -24,10 +25,10 @@ function renderHomeAssistants() {
   container.innerHTML = window.assistantsList.map(a =>
     '<div class="assistant-card" data-action="edit-assistant" data-id="' + clanaUtils.sanitizeAttr(a.id) + '" style="cursor:pointer;">' +
       '<div class="ac-top">' +
-        '<div class="ac-name">' + window.escHtml(a.name) + '</div>' +
+        '<div class="ac-name">' + escHtml(a.name) + '</div>' +
         '<span class="live-badge ' + (a.status === 'live' ? 'live' : 'offline') + '">' + (a.status === 'live' ? 'LIVE' : 'Offline') + '</span>' +
       '</div>' +
-      '<div class="ac-phone">' + window.escHtml(a.phone_number || 'Keine Nummer') + '</div>' +
+      '<div class="ac-phone">' + escHtml(a.phone_number || 'Keine Nummer') + '</div>' +
     '</div>'
   ).join('');
 }
@@ -46,10 +47,10 @@ function renderAssistantsList() {
     const statusCls = a.status === 'live' ? 'completed' : 'voicemail';
     const statusLabel = a.status === 'live' ? 'LIVE' : 'Offline';
     html += '<tr>' +
-      '<td style="font-weight:600;color:var(--tx);cursor:pointer;" data-action="edit-assistant" data-id="' + clanaUtils.sanitizeAttr(a.id) + '">' + window.escHtml(a.name) + '</td>' +
+      '<td style="font-weight:600;color:var(--tx);cursor:pointer;" data-action="edit-assistant" data-id="' + clanaUtils.sanitizeAttr(a.id) + '">' + escHtml(a.name) + '</td>' +
       '<td><span class="status-badge ' + statusCls + '">' + statusLabel + '</span></td>' +
-      '<td>' + window.escHtml(a.phone_number || '–') + '</td>' +
-      '<td>' + window.escHtml(a.voice || 'Marie') + '</td>' +
+      '<td>' + escHtml(a.phone_number || '–') + '</td>' +
+      '<td>' + escHtml(a.voice || 'Marie') + '</td>' +
       '<td>' + clanaUtils.formatDate(a.created_at) + '</td>' +
       '<td><button data-action="delete-assistant" data-id="' + clanaUtils.sanitizeAttr(a.id) + '" data-extra="' + clanaUtils.sanitizeAttr(a.name) + '" style="background:none;border:1px solid rgba(248,113,113,.3);border-radius:6px;padding:4px 10px;color:var(--red);font-size:11px;cursor:pointer;font-family:inherit;">Löschen</button></td>' +
     '</tr>';
@@ -73,9 +74,9 @@ function renderPhonesFromAssistants() {
 
   container.innerHTML = withPhone.map(a =>
     '<div class="phone-item">' +
-      '<div class="phone-number-text">' + window.escHtml(a.phone_number) + '</div>' +
+      '<div class="phone-number-text">' + escHtml(a.phone_number) + '</div>' +
       '<span class="status-badge ' + (a.status === 'live' ? 'completed' : 'voicemail') + '">' + (a.status === 'live' ? 'Aktiv' : 'Inaktiv') + '</span>' +
-      '<div class="phone-assistant">' + window.escHtml(a.name) + '</div>' +
+      '<div class="phone-assistant">' + escHtml(a.name) + '</div>' +
     '</div>'
   ).join('');
 }
@@ -174,7 +175,7 @@ function clearEditorForm() {
 // ==========================================
 document.getElementById('btnSaveAssistant')?.addEventListener('click', async () => {
   const name = document.getElementById('edName').value.trim();
-  if (!name) { window.showToast('Bitte einen Namen eingeben.', true); return; }
+  if (!name) { showToast('Bitte einen Namen eingeben.', true); return; }
 
   const saveBtn = document.getElementById('btnSaveAssistant');
   const origText = saveBtn.textContent;
@@ -217,11 +218,11 @@ document.getElementById('btnSaveAssistant')?.addEventListener('click', async () 
   }
 
   if (result.success) {
-    window.showToast(window.editingAssistantId ? 'Assistent aktualisiert!' : 'Assistent erstellt!');
+    showToast(window.editingAssistantId ? 'Assistent aktualisiert!' : 'Assistent erstellt!');
     await loadAssistants();
     window.navigateToPage('assistants');
   } else {
-    window.showToast('Fehler: ' + result.error, true);
+    showToast('Fehler: ' + result.error, true);
   }
   saveBtn.disabled = false;
   saveBtn.textContent = origText;
@@ -244,9 +245,9 @@ async function deleteAssistant(id, name) {
   if (!confirm('Assistent "' + name + '" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.')) return;
   const result = await clanaDB.deleteAssistant(id);
   if (result.success) {
-    window.showToast('Assistent gelöscht.');
+    showToast('Assistent gelöscht.');
     await loadAssistants();
   } else {
-    window.showToast('Fehler: ' + result.error, true);
+    showToast('Fehler: ' + result.error, true);
   }
 }
