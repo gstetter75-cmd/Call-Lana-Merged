@@ -171,7 +171,7 @@
     // ── Safety timeout: if Spline hasn't loaded after 15s, remove it ──
     var safetyTimeout = setTimeout(function() {
       if (!ready && viewer && viewer.parentNode) {
-        console.warn('Spline viewer did not load in time — removing to unblock page.');
+        if (typeof Logger !== 'undefined') Logger.warn('homepage', 'Spline viewer did not load in time — removing to unblock page.');
         viewer.remove();
       }
     }, 15000);
@@ -317,7 +317,7 @@
 
     } catch(err) {
       // If splineSetup crashes, just log it — the page must always render
-      console.warn('Spline setup failed:', err);
+      if (typeof Logger !== 'undefined') Logger.warn('homepage', 'Spline setup failed:', err);
       var failedViewer = document.querySelector('spline-viewer');
       if (failedViewer) failedViewer.remove();
     }

@@ -73,7 +73,11 @@ const CRMEnhancements = {
     if (th && !th.querySelector('.mass-select-all')) {
       const checkTh = document.createElement('th');
       checkTh.style.width = '30px';
-      checkTh.innerHTML = '<input type="checkbox" class="mass-select-all" onchange="CRMEnhancements.toggleSelectAll(this.checked)">';
+      const allCb = document.createElement('input');
+      allCb.type = 'checkbox';
+      allCb.className = 'mass-select-all';
+      allCb.addEventListener('change', function() { CRMEnhancements.toggleSelectAll(this.checked); });
+      checkTh.appendChild(allCb);
       th.insertBefore(checkTh, th.firstChild);
     }
   },
@@ -81,7 +85,13 @@ const CRMEnhancements = {
   addCheckboxToRow(row, leadId) {
     if (row.querySelector('.mass-select-cb')) return;
     const td = document.createElement('td');
-    td.innerHTML = `<input type="checkbox" class="mass-select-cb" data-lead-id="${leadId}" onchange="CRMEnhancements.toggleSelect('${leadId}', this.checked)" onclick="event.stopPropagation()">`;
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.className = 'mass-select-cb';
+    cb.dataset.leadId = leadId;
+    cb.addEventListener('change', function() { CRMEnhancements.toggleSelect(this.dataset.leadId, this.checked); });
+    cb.addEventListener('click', function(e) { e.stopPropagation(); });
+    td.appendChild(cb);
     row.insertBefore(td, row.firstChild);
   },
 
@@ -129,8 +139,8 @@ const CRMEnhancements = {
           <option value="won">Gewonnen</option>
           <option value="lost">Verloren</option>
         </select>
-        <button class="btn btn-sm" onclick="CRMEnhancements.applyMassStatus()">Anwenden</button>
-        <button class="btn btn-sm btn-outline" onclick="CRMEnhancements.clearSelection()">Abbrechen</button>
+        <button class="btn btn-sm" data-action="crm-apply-mass-status">Anwenden</button>
+        <button class="btn btn-sm btn-outline" data-action="crm-clear-selection">Abbrechen</button>
       </div>
     `;
   },
@@ -187,5 +197,13 @@ const CRMEnhancements = {
     `;
   }
 };
+
+// Event delegation for mass action buttons
+document.addEventListener('click', function(e) {
+  const el = e.target.closest('[data-action]');
+  if (!el) return;
+  if (el.dataset.action === 'crm-apply-mass-status') CRMEnhancements.applyMassStatus();
+  else if (el.dataset.action === 'crm-clear-selection') CRMEnhancements.clearSelection();
+});
 
 window.CRMEnhancements = CRMEnhancements;

@@ -298,7 +298,7 @@ async function openEmailTemplate(leadOrCustomer) {
   const preis = CONFIG.getPlanPrice(leadOrCustomer.plan || 'starter');
 
   // Show template picker
-  const list = templates.map(t => `<div style="padding:10px;border:1px solid var(--border);border-radius:8px;cursor:pointer;margin-bottom:6px;transition:background .15s;" onmouseenter="this.style.background='var(--bg3)'" onmouseleave="this.style.background=''" data-action="use-template" data-id="${clanaUtils.sanitizeAttr(t.id)}">
+  const list = templates.map(t => `<div style="padding:10px;border:1px solid var(--border);border-radius:8px;cursor:pointer;margin-bottom:6px;transition:background .15s;" class="template-pick-item" data-action="use-template" data-id="${clanaUtils.sanitizeAttr(t.id)}">
     <div style="font-weight:600;font-size:13px;">${clanaUtils.sanitizeHtml(t.name)}</div>
     <div style="font-size:11px;color:var(--tx3);">${clanaUtils.sanitizeHtml(t.category)}</div>
   </div>`).join('');
@@ -311,7 +311,7 @@ async function openEmailTemplate(leadOrCustomer) {
   overlay.id = 'modal-email-templates';
   overlay.style.display = 'flex';
   overlay.innerHTML = `<div class="modal" style="max-width:440px;">
-    <div class="modal-header"><h3 class="modal-title">E-Mail Template wählen</h3><button class="modal-close" onclick="closeModal('modal-email-templates')">&times;</button></div>
+    <div class="modal-header"><h3 class="modal-title">E-Mail Template wählen</h3><button class="modal-close" data-close-modal="modal-email-templates">&times;</button></div>
     <div style="max-height:350px;overflow-y:auto;">${list}</div>
   </div>`;
   document.body.appendChild(overlay);
@@ -596,5 +596,12 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
     if (e.target === overlay) overlay.classList.remove('active');
   });
 });
+
+// CSS hover for template picker items
+(function() {
+  var style = document.createElement('style');
+  style.textContent = '.template-pick-item:hover{background:var(--bg3)!important;}';
+  document.head.appendChild(style);
+})();
 
 init();

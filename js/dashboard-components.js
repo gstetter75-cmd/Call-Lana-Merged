@@ -71,7 +71,7 @@ const Components = {
       banner.id = 'impersonation-banner';
       banner.innerHTML =
         '<span>👁 Sie sehen das Dashboard von <strong>' + name + '</strong></span>' +
-        '<button onclick="ImpersonationManager.stop()">Zurück zum Admin</button>';
+        '<button data-action="stop-impersonation">Zurück zum Admin</button>';
       document.body.prepend(banner);
       ImpersonationManager.checkTimeout();
     }
@@ -112,7 +112,7 @@ const Components = {
         const div = document.createElement('div');
         div.style.cssText = `background:${bg};color:white;text-align:center;padding:8px 16px;font-size:12px;font-weight:600;font-family:Manrope,sans-serif;`;
         const sanitize = typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeHtml : (s => s);
-        div.innerHTML = `${sanitize(a.title)}: ${sanitize(a.message)} <button onclick="this.parentElement.remove()" style="background:rgba(255,255,255,.2);border:none;color:white;padding:2px 8px;border-radius:4px;cursor:pointer;margin-left:8px;font-size:11px;">×</button>`;
+        div.innerHTML = `${sanitize(a.title)}: ${sanitize(a.message)} <button data-action="dismiss-announcement" style="background:rgba(255,255,255,.2);border:none;color:white;padding:2px 8px;border-radius:4px;cursor:pointer;margin-left:8px;font-size:11px;">×</button>`;
         container.appendChild(div);
       });
 
@@ -133,7 +133,7 @@ const Components = {
     const closeBtn = document.createElement('button');
     closeBtn.textContent = 'Schließen';
     closeBtn.style.cssText = 'background:rgba(255,255,255,.2);border:none;color:white;padding:4px 12px;border-radius:6px;cursor:pointer;margin-left:12px;font-family:inherit;';
-    closeBtn.onclick = () => { banner.remove(); banner = null;  };
+    closeBtn.addEventListener('click', function() { banner.remove(); banner = null; });
     banner.appendChild(textNode);
     banner.appendChild(closeBtn);
     document.body.prepend(banner);
@@ -153,5 +153,13 @@ const Components = {
     }
   });
 })();
+
+// Event delegation for component actions
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('[data-action]');
+  if (!el) return;
+  if (el.dataset.action === 'stop-impersonation' && typeof ImpersonationManager !== 'undefined') ImpersonationManager.stop();
+  else if (el.dataset.action === 'dismiss-announcement') el.parentElement.remove();
+});
 
 window.Components = Components;

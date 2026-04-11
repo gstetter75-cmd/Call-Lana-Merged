@@ -148,7 +148,7 @@ const AdminAudit = {
     container.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
         <h3 style="margin:0;font-size:14px;">🎯 KPI-Ziele</h3>
-        <button class="btn btn-sm btn-outline" onclick="AdminAudit.openGoalModal()">+ Ziel setzen</button>
+        <button class="btn btn-sm btn-outline" data-action="open-goal-modal">+ Ziel setzen</button>
       </div>
       ${goals.length ? goals.map(g => {
         const current = metricValues[g.metric] || g.current_value || 0;
@@ -215,7 +215,7 @@ const AdminAudit = {
     container.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
         <h3 style="margin:0;font-size:14px;">📢 Ankündigungen</h3>
-        <button class="btn btn-sm btn-outline" onclick="AdminAudit.createAnnouncement()">+ Neue Ankündigung</button>
+        <button class="btn btn-sm btn-outline" data-action="create-announcement">+ Neue Ankündigung</button>
       </div>
       ${announcements.length ? announcements.map(a => `
         <div style="display:flex;gap:10px;padding:10px;background:var(--bg3);border-radius:10px;margin-bottom:8px;">
@@ -267,5 +267,13 @@ const AdminAudit = {
     }
   }
 };
+
+// Event delegation for admin audit actions
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('[data-action]');
+  if (!el) return;
+  if (el.dataset.action === 'open-goal-modal') AdminAudit.openGoalModal();
+  else if (el.dataset.action === 'create-announcement') AdminAudit.createAnnouncement();
+});
 
 window.AdminAudit = AdminAudit;

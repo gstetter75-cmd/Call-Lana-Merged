@@ -22,7 +22,7 @@ const AnalyticsPage = {
         .eq('user_id', await auth.getEffectiveUserId())
         .gte('created_at', since.toISOString())
         .order('created_at', { ascending: true })
-        .limit(5000);
+        .limit(1000);
 
       if (error) throw error;
       this._calls = data || [];

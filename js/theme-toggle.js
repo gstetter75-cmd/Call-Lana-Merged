@@ -46,9 +46,9 @@ const ThemeToggle = {
       const btn = document.createElement('button');
       btn.id = 'theme-toggle-btn';
       btn.style.cssText = 'background:none;border:1px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;color:var(--tx3);font-size:12px;display:flex;align-items:center;gap:6px;margin:8px 16px;width:calc(100% - 32px);transition:all .2s;';
-      btn.onmouseenter = () => btn.style.borderColor = 'var(--pu)';
-      btn.onmouseleave = () => btn.style.borderColor = 'var(--border)';
-      btn.onclick = () => ThemeToggle.toggle();
+      btn.addEventListener('mouseenter', function() { btn.style.borderColor = 'var(--pu)'; });
+      btn.addEventListener('mouseleave', function() { btn.style.borderColor = 'var(--border)'; });
+      btn.addEventListener('click', function() { ThemeToggle.toggle(); });
       sbBottom.insertBefore(btn, sbBottom.firstChild);
       this.updateButton();
     };

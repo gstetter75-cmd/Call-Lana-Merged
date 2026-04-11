@@ -24,10 +24,10 @@ const AvailabilityModule = {
     if (!container) return;
     container.innerHTML = `
       <div style="display:flex;gap:6px;margin-bottom:16px;">
-        <button class="tab-btn active" onclick="AvailabilityModule.switchSubTab('calendar', this)">Kalender</button>
-        <button class="tab-btn" onclick="AvailabilityModule.switchSubTab('hours', this)">Arbeitszeiten</button>
-        <button class="tab-btn" onclick="AvailabilityModule.switchSubTab('vacation', this)">Urlaub</button>
-        <button class="tab-btn" onclick="AvailabilityModule.switchSubTab('team', this)">Team</button>
+        <button class="tab-btn active" data-action="avail-subtab" data-tab="calendar">Kalender</button>
+        <button class="tab-btn" data-action="avail-subtab" data-tab="hours">Arbeitszeiten</button>
+        <button class="tab-btn" data-action="avail-subtab" data-tab="vacation">Urlaub</button>
+        <button class="tab-btn" data-action="avail-subtab" data-tab="team">Team</button>
       </div>
       <div id="avail-subtab-content"></div>
     `;
@@ -100,7 +100,7 @@ const AvailabilityModule = {
                 else if (isBreak) bg = 'rgba(249,115,22,0.1)';
                 else if (isWorkTime) bg = 'rgba(16,185,129,0.12)';
 
-                return `<div style="height:32px;border-radius:4px;background:${bg};border:1px solid transparent;cursor:pointer;transition:all .15s;" onmouseenter="this.style.borderColor='var(--pu)'" onmouseleave="this.style.borderColor='transparent'" data-action="set-avail-date" data-id="${clanaUtils.sanitizeAttr(dateStr)}"></div>`;
+                return `<div class="avail-cell" style="height:32px;border-radius:4px;background:${bg};border:1px solid transparent;cursor:pointer;transition:all .15s;" data-action="set-avail-date" data-id="${clanaUtils.sanitizeAttr(dateStr)}"></div>`;
               }).join('');
           }).join('')}
         </div>
@@ -130,13 +130,13 @@ const AvailabilityModule = {
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
         <h3 style="margin:0;font-size:14px;">Arbeitszeiten</h3>
         <div style="display:flex;gap:8px;">
-          <select class="form-input form-select" id="wh-template" style="width:200px;font-size:12px;" onchange="AvailabilityModule.applyTemplate(this.value)">
+          <select class="form-input form-select" id="wh-template" style="width:200px;font-size:12px;">
             <option value="">Template wählen...</option>
             <option value="office">Standard Bürozeiten (Mo-Fr 9-17)</option>
             <option value="early">Frühschicht (Mo-Fr 6-14)</option>
             <option value="late">Spätschicht (Mo-Fr 14-22)</option>
           </select>
-          <button class="btn btn-sm" onclick="AvailabilityModule.saveWorkingHours()">Speichern</button>
+          <button class="btn btn-sm" data-action="save-working-hours">Speichern</button>
         </div>
       </div>
       <div class="card" style="padding:0;overflow:hidden;">
@@ -151,7 +151,7 @@ const AvailabilityModule = {
             const be = wh?.break_end?.slice(0,5) || (i < 5 ? defaults.breakEnd : '');
             return `<tr>
               <td style="font-weight:600;">${name}</td>
-              <td><input type="checkbox" id="wh-active-${i}" ${active ? 'checked' : ''} onchange="document.querySelectorAll('#wh-row-${i} input[type=time]').forEach(el=>el.disabled=!this.checked)"></td>
+              <td><input type="checkbox" id="wh-active-${i}" ${active ? 'checked' : ''}></td>
               <td id="wh-row-${i}"><input type="time" class="form-input" id="wh-start-${i}" value="${start}" style="width:100px;" ${!active?'disabled':''}></td>
               <td><input type="time" class="form-input" id="wh-end-${i}" value="${end}" style="width:100px;" ${!active?'disabled':''}></td>
               <td><input type="time" class="form-input" id="wh-bs-${i}" value="${bs}" style="width:100px;" ${!active?'disabled':''}></td>
@@ -232,7 +232,7 @@ const AvailabilityModule = {
     container.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
         <h3 style="margin:0;font-size:14px;">Urlaub & Abwesenheiten ${year}</h3>
-        <button class="btn btn-sm" onclick="openModal('modal-time-off')">+ Abwesenheit beantragen</button>
+        <button class="btn btn-sm" data-action="open-time-off-modal">+ Abwesenheit beantragen</button>
       </div>
 
       <div class="card" style="margin-bottom:16px;padding:16px;">
@@ -374,5 +374,31 @@ function getWeekNumber(d) {
   const week1 = new Date(date.getFullYear(), 0, 4);
   return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7);
 }
+
+// CSS hover rule for calendar cells (replaces inline onmouseenter/onmouseleave)
+;(function() {
+  var style = document.createElement('style');
+  style.textContent = '.avail-cell:hover{border-color:var(--pu)!important;}';
+  document.head.appendChild(style);
+})();
+
+// Event delegation for availability module
+document.addEventListener('click', function(e) {
+  const el = e.target.closest('[data-action]');
+  if (!el) return;
+  const action = el.dataset.action;
+  if (action === 'avail-subtab') AvailabilityModule.switchSubTab(el.dataset.tab, el);
+  else if (action === 'save-working-hours') AvailabilityModule.saveWorkingHours();
+  else if (action === 'open-time-off-modal' && typeof openModal === 'function') openModal('modal-time-off');
+});
+
+document.addEventListener('change', function(e) {
+  const el = e.target;
+  if (el.id === 'wh-template') { AvailabilityModule.applyTemplate(el.value); return; }
+  if (el.id && el.id.startsWith('wh-active-')) {
+    const idx = el.id.replace('wh-active-', '');
+    document.querySelectorAll('#wh-row-' + idx + ' input[type=time]').forEach(function(inp) { inp.disabled = !el.checked; });
+  }
+});
 
 window.AvailabilityModule = AvailabilityModule;

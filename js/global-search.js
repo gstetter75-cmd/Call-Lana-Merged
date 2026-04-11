@@ -85,7 +85,7 @@ const GlobalSearch = {
           title: l.company_name || l.contact_name || l.email,
           subtitle: l.contact_name || l.email || '',
           badge: l.status,
-          action: `switchTab('leads')`,
+          actionType: 'go-leads',
           icon: '🎯'
         })));
       }
@@ -95,7 +95,8 @@ const GlobalSearch = {
           title: c.company_name,
           subtitle: c.contact_name || c.email || '',
           badge: c.plan || c.status,
-          action: `switchTab('customers');setTimeout(()=>viewCustomer('${clanaUtils.sanitizeAttr(c.id)}'),300)`,
+          actionType: 'go-customer',
+          actionId: c.id,
           icon: '👤'
         })));
       }
@@ -105,7 +106,7 @@ const GlobalSearch = {
           title: t.title,
           subtitle: t.due_date ? 'Fällig: ' + new Date(t.due_date).toLocaleDateString('de-DE') : '',
           badge: t.status,
-          action: `switchTab('tasks')`,
+          actionType: 'go-tasks',
           icon: '✅'
         })));
       }
@@ -123,11 +124,12 @@ const GlobalSearch = {
 
   renderSection(title, items) {
     const sanitize = typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeHtml : (s => s);
+    const sanitizeA = typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeAttr : (s => s);
     return `
       <div style="margin-bottom:8px;">
         <div style="padding:6px 8px;font-size:11px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;">${title}</div>
         ${items.map(i => `
-          <div onclick="${i.action};GlobalSearch.close();" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .15s;" onmouseenter="this.style.background='var(--bg3)'" onmouseleave="this.style.background=''">
+          <div data-action="search-result" data-search-action="${sanitizeA(i.actionType)}" ${i.actionId ? `data-id="${sanitizeA(i.actionId)}"` : ''} style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .15s;" class="search-result-item">
             <span style="font-size:16px;">${i.icon}</span>
             <div style="flex:1;min-width:0;">
               <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${sanitize(i.title)}</div>
@@ -140,5 +142,34 @@ const GlobalSearch = {
     `;
   }
 };
+
+// Event delegation for search results
+document.addEventListener('click', function(e) {
+  const el = e.target.closest('[data-action="search-result"]');
+  if (!el) return;
+
+  const action = el.dataset.searchAction;
+  const id = el.dataset.id;
+
+  if (action === 'go-leads' && typeof switchTab === 'function') {
+    switchTab('leads');
+  } else if (action === 'go-customer' && typeof switchTab === 'function') {
+    switchTab('customers');
+    if (id && typeof viewCustomer === 'function') {
+      setTimeout(function() { viewCustomer(id); }, 300);
+    }
+  } else if (action === 'go-tasks' && typeof switchTab === 'function') {
+    switchTab('tasks');
+  }
+
+  GlobalSearch.close();
+});
+
+// CSS hover for search result items (replaces onmouseenter/onmouseleave)
+(function() {
+  const style = document.createElement('style');
+  style.textContent = '.search-result-item:hover{background:var(--bg3)!important;}';
+  document.head.appendChild(style);
+})();
 
 window.GlobalSearch = GlobalSearch;

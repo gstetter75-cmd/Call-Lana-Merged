@@ -157,7 +157,7 @@ const AppointmentsPage = {
           const time = new Date(a.appointment_date).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
           const name = sanitize(a.customer_name || a.name || 'Unbekannt');
           const statusCls = this._getStatusClass(a.status);
-          html += '<div class="appt-block ' + statusCls + '" data-id="' + sanitize(a.id) + '" onclick="AppointmentsPage.showDetail(this.dataset.id)">' +
+          html += '<div class="appt-block ' + statusCls + '" data-id="' + sanitize(a.id) + '" data-action="show-appt-detail">' +
             '<div style="font-size:11px;font-weight:700;">' + time + '</div>' +
             '<div style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + name + '</div>' +
           '</div>';
@@ -204,7 +204,7 @@ const AppointmentsPage = {
       };
       const st = statusMap[a.status] || { label: sanitize(a.status || 'Bestätigt'), cls: 'badge-green' };
 
-      html += '<tr style="cursor:pointer;" data-id="' + sanitize(a.id) + '" onclick="AppointmentsPage.showDetail(this.dataset.id)">' +
+      html += '<tr style="cursor:pointer;" data-id="' + sanitize(a.id) + '" data-action="show-appt-detail">' +
         '<td>' + date + '</td>' +
         '<td style="font-weight:700;color:var(--pu);">' + time + '</td>' +
         '<td>' + name + '</td>' +
@@ -243,7 +243,7 @@ const AppointmentsPage = {
     overlay.innerHTML = '<div class="modal" style="max-width:480px;">' +
       '<div class="modal-header">' +
         '<h2 class="modal-title">Termin-Details</h2>' +
-        '<button class="modal-close" onclick="this.closest(\'div[style*=fixed]\').remove()">✕</button>' +
+        '<button class="modal-close" data-action="close-overlay">✕</button>' +
       '</div>' +
       '<div style="display:flex;flex-direction:column;gap:16px;">' +
         '<div style="display:flex;align-items:center;gap:12px;">' +
@@ -280,5 +280,14 @@ const AppointmentsPage = {
     return map[status] || 'badge-green';
   }
 };
+
+// Event delegation for appointments
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('[data-action]');
+  if (!el) return;
+  var action = el.dataset.action;
+  if (action === 'show-appt-detail') AppointmentsPage.showDetail(el.dataset.id);
+  else if (action === 'close-overlay') { var ov = el.closest('div[style*="fixed"]'); if (ov) ov.remove(); }
+});
 
 window.AppointmentsPage = AppointmentsPage;

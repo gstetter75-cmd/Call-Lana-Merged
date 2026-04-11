@@ -157,7 +157,7 @@ const SettingsExtra = {
           '<div style="font-size:13px;font-weight:600;">Keyword: <span style="color:var(--tx);">' + keyword + '</span></div>' +
           '<div style="font-size:12px;color:var(--tx3);">→ ' + target + (phone ? ' (' + phone + ')' : '') + '</div>' +
         '</div>' +
-        '<button class="btn-secondary" style="padding:6px 12px;font-size:11px;" onclick="SettingsExtra.deleteRule(\'' + r.id + '\')">Löschen</button>' +
+        '<button class="btn-secondary" style="padding:6px 12px;font-size:11px;" data-action="delete-fwd-rule" data-id="' + sanitize(r.id) + '">Löschen</button>' +
       '</div>';
     });
     container.innerHTML = html;
@@ -175,8 +175,8 @@ const SettingsExtra = {
       '<div class="fgrp"><label>Telefonnummer</label><input type="tel" class="finp" id="rulePhone" placeholder="+49 170 1234567"></div>' +
       '<div class="fgrp"><label>Priorität</label><select class="finp" id="rulePriority"><option value="1">1 (Höchste)</option><option value="2">2</option><option value="3" selected>3 (Normal)</option><option value="4">4</option><option value="5">5 (Niedrigste)</option></select></div>' +
       '<div style="display:flex;gap:10px;margin-top:16px;">' +
-        '<button class="btn-secondary" onclick="this.closest(\'div[style*=fixed]\').remove()">Abbrechen</button>' +
-        '<button class="btn-save" onclick="SettingsExtra._saveRule(this)">Regel speichern</button>' +
+        '<button class="btn-secondary" data-action="close-overlay">Abbrechen</button>' +
+        '<button class="btn-save" data-action="save-fwd-rule">Regel speichern</button>' +
       '</div>' +
     '</div>';
     document.body.appendChild(overlay);
@@ -277,5 +277,15 @@ const SettingsExtra = {
     }
   }
 };
+
+// Event delegation for settings extra actions
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('[data-action]');
+  if (!el) return;
+  var action = el.dataset.action;
+  if (action === 'delete-fwd-rule') SettingsExtra.deleteRule(el.dataset.id);
+  else if (action === 'close-overlay') { var ov = el.closest('div[style*="fixed"]'); if (ov) ov.remove(); }
+  else if (action === 'save-fwd-rule') SettingsExtra._saveRule(el);
+});
 
 window.SettingsExtra = SettingsExtra;

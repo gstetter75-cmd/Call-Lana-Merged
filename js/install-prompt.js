@@ -30,8 +30,8 @@ const InstallPrompt = {
     banner.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--pu,#7c3aed);color:#fff;padding:12px 20px;border-radius:12px;display:flex;align-items:center;gap:12px;z-index:9998;box-shadow:0 4px 20px rgba(0,0,0,0.15);max-width:90vw;font-size:14px;';
     banner.innerHTML = `
       <span>📱 Call Lana als App installieren?</span>
-      <button onclick="InstallPrompt.install()" style="background:#fff;color:var(--pu,#7c3aed);border:none;padding:6px 14px;border-radius:8px;font-weight:600;cursor:pointer;white-space:nowrap;">Installieren</button>
-      <button onclick="InstallPrompt.dismiss()" style="background:none;border:none;color:rgba(255,255,255,0.7);cursor:pointer;font-size:18px;padding:0 4px;">&times;</button>
+      <button data-action="pwa-install" style="background:#fff;color:var(--pu,#7c3aed);border:none;padding:6px 14px;border-radius:8px;font-weight:600;cursor:pointer;white-space:nowrap;">Installieren</button>
+      <button data-action="pwa-dismiss" style="background:none;border:none;color:rgba(255,255,255,0.7);cursor:pointer;font-size:18px;padding:0 4px;">&times;</button>
     `;
     document.body.appendChild(banner);
   },
@@ -56,5 +56,13 @@ const InstallPrompt = {
     this._hideBanner();
   }
 };
+
+// Event delegation for install prompt
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('[data-action]');
+  if (!el) return;
+  if (el.dataset.action === 'pwa-install') InstallPrompt.install();
+  else if (el.dataset.action === 'pwa-dismiss') InstallPrompt.dismiss();
+});
 
 window.InstallPrompt = InstallPrompt;

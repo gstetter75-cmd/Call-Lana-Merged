@@ -55,7 +55,7 @@ const IdleTimeout = {
       '<p style="font-size:13px;color:var(--tx3,#666);margin-bottom:12px;line-height:1.5;">' +
         'Du wirst in 5 Minuten automatisch abgemeldet. Klicke hier um aktiv zu bleiben.' +
       '</p>' +
-      '<button onclick="IdleTimeout._onActivity()" style="background:var(--pu,#7c3aed);color:white;' +
+      '<button data-action="idle-stay-active" style="background:var(--pu,#7c3aed);color:white;' +
         'border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;' +
         'font-family:inherit;width:100%;">Aktiv bleiben</button>';
     document.body.appendChild(el);
@@ -80,4 +80,10 @@ const IdleTimeout = {
 
 // Auto-init when script loads
 IdleTimeout.init();
+// Event delegation for idle timeout
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('[data-action]');
+  if (el && el.dataset.action === 'idle-stay-active') IdleTimeout._onActivity();
+});
+
 window.IdleTimeout = IdleTimeout;

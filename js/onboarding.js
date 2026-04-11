@@ -99,7 +99,7 @@ const Onboarding = {
 
     this.container.innerHTML = `
       <div class="card" style="margin-bottom:20px;position:relative;">
-        <button onclick="document.getElementById('onboarding-section').style.display='none'" style="position:absolute;top:12px;right:12px;background:none;border:none;color:var(--tx3);cursor:pointer;font-size:16px;" title="Ausblenden">&times;</button>
+        <button data-action="hide-onboarding" style="position:absolute;top:12px;right:12px;background:none;border:none;color:var(--tx3);cursor:pointer;font-size:16px;" title="Ausblenden">&times;</button>
         <div style="margin-bottom:14px;">
           <h3 style="margin:0 0 4px;font-size:16px;">Willkommen bei Call Lana! 🎉</h3>
           <p style="margin:0;font-size:13px;color:var(--tx3);">Schließe diese Schritte ab, um deinen KI-Assistenten einzurichten.</p>
@@ -135,5 +135,14 @@ const Onboarding = {
     }
   }
 };
+
+// Event delegation for onboarding
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('[data-action]');
+  if (el && el.dataset.action === 'hide-onboarding') {
+    var section = document.getElementById('onboarding-section');
+    if (section) section.style.display = 'none';
+  }
+});
 
 window.Onboarding = Onboarding;

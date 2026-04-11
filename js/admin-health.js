@@ -43,7 +43,7 @@ const SystemHealth = {
       </div>
 
       <div style="text-align:center;margin-top:12px;">
-        <button class="btn btn-sm btn-outline" onclick="SystemHealth.renderHealthDashboard(this.parentElement.parentElement)">🔄 Erneut prüfen</button>
+        <button class="btn btn-sm btn-outline" data-action="health-recheck">🔄 Erneut prüfen</button>
       </div>
     `;
   },
@@ -124,5 +124,11 @@ const SystemHealth = {
     }
   }
 };
+
+// Event delegation for health check
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('[data-action]');
+  if (el && el.dataset.action === 'health-recheck') SystemHealth.renderHealthDashboard(el.parentElement.parentElement);
+});
 
 window.SystemHealth = SystemHealth;

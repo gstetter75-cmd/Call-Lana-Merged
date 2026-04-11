@@ -29,8 +29,8 @@ const DashboardExtras = {
     container.innerHTML = `
       <div style="margin-bottom:16px;">
         <div style="display:flex;gap:8px;align-items:center;">
-          <input type="text" id="transcript-search-input" class="form-input" placeholder="Transkripte durchsuchen…" style="flex:1;" onkeydown="if(event.key==='Enter')DashboardExtras.doTranscriptSearch()">
-          <button class="btn btn-sm" onclick="DashboardExtras.doTranscriptSearch()">Suchen</button>
+          <input type="text" id="transcript-search-input" class="form-input" placeholder="Transkripte durchsuchen…" style="flex:1;" data-keyaction="transcript-search-enter">
+          <button class="btn btn-sm" data-action="do-transcript-search">Suchen</button>
         </div>
         <div id="transcript-search-results" style="margin-top:12px;"></div>
       </div>
@@ -56,7 +56,7 @@ const DashboardExtras = {
     container.innerHTML = results.map(r => {
       const excerpt = this.highlightMatch(r.transcript || '', query);
       return `
-        <div style="padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;cursor:pointer;transition:background .15s;" onmouseenter="this.style.background='var(--bg3)'" onmouseleave="this.style.background=''">
+        <div style="padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;cursor:pointer;transition:background .15s;" class="transcript-result-item">
           <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;">
             <span style="color:var(--tx3);">${sanitize(r.phone_number || '—')}</span>
             <span style="color:var(--tx3);">${typeof clanaUtils !== 'undefined' ? clanaUtils.formatDate(r.created_at) : new Date(r.created_at).toLocaleDateString('de-DE')}</span>
@@ -128,7 +128,7 @@ const DashboardExtras = {
       tip.innerHTML = `
         <div style="font-weight:700;margin-bottom:6px;">Tipp</div>
         <div>Drücke <kbd style="background:rgba(255,255,255,.2);border-radius:3px;padding:1px 6px;">/</kbd> für die Suche oder <kbd style="background:rgba(255,255,255,.2);border-radius:3px;padding:1px 6px;">?</kbd> für Shortcuts.</div>
-        <button onclick="this.parentElement.remove();localStorage.setItem('calllana_tooltips_seen','1')" style="background:rgba(255,255,255,.2);border:none;color:white;padding:4px 12px;border-radius:6px;cursor:pointer;margin-top:8px;font-size:11px;">Verstanden</button>
+        <button data-action="dismiss-tooltip" style="background:rgba(255,255,255,.2);border:none;color:white;padding:4px 12px;border-radius:6px;cursor:pointer;margin-top:8px;font-size:11px;">Verstanden</button>
       `;
       document.body.appendChild(tip);
     }, 3000);
@@ -146,7 +146,7 @@ const DashboardExtras = {
     clearTimeout(this._saveTimer);
     this._saveTimer = setTimeout(() => {
       try { localStorage.setItem('calllana_recent_actions', JSON.stringify(this.actions.slice(0, 10))); }
-      catch (e) {}
+      catch (e) { if (typeof Logger !== 'undefined') Logger.warn('RecentActions.save', e); }
     }, 500);
   },
 
@@ -172,5 +172,24 @@ const DashboardExtras = {
     `;
   }
 };
+
+// Event delegation for dashboard extras
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('[data-action]');
+  if (!el) return;
+  if (el.dataset.action === 'do-transcript-search') DashboardExtras.doTranscriptSearch();
+  else if (el.dataset.action === 'dismiss-tooltip') { el.parentElement.remove(); localStorage.setItem('calllana_tooltips_seen', '1'); }
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && e.target.dataset.keyaction === 'transcript-search-enter') DashboardExtras.doTranscriptSearch();
+});
+
+// CSS hover for transcript results
+(function() {
+  var style = document.createElement('style');
+  style.textContent = '.transcript-result-item:hover{background:var(--bg3)!important;}';
+  document.head.appendChild(style);
+})();
 
 window.DashboardExtras = DashboardExtras;

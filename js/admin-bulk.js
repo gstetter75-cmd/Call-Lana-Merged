@@ -26,12 +26,12 @@ const AdminBulk = {
       <span id="bulk-count-${tableType}" style="font-size:13px;font-weight:600;">0 ausgewählt</span>
       <div style="flex:1;"></div>
       ${tableType === 'users' ? `
-        <button class="btn btn-sm" onclick="AdminBulk.bulkAction('activate')" title="Aktivieren">✅ Aktivieren</button>
-        <button class="btn btn-sm" onclick="AdminBulk.bulkAction('deactivate')" style="background:var(--red);color:#fff;" title="Deaktivieren">⛔ Deaktivieren</button>
+        <button class="btn btn-sm" data-action="bulk-activate" title="Aktivieren">✅ Aktivieren</button>
+        <button class="btn btn-sm" data-action="bulk-deactivate" style="background:var(--red);color:#fff;" title="Deaktivieren">⛔ Deaktivieren</button>
       ` : `
-        <button class="btn btn-sm" onclick="AdminBulk.bulkAction('export')" title="Exportieren">📥 CSV Export</button>
+        <button class="btn btn-sm" data-action="bulk-export" title="Exportieren">📥 CSV Export</button>
       `}
-      <button class="btn btn-sm" onclick="AdminBulk.clearSelection()" style="background:transparent;border:1px solid var(--tx3);">Abbrechen</button>
+      <button class="btn btn-sm" data-action="bulk-clear" style="background:transparent;border:1px solid var(--tx3);">Abbrechen</button>
     `;
 
     // Insert before the table
@@ -52,7 +52,12 @@ const AdminBulk = {
     if (thead && !thead.querySelector('.bulk-select-all')) {
       const th = document.createElement('th');
       th.style.width = '40px';
-      th.innerHTML = `<input type="checkbox" class="bulk-select-all" onchange="AdminBulk.toggleAll(this.checked, '${tbodyId}')">`;
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.className = 'bulk-select-all';
+      cb.dataset.tbodyId = tbodyId;
+      cb.addEventListener('change', function() { AdminBulk.toggleAll(this.checked, this.dataset.tbodyId); });
+      th.appendChild(cb);
       thead.prepend(th);
     }
 
@@ -72,7 +77,12 @@ const AdminBulk = {
       if (!id) return;
 
       const td = document.createElement('td');
-      td.innerHTML = `<input type="checkbox" class="bulk-cb" data-id="${id}" onchange="AdminBulk.toggleOne('${id}', this.checked)">`;
+      const rowCb = document.createElement('input');
+      rowCb.type = 'checkbox';
+      rowCb.className = 'bulk-cb';
+      rowCb.dataset.id = id;
+      rowCb.addEventListener('change', function() { AdminBulk.toggleOne(this.dataset.id, this.checked); });
+      td.appendChild(rowCb);
       row.prepend(td);
     });
   },
@@ -172,5 +182,16 @@ const AdminBulk = {
     if (typeof showToast !== 'undefined') showToast(`${ids.length} Einträge exportiert`);
   }
 };
+
+// Event delegation for bulk toolbar buttons
+document.addEventListener('click', function(e) {
+  const el = e.target.closest('[data-action]');
+  if (!el) return;
+  const action = el.dataset.action;
+  if (action === 'bulk-activate') AdminBulk.bulkAction('activate');
+  else if (action === 'bulk-deactivate') AdminBulk.bulkAction('deactivate');
+  else if (action === 'bulk-export') AdminBulk.bulkAction('export');
+  else if (action === 'bulk-clear') AdminBulk.clearSelection();
+});
 
 window.AdminBulk = AdminBulk;

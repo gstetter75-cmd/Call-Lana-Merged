@@ -227,7 +227,7 @@ const AdminAnalytics = {
     container.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
         <h3 style="margin:0;font-size:14px;">Webhooks & Benachrichtigungen</h3>
-        <button class="btn btn-sm" onclick="AdminAnalytics.addWebhook()">+ Webhook</button>
+        <button class="btn btn-sm" data-action="add-webhook">+ Webhook</button>
       </div>
       <p style="font-size:12px;color:var(--tx3);margin-bottom:12px;">Erhalte Benachrichtigungen bei wichtigen Ereignissen via Slack, Teams oder eigene Endpoints.</p>
       ${webhooks.length ? `<table class="data-table" style="margin:0;">
@@ -311,5 +311,11 @@ const AdminAnalytics = {
     Components.toast(`${created} Rechnungen für ${monthStr} erstellt`, 'success');
   }
 };
+
+// Event delegation for admin analytics
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('[data-action]');
+  if (el && el.dataset.action === 'add-webhook') AdminAnalytics.addWebhook();
+});
 
 window.AdminAnalytics = AdminAnalytics;

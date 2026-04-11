@@ -75,7 +75,7 @@ const AdminExtra = {
           '<td>' + date + '</td>' +
           '<td><span class="badge ' + st.cls + '">' + st.label + '</span></td>' +
           '<td style="font-size:12px;color:var(--tx3);">' + next + '</td>' +
-          '<td><button class="btn btn-sm btn-outline" data-id="' + safeId + '" data-status="' + safeStatus + '" onclick="AdminExtra.advanceOnboarding(this.dataset.id,this.dataset.status)">Weiter</button></td>' +
+          '<td><button class="btn btn-sm btn-outline" data-id="' + safeId + '" data-status="' + safeStatus + '" data-action="advance-onboarding">Weiter</button></td>' +
         '</tr>';
       }).join('');
     } catch (e) {
@@ -225,7 +225,7 @@ const AdminExtra = {
           '<td><strong>' + service + '</strong></td>' +
           '<td><span class="badge ' + sev.cls + '">' + sev.label + '</span></td>' +
           '<td style="font-size:12px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + msg + '</td>' +
-          '<td>' + (hasStack ? '<button class="btn btn-sm btn-outline" onclick="AdminExtra.showStackTrace(\'' + l.id + '\')">Stack</button>' : '–') + '</td>' +
+          '<td>' + (hasStack ? '<button class="btn btn-sm btn-outline" data-action="show-stack-trace" data-id="' + sanitize(l.id) + '">Stack</button>' : '–') + '</td>' +
         '</tr>';
       }).join('');
     } catch (e) {
@@ -253,7 +253,7 @@ const AdminExtra = {
       overlay.innerHTML = '<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;max-width:700px;width:90%;max-height:80vh;overflow-y:auto;">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">' +
           '<h3 style="font-family:Syne,sans-serif;font-size:1rem;font-weight:700;">Stack Trace</h3>' +
-          '<button onclick="this.closest(\'div[style*=fixed]\').remove()" style="background:none;border:none;color:var(--tx3);font-size:1.4rem;cursor:pointer;">✕</button>' +
+          '<button data-action="close-overlay" style="background:none;border:none;color:var(--tx3);font-size:1.4rem;cursor:pointer;">✕</button>' +
         '</div>' +
         '<div style="font-size:12px;color:var(--tx3);margin-bottom:12px;">' + sanitize(data.service || '') + ' — ' + (data.created_at ? new Date(data.created_at).toLocaleString('de-DE') : '') + '</div>' +
         '<div style="font-size:13px;font-weight:600;color:var(--red);margin-bottom:12px;">' + sanitize(data.message || '') + '</div>' +
@@ -287,5 +287,15 @@ const AdminExtra = {
     }
   }
 };
+
+// Event delegation for admin extra actions
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('[data-action]');
+  if (!el) return;
+  var action = el.dataset.action;
+  if (action === 'advance-onboarding') AdminExtra.advanceOnboarding(el.dataset.id, el.dataset.status);
+  else if (action === 'show-stack-trace') AdminExtra.showStackTrace(el.dataset.id);
+  else if (action === 'close-overlay') { var overlay = el.closest('div[style*="fixed"]'); if (overlay) overlay.remove(); }
+});
 
 window.AdminExtra = AdminExtra;

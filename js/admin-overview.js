@@ -68,12 +68,12 @@ const AdminOverview = {
     container.innerHTML = `
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;padding:12px 16px;background:var(--bg3);border-radius:12px;">
         <span style="font-size:12px;font-weight:600;color:var(--tx3);line-height:32px;margin-right:8px;">Schnellaktionen:</span>
-        <button class="btn btn-sm btn-outline" onclick="switchTab('users');setTimeout(()=>openModal('modal-add-user'),300)">👤 Benutzer einladen</button>
-        <button class="btn btn-sm btn-outline" onclick="switchTab('orgs');setTimeout(()=>openModal('modal-add-org'),300)">🏢 Organisation erstellen</button>
-        <button class="btn btn-sm btn-outline" onclick="AdminOverview.exportAllData()">📥 Daten exportieren</button>
-        <button class="btn btn-sm btn-outline" onclick="AdminAnalytics.generateMonthlyInvoices()">🧾 Rechnungen generieren</button>
-        <button class="btn btn-sm btn-outline" onclick="switchTab('analytics')">📊 Analytics öffnen</button>
-        <button class="btn btn-sm btn-outline" onclick="AdminPdfExport.generateMonthlyReport()">📄 PDF-Report</button>
+        <button class="btn btn-sm btn-outline" data-action="qa-invite-user">👤 Benutzer einladen</button>
+        <button class="btn btn-sm btn-outline" data-action="qa-create-org">🏢 Organisation erstellen</button>
+        <button class="btn btn-sm btn-outline" data-action="qa-export-data">📥 Daten exportieren</button>
+        <button class="btn btn-sm btn-outline" data-action="qa-gen-invoices">🧾 Rechnungen generieren</button>
+        <button class="btn btn-sm btn-outline" data-action="qa-open-analytics">📊 Analytics öffnen</button>
+        <button class="btn btn-sm btn-outline" data-action="qa-pdf-report">📄 PDF-Report</button>
       </div>
     `;
   },
@@ -174,7 +174,7 @@ const AdminOverview = {
     container.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
         <h3 style="margin:0;font-size:14px;">🏆 Sales Leaderboard</h3>
-        <select class="form-input form-select" id="lb-period" style="width:140px;font-size:11px;" onchange="AdminOverview.updateLeaderboard()">
+        <select class="form-input form-select" id="lb-period" style="width:140px;font-size:11px;">
           <option value="30">Dieser Monat</option>
           <option value="90">Letzte 3 Monate</option>
           <option value="365">Dieses Jahr</option>
@@ -316,5 +316,22 @@ const AdminOverview = {
     Components.toast('Organisationen exportiert', 'success');
   }
 };
+
+// Event delegation for admin overview actions
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('[data-action]');
+  if (!el) return;
+  var action = el.dataset.action;
+  if (action === 'qa-invite-user') { if (typeof switchTab === 'function') switchTab('users'); setTimeout(function() { if (typeof openModal === 'function') openModal('modal-add-user'); }, 300); }
+  else if (action === 'qa-create-org') { if (typeof switchTab === 'function') switchTab('orgs'); setTimeout(function() { if (typeof openModal === 'function') openModal('modal-add-org'); }, 300); }
+  else if (action === 'qa-export-data') AdminOverview.exportAllData();
+  else if (action === 'qa-gen-invoices' && typeof AdminAnalytics !== 'undefined') AdminAnalytics.generateMonthlyInvoices();
+  else if (action === 'qa-open-analytics' && typeof switchTab === 'function') switchTab('analytics');
+  else if (action === 'qa-pdf-report' && typeof AdminPdfExport !== 'undefined') AdminPdfExport.generateMonthlyReport();
+});
+
+document.addEventListener('change', function(e) {
+  if (e.target.id === 'lb-period') AdminOverview.updateLeaderboard();
+});
 
 window.AdminOverview = AdminOverview;

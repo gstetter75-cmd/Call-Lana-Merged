@@ -54,7 +54,7 @@ function renderInvoiceTable(invoices) {
     const period = periodStart && periodEnd ? `${periodStart} – ${periodEnd}` : '–';
 
     return `<tr>
-      <td style="text-align:center;"><input type="checkbox" class="invoice-checkbox" data-invoice-id="${inv.id}" onchange="toggleInvoiceSelect(this)" style="cursor:pointer;width:16px;height:16px;accent-color:var(--pu);"></td>
+      <td style="text-align:center;"><input type="checkbox" class="invoice-checkbox" data-invoice-id="${inv.id}" style="cursor:pointer;width:16px;height:16px;accent-color:var(--pu);"></td>
       <td style="font-weight:600;">${clanaUtils.sanitizeHtml(inv.invoice_number || '–')}</td>
       <td>${invoiceDate || '–'}</td>
       <td>${period}</td>
@@ -319,6 +319,13 @@ async function downloadSelectedInvoices() {
  * Triggers server-side PDF generation and email delivery via Resend.
  * @param {string} invoiceId - UUID of the invoice
  */
+// Event delegation for invoice checkboxes
+document.addEventListener('change', function(e) {
+  if (e.target.classList.contains('invoice-checkbox')) {
+    toggleInvoiceSelect(e.target);
+  }
+});
+
 async function resendInvoiceEmail(invoiceId) {
   try {
     // Confirm before sending

@@ -27,19 +27,27 @@ const NotificationCenter = {
     const wrapper = document.createElement('div');
     wrapper.id = 'notif-bell';
     wrapper.style.cssText = 'position:relative;margin-left:auto;margin-right:12px;';
-    wrapper.innerHTML = `
-      <button onclick="NotificationCenter.toggle()" style="background:none;border:none;cursor:pointer;position:relative;padding:6px;">
-        <svg width="20" height="20" fill="none" stroke="var(--tx2)" stroke-width="2"><path d="M10 18c1.1 0 2-.9 2-2H8c0 1.1.9 2 2 2zm6-5V9c0-3.07-1.63-5.64-4.5-6.32V2c0-.83-.67-1.5-1.5-1.5S8.5 1.17 8.5 2v.68C5.64 3.36 4 5.92 4 9v4l-1 1v1h14v-1l-1-1z"/></svg>
-        <span id="notif-badge" style="display:none;position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:#ef4444;color:white;font-size:9px;font-weight:700;line-height:16px;text-align:center;">0</span>
-      </button>
-      <div id="notif-dropdown" style="display:none;position:fixed;right:16px;top:52px;width:340px;max-height:400px;overflow-y:auto;background:var(--bg2);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.3);z-index:300;">
-        <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-          <span style="font-weight:700;font-size:13px;">Benachrichtigungen</span>
-          <button onclick="NotificationCenter.markAllRead()" style="background:none;border:none;color:var(--pu);cursor:pointer;font-size:11px;">Alle gelesen</button>
-        </div>
-        <div id="notif-list"></div>
-      </div>
+    // Build bell button via DOM API instead of inline onclick handlers
+    const bellBtn = document.createElement('button');
+    bellBtn.setAttribute('data-action', 'notif-toggle');
+    bellBtn.style.cssText = 'background:none;border:none;cursor:pointer;position:relative;padding:6px;';
+    bellBtn.innerHTML = `
+      <svg width="20" height="20" fill="none" stroke="var(--tx2)" stroke-width="2"><path d="M10 18c1.1 0 2-.9 2-2H8c0 1.1.9 2 2 2zm6-5V9c0-3.07-1.63-5.64-4.5-6.32V2c0-.83-.67-1.5-1.5-1.5S8.5 1.17 8.5 2v.68C5.64 3.36 4 5.92 4 9v4l-1 1v1h14v-1l-1-1z"/></svg>
+      <span id="notif-badge" style="display:none;position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:#ef4444;color:white;font-size:9px;font-weight:700;line-height:16px;text-align:center;">0</span>
     `;
+    wrapper.appendChild(bellBtn);
+
+    const dropdown = document.createElement('div');
+    dropdown.id = 'notif-dropdown';
+    dropdown.style.cssText = 'display:none;position:fixed;right:16px;top:52px;width:340px;max-height:400px;overflow-y:auto;background:var(--bg2);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.3);z-index:300;';
+    dropdown.innerHTML = `
+      <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-weight:700;font-size:13px;">Benachrichtigungen</span>
+        <button data-action="notif-mark-all-read" style="background:none;border:none;color:var(--pu);cursor:pointer;font-size:11px;">Alle gelesen</button>
+      </div>
+      <div id="notif-list"></div>
+    `;
+    wrapper.appendChild(dropdown);
 
     const breadcrumb = topbar.querySelector('.topbar-breadcrumb');
     if (breadcrumb) breadcrumb.parentElement.insertBefore(wrapper, breadcrumb.nextSibling);
@@ -107,7 +115,7 @@ const NotificationCenter = {
     const sanitize = typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeHtml : (s => s);
 
     list.innerHTML = this.notifications.slice(0, 20).map(n => `
-      <div style="padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer;background:${n.read ? 'transparent' : 'var(--bg3)'};transition:background .15s;" onmouseenter="this.style.background='var(--bg3)'" onmouseleave="this.style.background='${n.read ? 'transparent' : 'var(--bg3)'}';" data-action="notification-click" data-id="${typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeAttr(n.id) : n.id}">
+      <div class="notif-item" style="padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer;background:${n.read ? 'transparent' : 'var(--bg3)'};transition:background .15s;" data-action="notification-click" data-id="${typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeAttr(n.id) : n.id}">
         <div style="display:flex;gap:8px;align-items:flex-start;">
           <span style="font-size:16px;margin-top:1px;">${typeIcons[n.type] || 'ℹ️'}</span>
           <div style="flex:1;min-width:0;">
@@ -168,5 +176,20 @@ const NotificationCenter = {
     } catch (e) { /* table may not exist */ }
   }
 };
+
+// Event delegation for notification center
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('[data-action]');
+  if (!el) return;
+  if (el.dataset.action === 'notif-toggle') NotificationCenter.toggle();
+  else if (el.dataset.action === 'notif-mark-all-read') NotificationCenter.markAllRead();
+});
+
+// CSS hover for notification items
+(function() {
+  var style = document.createElement('style');
+  style.textContent = '.notif-item:hover{background:var(--bg3)!important;}';
+  document.head.appendChild(style);
+})();
 
 window.NotificationCenter = NotificationCenter;

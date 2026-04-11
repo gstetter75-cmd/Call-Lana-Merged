@@ -123,7 +123,7 @@ const HomeWidgets = {
           '<strong>Notfall-Anruf!</strong><br>' +
           '<span style="font-size:12px;color:var(--tx2);">' + phone + ' um ' + time + '</span>' +
         '</div>' +
-        '<button class="btn btn-sm" onclick="this.closest(\'.emergency-banner\').remove()" style="white-space:nowrap;">Gesehen</button>' +
+        '<button class="btn btn-sm" data-action="dismiss-emergency" style="white-space:nowrap;">Gesehen</button>' +
       '</div>';
   },
 
@@ -310,5 +310,14 @@ const HomeWidgets = {
     this.initEmergencyBanner();
   }
 };
+
+// Event delegation for home widgets
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('[data-action]');
+  if (el && el.dataset.action === 'dismiss-emergency') {
+    var banner = el.closest('.emergency-banner');
+    if (banner) banner.remove();
+  }
+});
 
 window.HomeWidgets = HomeWidgets;

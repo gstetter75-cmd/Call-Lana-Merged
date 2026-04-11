@@ -80,7 +80,7 @@ const KeyboardShortcuts = {
             return this.renderShortcutRow(key.toUpperCase(), desc);
           }).join('')}
         </div>
-        <div style="text-align:center;margin-top:16px;"><button class="btn btn-outline btn-sm" onclick="KeyboardShortcuts.hideHelp()">Schließen</button></div>
+        <div style="text-align:center;margin-top:16px;"><button class="btn btn-outline btn-sm" data-action="hide-shortcuts-help">Schließen</button></div>
       </div>
     `;
     overlay.style.display = 'flex';
@@ -100,5 +100,11 @@ const KeyboardShortcuts = {
     </div>`;
   }
 };
+
+// Event delegation for keyboard shortcuts help
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('[data-action]');
+  if (el && el.dataset.action === 'hide-shortcuts-help') KeyboardShortcuts.hideHelp();
+});
 
 window.KeyboardShortcuts = KeyboardShortcuts;

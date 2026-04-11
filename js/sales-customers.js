@@ -94,7 +94,7 @@ function renderCustomersTable() {
 
     return `<tr data-action="view-customer" data-id="${clanaUtils.sanitizeAttr(c.id)}" style="cursor:pointer;">
       <td><strong>${clanaUtils.sanitizeHtml(c.company_name)}</strong><br><span style="font-size:11px;color:var(--tx3);">${clanaUtils.sanitizeHtml(c.contact_name || '')}</span></td>
-      <td>${c.email ? `<a href="${clanaUtils.safeMailHref(c.email)}" onclick="event.stopPropagation()" style="color:var(--cyan);text-decoration:none;font-size:12px;">${clanaUtils.sanitizeHtml(c.email)}</a>` : '—'}</td>
+      <td>${c.email ? `<a href="${clanaUtils.safeMailHref(c.email)}" class="email-link" style="color:var(--cyan);text-decoration:none;font-size:12px;">${clanaUtils.sanitizeHtml(c.email)}</a>` : '—'}</td>
       <td><span class="badge badge-purple">${CONFIG.getPlanLabel(c.plan)}</span></td>
       <td><span class="badge" style="background:${statusCfg.color}22;color:${statusCfg.color}">${statusCfg.label}</span></td>
       <td><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:${healthColor};"></span>${c.health_score || 0}%</span></td>
@@ -574,6 +574,8 @@ async function convertCurrentLeadToCustomer(leadId) {
 
 // Event delegation for customer detail tabs and protocol modal
 document.addEventListener('click', function(e) {
+  // Stop propagation on email links inside customer rows
+  if (e.target.closest('.email-link')) { e.stopPropagation(); return; }
   const el = e.target.closest('[data-action]');
   if (!el) return;
   const action = el.dataset.action;

@@ -260,7 +260,7 @@ async function loadOverview() {
     try {
       const custRes = await clanaDB.getCustomers({});
       dbCustomers = custRes.data || [];
-    } catch (e) {}
+    } catch (e) { if (typeof Logger !== 'undefined') Logger.warn('loadOverview.getCustomers', e); }
     AdminOverview.renderCustomerFunnel(document.getElementById('admin-journey-funnel'), allLeads, dbCustomers);
   }
 
