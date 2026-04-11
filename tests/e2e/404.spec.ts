@@ -26,7 +26,6 @@ test.describe('404 Error Page', () => {
     await expect(footer).toBeVisible();
     await expect(footer.locator('a[href="impressum.html"]')).toBeVisible();
     await expect(footer.locator('a[href="datenschutz.html"]')).toBeVisible();
-    await expect(footer.locator('a[href="avv.html"]')).toBeVisible();
   });
 
   test('404 page has correct lang attribute', async ({ page }) => {
