@@ -66,9 +66,17 @@ describe('Admin Dashboard', () => {
       getPlanPrice: () => 29,
       getHealthColor: () => '#10b981',
       CUSTOMER_STATUSES: { active: { label: 'Aktiv', color: '#10b981' } },
+      PLANS: { starter: { price: 149 }, professional: { price: 299 }, business: { price: 599 } },
     };
     (window as any).AdminOverview = {
       renderOverview: vi.fn(),
+      renderQuickActions: vi.fn(),
+      renderKpiComparison: vi.fn(),
+      renderLeaderboard: vi.fn(),
+      renderHealthOverview: vi.fn(),
+      renderCustomerFunnel: vi.fn(),
+      exportUsersCSV: vi.fn(),
+      exportOrgsCSV: vi.fn(),
     };
 
     // Replace passthrough mocks with real sanitize implementations
@@ -94,12 +102,24 @@ describe('Admin Dashboard', () => {
       getCalls: vi.fn().mockResolvedValue({ success: true, data: [] }),
       getCustomers: vi.fn().mockResolvedValue({ success: true, data: [] }),
       getAllCustomerTags: vi.fn().mockResolvedValue({ success: true, data: [] }),
+      getAllAssistants: vi.fn().mockResolvedValue({ success: true, data: [] }),
+      updateProfile: vi.fn().mockResolvedValue({ success: true }),
+      createOrganization: vi.fn().mockResolvedValue({ success: true, data: { id: 'new-org' } }),
     };
 
-    // Add missing DOM elements that init() + loadSystemStats() require
-    const sysEls = ['sys-total-users', 'sys-total-orgs', 'sys-new-leads', 'sys-active-leads',
-      'sys-open-tasks', 'sys-conversion', 'sys-role-distribution', 'sys-lead-status-distribution'];
-    sysEls.forEach(id => {
+    // Add missing DOM elements that init() + loadSystemStats() + loadOverview() require
+    const extraEls = [
+      'sys-total-users', 'sys-total-orgs', 'sys-new-leads', 'sys-active-leads',
+      'sys-open-tasks', 'sys-conversion', 'sys-role-distribution', 'sys-lead-status-distribution',
+      'sys-role-superadmin', 'sys-role-sales', 'sys-role-customer',
+      'sys-plan-solo', 'sys-plan-team', 'sys-plan-business',
+      'sys-total-assistants', 'sys-activity-tbody',
+      'ov-mrr', 'ov-active-customers', 'ov-arr', 'ov-arpu',
+      'ov-plan-breakdown', 'ov-top-sales', 'ov-recent-tbody', 'ov-churn-stats',
+      'ov-mrr-chart', 'ov-mrr-growth',
+      'admin-quick-actions', 'admin-leaderboard', 'admin-health-overview', 'admin-journey-funnel',
+    ];
+    extraEls.forEach(id => {
       if (!document.getElementById(id)) {
         const el = document.createElement('div');
         el.id = id;

@@ -9,8 +9,8 @@ const auth = {
         action: action,
         target_type: 'auth',
         created_at: new Date().toISOString()
-      }).then(() => {}).catch(() => {});
-    } catch (e) { /* never block auth for audit */ }
+      }).then(() => {}).catch(e => Logger.warn('auth._logAuthEvent', e));
+    } catch (e) { Logger.warn('auth._logAuthEvent', e); }
   },
   // Fire-and-forget welcome email (works when send-welcome-email edge function is deployed)
   async _sendWelcomeEmail(email, firstName) {
@@ -18,7 +18,7 @@ const auth = {
       await supabaseClient.functions.invoke('send-welcome-email', {
         body: { email, firstName: firstName || '' }
       });
-    } catch (e) { /* non-critical: edge function may not be deployed yet */ }
+    } catch (e) { Logger.warn('auth._sendWelcomeEmail', e); }
   },
   async signUp(email, password, userData) {
     try {
@@ -30,7 +30,7 @@ const auth = {
       if (error) throw error;
       this._logAuthEvent('signup', data?.user?.id);
       // Fire welcome email (non-blocking, only works when edge function is deployed)
-      this._sendWelcomeEmail(email, userData?.firstName).catch(() => {});
+      this._sendWelcomeEmail(email, userData?.firstName).catch(e => Logger.warn('auth.signUp.welcomeEmail', e));
       return { success: true, data };
     } catch (error) {
       Logger.error('auth.signUp', error);

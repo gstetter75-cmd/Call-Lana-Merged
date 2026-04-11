@@ -226,16 +226,16 @@ async function loadAssistants() {
 function renderHomeAssistants() {
   const container = document.getElementById('homeAssistants');
   if (assistantsList.length === 0) {
-    container.innerHTML = '<div class="assistant-card" onclick="createNewAssistant()" style="display:flex;align-items:center;justify-content:center;min-height:80px;border-style:dashed;"><span style="color:var(--tx3);font-size:13px;">+ Neuen Assistenten erstellen</span></div>';
+    container.innerHTML = '<div class="assistant-card" data-action="create-assistant" style="display:flex;align-items:center;justify-content:center;min-height:80px;border-style:dashed;cursor:pointer;"><span style="color:var(--tx3);font-size:13px;">+ Neuen Assistenten erstellen</span></div>';
     return;
   }
   container.innerHTML = assistantsList.map(a =>
-    '<div class="assistant-card" onclick="editAssistant(\'' + a.id + '\')">' +
+    '<div class="assistant-card" data-action="edit-assistant" data-id="' + clanaUtils.sanitizeAttr(a.id) + '" style="cursor:pointer;">' +
       '<div class="ac-top">' +
         '<div class="ac-name">' + escHtml(a.name) + '</div>' +
         '<span class="live-badge ' + (a.status === 'live' ? 'live' : 'offline') + '">' + (a.status === 'live' ? 'LIVE' : 'Offline') + '</span>' +
       '</div>' +
-      '<div class="ac-phone">' + (a.phone_number || 'Keine Nummer') + '</div>' +
+      '<div class="ac-phone">' + escHtml(a.phone_number || 'Keine Nummer') + '</div>' +
     '</div>'
   ).join('');
 }
@@ -601,14 +601,14 @@ function buildCallTable(calls) {
     const hasTranscript = c.transcript && c.transcript.trim().length > 0;
     const callerDisplay = callerName ? callerName + '<br><span style="font-size:11px;color:var(--tx3);">' + escHtml(phone) + '</span>' : escHtml(phone);
 
-    html += '<tr style="cursor:pointer;" onclick="showCallDetail(' + i + ')">' +
+    html += '<tr style="cursor:pointer;" data-action="show-call" data-index="' + i + '">' +
       '<td>' + date + '</td>' +
       '<td>' + callerDisplay + '</td>' +
       '<td>' + dur + '</td>' +
       '<td><span class="status-badge ' + st.cls + '">' + st.label + '</span></td>' +
       '<td>' + outcomeHtml + '</td>' +
       '<td>' + sentimentHtml + '</td>' +
-      '<td>' + (hasTranscript ? '<button onclick="event.stopPropagation();showCallDetail(' + i + ')" style="background:none;border:1px solid var(--border2);border-radius:6px;padding:4px 10px;color:var(--pu3);font-size:11px;cursor:pointer;font-family:inherit;">Ansehen</button>' : '<span style="color:var(--tx3);font-size:11px;">—</span>') + '</td>' +
+      '<td>' + (hasTranscript ? '<button data-action="show-call" data-index="' + i + '" style="background:none;border:1px solid var(--border2);border-radius:6px;padding:4px 10px;color:var(--pu3);font-size:11px;cursor:pointer;font-family:inherit;">Ansehen</button>' : '<span style="color:var(--tx3);font-size:11px;">—</span>') + '</td>' +
     '</tr>';
   });
   html += '</tbody></table></div>';
@@ -686,7 +686,7 @@ function showCallDetail(callIndex) {
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">' +
       '<div><h3 style="font-family:Syne,sans-serif;font-size:1.1rem;font-weight:700;">Anruf-Details</h3>' +
       '<div style="font-size:12px;color:var(--tx3);margin-top:4px;">' + (callerName ? callerName + ' · ' : '') + phone + '</div></div>' +
-      '<button onclick="this.closest(\'div[style*=fixed]\').remove()" style="background:none;border:none;color:var(--tx3);font-size:1.4rem;cursor:pointer;">✕</button>' +
+      '<button data-action="close-overlay" style="background:none;border:none;color:var(--tx3);font-size:1.4rem;cursor:pointer;">✕</button>' +
     '</div>' +
     '<div class="transcript-meta">' +
       '<div class="transcript-meta-item"><div class="transcript-meta-label">Datum</div><div class="transcript-meta-value">' + date + '</div></div>' +
@@ -899,3 +899,14 @@ navigateToPage = function(page, updateHash) {
 if (window.location.hash === '#payment') loadPaymentMethods();
 if (window.location.hash === '#billing') loadBillingData();
 if (window.location.hash === '#integrations') loadIntegrations();
+
+// Event delegation for data-action handlers
+document.addEventListener('click', function(e) {
+  const el = e.target.closest('[data-action]');
+  if (!el) return;
+  const action = el.dataset.action;
+  if (action === 'edit-assistant') editAssistant(el.dataset.id);
+  else if (action === 'create-assistant') createNewAssistant();
+  else if (action === 'show-call') { e.stopPropagation(); showCallDetail(Number(el.dataset.index)); }
+  else if (action === 'close-overlay') el.closest('div[style*="fixed"]')?.remove();
+});

@@ -404,7 +404,7 @@ function getConnCategories() {
 function initConnectorTab() {
   const select = document.getElementById('connCategoryFilter');
   const cats = getConnCategories();
-  select.innerHTML = '<option value="Alle">Alle Kategorien</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
+  select.innerHTML = '<option value="Alle">Alle Kategorien</option>' + cats.map(c => `<option value="${clanaUtils.sanitizeAttr(c)}">${clanaUtils.sanitizeHtml(c)}</option>`).join('');
   loadConnectors();
 }
 

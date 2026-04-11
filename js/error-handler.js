@@ -50,11 +50,20 @@ const ErrorHandler = {
       'display:flex;align-items:center;justify-content:center;gap:12px;' +
       'font-size:13px;font-weight:600;color:' + textColor + ';font-family:Manrope,sans-serif;' +
       'backdrop-filter:blur(8px);';
-    banner.innerHTML = '<span>' + message + '</span>' +
-      '<button onclick="ErrorHandler.retry()" style="background:' + textColor + ';color:white;border:none;' +
-      'border-radius:6px;padding:4px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">Erneut versuchen</button>' +
-      '<button onclick="ErrorHandler._hideBanner()" style="background:none;border:none;color:' + textColor + ';' +
-      'font-size:18px;cursor:pointer;padding:0 4px;">×</button>';
+    const safeMsg = typeof clanaUtils !== 'undefined' ? clanaUtils.sanitizeHtml(message) : message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const msgSpan = document.createElement('span');
+    msgSpan.textContent = message;
+    const retryBtn = document.createElement('button');
+    retryBtn.textContent = 'Erneut versuchen';
+    retryBtn.style.cssText = 'background:' + textColor + ';color:white;border:none;border-radius:6px;padding:4px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;';
+    retryBtn.addEventListener('click', () => ErrorHandler.retry());
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = '×';
+    closeBtn.style.cssText = 'background:none;border:none;color:' + textColor + ';font-size:18px;cursor:pointer;padding:0 4px;';
+    closeBtn.addEventListener('click', () => ErrorHandler._hideBanner());
+    banner.appendChild(msgSpan);
+    banner.appendChild(retryBtn);
+    banner.appendChild(closeBtn);
     document.body.prepend(banner);
     this._bannerEl = banner;
   },
@@ -110,12 +119,14 @@ const ErrorHandler = {
   showComponentError(containerId, message) {
     const el = document.getElementById(containerId);
     if (!el) return;
+    const safeMessage = (message || 'Daten konnten nicht geladen werden.').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     el.innerHTML = '<div style="text-align:center;padding:24px;color:var(--tx3);font-size:13px;">' +
       '<div style="font-size:20px;margin-bottom:8px;">⚠️</div>' +
-      '<div>' + (message || 'Daten konnten nicht geladen werden.') + '</div>' +
-      '<button onclick="location.reload()" style="margin-top:12px;background:var(--pu);color:white;border:none;' +
+      '<div>' + safeMessage + '</div>' +
+      '<button data-action="reload-page" style="margin-top:12px;background:var(--pu);color:white;border:none;' +
       'border-radius:8px;padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">Seite neu laden</button>' +
     '</div>';
+    el.querySelector('[data-action="reload-page"]').addEventListener('click', () => location.reload());
   }
 };
 

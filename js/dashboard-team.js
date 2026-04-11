@@ -79,9 +79,10 @@ async function loadConversations() {
       return profile ? (profile.first_name || '') + ' ' + (profile.last_name || '') : '';
     }).filter(Boolean).join(', ');
 
-    return '<div class="phone-item" style="cursor:pointer;padding:12px;" onclick="openConversation(\'' + c.id + '\')">' +
+    const preview = lastMsg ? lastMsg.content.substring(0, 60) : '';
+    return '<div class="phone-item" style="cursor:pointer;padding:12px;" data-action="open-conversation" data-id="' + clanaUtils.sanitizeAttr(c.id) + '">' +
       '<div style="font-weight:600;font-size:13px;margin-bottom:2px;">' + escHtml(c.subject || participants || 'Konversation') + '</div>' +
-      (lastMsg ? '<div style="font-size:11px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escHtml(lastMsg.content).substring(0, 60) + '</div>' : '') +
+      (lastMsg ? '<div style="font-size:11px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escHtml(preview) + '</div>' : '') +
     '</div>';
   }).join('');
 }
@@ -166,3 +167,9 @@ async function createNewConversation() {
   await loadConversations();
   openConversation(convResult.data.id);
 }
+
+// Event delegation for conversation clicks
+document.addEventListener('click', function(e) {
+  const el = e.target.closest('[data-action="open-conversation"]');
+  if (el) openConversation(el.dataset.id);
+});

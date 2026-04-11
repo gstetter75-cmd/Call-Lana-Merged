@@ -150,9 +150,9 @@ async function viewCustomer(id) {
 
     <div style="border-top:1px solid var(--border);padding-top:16px;">
       <div style="display:flex;gap:8px;margin-bottom:12px;">
-        <button class="tab-btn active" onclick="switchCustDetailTab('protocols', this)">Anrufprotokolle</button>
-        <button class="tab-btn" onclick="switchCustDetailTab('activities', this)">Aktivitäten</button>
-        <button class="tab-btn" onclick="switchCustDetailTab('notes', this)">Notizen</button>
+        <button class="tab-btn active" data-action="switch-cust-tab" data-tab="protocols">Anrufprotokolle</button>
+        <button class="tab-btn" data-action="switch-cust-tab" data-tab="activities">Aktivitäten</button>
+        <button class="tab-btn" data-action="switch-cust-tab" data-tab="notes">Notizen</button>
       </div>
       <div id="cust-detail-tab-content"></div>
     </div>
@@ -181,7 +181,7 @@ async function loadCallProtocols(customerId) {
   const protocols = result.success ? result.data : [];
 
   if (!protocols.length) {
-    container.innerHTML = '<div style="color:var(--tx3);padding:20px;text-align:center;">Noch keine Anrufprotokolle. <a href="#" onclick="openCallProtocolModal(\'' + customerId + '\');return false;" style="color:var(--cyan);">Erstes Protokoll erstellen</a></div>';
+    container.innerHTML = '<div style="color:var(--tx3);padding:20px;text-align:center;">Noch keine Anrufprotokolle. <a href="#" data-action="open-protocol-modal" data-id="' + clanaUtils.sanitizeAttr(customerId) + '" style="color:var(--cyan);">Erstes Protokoll erstellen</a></div>';
     return;
   }
 
@@ -549,3 +549,12 @@ async function convertCurrentLeadToCustomer(leadId) {
     Components.toast('Fehler: ' + result.error, 'error');
   }
 }
+
+// Event delegation for customer detail tabs and protocol modal
+document.addEventListener('click', function(e) {
+  const el = e.target.closest('[data-action]');
+  if (!el) return;
+  const action = el.dataset.action;
+  if (action === 'switch-cust-tab') switchCustDetailTab(el.dataset.tab, el);
+  else if (action === 'open-protocol-modal') { e.preventDefault(); openCallProtocolModal(el.dataset.id); }
+});

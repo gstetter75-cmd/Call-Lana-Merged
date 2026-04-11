@@ -99,11 +99,12 @@ async function loadUsers() {
     return;
   }
   const tbody = document.getElementById('users-tbody');
-  if (!result.data.length) {
+  const users = result.data || [];
+  if (!users.length) {
     tbody.innerHTML = '<tr><td colspan="7" class="empty-state">Keine Benutzer gefunden</td></tr>';
     return;
   }
-  tbody.innerHTML = result.data.map(u => `
+  tbody.innerHTML = users.map(u => `
     <tr>
       <td><strong>${clanaUtils.sanitizeHtml(u.first_name || '')} ${clanaUtils.sanitizeHtml(u.last_name || '')}</strong></td>
       <td>${clanaUtils.sanitizeHtml(u.email || '')}</td>
@@ -125,11 +126,12 @@ async function loadOrgs() {
   const result = await clanaDB.getOrganizations();
   if (!result.success) return;
   const tbody = document.getElementById('orgs-tbody');
-  if (!result.data.length) {
+  const orgs = result.data || [];
+  if (!orgs.length) {
     tbody.innerHTML = '<tr><td colspan="7" class="empty-state">Keine Organisationen</td></tr>';
     return;
   }
-  tbody.innerHTML = result.data.map(o => `
+  tbody.innerHTML = orgs.map(o => `
     <tr>
       <td><strong>${clanaUtils.sanitizeHtml(o.name)}</strong></td>
       <td><span class="badge badge-purple">${o.plan}</span></td>
