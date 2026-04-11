@@ -3,6 +3,19 @@
 // ==========================================
 // TEAM MANAGEMENT
 // ==========================================
+
+// Window exports for cross-file access
+window.loadTeam = loadTeam;
+window.inviteTeamMember = inviteTeamMember;
+window.closeInviteModal = closeInviteModal;
+window.sendInvite = sendInvite;
+window.loadConversations = loadConversations;
+window.openConversation = openConversation;
+window.sendMessage = sendMessage;
+window.startNewConversation = startNewConversation;
+window.closeNewConvModal = closeNewConvModal;
+window.createNewConversation = createNewConversation;
+
 async function loadTeam() {
   if (!currentProfile?.organization_id) {
     document.getElementById('teamListBody').innerHTML =

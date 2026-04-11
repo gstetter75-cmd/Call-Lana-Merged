@@ -9,6 +9,16 @@ if (typeof SafeActions !== 'undefined') {
     'sync-integration': (id) => syncIntegration(id),
   });
 }
+
+// Window exports for cross-file access
+window.loadIntegrations = loadIntegrations;
+window.loadContacts = loadContacts;
+window.syncIntegration = syncIntegration;
+window.disconnectIntegration = disconnectIntegration;
+window.openContactImport = openContactImport;
+window.closeCsvImportModal = closeCsvImportModal;
+window.importCsvContacts = importCsvContacts;
+
 const INTEGRATION_ICONS = {
   sip_trunk: '📞', fritzbox: '📠', rufumleitung: '↪️', eigene_rufnummer: '🔢',
   rest_api: '🔌', pre_call_webhook: '⚡', mid_call_api: '🔄', post_call_webhook: '📤', outbound_api: '📲',

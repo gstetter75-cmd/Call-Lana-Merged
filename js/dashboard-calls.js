@@ -2,6 +2,14 @@
 // Depends on: dashboard.js (globals: allCalls, escHtml, showToast, clanaDB, clanaUtils)
 // ==========================================
 
+// Window exports for cross-file access
+window.loadAllCalls = loadAllCalls;
+window.renderFilteredCalls = renderFilteredCalls;
+window.initCallFilters = initCallFilters;
+window.buildCallTable = buildCallTable;
+window.showCallDetail = showCallDetail;
+window.showTranscript = showTranscript;
+
 // ==========================================
 // LOAD ALL CALLS
 // ==========================================

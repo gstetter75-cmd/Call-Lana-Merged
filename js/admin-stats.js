@@ -4,6 +4,11 @@
 
 const PLAN_PRICES = CONFIG.PLANS;
 
+// Window exports for cross-file access
+window.loadSystemStats = loadSystemStats;
+window.loadOverview = loadOverview;
+window.renderMrrChart = renderMrrChart;
+
 // ==========================================
 // SYSTEM STATS (KPIs, roles, plans, activity)
 // ==========================================

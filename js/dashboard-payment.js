@@ -5,6 +5,14 @@
 let currentPmPriority = 1;
 let currentPmType = 'sepa';
 
+// Window exports for cross-file access
+window.selectPaymentType = selectPaymentType;
+window.openPaymentModal = openPaymentModal;
+window.closePaymentModal = closePaymentModal;
+window.savePaymentMethod = savePaymentMethod;
+window.removePaymentMethod = removePaymentMethod;
+window.loadPaymentMethods = loadPaymentMethods;
+
 function selectPaymentType(type) {
   currentPmType = type;
   document.querySelectorAll('.pm-type-btn').forEach(b => b.classList.toggle('active', b.dataset.type === type));

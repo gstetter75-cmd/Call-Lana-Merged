@@ -78,6 +78,20 @@ if (typeof SafeActions !== 'undefined') {
   loadBillingAddress(currentProfile);
 })();
 
+// Window exports for cross-file access
+window.saveProfile = saveProfile;
+window.changePassword = changePassword;
+window.showToast = showToast;
+window.escHtml = escHtml;
+window.loadConnectors = loadConnectors;
+window.openConnModal = openConnModal;
+window.closeConnModal = closeConnModal;
+window.filterConnectors = filterConnectors;
+window.saveBillingAddress = saveBillingAddress;
+window.deleteAccount = deleteAccount;
+window.saveNotifications = saveNotifications;
+window.connDisconnect = connDisconnect;
+
 // ==========================================
 // SAVE PROFILE (Supabase)
 // ==========================================

@@ -2,6 +2,16 @@
 // Depends on: dashboard.js (globals: assistantsList, editingAssistantId, escHtml, showToast, navigateToPage, clanaDB, clanaUtils)
 // ==========================================
 
+// Window exports for cross-file access
+window.renderHomeAssistants = renderHomeAssistants;
+window.renderAssistantsList = renderAssistantsList;
+window.renderPhonesFromAssistants = renderPhonesFromAssistants;
+window.loadAssistants = loadAssistants;
+window.createNewAssistant = createNewAssistant;
+window.editAssistant = editAssistant;
+window.clearEditorForm = clearEditorForm;
+window.deleteAssistant = deleteAssistant;
+
 // ==========================================
 // HOME ASSISTANTS (card grid)
 // ==========================================
@@ -88,7 +98,7 @@ async function loadAssistants() {
 // ==========================================
 // NEW ASSISTANT
 // ==========================================
-document.getElementById('btnNewAssistant').addEventListener('click', createNewAssistant);
+document.getElementById('btnNewAssistant')?.addEventListener('click', createNewAssistant);
 
 function createNewAssistant() {
   editingAssistantId = null;
@@ -162,7 +172,7 @@ function clearEditorForm() {
 // ==========================================
 // SAVE ASSISTANT
 // ==========================================
-document.getElementById('btnSaveAssistant').addEventListener('click', async () => {
+document.getElementById('btnSaveAssistant')?.addEventListener('click', async () => {
   const name = document.getElementById('edName').value.trim();
   if (!name) { showToast('Bitte einen Namen eingeben.', true); return; }
 

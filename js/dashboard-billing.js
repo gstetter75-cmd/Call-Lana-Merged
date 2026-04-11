@@ -6,6 +6,16 @@ const OVERAGE_RATE_CENTS = 15; // 0,15€ per minute overage
 
 let selectedTopupAmount = 5000; // default 50€
 
+// Window exports for cross-file access
+window.openTopupModal = openTopupModal;
+window.closeTopupModal = closeTopupModal;
+window.selectTopup = selectTopup;
+window.confirmTopup = confirmTopup;
+window.selectPlan = selectPlan;
+window.loadBillingData = loadBillingData;
+window.loadTransactions = loadTransactions;
+window.formatCents = formatCents;
+
 function openTopupModal() {
   document.getElementById('topupModal').style.display = 'flex';
   document.getElementById('customTopup').value = '';

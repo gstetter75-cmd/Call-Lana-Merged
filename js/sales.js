@@ -12,6 +12,20 @@ let currentProfile = null;
 let allLeads = [];
 let allTasks = [];
 
+// Window exports for cross-file access
+window.switchTab = switchTab;
+window.loadLeads = loadLeads;
+window.loadAllData = loadAllData;
+window.renderPipeline = renderPipeline;
+window.renderLeadsTable = renderLeadsTable;
+window.updateLeadStats = updateLeadStats;
+window.saveLead = saveLead;
+window.clearLeadForm = clearLeadForm;
+window.viewLead = viewLead;
+window.openEmailTemplate = openEmailTemplate;
+window.renderFunnel = renderFunnel;
+window.exportCustomersCSV = exportCustomersCSV;
+
 async function init() {
   currentProfile = await AuthGuard.requireSales();
   if (!currentProfile) return;

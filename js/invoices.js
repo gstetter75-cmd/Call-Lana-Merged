@@ -10,6 +10,16 @@ if (typeof SafeActions !== 'undefined') {
   });
 }
 
+// Window exports for cross-file access
+window.loadInvoices = loadInvoices;
+window.downloadInvoicePdf = downloadInvoicePdf;
+window.resendInvoiceEmail = resendInvoiceEmail;
+window.toggleInvoiceSelect = toggleInvoiceSelect;
+window.toggleAllInvoices = toggleAllInvoices;
+window.downloadSelectedInvoices = downloadSelectedInvoices;
+window.sendSelectedInvoices = sendSelectedInvoices;
+window.updateSelectionBar = updateSelectionBar;
+
 /**
  * Load invoices from Supabase and render them into the dashboard table.
  */

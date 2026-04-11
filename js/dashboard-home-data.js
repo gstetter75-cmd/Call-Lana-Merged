@@ -3,6 +3,9 @@
 
 // MONTH SELECT
 // ==========================================
+window.initMonthSelect = initMonthSelect;
+window.loadHomeData = loadHomeData;
+
 function initMonthSelect() {
   const sel = document.getElementById('monthSelect');
   if (!sel) return;

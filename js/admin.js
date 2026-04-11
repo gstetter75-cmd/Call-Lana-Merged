@@ -54,6 +54,20 @@ async function init() {
 
 const VALID_ADMIN_TABS = ['overview', 'analytics', 'onboarding', 'minutes-alert', 'error-log', 'integrations', 'customers', 'users', 'orgs', 'system'];
 
+// Window exports for cross-file access
+window.VALID_ADMIN_TABS = VALID_ADMIN_TABS;
+window.switchTab = switchTab;
+window.loadUsers = loadUsers;
+window.loadOrgs = loadOrgs;
+window.loadCustomers = loadCustomers;
+window.viewCustomer = viewCustomer;
+window.editUserRole = editUserRole;
+window.saveUserRole = saveUserRole;
+window.toggleUserActive = toggleUserActive;
+window.createOrg = createOrg;
+window.editOrg = editOrg;
+window.exportCustomersCSV = exportCustomersCSV;
+
 function switchTab(tab) {
   // Validate tab against whitelist
   if (!VALID_ADMIN_TABS.includes(tab)) tab = 'overview';

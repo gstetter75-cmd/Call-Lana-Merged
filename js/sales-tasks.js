@@ -2,6 +2,16 @@
 // Depends on: sales.js (globals: currentProfile, allLeads, allTasks, clanaDB, clanaUtils, Components, CONFIG)
 // ==========================================
 
+// Window exports for cross-file access
+window.loadTasks = loadTasks;
+window.renderTasks = renderTasks;
+window.updateTaskStats = updateTaskStats;
+window.toggleTask = toggleTask;
+window.saveTask = saveTask;
+window.loadAvailability = loadAvailability;
+window.saveAvailability = saveAvailability;
+window.loadCommissions = loadCommissions;
+
 // ==========================================
 // TASKS
 // ==========================================

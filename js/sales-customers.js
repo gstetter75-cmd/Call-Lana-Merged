@@ -25,6 +25,23 @@ if (typeof SafeActions !== 'undefined') {
   });
 }
 
+// Window exports for cross-file access
+window.loadCustomers = loadCustomers;
+window.loadCustomerTags = loadCustomerTags;
+window.renderCustomersTable = renderCustomersTable;
+window.viewCustomer = viewCustomer;
+window.switchCustDetailTab = switchCustDetailTab;
+window.openCallProtocolModal = openCallProtocolModal;
+window.saveCallProtocol = saveCallProtocol;
+window.saveCustomerNote = saveCustomerNote;
+window.openNewCustomerModal = openNewCustomerModal;
+window.editCustomer = editCustomer;
+window.saveCustomer = saveCustomer;
+window.exportCustomersCSV = exportCustomersCSV;
+window.openCSVImportModal = openCSVImportModal;
+window.importCSVCustomers = importCSVCustomers;
+window.convertCurrentLeadToCustomer = convertCurrentLeadToCustomer;
+
 // ==========================================
 // LOAD & RENDER
 // ==========================================

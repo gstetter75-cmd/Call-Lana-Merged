@@ -46,6 +46,20 @@ function $setVal(id, val) { const el = $id(id); if (el) el.value = val; }
 function $setHtml(id, html) { const el = $id(id); if (el) el.innerHTML = html; }
 function $setAttr(id, attr, val) { const el = $id(id); if (el) el.setAttribute(attr, val); }
 
+// Window exports for cross-file access
+window.showToast = showToast;
+window.navigateToPage = navigateToPage;
+window.escHtml = escHtml;
+window.formatCurrency = formatCurrency;
+window.formatMinutes = formatMinutes;
+window.loadBilling = loadBilling;
+window.loadPlan = loadPlan;
+window.$id = $id;
+window.$setText = $setText;
+window.$setVal = $setVal;
+window.$setHtml = $setHtml;
+window.$setAttr = $setAttr;
+
 // ==========================================
 // GLOBALS
 // ==========================================
