@@ -46,8 +46,7 @@ function $setVal(id, val) { const el = $id(id); if (el) el.value = val; }
 function $setHtml(id, html) { const el = $id(id); if (el) el.innerHTML = html; }
 function $setAttr(id, attr, val) { const el = $id(id); if (el) el.setAttribute(attr, val); }
 
-// Window exports for cross-file access
-window.showToast = showToast;
+// Window exports for cross-file access (showToast now from modules/toast.js)
 window.navigateToPage = navigateToPage;
 window.escHtml = escHtml;
 window.formatCurrency = formatCurrency;
@@ -339,12 +338,7 @@ function escHtml(str) {
   return clanaUtils.sanitizeHtml(str);
 }
 
-function showToast(msg, isError) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show' + (isError ? ' error' : '');
-  setTimeout(() => t.className = 'toast', 3000);
-}
+// showToast — now provided by js/modules/toast.js via core.js
 
 // ==========================================
 // NAVIGATION

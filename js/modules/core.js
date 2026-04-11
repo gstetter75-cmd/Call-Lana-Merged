@@ -10,6 +10,7 @@ import { PRICING } from './pricing-data.js';
 import { CONFIG } from './config.js';
 import { openModal, closeModal, initModalListeners } from './modal.js';
 import { SafeActions } from './safe-actions.js';
+import { showToast } from './toast.js';
 
 // Establish window globals for legacy code
 window.Logger = Logger;
@@ -19,6 +20,7 @@ window.CONFIG = CONFIG;
 window.openModal = openModal;
 window.closeModal = closeModal;
 window.SafeActions = SafeActions;
+window.showToast = showToast;
 
 // clanaUtils — single source of truth
 window.clanaUtils = {

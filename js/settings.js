@@ -82,7 +82,6 @@ if (typeof SafeActions !== 'undefined') {
 // Window exports for cross-file access
 window.saveProfile = saveProfile;
 window.changePassword = changePassword;
-window.showToast = showToast;
 window.escHtml = escHtml;
 window.loadConnectors = loadConnectors;
 window.openConnModal = openConnModal;
@@ -309,15 +308,7 @@ async function deleteAccount() {
   showToast('Bitte kontaktiere den Support unter info@call-lana.de für die Kontolöschung.', true);
 }
 
-// ==========================================
-// TOAST
-// ==========================================
-function showToast(msg, isError) {
-  const t = document.getElementById('toast');
-  t.textContent = (isError ? '⚠️ ' : '✅ ') + msg;
-  t.className = 'toast show' + (isError ? ' error' : '');
-  setTimeout(() => t.className = 'toast', 3000);
-}
+// showToast — now provided by js/modules/toast.js via core.js
 
 // ==========================================
 // CONNECTORS
