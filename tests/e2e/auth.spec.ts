@@ -89,8 +89,10 @@ test.describe('Authentication', () => {
 
     await page.reload();
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(2000);
-    expect(page.url()).not.toContain('login.html');
+    await page.waitForTimeout(5000);
+    // After reload, should still be on dashboard (not redirected to login)
+    const url = page.url();
+    expect(url).not.toContain('login.html');
   });
 
   test('sidebar is visible after auth', async ({ page }) => {
