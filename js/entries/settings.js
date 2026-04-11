@@ -19,6 +19,7 @@ import '../dashboard-components.js';
 
 // --- Settings feature modules ---
 import '../settings.js';
+import '../settings-connectors.js';
 import '../settings-extra.js';
 import '../referral.js';
 import '../theme-toggle.js';
