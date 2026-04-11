@@ -8,23 +8,23 @@ let userSettings = {};
 // Register safe event delegation actions
 if (typeof SafeActions !== 'undefined') {
   SafeActions.registerAll({
-    'open-conn': (id) => openConnModal(id),
+    'open-conn': (id) => { if (window.openConnModal) window.openConnModal(id); },
     'save-profile': () => saveProfile(),
     'save-billing': () => saveBillingAddress(),
     'change-pw': () => changePassword(),
     'save-notifs': () => saveNotifications(),
     'toggle-notif': (_, __, el) => toggleNotif(el),
-    'close-conn': () => closeConnModal(),
-    'conn-oauth': () => connStartOAuth(),
-    'conn-save-api': () => connSaveApiKey(),
-    'conn-copy-webhook': () => connCopyWebhook(),
-    'conn-toggle-secret': () => connToggleSecret(),
-    'conn-activate-webhook': () => connActivateWebhook(),
-    'conn-save-sip': () => connSaveSip(),
-    'conn-copy-forward': () => connCopyForward(),
-    'conn-activate-forward': () => connActivateForward(),
-    'conn-notify-ready': () => connNotifyReady(),
-    'conn-disconnect': () => connDisconnect(),
+    'close-conn': () => { if (window.closeConnModal) window.closeConnModal(); },
+    'conn-oauth': () => { if (window.connStartOAuth) window.connStartOAuth(); },
+    'conn-save-api': () => { if (window.connSaveApiKey) window.connSaveApiKey(); },
+    'conn-copy-webhook': () => { if (window.connCopyWebhook) window.connCopyWebhook(); },
+    'conn-toggle-secret': () => { if (window.connToggleSecret) window.connToggleSecret(); },
+    'conn-activate-webhook': () => { if (window.connActivateWebhook) window.connActivateWebhook(); },
+    'conn-save-sip': () => { if (window.connSaveSip) window.connSaveSip(); },
+    'conn-copy-forward': () => { if (window.connCopyForward) window.connCopyForward(); },
+    'conn-activate-forward': () => { if (window.connActivateForward) window.connActivateForward(); },
+    'conn-notify-ready': () => { if (window.connNotifyReady) window.connNotifyReady(); },
+    'conn-disconnect': () => { if (window.connDisconnect) window.connDisconnect(); },
     'save-emergency': () => { if (typeof SettingsExtra !== 'undefined') SettingsExtra.saveEmergency(); },
     'connect-calendar': () => { if (typeof SettingsExtra !== 'undefined') SettingsExtra.connectCalendar(); },
     'save-calendar': () => { if (typeof SettingsExtra !== 'undefined') SettingsExtra.saveCalendar(); },
@@ -84,7 +84,6 @@ window.changePassword = changePassword;
 window.saveBillingAddress = saveBillingAddress;
 window.deleteAccount = deleteAccount;
 window.saveNotifications = saveNotifications;
-window.connDisconnect = connDisconnect;
 
 // ==========================================
 // SAVE PROFILE (Supabase)

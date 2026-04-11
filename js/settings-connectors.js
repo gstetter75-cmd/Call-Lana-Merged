@@ -9,6 +9,15 @@ window.closeConnModal = closeConnModal;
 window.filterConnectors = filterConnectors;
 window.initConnectorTab = initConnectorTab;
 window.connDisconnect = connDisconnect;
+window.connCopyWebhook = connCopyWebhook;
+window.connToggleSecret = connToggleSecret;
+window.connActivateWebhook = connActivateWebhook;
+window.connSaveSip = connSaveSip;
+window.connCopyForward = connCopyForward;
+window.connActivateForward = connActivateForward;
+window.connNotifyReady = connNotifyReady;
+window.connStartOAuth = connStartOAuth;
+window.connSaveApiKey = connSaveApiKey;
 
 // ==========================================
 // CONNECTORS
