@@ -7,6 +7,7 @@ let allCustomers = [];
 let allCustomerTags = [];
 let currentCustomerDetailId = null;
 let customersLoaded = false;
+window.customersLoaded = customersLoaded;
 
 // Register safe event delegation actions
 if (typeof SafeActions !== 'undefined') {
@@ -48,7 +49,7 @@ window.convertCurrentLeadToCustomer = convertCurrentLeadToCustomer;
 
 async function loadCustomers() {
   try {
-    const result = await clanaDB.getCustomers({ assigned_to: currentProfile.id });
+    const result = await clanaDB.getCustomers({ assigned_to: window.currentProfile.id });
     if (!result.success) throw new Error(result.error);
     allCustomers = result.data || [];
   } catch (e) {
@@ -58,6 +59,7 @@ async function loadCustomers() {
   renderCustomersTable();
   updateCustomerStats();
   customersLoaded = true;
+  window.customersLoaded = true;
 }
 
 async function loadCustomerTags() {
@@ -317,7 +319,7 @@ async function saveCallProtocol() {
     await clanaDB.createTask({
       title: 'Follow-up: ' + (data.subject || 'Anruf'),
       due_date: followUpDate,
-      assigned_to: currentProfile.id,
+      assigned_to: window.currentProfile.id,
       customer_id: customerId,
       status: 'open',
       priority: 'medium'
@@ -408,7 +410,7 @@ async function saveCustomer() {
   if (editId) {
     result = await clanaDB.updateCustomer(editId, payload);
   } else {
-    payload.assigned_to = currentProfile.id;
+    payload.assigned_to = window.currentProfile.id;
     payload.status = 'active';
     result = await clanaDB.createCustomer(payload);
   }
@@ -549,7 +551,7 @@ async function importCSVCustomers() {
   // Add assigned_to and status
   const data = rows.map(r => ({
     ...r,
-    assigned_to: currentProfile.id,
+    assigned_to: window.currentProfile.id,
     status: 'active'
   }));
 

@@ -1,5 +1,5 @@
 // Extracted from dashboard.js — Assistant CRUD, editor, phones
-// Depends on: dashboard.js (globals: assistantsList, editingAssistantId, escHtml, showToast, navigateToPage, clanaDB, clanaUtils)
+// Depends on: dashboard.js (globals on window: assistantsList, editingAssistantId, escHtml, showToast, navigateToPage; core: clanaDB, clanaUtils)
 // ==========================================
 
 // Window exports for cross-file access
@@ -17,17 +17,17 @@ window.deleteAssistant = deleteAssistant;
 // ==========================================
 function renderHomeAssistants() {
   const container = document.getElementById('homeAssistants');
-  if (assistantsList.length === 0) {
+  if (window.assistantsList.length === 0) {
     container.innerHTML = '<div class="assistant-card" data-action="create-assistant" style="display:flex;align-items:center;justify-content:center;min-height:80px;border-style:dashed;cursor:pointer;"><span style="color:var(--tx3);font-size:13px;">+ Neuen Assistenten erstellen</span></div>';
     return;
   }
-  container.innerHTML = assistantsList.map(a =>
+  container.innerHTML = window.assistantsList.map(a =>
     '<div class="assistant-card" data-action="edit-assistant" data-id="' + clanaUtils.sanitizeAttr(a.id) + '" style="cursor:pointer;">' +
       '<div class="ac-top">' +
-        '<div class="ac-name">' + escHtml(a.name) + '</div>' +
+        '<div class="ac-name">' + window.escHtml(a.name) + '</div>' +
         '<span class="live-badge ' + (a.status === 'live' ? 'live' : 'offline') + '">' + (a.status === 'live' ? 'LIVE' : 'Offline') + '</span>' +
       '</div>' +
-      '<div class="ac-phone">' + escHtml(a.phone_number || 'Keine Nummer') + '</div>' +
+      '<div class="ac-phone">' + window.escHtml(a.phone_number || 'Keine Nummer') + '</div>' +
     '</div>'
   ).join('');
 }
@@ -37,19 +37,19 @@ function renderHomeAssistants() {
 // ==========================================
 function renderAssistantsList() {
   const container = document.getElementById('assistantsListBody');
-  if (assistantsList.length === 0) {
+  if (window.assistantsList.length === 0) {
     container.innerHTML = '<div class="empty-state"><div class="icon">🤖</div><h3>Keine Assistenten</h3><p>Erstelle deinen ersten KI-Assistenten.</p></div>';
     return;
   }
   let html = '<div class="table-wrap"><table><thead><tr><th>Name</th><th>Status</th><th>Telefonnummer</th><th>Stimme</th><th>Erstellt</th><th>Aktionen</th></tr></thead><tbody>';
-  assistantsList.forEach(a => {
+  window.assistantsList.forEach(a => {
     const statusCls = a.status === 'live' ? 'completed' : 'voicemail';
     const statusLabel = a.status === 'live' ? 'LIVE' : 'Offline';
     html += '<tr>' +
-      '<td style="font-weight:600;color:var(--tx);cursor:pointer;" data-action="edit-assistant" data-id="' + clanaUtils.sanitizeAttr(a.id) + '">' + escHtml(a.name) + '</td>' +
+      '<td style="font-weight:600;color:var(--tx);cursor:pointer;" data-action="edit-assistant" data-id="' + clanaUtils.sanitizeAttr(a.id) + '">' + window.escHtml(a.name) + '</td>' +
       '<td><span class="status-badge ' + statusCls + '">' + statusLabel + '</span></td>' +
-      '<td>' + escHtml(a.phone_number || '–') + '</td>' +
-      '<td>' + escHtml(a.voice || 'Marie') + '</td>' +
+      '<td>' + window.escHtml(a.phone_number || '–') + '</td>' +
+      '<td>' + window.escHtml(a.voice || 'Marie') + '</td>' +
       '<td>' + clanaUtils.formatDate(a.created_at) + '</td>' +
       '<td><button data-action="delete-assistant" data-id="' + clanaUtils.sanitizeAttr(a.id) + '" data-extra="' + clanaUtils.sanitizeAttr(a.name) + '" style="background:none;border:1px solid rgba(248,113,113,.3);border-radius:6px;padding:4px 10px;color:var(--red);font-size:11px;cursor:pointer;font-family:inherit;">Löschen</button></td>' +
     '</tr>';
@@ -63,7 +63,7 @@ function renderAssistantsList() {
 // ==========================================
 function renderPhonesFromAssistants() {
   const container = document.getElementById('phonesListBody');
-  const withPhone = assistantsList.filter(a => a.phone_number);
+  const withPhone = window.assistantsList.filter(a => a.phone_number);
   document.getElementById('phonesCount').textContent = withPhone.length + ' Nummern';
 
   if (withPhone.length === 0) {
@@ -73,9 +73,9 @@ function renderPhonesFromAssistants() {
 
   container.innerHTML = withPhone.map(a =>
     '<div class="phone-item">' +
-      '<div class="phone-number-text">' + escHtml(a.phone_number) + '</div>' +
+      '<div class="phone-number-text">' + window.escHtml(a.phone_number) + '</div>' +
       '<span class="status-badge ' + (a.status === 'live' ? 'completed' : 'voicemail') + '">' + (a.status === 'live' ? 'Aktiv' : 'Inaktiv') + '</span>' +
-      '<div class="phone-assistant">' + escHtml(a.name) + '</div>' +
+      '<div class="phone-assistant">' + window.escHtml(a.name) + '</div>' +
     '</div>'
   ).join('');
 }
@@ -86,9 +86,9 @@ function renderPhonesFromAssistants() {
 async function loadAssistants() {
   const result = await clanaDB.getAssistants();
   if (result.success) {
-    assistantsList = result.data;
+    window.assistantsList = result.data;
   } else {
-    assistantsList = [];
+    window.assistantsList = [];
   }
   renderAssistantsList();
   renderHomeAssistants();
@@ -101,20 +101,20 @@ async function loadAssistants() {
 document.getElementById('btnNewAssistant')?.addEventListener('click', createNewAssistant);
 
 function createNewAssistant() {
-  editingAssistantId = null;
+  window.editingAssistantId = null;
   document.getElementById('editTitle').textContent = 'Neuer Assistent';
   document.getElementById('editDesc').textContent = 'Erstelle einen neuen KI-Assistenten.';
   clearEditorForm();
-  navigateToPage('assistant-edit');
+  window.navigateToPage('assistant-edit');
 }
 
 // ==========================================
 // EDIT ASSISTANT
 // ==========================================
 function editAssistant(id) {
-  const a = assistantsList.find(x => x.id === id);
+  const a = window.assistantsList.find(x => x.id === id);
   if (!a) return;
-  editingAssistantId = id;
+  window.editingAssistantId = id;
   document.getElementById('editTitle').textContent = a.name;
   document.getElementById('editDesc').textContent = 'Konfiguriere deinen Assistenten.';
 
@@ -144,7 +144,7 @@ function editAssistant(id) {
   document.getElementById('edOutboundFrom').value = ob.time_from || '09:00';
   document.getElementById('edOutboundTo').value = ob.time_to || '18:00';
 
-  navigateToPage('assistant-edit');
+  window.navigateToPage('assistant-edit');
 }
 
 function clearEditorForm() {
@@ -174,7 +174,7 @@ function clearEditorForm() {
 // ==========================================
 document.getElementById('btnSaveAssistant')?.addEventListener('click', async () => {
   const name = document.getElementById('edName').value.trim();
-  if (!name) { showToast('Bitte einen Namen eingeben.', true); return; }
+  if (!name) { window.showToast('Bitte einen Namen eingeben.', true); return; }
 
   const saveBtn = document.getElementById('btnSaveAssistant');
   const origText = saveBtn.textContent;
@@ -210,18 +210,18 @@ document.getElementById('btnSaveAssistant')?.addEventListener('click', async () 
   };
 
   let result;
-  if (editingAssistantId) {
-    result = await clanaDB.updateAssistant(editingAssistantId, payload);
+  if (window.editingAssistantId) {
+    result = await clanaDB.updateAssistant(window.editingAssistantId, payload);
   } else {
     result = await clanaDB.createAssistant(payload);
   }
 
   if (result.success) {
-    showToast(editingAssistantId ? 'Assistent aktualisiert!' : 'Assistent erstellt!');
+    window.showToast(window.editingAssistantId ? 'Assistent aktualisiert!' : 'Assistent erstellt!');
     await loadAssistants();
-    navigateToPage('assistants');
+    window.navigateToPage('assistants');
   } else {
-    showToast('Fehler: ' + result.error, true);
+    window.showToast('Fehler: ' + result.error, true);
   }
   saveBtn.disabled = false;
   saveBtn.textContent = origText;
@@ -244,9 +244,9 @@ async function deleteAssistant(id, name) {
   if (!confirm('Assistent "' + name + '" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.')) return;
   const result = await clanaDB.deleteAssistant(id);
   if (result.success) {
-    showToast('Assistent gelöscht.');
+    window.showToast('Assistent gelöscht.');
     await loadAssistants();
   } else {
-    showToast('Fehler: ' + result.error, true);
+    window.showToast('Fehler: ' + result.error, true);
   }
 }

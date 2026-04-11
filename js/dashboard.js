@@ -7,8 +7,8 @@
 // Register safe event delegation actions
 if (typeof SafeActions !== 'undefined') {
   SafeActions.registerAll({
-    'edit-assistant': (id) => editAssistant(id),
-    'delete-assistant': (id, name) => deleteAssistant(id, name),
+    'edit-assistant': (id) => { if (window.editAssistant) window.editAssistant(id); },
+    'delete-assistant': (id, name) => { if (window.deleteAssistant) window.deleteAssistant(id, name); },
     'navigate': (id) => { if (typeof navigateToPage === 'function') navigateToPage(id); },
     'open-topup': () => { if (typeof openTopupModal === 'function') openTopupModal(); else navigateToPage('billing'); },
     'close-topup': () => closeTopupModal(),
@@ -60,29 +60,30 @@ window.$setVal = $setVal;
 window.$setHtml = $setHtml;
 window.$setAttr = $setAttr;
 
+
 // ==========================================
-// GLOBALS
+// GLOBALS (on window for cross-file access in ESM bundles)
 // ==========================================
-let currentUser = null;
-let currentProfile = null;
-let allCalls = [];
-let assistantsList = [];
-let editingAssistantId = null;
-let currentConversationId = null;
+window.currentUser = window.currentUser || null;
+window.currentProfile = window.currentProfile || null;
+window.allCalls = window.allCalls || [];
+window.assistantsList = window.assistantsList || [];
+window.editingAssistantId = window.editingAssistantId || null;
+window.currentConversationId = window.currentConversationId || null;
 
 // ==========================================
 // AUTH CHECK (role-based)
 // ==========================================
 (async () => {
-  currentProfile = await AuthGuard.requireCustomer();
-  if (!currentProfile) return;
+  window.currentProfile = await AuthGuard.requireCustomer();
+  if (!window.currentProfile) return;
 
-  currentUser = await clanaAuth.getUser();
+  window.currentUser = await clanaAuth.getUser();
 
   // Check trial status
   try {
     const { data: trialStatus } = await supabaseClient.rpc('check_trial_status', {
-      p_user_id: currentUser.id
+      p_user_id: window.currentUser.id
     });
     window.__trialStatus = trialStatus;
 
@@ -166,7 +167,7 @@ let currentConversationId = null;
   }
 
   // Load shared sidebar
-  await Components.loadSidebar('sidebar-container', currentProfile);
+  await Components.loadSidebar('sidebar-container', window.currentProfile);
 
   // Logout handler
   document.getElementById('sidebar-logout')?.addEventListener('click', async () => {
@@ -174,19 +175,19 @@ let currentConversationId = null;
     window.location.href = 'login.html';
   });
 
-  initMonthSelect();
+  if (typeof window.initMonthSelect === 'function') window.initMonthSelect();
 
   // Load only essential data upfront, rest is lazy-loaded on navigation
   await Promise.all([
-    loadHomeData(),
-    loadAssistants()
+    typeof window.loadHomeData === 'function' ? window.loadHomeData() : Promise.resolve(),
+    typeof window.loadAssistants === 'function' ? window.loadAssistants() : Promise.resolve()
   ]);
 
   // Onboarding checklist
-  if (typeof Onboarding !== 'undefined') Onboarding.init(currentUser?.id);
+  if (typeof Onboarding !== 'undefined') Onboarding.init(window.currentUser?.id);
 
   // Notification center
-  if (typeof NotificationCenter !== 'undefined') NotificationCenter.init(currentProfile);
+  if (typeof NotificationCenter !== 'undefined') NotificationCenter.init(window.currentProfile);
 
   // Help tooltips + activity log
   if (typeof DashboardExtras !== 'undefined') {
@@ -212,11 +213,11 @@ let currentConversationId = null;
   }
 
   // Team management
-  document.getElementById('btnInviteMember')?.addEventListener('click', inviteTeamMember);
-  document.getElementById('btnNewConversation')?.addEventListener('click', startNewConversation);
-  document.getElementById('btnSendMessage')?.addEventListener('click', sendMessage);
+  document.getElementById('btnInviteMember')?.addEventListener('click', () => { if (window.inviteTeamMember) window.inviteTeamMember(); });
+  document.getElementById('btnNewConversation')?.addEventListener('click', () => { if (window.startNewConversation) window.startNewConversation(); });
+  document.getElementById('btnSendMessage')?.addEventListener('click', () => { if (window.sendMessage) window.sendMessage(); });
   document.getElementById('messageInput')?.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); if (window.sendMessage) window.sendMessage(); }
   });
 })();
 
@@ -268,7 +269,7 @@ async function loadPlan() {
     }
   } catch (e) {
     // Fallback to user_metadata
-    plan = currentUser?.user_metadata?.plan || 'trial';
+    plan = window.currentUser?.user_metadata?.plan || 'trial';
   }
 
   const labels = {
@@ -435,7 +436,7 @@ document.getElementById('sidebarOverlay')?.addEventListener('click', () => {
 // Lazy loading: load data only when page is visited
 const _loadedPages = new Set(['home']);
 const origNavigate = navigateToPage;
-navigateToPage = function(page, updateHash) {
+window.navigateToPage = navigateToPage = function(page, updateHash) {
   origNavigate(page, updateHash);
   // Sync mobile bottom nav active state
   document.querySelectorAll('.mob-nav-item').forEach(item => {
@@ -445,32 +446,32 @@ navigateToPage = function(page, updateHash) {
   _loadedPages.add(page);
   switch (page) {
     case 'transactions':
-      loadAllCalls();
+      if (window.loadAllCalls) window.loadAllCalls();
       if (typeof DashboardExtras !== 'undefined') DashboardExtras.renderTranscriptSearch(document.getElementById('transcript-search-section'));
       break;
     case 'appointments': if (typeof AppointmentsPage !== 'undefined') AppointmentsPage.init(); break;
     case 'analytics': if (typeof AnalyticsPage !== 'undefined') AnalyticsPage.init(); break;
-    case 'billing': loadBilling(); loadBillingData(); break;
+    case 'billing': loadBilling(); if (window.loadBillingData) window.loadBillingData(); break;
     case 'plan': loadPlan(); break;
-    case 'team': loadTeam(); break;
-    case 'messages': loadConversations(); break;
-    case 'payment': loadPaymentMethods(); break;
-    case 'integrations': loadIntegrations(); break;
-    case 'invoices': loadInvoices(); break;
+    case 'team': if (window.loadTeam) window.loadTeam(); break;
+    case 'messages': if (window.loadConversations) window.loadConversations(); break;
+    case 'payment': if (window.loadPaymentMethods) window.loadPaymentMethods(); break;
+    case 'integrations': if (window.loadIntegrations) window.loadIntegrations(); break;
+    case 'invoices': if (window.loadInvoices) window.loadInvoices(); break;
   }
 };
 // Also load on initial hash
-if (window.location.hash === '#payment') loadPaymentMethods();
-if (window.location.hash === '#billing') loadBillingData();
-if (window.location.hash === '#integrations') loadIntegrations();
+if (window.location.hash === '#payment' && window.loadPaymentMethods) window.loadPaymentMethods();
+if (window.location.hash === '#billing' && window.loadBillingData) window.loadBillingData();
+if (window.location.hash === '#integrations' && window.loadIntegrations) window.loadIntegrations();
 
 // Event delegation for data-action handlers
 document.addEventListener('click', function(e) {
   const el = e.target.closest('[data-action]');
   if (!el) return;
   const action = el.dataset.action;
-  if (action === 'edit-assistant') editAssistant(el.dataset.id);
-  else if (action === 'create-assistant') createNewAssistant();
-  else if (action === 'show-call') { e.stopPropagation(); showCallDetail(Number(el.dataset.index)); }
+  if (action === 'edit-assistant') { if (window.editAssistant) window.editAssistant(el.dataset.id); }
+  else if (action === 'create-assistant') { if (window.createNewAssistant) window.createNewAssistant(); }
+  else if (action === 'show-call') { e.stopPropagation(); if (window.showCallDetail) window.showCallDetail(Number(el.dataset.index)); }
   else if (action === 'close-overlay') el.closest('div[style*="fixed"]')?.remove();
 });

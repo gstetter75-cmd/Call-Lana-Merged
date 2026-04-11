@@ -1,5 +1,5 @@
 // Extracted from dashboard.js — Calls list, filters, detail view, CSV export
-// Depends on: dashboard.js (globals: allCalls, escHtml, showToast, clanaDB, clanaUtils)
+// Depends on: dashboard.js (globals: window.allCalls, escHtml, showToast, clanaDB, clanaUtils)
 // ==========================================
 
 // Window exports for cross-file access
@@ -16,11 +16,11 @@ window.showTranscript = showTranscript;
 async function loadAllCalls() {
   const result = await clanaDB.getCalls(200);
   if (result.success && result.data.length > 0) {
-    allCalls = result.data;
+    window.allCalls = result.data;
     renderFilteredCalls();
     initCallFilters();
   } else {
-    allCalls = [];
+    window.allCalls = [];
     document.getElementById('allCallsBody').innerHTML = emptyCallsHTML();
   }
 }
@@ -32,7 +32,7 @@ function renderFilteredCalls() {
   const dateFrom = document.getElementById('callDateFrom')?.value || '';
   const dateTo = document.getElementById('callDateTo')?.value || '';
 
-  const filtered = allCalls.filter(c => {
+  const filtered = window.allCalls.filter(c => {
     if (search && !(c.phone_number || '').toLowerCase().includes(search) && !(c.caller_name || '').toLowerCase().includes(search)) return false;
     if (statusFilter && c.status !== statusFilter) return false;
     if (outcomeFilter && c.outcome !== outcomeFilter) return false;
@@ -68,7 +68,7 @@ function buildCallTable(calls) {
   calls.forEach((c, i) => {
     const date = clanaUtils.formatDate(c.created_at);
     const phone = c.phone_number || '–';
-    const callerName = c.caller_name ? escHtml(c.caller_name) : '';
+    const callerName = c.caller_name ? window.escHtml(c.caller_name) : '';
     const dur = c.duration ? clanaUtils.formatDuration(c.duration) : '–';
     const statusMap = {
       completed: { label: 'Abgeschlossen', cls: 'completed' },
@@ -97,7 +97,7 @@ function buildCallTable(calls) {
     }
 
     const hasTranscript = c.transcript && c.transcript.trim().length > 0;
-    const callerDisplay = callerName ? callerName + '<br><span style="font-size:11px;color:var(--tx3);">' + escHtml(phone) + '</span>' : escHtml(phone);
+    const callerDisplay = callerName ? callerName + '<br><span style="font-size:11px;color:var(--tx3);">' + window.escHtml(phone) + '</span>' : window.escHtml(phone);
 
     html += '<tr style="cursor:pointer;" data-action="show-call" data-index="' + i + '">' +
       '<td>' + date + '</td>' +
@@ -117,15 +117,15 @@ function buildCallTable(calls) {
 // CALL DETAIL OVERLAY
 // ==========================================
 function showCallDetail(callIndex) {
-  const call = allCalls[callIndex];
+  const call = window.allCalls[callIndex];
   if (!call) return;
 
   const overlay = document.createElement('div');
   overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;';
   overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
 
-  const phone = escHtml(call.phone_number || 'Unbekannt');
-  const callerName = call.caller_name ? escHtml(call.caller_name) : '';
+  const phone = window.escHtml(call.phone_number || 'Unbekannt');
+  const callerName = call.caller_name ? window.escHtml(call.caller_name) : '';
   const date = clanaUtils.formatDate(call.created_at);
   const dur = call.duration ? clanaUtils.formatDuration(call.duration) : '–';
 
@@ -162,7 +162,7 @@ function showCallDetail(callIndex) {
       const speakerMatch = rest.match(/^(Lana|Anrufer|Caller|Agent|Kunde|Customer)\s*:\s*(.*)/i);
       if (speakerMatch) {
         const speaker = speakerMatch[1];
-        const text = escHtml(speakerMatch[2]);
+        const text = window.escHtml(speakerMatch[2]);
         const isLana = /lana|agent/i.test(speaker);
         const speakerCls = isLana ? 'lana' : 'caller';
         const speakerLabel = isLana ? 'Lana' : 'Anrufer';
@@ -174,7 +174,7 @@ function showCallDetail(callIndex) {
       } else {
         transcriptHtml += '<div class="transcript-line">' +
           '<span class="transcript-speaker" style="color:var(--tx3);">…</span>' +
-          '<span class="transcript-text">' + escHtml(trimmed) + '</span>' +
+          '<span class="transcript-text">' + window.escHtml(trimmed) + '</span>' +
         '</div>';
       }
     });
@@ -208,13 +208,13 @@ function showTranscript(callIndex) { showCallDetail(callIndex); }
 // ==========================================
 const CallsPage = {
   exportCSV() {
-    if (!allCalls.length) {
-      showToast('Keine Anrufe zum Exportieren.', true);
+    if (!window.allCalls.length) {
+      window.showToast('Keine Anrufe zum Exportieren.', true);
       return;
     }
 
     const headers = ['Datum', 'Telefonnummer', 'Anrufer', 'Dauer (Sek)', 'Status', 'Ergebnis', 'Sentiment'];
-    const rows = allCalls.map(c => [
+    const rows = window.allCalls.map(c => [
       c.created_at ? new Date(c.created_at).toLocaleString('de-DE') : '',
       c.phone_number || '',
       c.caller_name || '',
@@ -237,7 +237,7 @@ const CallsPage = {
     a.download = 'anrufe_' + new Date().toISOString().slice(0, 10) + '.csv';
     a.click();
     URL.revokeObjectURL(url);
-    showToast('CSV exportiert.');
+    window.showToast('CSV exportiert.');
   }
 };
 window.CallsPage = CallsPage;

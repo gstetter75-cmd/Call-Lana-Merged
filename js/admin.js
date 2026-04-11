@@ -23,10 +23,10 @@ async function init() {
   const hash = window.location.hash.replace('#', '') || 'overview';
   switchTab(hash);
 
-  loadOverview();
+  if (window.loadOverview) window.loadOverview();
   loadUsers();
   loadOrgs();
-  loadSystemStats();
+  if (window.loadSystemStats) window.loadSystemStats();
   loadCustomers();
 
   // Search
@@ -404,7 +404,7 @@ async function createOrg() {
   closeModal('modal-add-org');
   document.getElementById('org-name').value = '';
   loadOrgs();
-  loadSystemStats();
+  if (window.loadSystemStats) window.loadSystemStats();
 }
 
 async function editOrg(orgId) {

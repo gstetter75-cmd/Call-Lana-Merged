@@ -8,9 +8,10 @@ const PIPELINE_STAGES = [
   { key: 'lost', label: 'Verloren', color: 'var(--red)' }
 ];
 
-let currentProfile = null;
-let allLeads = [];
-let allTasks = [];
+// Shared state on window for cross-file access in ESM bundles
+window.window.currentProfile = window.window.currentProfile || null;
+window.window.allLeads = window.window.allLeads || [];
+window.window.allTasks = window.window.allTasks || [];
 
 // Window exports for cross-file access
 window.switchTab = switchTab;
@@ -27,10 +28,10 @@ window.renderFunnel = renderFunnel;
 window.exportCustomersCSV = exportCustomersCSV;
 
 async function init() {
-  currentProfile = await AuthGuard.requireSales();
-  if (!currentProfile) return;
+  window.currentProfile = await AuthGuard.requireSales();
+  if (!window.currentProfile) return;
 
-  await Components.loadSidebar('sidebar-container', currentProfile);
+  await Components.loadSidebar('sidebar-container', window.currentProfile);
 
   document.getElementById('sidebar-logout')?.addEventListener('click', async () => {
     await clanaAuth.signOut();
@@ -50,7 +51,7 @@ async function init() {
   document.getElementById('btn-add-task')?.addEventListener('click', () => {
     // Populate lead dropdown
     const sel = document.getElementById('task-lead');
-    sel.innerHTML = '<option value="">Kein Lead</option>' + allLeads.map(l => `<option value="${l.id}">${clanaUtils.sanitizeHtml(l.company_name)}</option>`).join('');
+    sel.innerHTML = '<option value="">Kein Lead</option>' + window.allLeads.map(l => `<option value="${l.id}">${clanaUtils.sanitizeHtml(l.company_name)}</option>`).join('');
     openModal('modal-add-task');
   });
   document.getElementById('btn-set-avail')?.addEventListener('click', () => {
@@ -58,8 +59,8 @@ async function init() {
     openModal('modal-avail');
   });
   document.getElementById('btn-save-lead')?.addEventListener('click', saveLead);
-  document.getElementById('btn-save-task')?.addEventListener('click', saveTask);
-  document.getElementById('btn-save-avail')?.addEventListener('click', saveAvailability);
+  document.getElementById('btn-save-task')?.addEventListener('click', () => { if (window.saveTask) window.saveTask(); });
+  document.getElementById('btn-save-avail')?.addEventListener('click', () => { if (window.saveAvailability) window.saveAvailability(); });
 
   // Duplicate detection on lead email
   document.getElementById('lead-email')?.addEventListener('blur', async function() {
@@ -84,11 +85,11 @@ async function init() {
 
   // Realtime: auto-refresh when data changes
   clanaDB.subscribeTable('leads', () => { loadLeads(); });
-  clanaDB.subscribeTable('tasks', () => { loadTasks(); });
-  clanaDB.subscribeTable('customers', () => { if (typeof customersLoaded !== 'undefined' && customersLoaded) loadCustomers(); });
+  clanaDB.subscribeTable('tasks', () => { if (window.loadTasks) window.loadTasks(); });
+  clanaDB.subscribeTable('customers', () => { if (window.customersLoaded && window.loadCustomers) window.loadCustomers(); });
 
   // Notification center
-  if (typeof NotificationCenter !== 'undefined') NotificationCenter.init(currentProfile);
+  if (typeof NotificationCenter !== 'undefined') NotificationCenter.init(window.currentProfile);
 
   loadAllData();
 }
@@ -104,21 +105,21 @@ function switchTab(tab) {
   const labels = { pipeline: 'Pipeline', leads: 'Leads', tasks: 'Aufgaben', customers: 'Kunden', availability: 'Verfügbarkeit', commission: 'Provisionen' };
   document.getElementById('breadcrumb-page').textContent = labels[tab] || tab;
   window.location.hash = tab;
-  if (tab === 'commission') loadCommissions();
-  if (tab === 'customers' && !customersLoaded) { loadCustomers(); loadCustomerTags(); }
+  if (tab === 'commission' && window.loadCommissions) window.loadCommissions();
+  if (tab === 'customers' && !window.customersLoaded) { if (window.loadCustomers) window.loadCustomers(); if (window.loadCustomerTags) window.loadCustomerTags(); }
   if (tab === 'availability' && typeof AvailabilityModule !== 'undefined') AvailabilityModule.init();
 }
 
 async function loadAllData() {
-  await Promise.all([loadLeads(), loadTasks(), loadAvailability()]);
+  await Promise.all([loadLeads(), window.loadTasks ? window.loadTasks() : Promise.resolve(), window.loadAvailability ? window.loadAvailability() : Promise.resolve()]);
 }
 
 async function loadLeads() {
   const result = await clanaDB.getLeads();
   if (!result.success) { Components.toast('Fehler beim Laden der Leads', 'error'); return; }
-  allLeads = result.data || [];
+  window.allLeads = result.data || [];
   // Auto-calculate scores for leads without score
-  allLeads.forEach(l => {
+  window.allLeads.forEach(l => {
     if (!l.score) {
       const { score } = clanaDB.calculateLeadScore(l);
       l.score = score;
@@ -130,20 +131,20 @@ async function loadLeads() {
 
   // CRM enhancements
   if (typeof CRMEnhancements !== 'undefined') {
-    CRMEnhancements.renderFollowUpBanner(document.getElementById('followup-banner'), allLeads);
-    CRMEnhancements.renderForecastWidget(document.getElementById('deal-forecast-widget'), allLeads);
+    CRMEnhancements.renderFollowUpBanner(document.getElementById('followup-banner'), window.allLeads);
+    CRMEnhancements.renderForecastWidget(document.getElementById('deal-forecast-widget'), window.allLeads);
   }
 
   // Feed follow-up reminders with already-loaded leads (no extra DB call)
   if (typeof NotificationCenter !== 'undefined') {
-    NotificationCenter.checkFollowUpReminders(allLeads);
+    NotificationCenter.checkFollowUpReminders(window.allLeads);
   }
 }
 
 function renderPipeline() {
   const board = document.getElementById('pipeline-board');
   board.innerHTML = PIPELINE_STAGES.map(stage => {
-    const stageLeads = allLeads.filter(l => l.status === stage.key);
+    const stageLeads = window.allLeads.filter(l => l.status === stage.key);
     return `
       <div class="kanban-column" data-stage="${stage.key}" ondragover="event.preventDefault();this.style.background='rgba(124,58,237,.08)'" ondragleave="this.style.background=''" ondrop="dropLead(event,'${stage.key}');this.style.background=''">
         <div class="kanban-header">
@@ -168,7 +169,7 @@ function renderPipeline() {
   const stageValuesEl = document.getElementById('stage-value-bars');
   if (stageValuesEl) {
     const stageValues = PIPELINE_STAGES.filter(s => s.key !== 'lost').map(stage => {
-      const leads = allLeads.filter(l => l.status === stage.key);
+      const leads = window.allLeads.filter(l => l.status === stage.key);
       const total = leads.reduce((sum, l) => sum + (parseFloat(l.value) || 0), 0);
       return { label: stage.label, color: stage.color, value: total, count: leads.length };
     });
@@ -190,7 +191,7 @@ async function dropLead(event, newStage) {
   event.preventDefault();
   const leadId = event.dataTransfer.getData('text/plain');
   if (!leadId) return;
-  const lead = allLeads.find(l => l.id === leadId);
+  const lead = window.allLeads.find(l => l.id === leadId);
   if (!lead || lead.status === newStage) return;
 
   const result = await clanaDB.updateLead(leadId, { status: newStage });
@@ -202,7 +203,7 @@ async function dropLead(event, newStage) {
     updateLeadStats();
     // Offer lead-to-customer conversion when moved to "won"
     if (newStage === 'won') {
-      setTimeout(() => convertCurrentLeadToCustomer(leadId), 500);
+      setTimeout(() => { if (window.convertCurrentLeadToCustomer) window.convertCurrentLeadToCustomer(leadId); }, 500);
     }
   } else {
     Components.toast('Fehler: ' + result.error, 'error');
@@ -227,14 +228,14 @@ function renderLeadsTable() {
     document.getElementById('lead-search')?.addEventListener('input', renderLeadsTable);
   }
 
-  const filtered = allLeads.filter(l => {
+  const filtered = window.allLeads.filter(l => {
     if (search && !(l.company_name || '').toLowerCase().includes(search) && !(l.contact_name || '').toLowerCase().includes(search) && !(l.email || '').toLowerCase().includes(search)) return false;
     if (statusFilter && l.status !== statusFilter) return false;
     return true;
   });
 
   if (!filtered.length) {
-    tbody.innerHTML = '<tr><td colspan="7" class="empty-state">' + (allLeads.length ? 'Keine Ergebnisse für diesen Filter.' : 'Keine Leads vorhanden. Erstelle deinen ersten Lead!') + '</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="empty-state">' + (window.allLeads.length ? 'Keine Ergebnisse für diesen Filter.' : 'Keine Leads vorhanden. Erstelle deinen ersten Lead!') + '</td></tr>';
     return;
   }
   tbody.innerHTML = filtered.map(l => {
@@ -255,12 +256,12 @@ function renderLeadsTable() {
 }
 
 function updateLeadStats() {
-  const won = allLeads.filter(l => l.status === 'won');
-  const active = allLeads.filter(l => !['won', 'lost'].includes(l.status));
+  const won = window.allLeads.filter(l => l.status === 'won');
+  const active = window.allLeads.filter(l => !['won', 'lost'].includes(l.status));
   const pipelineValue = active.reduce((sum, l) => sum + (Number(l.value) || 0), 0);
-  const conversionRate = allLeads.length ? Math.round((won.length / allLeads.length) * 100) : 0;
+  const conversionRate = window.allLeads.length ? Math.round((won.length / window.allLeads.length) * 100) : 0;
 
-  document.getElementById('stat-total-leads').textContent = allLeads.length;
+  document.getElementById('stat-total-leads').textContent = window.allLeads.length;
   document.getElementById('stat-won').textContent = won.length;
   document.getElementById('stat-pipeline-value').textContent = pipelineValue.toLocaleString('de-DE') + ' €';
   document.getElementById('stat-conversion').textContent = conversionRate + '%';
@@ -276,7 +277,7 @@ function renderWonLostChart() {
   const days = Number(document.getElementById('pipeline-period')?.value || 30);
   const cutoff = new Date(Date.now() - days * 86400000);
 
-  const recent = allLeads.filter(l => new Date(l.updated_at || l.created_at) >= cutoff);
+  const recent = window.allLeads.filter(l => new Date(l.updated_at || l.created_at) >= cutoff);
   const won = recent.filter(l => l.status === 'won');
   const lost = recent.filter(l => l.status === 'lost');
   const wonVal = won.reduce((s, l) => s + (Number(l.value) || 0), 0);
@@ -350,9 +351,9 @@ async function useEmailTemplate(templateId) {
 function renderFunnel() {
   const funnel = document.getElementById('conversion-funnel');
   if (!funnel) return;
-  const total = allLeads.length || 1;
+  const total = window.allLeads.length || 1;
   const funnelStages = PIPELINE_STAGES.filter(s => s.key !== 'lost');
-  const stageCounts = funnelStages.map(s => ({ ...s, count: allLeads.filter(l => l.status === s.key).length }));
+  const stageCounts = funnelStages.map(s => ({ ...s, count: window.allLeads.filter(l => l.status === s.key).length }));
 
   funnel.innerHTML = '<div style="font-size:11px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Conversion Funnel</div>' +
     '<div style="display:flex;gap:4px;align-items:end;height:32px;">' +
@@ -405,7 +406,7 @@ async function saveLead() {
   } else {
     const notes = document.getElementById('lead-notes').value.trim();
     if (notes) payload.notes = notes;
-    payload.assigned_to = currentProfile.id;
+    payload.assigned_to = window.currentProfile.id;
     payload.status = 'new';
     result = await clanaDB.createLead(payload);
   }
@@ -600,8 +601,8 @@ if (typeof SafeActions !== 'undefined') {
   SafeActions.registerAll({
     'view-lead': (id) => viewLead(id),
     'use-template': (id, _, el) => useEmailTemplate(id, el.parentElement),
-    'toggle-task': (id, extra) => toggleTask(id, extra),
-    'set-avail': (id) => setAvailForDate(id),
+    'toggle-task': (id, extra) => { if (window.toggleTask) window.toggleTask(id, extra); },
+    'set-avail': (id) => { if (window.setAvailForDate) window.setAvailForDate(id); },
   });
 }
 

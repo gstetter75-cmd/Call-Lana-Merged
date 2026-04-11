@@ -17,12 +17,12 @@ window.closeNewConvModal = closeNewConvModal;
 window.createNewConversation = createNewConversation;
 
 async function loadTeam() {
-  if (!currentProfile?.organization_id) {
+  if (!window.currentProfile?.organization_id) {
     document.getElementById('teamListBody').innerHTML =
       '<div class="empty-state"><h3>Keine Organisation</h3><p>Dein Account ist keiner Organisation zugeordnet.</p></div>';
     return;
   }
-  const result = await clanaDB.getOrganization(currentProfile.organization_id);
+  const result = await clanaDB.getOrganization(window.currentProfile.organization_id);
   if (!result.success || !result.data?.organization_members) {
     document.getElementById('teamListBody').innerHTML =
       '<div class="empty-state"><h3>Keine Teammitglieder</h3><p>Lade Teammitglieder ein.</p></div>';
@@ -41,8 +41,8 @@ async function loadTeam() {
   members.forEach(m => {
     const p = m.profiles || {};
     html += '<tr>' +
-      '<td style="font-weight:600;">' + escHtml((p.first_name || '') + ' ' + (p.last_name || '')) + '</td>' +
-      '<td>' + escHtml(p.email || '') + '</td>' +
+      '<td style="font-weight:600;">' + window.escHtml((p.first_name || '') + ' ' + (p.last_name || '')) + '</td>' +
+      '<td>' + window.escHtml(p.email || '') + '</td>' +
       '<td><span class="status-badge completed">' + (m.role_in_org || 'member') + '</span></td>' +
       '<td>' + clanaUtils.formatDate(m.created_at) + '</td>' +
     '</tr>';
@@ -66,12 +66,12 @@ function sendInvite() {
   const role = document.getElementById('inviteRole').value;
 
   if (!email || !clanaUtils.validateEmail(email)) {
-    showToast('Bitte eine gueltige E-Mail-Adresse eingeben.', true);
+    window.showToast('Bitte eine gueltige E-Mail-Adresse eingeben.', true);
     return;
   }
 
   closeInviteModal();
-  showToast('Einladung an ' + email + ' als ' + role + ' gesendet.');
+  window.showToast('Einladung an ' + email + ' als ' + role + ' gesendet.');
 }
 
 // ==========================================
@@ -94,18 +94,18 @@ async function loadConversations() {
 
     const preview = lastMsg ? lastMsg.content.substring(0, 60) : '';
     return '<div class="phone-item" style="cursor:pointer;padding:12px;" data-action="open-conversation" data-id="' + clanaUtils.sanitizeAttr(c.id) + '">' +
-      '<div style="font-weight:600;font-size:13px;margin-bottom:2px;">' + escHtml(c.subject || participants || 'Konversation') + '</div>' +
-      (lastMsg ? '<div style="font-size:11px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escHtml(preview) + '</div>' : '') +
+      '<div style="font-weight:600;font-size:13px;margin-bottom:2px;">' + window.escHtml(c.subject || participants || 'Konversation') + '</div>' +
+      (lastMsg ? '<div style="font-size:11px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + window.escHtml(preview) + '</div>' : '') +
     '</div>';
   }).join('');
 }
 
 async function openConversation(convId) {
-  currentConversationId = convId;
+  window.currentConversationId = convId;
   document.getElementById('messageInputArea').style.display = 'block';
 
   const result = await clanaDB.getMessages(convId);
-  if (!result.success) { showToast('Fehler beim Laden der Nachrichten', true); return; }
+  if (!result.success) { window.showToast('Fehler beim Laden der Nachrichten', true); return; }
 
   const area = document.getElementById('messageArea');
   if (!result.data?.length) {
@@ -114,14 +114,14 @@ async function openConversation(convId) {
   }
 
   area.innerHTML = result.data.map(m => {
-    const isMe = m.sender_id === currentUser?.id;
+    const isMe = m.sender_id === window.currentUser?.id;
     const sender = m.profiles ? (m.profiles.first_name || '') + ' ' + (m.profiles.last_name || '') : 'Unbekannt';
     const time = new Date(m.created_at).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
 
     return '<div style="margin-bottom:12px;text-align:' + (isMe ? 'right' : 'left') + ';">' +
       '<div style="display:inline-block;max-width:70%;background:' + (isMe ? 'rgba(124,58,237,.15)' : 'var(--card)') + ';border:1px solid var(--border);border-radius:12px;padding:10px 14px;text-align:left;">' +
-        '<div style="font-size:11px;color:var(--tx3);margin-bottom:4px;">' + escHtml(sender) + ' &middot; ' + time + '</div>' +
-        '<div style="font-size:13px;">' + escHtml(m.content) + '</div>' +
+        '<div style="font-size:11px;color:var(--tx3);margin-bottom:4px;">' + window.escHtml(sender) + ' &middot; ' + time + '</div>' +
+        '<div style="font-size:13px;">' + window.escHtml(m.content) + '</div>' +
       '</div>' +
     '</div>';
   }).join('');
@@ -131,18 +131,18 @@ async function openConversation(convId) {
 }
 
 async function sendMessage() {
-  if (!currentConversationId) return;
+  if (!window.currentConversationId) return;
   const input = document.getElementById('messageInput');
   const content = input.value.trim();
   if (!content) return;
 
   input.value = '';
-  const result = await clanaDB.sendMessage(currentConversationId, content);
+  const result = await clanaDB.sendMessage(window.currentConversationId, content);
   if (result.success) {
-    openConversation(currentConversationId);
+    openConversation(window.currentConversationId);
     loadConversations();
   } else {
-    showToast('Fehler beim Senden: ' + result.error, true);
+    window.showToast('Fehler beim Senden: ' + result.error, true);
   }
 }
 
@@ -161,19 +161,19 @@ async function createNewConversation() {
   const message = document.getElementById('convMessage').value.trim();
 
   if (!message) {
-    showToast('Bitte eine Nachricht eingeben.', true);
+    window.showToast('Bitte eine Nachricht eingeben.', true);
     return;
   }
 
   const convResult = await clanaDB.createConversation([], subject || 'Neue Konversation');
   if (!convResult.success) {
-    showToast('Fehler beim Erstellen: ' + convResult.error, true);
+    window.showToast('Fehler beim Erstellen: ' + convResult.error, true);
     return;
   }
 
   const msgResult = await clanaDB.sendMessage(convResult.data.id, message);
   if (!msgResult.success) {
-    showToast('Konversation erstellt, aber Nachricht konnte nicht gesendet werden.', true);
+    window.showToast('Konversation erstellt, aber Nachricht konnte nicht gesendet werden.', true);
   }
 
   closeNewConvModal();

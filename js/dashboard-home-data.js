@@ -38,15 +38,15 @@ async function loadHomeData() {
 
   if (result.success) {
     const s = result.stats;
-    $setText('csAnrufe', s.totalCalls.toLocaleString('de-DE'));
-    $setText('csSms', formatMinutes(s.avgDuration));
+    window.$setText('csAnrufe', s.totalCalls.toLocaleString('de-DE'));
+    window.$setText('csSms', window.formatMinutes(s.avgDuration));
     const completedCalls = s.statuses?.completed || 0;
     const successRate = s.totalCalls > 0 ? Math.round((completedCalls / s.totalCalls) * 100) : 0;
-    $setText('csKosten', successRate + '%');
+    window.$setText('csKosten', successRate + '%');
   } else {
-    $setText('csAnrufe', '0');
-    $setText('csSms', '0 min');
-    $setText('csKosten', '0%');
+    window.$setText('csAnrufe', '0');
+    window.$setText('csSms', '0 min');
+    window.$setText('csKosten', '0%');
   }
 
   // Balance donut
@@ -56,8 +56,8 @@ async function loadHomeData() {
   const pct = Math.min(balance / maxBalance, 1);
   const circumference = 2 * Math.PI * 40;
   const offset = circumference - (pct * circumference);
-  $setAttr('donutArc', 'stroke-dashoffset', offset);
-  $setText('donutCenter', formatCurrency(balance));
+  window.$setAttr('donutArc', 'stroke-dashoffset', offset);
+  window.$setText('donutCenter', window.formatCurrency(balance));
 
   // Call chart
   drawCallChart(start, end);

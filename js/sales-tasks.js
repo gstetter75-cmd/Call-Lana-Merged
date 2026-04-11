@@ -1,5 +1,5 @@
 // Extracted from sales.js — Tasks, Availability, Commissions
-// Depends on: sales.js (globals: currentProfile, allLeads, allTasks, clanaDB, clanaUtils, Components, CONFIG)
+// Depends on: sales.js (globals: window.currentProfile, window.allLeads, window.allTasks, clanaDB, clanaUtils, Components, CONFIG)
 // ==========================================
 
 // Window exports for cross-file access
@@ -16,21 +16,21 @@ window.loadCommissions = loadCommissions;
 // TASKS
 // ==========================================
 async function loadTasks() {
-  const result = await clanaDB.getTasks({ assigned_to: currentProfile.id });
+  const result = await clanaDB.getTasks({ assigned_to: window.currentProfile.id });
   if (!result.success) return;
-  allTasks = result.data || [];
+  window.allTasks = result.data || [];
   renderTasks();
   updateTaskStats();
 }
 
 function renderTasks() {
   const list = document.getElementById('tasks-list');
-  if (!allTasks.length) {
+  if (!window.allTasks.length) {
     list.innerHTML = '<div class="empty-state"><h3>Keine Aufgaben</h3><p>Erstelle deine erste Aufgabe.</p></div>';
     return;
   }
 
-  list.innerHTML = allTasks.map(t => {
+  list.innerHTML = window.allTasks.map(t => {
     const isDone = t.status === 'done';
     const isOverdue = t.due_date && new Date(t.due_date) < new Date() && !isDone;
     const priorityColors = { low: 'badge-green', medium: 'badge-cyan', high: 'badge-orange', urgent: 'badge-red' };
@@ -51,9 +51,9 @@ function renderTasks() {
 }
 
 function updateTaskStats() {
-  document.getElementById('stat-tasks-open').textContent = allTasks.filter(t => t.status === 'open').length;
-  document.getElementById('stat-tasks-progress').textContent = allTasks.filter(t => t.status === 'in_progress').length;
-  document.getElementById('stat-tasks-done').textContent = allTasks.filter(t => t.status === 'done').length;
+  document.getElementById('stat-tasks-open').textContent = window.allTasks.filter(t => t.status === 'open').length;
+  document.getElementById('stat-tasks-progress').textContent = window.allTasks.filter(t => t.status === 'in_progress').length;
+  document.getElementById('stat-tasks-done').textContent = window.allTasks.filter(t => t.status === 'done').length;
 }
 
 async function toggleTask(id, currentStatus) {
@@ -71,7 +71,7 @@ async function saveTask() {
     description: document.getElementById('task-desc').value.trim(),
     due_date: document.getElementById('task-due').value || null,
     priority: document.getElementById('task-priority').value,
-    assigned_to: currentProfile.id,
+    assigned_to: window.currentProfile.id,
     lead_id: document.getElementById('task-lead').value || null
   });
 
@@ -103,7 +103,7 @@ async function loadAvailability() {
 
   const start = days[0].toISOString().split('T')[0];
   const end = days[days.length - 1].toISOString().split('T')[0];
-  const result = await clanaDB.getAvailability(currentProfile.id, start, end);
+  const result = await clanaDB.getAvailability(window.currentProfile.id, start, end);
   const availData = result.success ? result.data : [];
 
   const grid = document.getElementById('avail-grid');
@@ -160,7 +160,7 @@ async function loadCommissions() {
   const tbody = document.getElementById('comm-tbody');
   tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--tx3);padding:40px;">Laden...</td></tr>';
 
-  const wonLeads = allLeads.filter(l => l.status === 'won');
+  const wonLeads = window.allLeads.filter(l => l.status === 'won');
 
   // Batch-load customer profiles for all won leads in a single query
   const wonEmails = wonLeads.map(l => l.email).filter(Boolean);
