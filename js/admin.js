@@ -4,7 +4,14 @@ let editingUserId = null;
 
 async function init() {
   // Force token refresh to pick up latest role metadata
-  try { await supabaseClient.auth.refreshSession(); } catch (e) { /* ignore */ }
+  try {
+    const { data: refreshed } = await supabaseClient.auth.refreshSession();
+    if (!refreshed?.session) {
+      await supabaseClient.auth.signOut();
+      window.location.href = 'login.html';
+      return;
+    }
+  } catch (e) { /* ignore */ }
 
   currentProfile = await AuthGuard.requireSuperadmin();
   if (!currentProfile) return;

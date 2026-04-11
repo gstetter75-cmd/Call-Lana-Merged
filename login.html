@@ -208,6 +208,13 @@
   <script src="js/auth-guard.js"></script>
   <script src="js/components.js"></script>
   <script>
+    // Handle logout param — force clear session
+    if (new URLSearchParams(window.location.search).get('logout') === 'true') {
+      supabaseClient.auth.signOut().then(() => {
+        window.history.replaceState({}, '', 'login.html');
+      });
+    }
+
     // Redirect if already logged in (server-validated, role-based)
     (async () => {
       const user = await clanaAuth.getUser();
