@@ -3,6 +3,9 @@ let currentProfile = null;
 let editingUserId = null;
 
 async function init() {
+  // Force token refresh to pick up latest role metadata
+  try { await supabaseClient.auth.refreshSession(); } catch (e) { /* ignore */ }
+
   currentProfile = await AuthGuard.requireSuperadmin();
   if (!currentProfile) return;
 
