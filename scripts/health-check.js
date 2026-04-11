@@ -11,7 +11,7 @@ const ENDPOINTS = [
   {
     name: 'VAPI Webhook',
     url: 'https://fgwtptriileytmmotevs.supabase.co/functions/v1/vapi-webhook',
-    expectedStatus: [405], // method not allowed = alive
+    expectedStatus: [401, 405], // unauthorized or method not allowed = alive
   },
   {
     name: 'Supabase REST',
