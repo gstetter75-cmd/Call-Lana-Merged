@@ -8,7 +8,7 @@
     "watch": "node build.js --watch",
     "test": "npx vitest run",
     "test:unit": "npx vitest run",
-    "test:e2e": "npx playwright test tests/e2e/critical-flows.spec.ts tests/e2e/auth.spec.ts tests/e2e/sales-flow.spec.ts tests/e2e/performance.spec.ts tests/e2e/404.spec.ts tests/e2e/blog.spec.ts tests/e2e/cookie-consent.spec.ts",
+    "test:e2e": "npx playwright test tests/e2e/critical-flows.spec.ts tests/e2e/auth.spec.ts tests/e2e/sales-flow.spec.ts tests/e2e/rbac.spec.ts tests/e2e/performance.spec.ts tests/e2e/404.spec.ts tests/e2e/blog.spec.ts tests/e2e/cookie-consent.spec.ts",
     "test:smoke": "node scripts/smoke-test.js",
     "test:all": "npx vitest run && node scripts/smoke-test.js && npx playwright test tests/e2e/critical-flows.spec.ts tests/e2e/auth.spec.ts tests/e2e/sales-flow.spec.ts",
     "test:headed": "npx playwright test --headed",
