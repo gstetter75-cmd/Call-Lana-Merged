@@ -296,11 +296,11 @@ async function loadPlan() {
 // ==========================================
 // KNOWLEDGE BASE (placeholder)
 // ==========================================
-document.getElementById('btnUploadDoc').addEventListener('click', () => {
+document.getElementById('btnUploadDoc')?.addEventListener('click', () => {
   showToast('Dokument-Upload: Kontaktiere den Support unter info@call-lana.de.');
 });
 
-document.getElementById('kbSearch').addEventListener('input', (e) => {
+document.getElementById('kbSearch')?.addEventListener('input', (e) => {
   // Placeholder search - no documents yet
 });
 
@@ -405,7 +405,7 @@ document.getElementById('hamburgerBtn')?.addEventListener('click', () => {
 });
 document.getElementById('sidebarOverlay')?.addEventListener('click', () => {
   document.querySelector('.sidebar')?.classList.remove('open');
-  document.getElementById('sidebarOverlay').classList.remove('open');
+  document.getElementById('sidebarOverlay')?.classList.remove('open');
 });
 
 // Logout is handled via sidebar-logout in init()
