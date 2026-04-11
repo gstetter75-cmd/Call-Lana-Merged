@@ -11,6 +11,7 @@ import { CONFIG } from './config.js';
 import { openModal, closeModal, initModalListeners } from './modal.js';
 import { SafeActions } from './safe-actions.js';
 import { showToast } from './toast.js';
+import { formatMinutes, formatCurrency, formatCents } from './format.js';
 
 // Establish window globals for legacy code
 window.Logger = Logger;
@@ -21,6 +22,9 @@ window.openModal = openModal;
 window.closeModal = closeModal;
 window.SafeActions = SafeActions;
 window.showToast = showToast;
+window.formatMinutes = formatMinutes;
+window.formatCurrency = formatCurrency;
+window.formatCents = formatCents;
 
 // clanaUtils — single source of truth
 window.clanaUtils = {

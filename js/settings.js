@@ -82,7 +82,6 @@ if (typeof SafeActions !== 'undefined') {
 // Window exports for cross-file access
 window.saveProfile = saveProfile;
 window.changePassword = changePassword;
-window.escHtml = escHtml;
 window.loadConnectors = loadConnectors;
 window.openConnModal = openConnModal;
 window.closeConnModal = closeConnModal;
@@ -398,9 +397,7 @@ let connSearchQuery = '';
 let connConnected = [];
 let connCurrentProvider = null;
 
-function escHtml(str) {
-  return clanaUtils.sanitizeHtml(str);
-}
+// escHtml — now provided by js/modules/core.js (window.escHtml)
 
 function getConnCategories() {
   const cats = [...new Set(CONNECTORS.map(c => c.category))];

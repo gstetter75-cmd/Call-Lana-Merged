@@ -23,6 +23,10 @@ describe('Dashboard Billing', () => {
     (window as any).loadBillingData = vi.fn().mockResolvedValue(undefined);
     (window as any).supabaseClient.rpc = vi.fn().mockResolvedValue({ data: true, error: null });
 
+    // formatCents is now in modules/format.js — provide it on window for backward compat
+    (window as any).formatCents = (cents: number) =>
+      (cents / 100).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
+
     loadBrowserScript('js/dashboard-billing.js');
   });
 

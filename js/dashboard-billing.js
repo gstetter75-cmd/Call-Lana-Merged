@@ -14,7 +14,6 @@ window.confirmTopup = confirmTopup;
 window.selectPlan = selectPlan;
 window.loadBillingData = loadBillingData;
 window.loadTransactions = loadTransactions;
-window.formatCents = formatCents;
 
 function openTopupModal() {
   document.getElementById('topupModal').style.display = 'flex';
@@ -48,9 +47,7 @@ function updateTopupButton() {
   document.getElementById('topupConfirmBtn').textContent = formatCents(amount) + ' aufladen';
 }
 
-function formatCents(cents) {
-  return (cents / 100).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
-}
+// formatCents — now in js/modules/format.js
 
 async function confirmTopup() {
   const custom = document.getElementById('customTopup').value;

@@ -21,8 +21,10 @@ describe('Invoices', () => {
     (window as any).currentUser = { id: 'test-uid' };
     (window as any).loadBillingData = vi.fn();
 
-    // formatCents is defined in dashboard-billing.js, load it first
-    loadBrowserScript('js/dashboard-billing.js');
+    // formatCents is now in modules/format.js — provide on window
+    (window as any).formatCents = (cents: number) =>
+      (cents / 100).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
+
     loadBrowserScript('js/invoices.js');
   });
 

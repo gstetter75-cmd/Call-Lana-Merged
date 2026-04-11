@@ -46,11 +46,8 @@ function $setVal(id, val) { const el = $id(id); if (el) el.value = val; }
 function $setHtml(id, html) { const el = $id(id); if (el) el.innerHTML = html; }
 function $setAttr(id, attr, val) { const el = $id(id); if (el) el.setAttribute(attr, val); }
 
-// Window exports for cross-file access (showToast now from modules/toast.js)
+// Window exports for cross-file access (showToast, formatCurrency, formatMinutes, escHtml now from modules/)
 window.navigateToPage = navigateToPage;
-window.escHtml = escHtml;
-window.formatCurrency = formatCurrency;
-window.formatMinutes = formatMinutes;
 window.loadBilling = loadBilling;
 window.loadPlan = loadPlan;
 window.$id = $id;
@@ -322,23 +319,9 @@ document.getElementById('kbSearch')?.addEventListener('input', (e) => {
 // ==========================================
 // HELPERS
 // ==========================================
-function formatMinutes(seconds) {
-  if (!seconds || seconds === 0) return '0 min';
-  const m = Math.floor(seconds / 60);
-  const s = Math.round(seconds % 60);
-  if (m === 0) return s + ' sek';
-  return m + ':' + String(s).padStart(2, '0') + ' min';
-}
-
-function formatCurrency(amount) {
-  return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount);
-}
-
-function escHtml(str) {
-  return clanaUtils.sanitizeHtml(str);
-}
-
-// showToast — now provided by js/modules/toast.js via core.js
+// formatMinutes, formatCurrency — now in js/modules/format.js
+// showToast — now in js/modules/toast.js
+// escHtml — provided by js/modules/core.js (window.escHtml = utils.sanitizeHtml)
 
 // ==========================================
 // NAVIGATION
