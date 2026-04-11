@@ -68,7 +68,7 @@ const AdminOverview = {
     container.innerHTML = `
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;padding:12px 16px;background:var(--bg3);border-radius:12px;">
         <span style="font-size:12px;font-weight:600;color:var(--tx3);line-height:32px;margin-right:8px;">Schnellaktionen:</span>
-        <button class="btn btn-sm btn-outline" data-action="qa-invite-user">👤 Benutzer einladen</button>
+        <button class="btn btn-sm btn-outline" data-action="qa-invite-user">👤 Sales-User anlegen</button>
         <button class="btn btn-sm btn-outline" data-action="qa-create-org">🏢 Organisation erstellen</button>
         <button class="btn btn-sm btn-outline" data-action="qa-export-data">📥 Daten exportieren</button>
         <button class="btn btn-sm btn-outline" data-action="qa-gen-invoices">🧾 Rechnungen generieren</button>
@@ -322,7 +322,7 @@ document.addEventListener('click', function(e) {
   var el = e.target.closest('[data-action]');
   if (!el) return;
   var action = el.dataset.action;
-  if (action === 'qa-invite-user') { if (typeof switchTab === 'function') switchTab('users'); setTimeout(function() { if (typeof openModal === 'function') openModal('modal-add-user'); }, 300); }
+  if (action === 'qa-invite-user') { if (typeof openModal === 'function') openModal('modal-invite-sales'); }
   else if (action === 'qa-create-org') { if (typeof switchTab === 'function') switchTab('orgs'); setTimeout(function() { if (typeof openModal === 'function') openModal('modal-add-org'); }, 300); }
   else if (action === 'qa-export-data') AdminOverview.exportAllData();
   else if (action === 'qa-gen-invoices' && typeof AdminAnalytics !== 'undefined') AdminAnalytics.generateMonthlyInvoices();

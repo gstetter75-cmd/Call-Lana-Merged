@@ -556,6 +556,49 @@
   </div>
 </div>
 
+<!-- Invite Sales User Modal -->
+<div class="modal-overlay" id="modal-invite-sales">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Sales-User anlegen</h3>
+      <button class="modal-close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div id="invite-error" class="error-msg" style="display:none;margin-bottom:12px;padding:10px;background:var(--red)11;border:1px solid var(--red)33;border-radius:8px;color:var(--red);font-size:13px;"></div>
+      <div class="form-group">
+        <label for="invite-email">E-Mail-Adresse *</label>
+        <input type="email" class="form-input" id="invite-email" placeholder="name@firma.de" required>
+      </div>
+      <div class="form-group">
+        <label for="invite-password">Passwort *</label>
+        <input type="password" class="form-input" id="invite-password" placeholder="Min. 8 Zeichen" required>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group">
+          <label for="invite-firstname">Vorname</label>
+          <input type="text" class="form-input" id="invite-firstname" placeholder="Max">
+        </div>
+        <div class="form-group">
+          <label for="invite-lastname">Nachname</label>
+          <input type="text" class="form-input" id="invite-lastname" placeholder="Mustermann">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="invite-company">Unternehmen</label>
+        <input type="text" class="form-input" id="invite-company" placeholder="Firma GmbH">
+      </div>
+      <div class="form-group" style="background:var(--bg3);padding:10px 14px;border-radius:8px;">
+        <span style="font-size:12px;color:var(--tx3);">Rolle:</span>
+        <strong style="font-size:13px;color:var(--pu);margin-left:6px;">Sales</strong>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" data-close-modal="modal-invite-sales">Abbrechen</button>
+      <button class="btn" id="btn-invite-sales">Sales-User anlegen</button>
+    </div>
+  </div>
+</div>
+
 <!-- Single bundle with shared chunks (code-splitting) -->
 <script type="module" src="dist/admin.bundle.js"></script>
 <script src="js/init-sw.js" defer></script>

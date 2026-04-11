@@ -440,8 +440,72 @@ if (typeof SafeActions !== 'undefined') {
     'export-customers-csv': () => exportCustomersCSV(),
     'export-users-csv': () => { if (typeof AdminOverview !== 'undefined') AdminOverview.exportUsersCSV(); },
     'export-orgs-csv': () => { if (typeof AdminOverview !== 'undefined') AdminOverview.exportOrgsCSV(); },
+    'invite-sales-user': () => openModal('modal-invite-sales'),
   });
 }
+
+// Invite Sales User
+document.getElementById('btn-invite-sales')?.addEventListener('click', async () => {
+  const email = document.getElementById('invite-email')?.value?.trim();
+  const password = document.getElementById('invite-password')?.value;
+  const firstName = document.getElementById('invite-firstname')?.value?.trim();
+  const lastName = document.getElementById('invite-lastname')?.value?.trim();
+  const company = document.getElementById('invite-company')?.value?.trim();
+  const errEl = document.getElementById('invite-error');
+  const btn = document.getElementById('btn-invite-sales');
+
+  if (errEl) { errEl.style.display = 'none'; errEl.textContent = ''; }
+
+  if (!email || !password) {
+    if (errEl) { errEl.textContent = 'E-Mail und Passwort sind Pflichtfelder.'; errEl.style.display = 'block'; }
+    return;
+  }
+  if (password.length < 8) {
+    if (errEl) { errEl.textContent = 'Passwort muss mindestens 8 Zeichen lang sein.'; errEl.style.display = 'block'; }
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Wird angelegt…';
+
+  try {
+    const session = await supabaseClient.auth.getSession();
+    const token = session?.data?.session?.access_token;
+
+    const resp = await fetch(supabaseClient.supabaseUrl + '/functions/v1/invite-sales-user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+      body: JSON.stringify({ email, password, firstName, lastName, company }),
+    });
+
+    const result = await resp.json();
+
+    if (!resp.ok || result.error) {
+      throw new Error(result.error || 'Unbekannter Fehler');
+    }
+
+    Components.toast('Sales-User ' + email + ' erfolgreich angelegt!', 'success');
+    closeModal('modal-invite-sales');
+
+    // Clear form
+    document.getElementById('invite-email').value = '';
+    document.getElementById('invite-password').value = '';
+    document.getElementById('invite-firstname').value = '';
+    document.getElementById('invite-lastname').value = '';
+    document.getElementById('invite-company').value = '';
+
+    // Refresh user list
+    loadUsers();
+  } catch (err) {
+    if (errEl) { errEl.textContent = err.message; errEl.style.display = 'block'; }
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Sales-User anlegen';
+  }
+});
 
 // Close modals on overlay click
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
