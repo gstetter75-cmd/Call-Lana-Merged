@@ -28,7 +28,6 @@ window.renderFunnel = renderFunnel;
 window.exportCustomersCSV = exportCustomersCSV;
 
 async function init() {
-  try { await supabaseClient.auth.refreshSession(); } catch (e) { /* ignore */ }
   window.currentProfile = await AuthGuard.requireSales();
   if (!window.currentProfile) return;
 

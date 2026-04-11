@@ -61,7 +61,6 @@ window.currentConversationId = window.currentConversationId || null;
 // AUTH CHECK (role-based)
 // ==========================================
 (async () => {
-  try { await supabaseClient.auth.refreshSession(); } catch (e) { /* ignore */ }
   window.currentProfile = await AuthGuard.requireCustomer();
   if (!window.currentProfile) return;
 
