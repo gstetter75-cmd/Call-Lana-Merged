@@ -7,6 +7,19 @@ describe('db facade and utils', () => {
 
   beforeEach(() => {
     mocks = setupGlobalMocks();
+
+    // clanaUtils is now provided by core.js, not db.js — set it up here
+    (window as any).clanaUtils = {
+      sanitizeHtml: (str: any) => { if (str == null) return ''; const div = document.createElement('div'); div.textContent = String(str); return div.innerHTML; },
+      sanitizeAttr: (str: any) => { if (str == null) return ''; return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\\/g, '&#92;'); },
+      formatDuration: (s: number) => { const m = Math.floor(s / 60); const sec = s % 60; return `${m}:${String(sec).padStart(2, '0')}`; },
+      formatDate: (d: string) => new Intl.DateTimeFormat('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(d)),
+      validateEmail: (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e),
+      validatePhone: (p: string) => /^[+]?[\d\s()-]{6,20}$/.test(p),
+      safeTelHref: (p: string) => { const c = (p || '').replace(/[^+\d\s\-()]/g, ''); return c ? 'tel:' + c : '#'; },
+      safeMailHref: (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) ? 'mailto:' + e : '#',
+    };
+
     // Load all DB modules first, then the facade
     loadBrowserScript('js/db/calls.js');
     loadBrowserScript('js/db/assistants.js');
@@ -231,30 +244,5 @@ describe('db facade and utils', () => {
     });
   });
 
-  // ====== utils (window.utils) ======
-
-  describe('utils.isAuthenticated', () => {
-    it('returns true when session exists', async () => {
-      const utils = (window as any).clanaUtils;
-      // The window-level utils object is actually loaded as window.utils in db.js
-      const windowUtils = (window as any).utils;
-
-      // auth.getSession returns a session object
-      mocks.auth.getSession.mockResolvedValue({ access_token: 'tok' });
-
-      const result = await windowUtils.isAuthenticated();
-
-      expect(result).toBe(true);
-    });
-
-    it('returns false when no session', async () => {
-      const windowUtils = (window as any).utils;
-
-      mocks.auth.getSession.mockResolvedValue(null);
-
-      const result = await windowUtils.isAuthenticated();
-
-      expect(result).toBe(false);
-    });
-  });
+  // utils.isAuthenticated was removed from db.js (now in auth.js)
 });
