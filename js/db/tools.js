@@ -263,3 +263,4 @@ const dbTools = {
     }
   }
 };
+window.dbTools = dbTools;

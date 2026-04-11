@@ -117,3 +117,4 @@ const dbAssistants = {
     }
   }
 };
+window.dbAssistants = dbAssistants;

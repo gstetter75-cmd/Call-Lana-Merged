@@ -249,3 +249,4 @@ const dbLeads = {
     }
   }
 };
+window.dbLeads = dbLeads;

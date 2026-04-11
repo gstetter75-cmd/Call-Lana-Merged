@@ -188,3 +188,4 @@ const dbProfiles = {
     }
   }
 };
+window.dbProfiles = dbProfiles;

@@ -124,3 +124,4 @@ const dbCalls = {
     }
   }
 };
+window.dbCalls = dbCalls;

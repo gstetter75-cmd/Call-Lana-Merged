@@ -370,3 +370,4 @@ const dbCustomers = {
     }
   }
 };
+window.dbCustomers = dbCustomers;
