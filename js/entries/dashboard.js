@@ -50,9 +50,12 @@ import '../appointments.js';
 import '../analytics-page.js';
 import '../invoices.js';
 
-// --- Optional (PWA, offline, confetti) ---
-import '../confetti.js';
-import '../push-notifications.js';
-import '../offline-cache.js';
-import '../install-prompt.js';
-import '../integration-demo.js';
+// --- Optional (PWA, offline, confetti) — lazy loaded ---
+// These modules are rarely needed and loaded on demand
+setTimeout(() => {
+  import('../confetti.js');
+  import('../install-prompt.js');
+  import('../push-notifications.js');
+  import('../offline-cache.js');
+  import('../integration-demo.js');
+}, 3000); // Load 3s after page init to not block critical rendering
