@@ -37,6 +37,7 @@
 </style>
 </head>
 <body class="auth-pending">
+<a href="#main-content" class="skip-link">Zum Inhalt springen</a>
 <div class="app-layout">
   <div id="sidebar-container"></div>
   <div class="main">
@@ -46,7 +47,7 @@
         <div class="topbar-breadcrumb">Administration <span>/ <span id="breadcrumb-page">Benutzer</span></span></div>
       </div>
     </div>
-    <div class="content">
+    <div class="content" id="main-content">
 
       <!-- TAB BAR -->
       <div class="tab-bar">
@@ -261,7 +262,7 @@
         <div class="card" style="padding:0;overflow:hidden;">
           <div class="data-header" style="padding:16px 20px;border-bottom:1px solid var(--border);">
             <h2 style="font-size:14px;">Letzte Fehler</h2>
-            <select class="form-input form-select" id="errSeverityFilter" style="width:auto;padding:6px 28px 6px 10px;font-size:12px;">
+            <select class="form-input form-select" id="errSeverityFilter" style="width:auto;padding:6px 28px 6px 10px;font-size:12px;" aria-label="Fehler nach Schweregrad filtern">
               <option value="">Alle</option>
               <option value="error">Fehler</option>
               <option value="warning">Warnung</option>
@@ -282,7 +283,7 @@
         <div class="admin-header">
           <h1>Alle Kunden</h1>
           <div style="display:flex;gap:12px;align-items:center;">
-            <input type="text" class="search-input" id="customer-search" placeholder="Kunden suchen...">
+            <input type="text" class="search-input" id="customer-search" placeholder="Kunden suchen..." aria-label="Kunden suchen">
             <button class="btn btn-sm btn-outline" data-action="export-customers-csv">CSV Export</button>
           </div>
         </div>
@@ -313,7 +314,7 @@
         <div class="admin-header">
           <h1>Benutzer verwalten</h1>
           <div style="display:flex;gap:12px;align-items:center;">
-            <input type="text" class="search-input" id="user-search" placeholder="Benutzer suchen...">
+            <input type="text" class="search-input" id="user-search" placeholder="Benutzer suchen..." aria-label="Benutzer suchen">
             <button class="btn btn-sm btn-outline" data-action="export-users-csv">📥 CSV</button>
             <button class="btn btn-sm" id="btn-add-user">+ Benutzer</button>
           </div>

@@ -206,8 +206,8 @@ label{font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-
 
             <!-- Search & Filter -->
             <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-              <input type="text" class="finp" id="connSearchInput" placeholder="Connector suchen..." style="max-width:260px;" oninput="filterConnectors()">
-              <select class="finp" id="connCategoryFilter" style="max-width:200px;" onchange="filterConnectors()">
+              <input type="text" class="finp" id="connSearchInput" placeholder="Connector suchen..." style="max-width:260px;" oninput="filterConnectors()" aria-label="Connector suchen">
+              <select class="finp" id="connCategoryFilter" style="max-width:200px;" onchange="filterConnectors()" aria-label="Connector-Kategorie filtern">
                 <option value="Alle">Alle Kategorien</option>
               </select>
             </div>

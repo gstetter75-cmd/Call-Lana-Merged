@@ -72,16 +72,17 @@
 </style>
 </head>
 <body class="auth-pending">
+<a href="#main-content" class="skip-link">Zum Inhalt springen</a>
 <div class="app-layout">
   <div id="sidebar-container"></div>
   <div class="main">
     <div class="topbar">
       <div class="topbar-left">
-        <button class="topbar-hamburger"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button>
+        <button class="topbar-hamburger" aria-label="Navigation öffnen"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button>
         <div class="topbar-breadcrumb">CRM <span>/ <span id="breadcrumb-page">Pipeline</span></span></div>
       </div>
     </div>
-    <div class="content">
+    <div class="content" id="main-content">
 
       <div class="tab-bar">
         <button class="tab-btn active" data-tab="pipeline">Pipeline</button>
@@ -141,7 +142,7 @@
         <div class="card" style="padding:16px 20px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
             <h3 style="margin:0;font-size:14px;">Gewonnen vs. Verloren</h3>
-            <select class="form-input form-select" id="pipeline-period" style="width:140px;font-size:12px;" onchange="renderWonLostChart()">
+            <select class="form-input form-select" id="pipeline-period" style="width:140px;font-size:12px;" onchange="renderWonLostChart()" aria-label="Zeitraum filtern">
               <option value="30">Letzte 30 Tage</option>
               <option value="90">Letzte 90 Tage</option>
               <option value="365">Dieses Jahr</option>
@@ -158,8 +159,8 @@
         <div class="pipeline-header">
           <h1>Alle Leads</h1>
           <div style="display:flex;gap:10px;align-items:center;">
-            <input type="text" id="lead-search" class="form-input" placeholder="Lead suchen…" style="width:200px;padding:8px 12px;font-size:12px;">
-            <select id="lead-status-filter" class="form-input form-select" style="width:auto;padding:8px 32px 8px 12px;font-size:12px;">
+            <input type="text" id="lead-search" class="form-input" placeholder="Lead suchen…" style="width:200px;padding:8px 12px;font-size:12px;" aria-label="Lead suchen">
+            <select id="lead-status-filter" class="form-input form-select" style="width:auto;padding:8px 32px 8px 12px;font-size:12px;" aria-label="Leads nach Status filtern">
               <option value="">Alle Status</option>
             </select>
             <button class="btn btn-sm" id="btn-add-lead">+ Neuer Lead</button>
@@ -229,8 +230,8 @@
         </div>
 
         <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
-          <input type="text" class="form-input" id="cust-search" placeholder="Suche nach Firma, Kontakt, E-Mail..." style="flex:1;min-width:200px;" oninput="renderCustomersTable()">
-          <select class="form-input form-select" id="cust-status-filter" style="width:150px;" onchange="renderCustomersTable()">
+          <input type="text" class="form-input" id="cust-search" placeholder="Suche nach Firma, Kontakt, E-Mail..." style="flex:1;min-width:200px;" oninput="renderCustomersTable()" aria-label="Kunden suchen">
+          <select class="form-input form-select" id="cust-status-filter" style="width:150px;" onchange="renderCustomersTable()" aria-label="Kunden nach Status filtern">
             <option value="">Alle Status</option>
             <option value="active">Aktiv</option>
             <option value="inactive">Inaktiv</option>

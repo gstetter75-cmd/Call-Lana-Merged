@@ -97,6 +97,49 @@ describe('AppointmentsPage', () => {
     });
   });
 
+  describe('_getStatusClass()', () => {
+    it('returns correct class for confirmed', () => {
+      expect((window as any).AppointmentsPage._getStatusClass('confirmed')).toBe('status-confirmed');
+    });
+
+    it('returns correct class for cancelled', () => {
+      expect((window as any).AppointmentsPage._getStatusClass('cancelled')).toBe('status-cancelled');
+    });
+
+    it('returns correct class for completed', () => {
+      expect((window as any).AppointmentsPage._getStatusClass('completed')).toBe('status-completed');
+    });
+
+    it('returns correct class for pending', () => {
+      expect((window as any).AppointmentsPage._getStatusClass('pending')).toBe('status-pending');
+    });
+
+    it('returns status-confirmed as default for unknown status', () => {
+      expect((window as any).AppointmentsPage._getStatusClass('unknown')).toBe('status-confirmed');
+      expect((window as any).AppointmentsPage._getStatusClass(undefined)).toBe('status-confirmed');
+    });
+  });
+
+  describe('_getStatusBadgeClass()', () => {
+    it('returns badge-green for confirmed', () => {
+      expect((window as any).AppointmentsPage._getStatusBadgeClass('confirmed')).toBe('badge-green');
+    });
+
+    it('returns badge-red for cancelled', () => {
+      expect((window as any).AppointmentsPage._getStatusBadgeClass('cancelled')).toBe('badge-red');
+    });
+
+    it('returns badge-green as default', () => {
+      expect((window as any).AppointmentsPage._getStatusBadgeClass('xyz')).toBe('badge-green');
+    });
+  });
+
+  describe('loadAppointments()', () => {
+    it('has loadAppointments method', () => {
+      expect(typeof (window as any).AppointmentsPage.loadAppointments).toBe('function');
+    });
+  });
+
   describe('_renderListView()', () => {
     it('shows empty state with no appointments', () => {
       const ap = (window as any).AppointmentsPage;

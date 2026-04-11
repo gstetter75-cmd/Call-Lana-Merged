@@ -97,7 +97,7 @@ body{display:flex;overflow:hidden;}
         <div class="home-chart-card">
           <div class="home-chart-header">
             <h2>Anrufverlauf</h2>
-            <select class="month-select" id="monthSelect"></select>
+            <select class="month-select" id="monthSelect" aria-label="Monat auswählen"></select>
           </div>
           <svg class="chart-svg" id="callChart" viewBox="0 0 600 140" preserveAspectRatio="none"></svg>
         </div>
@@ -354,7 +354,7 @@ body{display:flex;overflow:hidden;}
       <p class="page-desc">Dokumente und Informationen für deine Assistenten.</p>
 
       <div class="kb-toolbar">
-        <input type="text" class="search-input" id="kbSearch" placeholder="Dokumente durchsuchen…">
+        <input type="text" class="search-input" id="kbSearch" placeholder="Dokumente durchsuchen…" aria-label="Dokumente durchsuchen">
         <button class="btn-primary" style="font-size:13px;padding:10px 20px;white-space:nowrap;" id="btnUploadDoc">+ Hochladen</button>
       </div>
 
@@ -412,23 +412,23 @@ body{display:flex;overflow:hidden;}
         </div>
         <!-- Filter Bar -->
         <div class="calls-filter-bar">
-          <input type="text" id="callSearchInput" class="form-input" placeholder="Name oder Nummer suchen…" style="flex:1;min-width:160px;padding:8px 12px;font-size:12px;">
-          <select id="callStatusFilter" class="form-input form-select" style="width:auto;padding:8px 32px 8px 12px;font-size:12px;">
+          <input type="text" id="callSearchInput" class="form-input" placeholder="Name oder Nummer suchen…" style="flex:1;min-width:160px;padding:8px 12px;font-size:12px;" aria-label="Anrufe suchen">
+          <select id="callStatusFilter" class="form-input form-select" style="width:auto;padding:8px 32px 8px 12px;font-size:12px;" aria-label="Anrufe nach Status filtern">
             <option value="">Alle Status</option>
             <option value="completed">Abgeschlossen</option>
             <option value="missed">Verpasst</option>
             <option value="voicemail">Mailbox</option>
             <option value="active">Aktiv</option>
           </select>
-          <select id="callOutcomeFilter" class="form-input form-select" style="width:auto;padding:8px 32px 8px 12px;font-size:12px;">
+          <select id="callOutcomeFilter" class="form-input form-select" style="width:auto;padding:8px 32px 8px 12px;font-size:12px;" aria-label="Anrufe nach Ergebnis filtern">
             <option value="">Alle Ergebnisse</option>
             <option value="termin">Termin</option>
             <option value="notfall">Notfall</option>
             <option value="frage">Frage</option>
             <option value="abbruch">Abbruch</option>
           </select>
-          <input type="date" id="callDateFrom" class="form-input" style="width:auto;padding:8px 12px;font-size:12px;" title="Von Datum">
-          <input type="date" id="callDateTo" class="form-input" style="width:auto;padding:8px 12px;font-size:12px;" title="Bis Datum">
+          <input type="date" id="callDateFrom" class="form-input" style="width:auto;padding:8px 12px;font-size:12px;" title="Von Datum" aria-label="Anrufe ab Datum">
+          <input type="date" id="callDateTo" class="form-input" style="width:auto;padding:8px 12px;font-size:12px;" title="Bis Datum" aria-label="Anrufe bis Datum">
         </div>
         <div id="allCallsBody">
           <div class="loading-state"><div class="spinner"></div><p>Anrufe werden geladen…</p></div>

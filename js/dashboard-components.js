@@ -84,6 +84,8 @@ const Components = {
     const toast = document.createElement('div');
     const typeClass = type === 'error' ? 'cl-toast-error' : type === 'warning' ? 'cl-toast-warning' : type === 'info' ? 'cl-toast-info' : 'cl-toast-success';
     toast.className = 'cl-toast ' + typeClass;
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
     toast.textContent = message;
     document.body.appendChild(toast);
 

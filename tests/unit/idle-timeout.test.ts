@@ -36,6 +36,18 @@ describe('IdleTimeout', () => {
     return mocks;
   }
 
+  describe('constants', () => {
+    it('WARN_AFTER_MS is 30 minutes', () => {
+      loadOnPage('/index.html');
+      expect(IT.WARN_AFTER_MS).toBe(30 * 60 * 1000);
+    });
+
+    it('LOGOUT_AFTER_MS is 35 minutes', () => {
+      loadOnPage('/index.html');
+      expect(IT.LOGOUT_AFTER_MS).toBe(35 * 60 * 1000);
+    });
+  });
+
   describe('init() — protected pages', () => {
     it('activates on dashboard.html', () => {
       loadOnPage('/dashboard.html');
