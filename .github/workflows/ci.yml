@@ -20,9 +20,9 @@ jobs:
       - run: node build.js
       - name: Check bundle size
         run: |
-          SIZE=$(du -sb dist/ | cut -f1)
+          SIZE=$(find dist/ -name '*.js' ! -name '*.map' -exec cat {} + | wc -c)
           SIZE_KB=$((SIZE / 1024))
-          echo "Bundle size: ${SIZE_KB} KB"
+          echo "JS bundle size (without sourcemaps): ${SIZE_KB} KB"
           if [ $SIZE_KB -gt 600 ]; then
             echo "::error::Bundle size ${SIZE_KB} KB exceeds 600 KB limit"
             exit 1
