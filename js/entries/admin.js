@@ -26,15 +26,9 @@ import '../db.js';
 import '../auth-guard.js';
 import '../dashboard-components.js';
 
-// --- Admin feature modules ---
-import '../admin-analytics.js';
+// --- Admin core modules (needed immediately) ---
 import '../admin-overview.js';
-import '../admin-audit.js';
-import '../admin-pdf-export.js';
-import '../admin-health.js';
-import '../admin-extra.js';
-import '../admin-bulk.js';
-import '../integrations-hub.js';
+import '../admin-analytics.js';
 import '../global-search.js';
 import '../keyboard-shortcuts.js';
 import '../admin.js';
@@ -43,3 +37,13 @@ import '../theme-toggle.js';
 import '../idle-timeout.js';
 import '../debug-mode.js';
 import '../../cookie-consent.js';
+
+// --- Admin optional modules (lazy loaded) ---
+setTimeout(() => {
+  import('../admin-audit.js');
+  import('../admin-pdf-export.js');
+  import('../admin-health.js');
+  import('../admin-extra.js');
+  import('../admin-bulk.js');
+  import('../integrations-hub.js');
+}, 2000);
