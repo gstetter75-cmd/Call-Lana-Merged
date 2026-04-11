@@ -38,6 +38,7 @@ import '../integrations-hub.js';
 import '../global-search.js';
 import '../keyboard-shortcuts.js';
 import '../admin.js';
+import '../admin-stats.js';
 import '../theme-toggle.js';
 import '../idle-timeout.js';
 import '../../cookie-consent.js';

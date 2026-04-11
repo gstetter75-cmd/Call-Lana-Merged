@@ -128,6 +128,7 @@ describe('Admin Dashboard', () => {
     });
 
     loadBrowserScript('js/admin.js');
+    loadBrowserScript('js/admin-stats.js');
   });
 
   describe('switchTab', () => {

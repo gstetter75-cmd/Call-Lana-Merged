@@ -24,6 +24,7 @@ import '../crm-enhancements.js';
 import '../global-search.js';
 import '../keyboard-shortcuts.js';
 import '../sales.js';
+import '../sales-tasks.js';
 import '../theme-toggle.js';
 import '../idle-timeout.js';
 import '../../cookie-consent.js';

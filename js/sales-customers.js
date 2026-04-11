@@ -456,13 +456,31 @@ function handleCSVFile(input) {
     if (lines.length < 2) { Components.toast('CSV-Datei ist leer', 'error'); return; }
 
     const headers = lines[0].split(/[,;]/).map(h => h.replace(/"/g, '').trim().toLowerCase());
+
+    // Validate required columns exist
+    const companyAliases = ['firma', 'company', 'company_name', 'firmenname'];
+    const emailAliases = ['email', 'e-mail', 'mail'];
+    const hasCompanyCol = companyAliases.some(a => headers.includes(a));
+    const hasEmailCol = emailAliases.some(a => headers.includes(a));
+    if (!hasCompanyCol && !hasEmailCol) {
+      Components.toast('CSV muss mindestens eine Spalte "Firma" oder "E-Mail" enthalten', 'error');
+      return;
+    }
+
     const rows = [];
+    let skippedCount = 0;
 
     for (let i = 1; i < lines.length; i++) {
       const values = lines[i].match(/(".*?"|[^,;]+)/g) || [];
       const row = {};
       headers.forEach((h, idx) => { row[h] = (values[idx] || '').replace(/^"|"$/g, '').trim(); });
-      if (row.firma || row.company || row.company_name || row.firmenname) rows.push(row);
+      const hasCompany = row.firma || row.company || row.company_name || row.firmenname;
+      const hasEmail = row.email || row['e-mail'] || row.mail;
+      if (hasCompany || hasEmail) {
+        rows.push(row);
+      } else {
+        skippedCount++;
+      }
     }
 
     // Map columns
@@ -476,7 +494,11 @@ function handleCSVFile(input) {
       website: r.website || r.webseite || r.url || '',
       address: r.adresse || r.address || '',
       notes: r.notizen || r.notes || r.bemerkung || ''
-    })).filter(r => r.company_name);
+    })).filter(r => r.company_name || r.email);
+
+    if (skippedCount > 0) {
+      Components.toast(skippedCount + ' Zeilen ohne Pflichtfelder uebersprungen', 'warning');
+    }
 
     document.getElementById('csv-import-count').textContent = window._csvImportRows.length + ' Kunden erkannt';
 

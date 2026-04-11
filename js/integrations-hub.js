@@ -120,14 +120,26 @@ const IntegrationsHub = {
           <li>Erlaubte Typen: PDF, DOCX, TXT, MD (max 10MB)</li>
         </ol>
       </div>
-      <div id="kb-upload-area" style="border:2px dashed var(--border);border-radius:12px;padding:30px;text-align:center;cursor:pointer;transition:border-color .2s;" onmouseenter="this.style.borderColor='var(--pu)'" onmouseleave="this.style.borderColor='var(--border)'" onclick="document.getElementById('kb-file-input').click()">
-        <input type="file" id="kb-file-input" style="display:none;" accept=".pdf,.docx,.txt,.md" onchange="IntegrationsHub.handleFileUpload(this)">
+      <div id="kb-upload-area" style="border:2px dashed var(--border);border-radius:12px;padding:30px;text-align:center;cursor:pointer;transition:border-color .2s;">
+        <input type="file" id="kb-file-input" style="display:none;" accept=".pdf,.docx,.txt,.md">
         <div style="font-size:28px;margin-bottom:8px;">📄</div>
         <div style="font-size:13px;font-weight:600;">Datei hierher ziehen oder klicken</div>
         <div style="font-size:11px;color:var(--tx3);margin-top:4px;">PDF, DOCX, TXT, MD — max. 10 MB</div>
       </div>
       <div id="kb-file-list" style="margin-top:12px;"></div>
     `;
+
+    // Bind event listeners (replaces inline onmouseenter/onmouseleave/onclick/onchange)
+    const uploadArea = document.getElementById('kb-upload-area');
+    const fileInput = document.getElementById('kb-file-input');
+    if (uploadArea) {
+      uploadArea.addEventListener('mouseenter', () => { uploadArea.style.borderColor = 'var(--pu)'; });
+      uploadArea.addEventListener('mouseleave', () => { uploadArea.style.borderColor = 'var(--border)'; });
+      uploadArea.addEventListener('click', () => { fileInput?.click(); });
+    }
+    if (fileInput) {
+      fileInput.addEventListener('change', () => { IntegrationsHub.handleFileUpload(fileInput); });
+    }
   },
 
   async handleFileUpload(input) {

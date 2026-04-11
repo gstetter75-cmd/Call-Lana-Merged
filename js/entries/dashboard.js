@@ -19,6 +19,8 @@ import '../dashboard-components.js';
 
 // --- Dashboard feature modules ---
 import '../dashboard.js';
+import '../dashboard-assistants.js';
+import '../dashboard-calls.js';
 import '../dashboard-home-data.js';
 import '../dashboard-team.js';
 import '../dashboard-billing.js';

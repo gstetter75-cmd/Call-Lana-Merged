@@ -146,7 +146,20 @@ const ImpersonationManager = {
     try {
       const raw = sessionStorage.getItem(this.STORAGE_KEY);
       if (!raw) return null;
-      return JSON.parse(raw);
+      const state = JSON.parse(raw);
+
+      // Validate timeout on every access (guards against page navigation without timer)
+      if (state && state.startedAt) {
+        const elapsed = Date.now() - state.startedAt;
+        if (elapsed >= this.TIMEOUT_MS) {
+          sessionStorage.removeItem(this.STORAGE_KEY);
+          clearTimeout(this._timeoutTimer);
+          if (typeof Components !== 'undefined') Components.toast('Impersonation-Session abgelaufen.', 'warning');
+          return null;
+        }
+      }
+
+      return state;
     } catch (e) {
       return null;
     }
