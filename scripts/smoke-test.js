@@ -153,6 +153,10 @@ async function run() {
     await testDbQuery(tokens.superadmin, 'calls', 'SELECT calls');
     await testDbQuery(tokens.superadmin, 'assistants', 'SELECT assistants');
     await testDbQuery(tokens.superadmin, 'subscriptions', 'SELECT subscriptions');
+    await testDbQuery(tokens.superadmin, 'tasks', 'SELECT tasks');
+    await testDbQuery(tokens.superadmin, 'notes', 'SELECT notes');
+    await testDbQuery(tokens.superadmin, 'invoices', 'SELECT invoices');
+    await testDbQuery(tokens.superadmin, 'customer_tags', 'SELECT customer_tags');
   }
 
   if (tokens.sales) {
@@ -160,6 +164,8 @@ async function run() {
     await testDbQuery(tokens.sales, 'leads', 'SELECT leads');
     await testDbQuery(tokens.sales, 'customers', 'SELECT customers');
     await testDbQuery(tokens.sales, 'tasks', 'SELECT tasks');
+    await testDbQuery(tokens.sales, 'notes', 'SELECT notes');
+    await testDbQuery(tokens.sales, 'availability', 'SELECT availability');
   }
 
   if (tokens.customer) {
@@ -167,6 +173,8 @@ async function run() {
     await testDbQuery(tokens.customer, 'calls', 'SELECT calls');
     await testDbQuery(tokens.customer, 'assistants', 'SELECT assistants');
     await testDbQuery(tokens.customer, 'subscriptions', 'SELECT subscriptions');
+    await testDbQuery(tokens.customer, 'user_settings', 'SELECT user_settings');
+    await testDbQuery(tokens.customer, 'appointments', 'SELECT appointments');
   }
 
   // --- 5. Edge Functions ---
