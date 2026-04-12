@@ -8,6 +8,7 @@
 if (typeof SafeActions !== 'undefined') {
   SafeActions.registerAll({
     'edit-assistant': (id) => { if (window.editAssistant) window.editAssistant(id); },
+    'create-assistant': () => { if (window.createNewAssistant) window.createNewAssistant(); },
     'delete-assistant': (id, name) => { if (window.deleteAssistant) window.deleteAssistant(id, name); },
     'navigate': (id) => { if (typeof navigateToPage === 'function') navigateToPage(id); },
     'open-topup': () => { if (typeof openTopupModal === 'function') openTopupModal(); else navigateToPage('billing'); },
@@ -432,13 +433,12 @@ if (window.location.hash === '#payment' && window.loadPaymentMethods) window.loa
 if (window.location.hash === '#billing' && window.loadBillingData) window.loadBillingData();
 if (window.location.hash === '#integrations' && window.loadIntegrations) window.loadIntegrations();
 
-// Event delegation for data-action handlers
+// Event delegation for actions not handled by SafeActions
 document.addEventListener('click', function(e) {
   const el = e.target.closest('[data-action]');
   if (!el) return;
   const action = el.dataset.action;
-  if (action === 'edit-assistant') { if (window.editAssistant) window.editAssistant(el.dataset.id); }
-  else if (action === 'create-assistant') { if (window.createNewAssistant) window.createNewAssistant(); }
-  else if (action === 'show-call') { e.stopPropagation(); if (window.showCallDetail) window.showCallDetail(Number(el.dataset.index)); }
+  // edit-assistant, create-assistant handled by SafeActions — no duplicate here
+  if (action === 'show-call') { e.stopPropagation(); if (window.showCallDetail) window.showCallDetail(Number(el.dataset.index)); }
   else if (action === 'close-overlay') el.closest('div[style*="fixed"]')?.remove();
 });
