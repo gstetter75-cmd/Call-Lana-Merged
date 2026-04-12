@@ -1,58 +1,39 @@
 import { test as base, expect, Page } from '@playwright/test';
 
-// Auth fixture: provides logged-in pages for different roles
+const SUPABASE_URL = 'https://fgwtptriileytmmotevs.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_T6YW1YX3EfTakMg2m5APqA_uVSDdi5S';
+
 type AuthFixtures = {
   customerPage: Page;
   adminPage: Page;
 };
 
-async function loginAs(page: Page, email: string, password: string, expectedUrl: string) {
+async function loginViaApi(email: string, password: string) {
+  const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+    method: 'POST',
+    headers: { 'apikey': SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  });
+  return res.json();
+}
+
+async function setSession(page: Page, session: any) {
   await page.goto('/login.html');
-  await page.waitForSelector('#login-email', { state: 'visible', timeout: 10_000 });
-
-  // Dismiss cookie banner first — it can overlay the form
-  try {
-    const cookieBtn = page.locator('button:has-text("Alle akzeptieren"), button:has-text("Nur notwendige"), #cookie-accept');
-    await cookieBtn.first().click({ timeout: 3000 });
-    await page.waitForTimeout(500);
-  } catch { /* no cookie banner */ }
-
-  // Fill login form — use type() for more reliable input
-  await page.locator('#login-email').click();
-  await page.locator('#login-email').fill(email);
-  await page.locator('#login-password').click();
-  await page.locator('#login-password').type(password, { delay: 20 });
-  await page.waitForTimeout(500);
-
-  // Verify password field has value before submitting
-  const pwValue = await page.locator('#login-password').inputValue();
-  if (!pwValue) {
-    // Retry with evaluate as fallback
-    await page.evaluate(([sel, val]) => {
-      const el = document.querySelector(sel) as HTMLInputElement;
-      if (el) { el.value = val; el.dispatchEvent(new Event('input', { bubbles: true })); }
-    }, ['#login-password', password]);
-  }
-
-  // Click submit
-  await page.locator('form button[type="submit"]').first().click();
-
-  // Wait for redirect after login
-  await page.waitForURL(`**/${expectedUrl}*`, { timeout: 20_000 });
-  // Wait for auth-pending to be removed (content visible)
-  await page.waitForFunction(() => !document.body.classList.contains('auth-pending'), { timeout: 10_000 });
+  await page.evaluate((s: any) => {
+    localStorage.setItem('sb-fgwtptriileytmmotevs-auth-token', JSON.stringify(s));
+  }, session);
 }
 
 export const test = base.extend<AuthFixtures>({
   customerPage: async ({ browser }, use) => {
     const context = await browser.newContext();
     const page = await context.newPage();
-    await loginAs(
-      page,
-      process.env.TEST_CUSTOMER_EMAIL || '',
-      process.env.TEST_CUSTOMER_PASSWORD || '',
-      'dashboard.html'
-    );
+    const email = process.env.TEST_CUSTOMER_EMAIL || 'g.stetter@gmx.net';
+    const password = process.env.TEST_CUSTOMER_PASSWORD || 'Abcund123..';
+    const session = await loginViaApi(email, password);
+    if (session.access_token) {
+      await setSession(page, session);
+    }
     await use(page);
     await context.close();
   },
@@ -60,12 +41,12 @@ export const test = base.extend<AuthFixtures>({
   adminPage: async ({ browser }, use) => {
     const context = await browser.newContext();
     const page = await context.newPage();
-    await loginAs(
-      page,
-      process.env.TEST_ADMIN_EMAIL || '',
-      process.env.TEST_ADMIN_PASSWORD || '',
-      'admin.html'
-    );
+    const email = process.env.TEST_ADMIN_EMAIL || 'gstetter75@googlemail.com';
+    const password = process.env.TEST_ADMIN_PASSWORD || 'Abcund123..';
+    const session = await loginViaApi(email, password);
+    if (session.access_token) {
+      await setSession(page, session);
+    }
     await use(page);
     await context.close();
   },
