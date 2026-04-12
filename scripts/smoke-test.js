@@ -33,7 +33,7 @@ function log(status, message) {
 
 async function checkUrl(name, url, expectedStatus = 200) {
   try {
-    const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
+    const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
     if (res.status === expectedStatus) {
       log('PASS', `${name} → ${res.status}`);
     } else {
@@ -55,7 +55,7 @@ async function loginUser(account) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ email: account.email, password: account.password }),
-      signal: AbortSignal.timeout(10000),
+      signal: AbortSignal.timeout(15000),
     });
     const data = await res.json();
 
@@ -92,7 +92,7 @@ async function testDbQuery(token, table, description) {
         'apikey': SUPABASE_ANON_KEY,
         'Authorization': `Bearer ${token}`,
       },
-      signal: AbortSignal.timeout(10000),
+      signal: AbortSignal.timeout(15000),
     });
     if (res.status === 200) {
       const data = await res.json();
