@@ -30,7 +30,7 @@ const dbLeads = {
       return { success: true, data: data || [], count, page, pageSize };
     } catch (error) {
       Logger.error('db.getLeads', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -49,7 +49,7 @@ const dbLeads = {
       return { success: true, data };
     } catch (error) {
       Logger.error('db.getLead', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -123,7 +123,7 @@ const dbLeads = {
       return { success: true };
     } catch (error) {
       Logger.error('db.deleteLead', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -149,7 +149,7 @@ const dbLeads = {
       return { success: true, data: data || [] };
     } catch (error) {
       Logger.error('db.getTasks', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -168,7 +168,7 @@ const dbLeads = {
       return { success: true, data };
     } catch (error) {
       Logger.error('db.createTask', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -188,7 +188,7 @@ const dbLeads = {
       return { success: true, data };
     } catch (error) {
       Logger.error('db.updateTask', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -206,7 +206,7 @@ const dbLeads = {
       return { success: true };
     } catch (error) {
       Logger.error('db.deleteTask', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -227,7 +227,7 @@ const dbLeads = {
       return { success: true, data };
     } catch (error) {
       Logger.error('db.createNote', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -245,7 +245,7 @@ const dbLeads = {
       return { success: true };
     } catch (error) {
       Logger.error('db.deleteNote', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   }
 };

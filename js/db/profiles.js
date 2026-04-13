@@ -16,7 +16,7 @@ const dbProfiles = {
       return { success: true, data };
     } catch (error) {
       Logger.error('db.getProfile', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -39,7 +39,7 @@ const dbProfiles = {
       return { success: true, data };
     } catch (error) {
       Logger.error('db.updateProfile', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -66,7 +66,7 @@ const dbProfiles = {
       return { success: true, data: data || [], count, page, pageSize };
     } catch (error) {
       Logger.error('db.getAllProfiles', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -86,7 +86,7 @@ const dbProfiles = {
       return { success: true, data: data || [] };
     } catch (error) {
       Logger.error('db.getOrganizations', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -105,7 +105,7 @@ const dbProfiles = {
       return { success: true, data };
     } catch (error) {
       Logger.error('db.getOrganization', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -124,7 +124,7 @@ const dbProfiles = {
       return { success: true, data };
     } catch (error) {
       Logger.error('db.createOrganization', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -144,7 +144,7 @@ const dbProfiles = {
       return { success: true, data };
     } catch (error) {
       Logger.error('db.updateOrganization', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -165,7 +165,7 @@ const dbProfiles = {
       return { success: true, data };
     } catch (error) {
       Logger.error('db.addOrgMember', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -184,7 +184,7 @@ const dbProfiles = {
       return { success: true };
     } catch (error) {
       Logger.error('db.removeOrgMember', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   }
 };

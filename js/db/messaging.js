@@ -22,7 +22,7 @@ const dbMessaging = {
       return { success: true, data: data || [] };
     } catch (error) {
       Logger.error('db.getAvailability', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -41,7 +41,7 @@ const dbMessaging = {
       return { success: true, data };
     } catch (error) {
       Logger.error('db.setAvailability', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -59,7 +59,7 @@ const dbMessaging = {
       return { success: true };
     } catch (error) {
       Logger.error('db.deleteAvailability', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -81,7 +81,7 @@ const dbMessaging = {
       return { success: true, data: data || [] };
     } catch (error) {
       Logger.error('db.getConversations', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -101,7 +101,7 @@ const dbMessaging = {
       return { success: true, data: data || [] };
     } catch (error) {
       Logger.error('db.getMessages', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -156,7 +156,7 @@ const dbMessaging = {
       return { success: true, data };
     } catch (error) {
       Logger.error('db.sendMessage', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -175,7 +175,7 @@ const dbMessaging = {
       return { success: true };
     } catch (error) {
       Logger.error('db.markConversationRead', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -211,7 +211,7 @@ const dbMessaging = {
       return { success: true, data };
     } catch (error) {
       Logger.error('db.submitContactForm', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   }
 };

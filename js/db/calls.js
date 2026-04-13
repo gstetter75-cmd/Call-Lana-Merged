@@ -22,7 +22,7 @@ const dbCalls = {
       return { success: true, data };
     } catch (error) {
       Logger.error('db.saveCall', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -44,7 +44,7 @@ const dbCalls = {
       return { success: true, data };
     } catch (error) {
       Logger.error('db.getCalls', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -78,7 +78,7 @@ const dbCalls = {
       };
     } catch (error) {
       Logger.error('db.getStats', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -100,7 +100,7 @@ const dbCalls = {
       return { success: true, data };
     } catch (error) {
       Logger.error('db.saveSettings', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   },
 
@@ -120,7 +120,7 @@ const dbCalls = {
       return { success: true, data: data?.settings || {} };
     } catch (error) {
       Logger.error('db.getSettings', error);
-      return { success: false, error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.' };
+      return { success: false, error: error.message || 'Ein Fehler ist aufgetreten.' };
     }
   }
 };
