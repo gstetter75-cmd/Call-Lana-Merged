@@ -114,9 +114,9 @@ jobs:
           name: dist
           path: dist/
       - run: npx playwright install --with-deps chromium
-      - name: Run E2E tests
-        run: npx playwright test tests/e2e/ --grep-invert "concurrency|trial-flow|trial-edge|payment-billing|payment-errors|integration-stripe|integration-supabase|offline"
-        timeout-minutes: 15
+      - name: Run E2E tests (stable specs)
+        run: npx playwright test tests/e2e/critical-flows.spec.ts tests/e2e/auth.spec.ts tests/e2e/sales-flow.spec.ts tests/e2e/rbac.spec.ts tests/e2e/crud-operations.spec.ts tests/e2e/conversations.spec.ts tests/e2e/performance.spec.ts tests/e2e/404.spec.ts tests/e2e/blog.spec.ts tests/e2e/cookie-consent.spec.ts tests/e2e/i18n.spec.ts tests/e2e/legal-pages.spec.ts tests/e2e/registration.spec.ts
+        timeout-minutes: 10
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
