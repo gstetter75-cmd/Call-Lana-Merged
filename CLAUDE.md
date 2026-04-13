@@ -19,8 +19,9 @@ Externe APIs (Stripe, Resend, VAPI)
 
 ```bash
 npm install                    # Dependencies installieren
-npx http-server -p 8080       # Lokaler Dev-Server
-node build.js --watch          # JS-Bundles in watch mode
+npm run dev                    # Build + lokaler Server (localhost:8080)
+npm run watch                  # JS-Bundles in watch mode
+npm run seed                   # Testdaten erstellen (Leads, Calls, Tasks)
 ```
 
 ## Tests
