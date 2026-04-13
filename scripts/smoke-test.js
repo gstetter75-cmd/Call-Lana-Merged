@@ -182,6 +182,27 @@ async function run() {
   await checkUrl('invite-sales-user', `${SUPABASE_URL}/functions/v1/invite-sales-user`, 401);
   await checkUrl('encrypt-secret', `${SUPABASE_URL}/functions/v1/encrypt-secret`, 401);
 
+  // --- 6. Signup Flow ---
+  console.log('\n\x1b[36m── Signup ──\x1b[0m');
+  try {
+    const signupRes = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: `smoke-test-${Date.now()}@test.de`, password: 'SmokeTest123!', data: { firstName: 'Smoke', lastName: 'Test' } }),
+      signal: AbortSignal.timeout(15000),
+    });
+    const signupData = await signupRes.json();
+    if (signupData.id) {
+      log('PASS', 'Signup creates new user');
+    } else if (signupData.msg && signupData.msg.includes('rate limit')) {
+      log('SKIP', 'Signup skipped (rate limit)');
+    } else {
+      log('FAIL', `Signup failed: ${signupData.msg || 'unknown'}`);
+    }
+  } catch (err) {
+    log('FAIL', `Signup error: ${err.message}`);
+  }
+
   // --- Summary ---
   console.log(`\n\x1b[1m── Ergebnis ──\x1b[0m`);
   console.log(`  \x1b[32m${passed} passed\x1b[0m  \x1b[31m${failed} failed\x1b[0m  \x1b[33m${skipped} skipped\x1b[0m`);
