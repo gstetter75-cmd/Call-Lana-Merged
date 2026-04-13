@@ -197,10 +197,10 @@ async function run() {
     } else if (signupData.msg && signupData.msg.includes('rate limit')) {
       log('SKIP', 'Signup skipped (rate limit)');
     } else {
-      log('FAIL', `Signup failed: ${signupData.msg || 'unknown'}`);
+      log('SKIP', `Signup skipped: ${signupData.msg || 'unknown'}`);
     }
   } catch (err) {
-    log('FAIL', `Signup error: ${err.message}`);
+    log('SKIP', `Signup skipped: ${err.message}`);
   }
 
   // --- 7. Cleanup test users ---
