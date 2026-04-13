@@ -15,7 +15,8 @@
     "test:headed": "npx playwright test --headed",
     "test:debug": "npx playwright test --debug",
     "test:report": "npx playwright show-report",
-    "verify": "node build.js && npx vitest run && node scripts/smoke-test.js"
+    "verify": "node build.js && npx vitest run && node scripts/smoke-test.js",
+    "test:ci": "node build.js && npx vitest run && node scripts/smoke-test.js && npx playwright test tests/e2e/critical-flows.spec.ts tests/e2e/sales-flow.spec.ts tests/e2e/rbac.spec.ts tests/e2e/crud-operations.spec.ts tests/e2e/conversations.spec.ts tests/e2e/performance.spec.ts tests/e2e/404.spec.ts tests/e2e/blog.spec.ts tests/e2e/cookie-consent.spec.ts tests/e2e/i18n.spec.ts"
   },
   "repository": {
     "type": "git",

@@ -26,9 +26,20 @@ node build.js --watch          # JS-Bundles in watch mode
 ## Tests
 
 ```bash
-npm run test:unit              # Vitest Unit Tests (487 Tests)
-npm test                       # Playwright E2E Tests (22 Specs)
-npm run test:all               # Beides
+npm test                       # Vitest Unit Tests (845 Tests)
+npm run test:smoke             # Smoke Test: Login, Seiten, DB (55 Checks)
+npm run test:e2e               # Playwright E2E Tests (47 Specs, 328 Tests)
+npm run test:e2e:fast          # Nur kritische E2E (4 Specs)
+npm run test:all               # Unit + Smoke + E2E (critical)
+npm run test:ci                # Exakt wie CI: Build + Unit + Smoke + E2E
+npm run verify                 # Schnell: Build + Unit + Smoke
+```
+
+### Debug-Modus
+```bash
+# Browser: localhost:8080/admin.html?debug=true
+# Loggt alle Supabase-Queries in die Console
+# DebugMode.getTokenInfo() zeigt JWT-Details
 ```
 
 ## Projektstruktur
@@ -68,8 +79,10 @@ npm run test:all               # Beides
 - **Sprache:** Deutsch für UI/Kommentare, Englisch für Code/Commits
 - **Commits:** Conventional Commits (`feat:`, `fix:`, `test:`, etc.)
 - **Dateigröße:** Max 400 Zeilen (800 absolutes Maximum)
-- **RLS:** Jede Tabelle hat Row Level Security, `is_superadmin()` für Admin-Zugriff
+- **RLS:** Jede Tabelle hat Row Level Security, `is_superadmin()` liest `profiles.role` direkt
 - **Keine Secrets im Code** — `.env.test` nur für Testdaten
+- **ESM-Module:** Shared Utils in `js/modules/` (toast, format, dom-helpers)
+- **Bundles:** esbuild ESM mit Code-Splitting, Lazy Loading für optionale Module
 
 ## Umgebungsvariablen
 
