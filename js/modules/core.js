@@ -13,6 +13,7 @@ import { SafeActions } from './safe-actions.js';
 import { showToast } from './toast.js';
 import { formatMinutes, formatCurrency, formatCents } from './format.js';
 import { $id, $setText, $setVal, $setHtml, $setAttr } from './dom-helpers.js';
+import { safeAsync, safeDbCall } from './error-boundary.js';
 
 // Establish window globals for legacy code
 window.Logger = Logger;
@@ -31,6 +32,8 @@ window.$setText = $setText;
 window.$setVal = $setVal;
 window.$setHtml = $setHtml;
 window.$setAttr = $setAttr;
+window.safeAsync = safeAsync;
+window.safeDbCall = safeDbCall;
 
 // clanaUtils — single source of truth
 window.clanaUtils = {
