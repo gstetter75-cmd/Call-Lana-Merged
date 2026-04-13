@@ -1,5 +1,5 @@
 // Admin Bulk Operations — Select-All, Bulk-Delete, Bulk-Status-Change
-// Depends on: supabase-init.js, admin.js
+import { showToast } from './modules/toast.js';
 
 const AdminBulk = {
   selectedIds: new Set(),
@@ -134,9 +134,7 @@ const AdminBulk = {
           .update({ is_active: isActive })
           .in('id', ids);
         if (error) throw error;
-        if (typeof showToast !== 'undefined') {
-          showToast(`${ids.length} Benutzer ${isActive ? 'aktiviert' : 'deaktiviert'}`);
-        }
+        showToast(`${ids.length} Benutzer ${isActive ? 'aktiviert' : 'deaktiviert'}`);
       } else if (action === 'export') {
         this._exportCsv(ids);
         return;
@@ -148,7 +146,7 @@ const AdminBulk = {
         AdminExtra.loadCustomers();
       }
     } catch (err) {
-      if (typeof showToast !== 'undefined') showToast('Fehler: ' + (err.message || 'Unbekannter Fehler'));
+      showToast('Fehler: ' + (err.message || 'Unbekannter Fehler'));
     }
   },
 
@@ -179,7 +177,7 @@ const AdminBulk = {
     link.click();
     URL.revokeObjectURL(link.href);
 
-    if (typeof showToast !== 'undefined') showToast(`${ids.length} Einträge exportiert`);
+    showToast(`${ids.length} Einträge exportiert`);
   }
 };
 
