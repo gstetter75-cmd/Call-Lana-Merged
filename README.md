@@ -8,9 +8,21 @@
 git clone https://github.com/gstetter75-cmd/Call-Lana-Merged.git
 cd Call-Lana-Merged
 npm install
-npx http-server -p 8080          # Dev-Server starten
-open http://localhost:8080        # Browser öffnen
+npm run dev                       # Build + Dev-Server (localhost:8080)
+npm run seed                      # Testdaten erstellen
 ```
+
+## Testing (1.363+ automatische Tests)
+
+```bash
+npm run verify         # Build + 978 Unit Tests + 57 Smoke Checks (~30s)
+npm run test:e2e       # 328 Playwright E2E Tests
+npm run test:ci        # Full CI Simulation
+```
+
+## Debug
+
+`localhost:8080/dashboard.html?debug=true` — loggt alle Supabase-Queries in der Console.
 
 ## Architektur
 
