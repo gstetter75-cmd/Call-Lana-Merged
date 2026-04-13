@@ -10,6 +10,7 @@
     "seed": "node scripts/seed-test-data.js",
     "seed:clean": "node scripts/cleanup-test-data.js",
     "check": "node scripts/check.js",
+    "analyze": "node scripts/analyze.js",
     "test": "npx vitest run",
     "test:unit": "npx vitest run",
     "test:e2e": "npx playwright test tests/e2e/",
