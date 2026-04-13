@@ -35,7 +35,7 @@ const dbCalls = {
       // Select only needed fields — excludes transcript (5-15KB each) for list views
       const { data, error } = await supabaseClient
         .from('calls')
-        .select('id, user_id, phone_number, caller_name, duration, status, outcome, sentiment_score, created_at, vapi_call_id')
+        .select('id, user_id, phone_number, caller_name, duration, status, outcome, sentiment_score, created_at')
         .eq('user_id', effectiveId)
         .order('created_at', { ascending: false })
         .limit(limit);

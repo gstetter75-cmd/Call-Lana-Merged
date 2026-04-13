@@ -42,18 +42,18 @@ describe('IntegrationsHub', () => {
     expect(typeof getHub().renderPhoneSettings).toBe('function');
   });
 
-  it('renderStripeSettings renders Stripe UI into container', () => {
+  it('renderStripeSettings renders Stripe UI into container', async () => {
     const container = document.createElement('div');
     document.body.appendChild(container);
-    getHub().renderStripeSettings(container);
+    await getHub().renderStripeSettings(container);
     expect(container.innerHTML).toContain('Stripe');
-    expect(container.innerHTML).toContain('STRIPE_SECRET_KEY');
+    expect(container.innerHTML).toContain('Stripe Secret Key');
   });
 
-  it('renderCalendarSync renders calendar providers', () => {
+  it('renderCalendarSync renders calendar providers', async () => {
     const container = document.createElement('div');
     document.body.appendChild(container);
-    getHub().renderCalendarSync(container);
+    await getHub().renderCalendarSync(container);
     expect(container.innerHTML).toContain('Google Calendar');
     expect(container.innerHTML).toContain('Microsoft Outlook');
     expect(container.innerHTML).toContain('Apple Kalender');

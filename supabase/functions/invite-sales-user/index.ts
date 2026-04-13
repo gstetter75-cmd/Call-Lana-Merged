@@ -40,9 +40,20 @@ serve(async (req) => {
       })
     }
 
-    // Check if caller is superadmin
-    const callerRole = caller.user_metadata?.role
-    if (callerRole !== 'superadmin') {
+    // Check if caller is superadmin (profiles.role is single source of truth)
+    const adminClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      { auth: { autoRefreshToken: false, persistSession: false } }
+    )
+
+    const { data: profile } = await adminClient
+      .from('profiles')
+      .select('role')
+      .eq('id', caller.id)
+      .single()
+
+    if (profile?.role !== 'superadmin') {
       return new Response(JSON.stringify({ error: 'Nur Admins dürfen Sales-User anlegen' }), {
         status: 403,
         headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
@@ -65,13 +76,6 @@ serve(async (req) => {
         headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
       })
     }
-
-    // Create user with service role (bypasses RLS)
-    const adminClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
-      { auth: { autoRefreshToken: false, persistSession: false } }
-    )
 
     // Create auth user
     const { data: newUser, error: createError } = await adminClient.auth.admin.createUser({
@@ -96,16 +100,17 @@ serve(async (req) => {
       })
     }
 
-    // Update profile to sales role (trigger created it as customer)
+    // Upsert profile with sales role (trigger may not have created it)
     const { error: profileError } = await adminClient
       .from('profiles')
-      .update({
+      .upsert({
+        id: newUser.user.id,
+        email,
         role: 'sales',
         first_name: firstName || '',
         last_name: lastName || '',
         company: company || '',
-      })
-      .eq('id', newUser.user.id)
+      }, { onConflict: 'id' })
 
     if (profileError) {
       console.error('Profile update error:', profileError)
