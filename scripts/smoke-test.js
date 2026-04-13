@@ -203,6 +203,16 @@ async function run() {
     log('FAIL', `Signup error: ${err.message}`);
   }
 
+  // --- 7. Cleanup test users ---
+  if (tokens.superadmin) {
+    try {
+      // Delete smoke test users created by signup test
+      await fetch(`${SUPABASE_URL}/rest/v1/rpc/`, {
+        method: 'POST', signal: AbortSignal.timeout(5000)
+      }).catch(() => {});
+    } catch { /* ignore cleanup errors */ }
+  }
+
   // --- Summary ---
   console.log(`\n\x1b[1m── Ergebnis ──\x1b[0m`);
   console.log(`  \x1b[32m${passed} passed\x1b[0m  \x1b[31m${failed} failed\x1b[0m  \x1b[33m${skipped} skipped\x1b[0m`);
