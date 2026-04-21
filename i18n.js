@@ -619,21 +619,26 @@ class I18n {
   }
 
   translatePage() {
-    // Safe: use textContent by default
+    // Safe: only overwrite text if a translation exists for the key.
+    // Prevents clobbering content set by other renderers (e.g. components.js)
+    // that use different key namespaces.
+    const hasTranslation = (key) =>
+      translations[this.currentLang]?.[key] !== undefined ||
+      translations['de']?.[key] !== undefined;
+
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.dataset.i18n;
-      el.textContent = this.t(key);
+      if (hasTranslation(key)) el.textContent = this.t(key);
     });
 
-    // Explicit: use innerHTML only for keys that contain trusted HTML (e.g. gradient spans)
     document.querySelectorAll('[data-i18n-html]').forEach(el => {
       const key = el.dataset.i18nHtml;
-      el.innerHTML = this.t(key);
+      if (hasTranslation(key)) el.innerHTML = this.t(key);
     });
 
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
       const key = el.dataset.i18nPlaceholder;
-      el.placeholder = this.t(key);
+      if (hasTranslation(key)) el.placeholder = this.t(key);
     });
 
     // Toggle .lang-de / .lang-en visibility (used by design pages)
